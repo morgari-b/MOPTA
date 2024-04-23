@@ -36,7 +36,7 @@ def OPT(ES,EW,EL,HL,cs=10000,cw=1000000,ch=10,chte=0,fhte=1,mhte=10,ceth=0,feth=
     #electricity load - dx96 array
     #hydrogen load - dx96 array
     
-    d=np.size(ES)
+    d=len(ES)
     env = Env(params={'OutputFlag': 0})
     model = Model(env=env)
     
@@ -47,15 +47,18 @@ def OPT(ES,EW,EL,HL,cs=10000,cw=1000000,ch=10,chte=0,fhte=1,mhte=10,ceth=0,feth=
     EtH = model.addMVar((d,96),vtype=GRB.CONTINUOUS, obj=ceth, lb=0) # expressed in power
     H = model.addMVar((d,96),vtype=GRB.CONTINUOUS,lb=0)
 
-    for i in range(96):
+    for j in range(d):
+        for i in range(96):
         #model.addConstr(np.eye(d),EL[:,i] + EtH[:,i], < , fhte*HtE[:,i] + ns*ES[:,i] + nw*EW[:,i] )
         #model.addMConstr( H[:,i] = H[:,i-1] + feth*EtH[:,i] - HL[:,i] - HtE[:,i] )
         #model.addConstr(np.eye(d), H[:,i],<,nh*np.ones((d,1)) )
-        model.addConstr( EL[:,i] + EtH[:,i] <= fhte*HtE[:,i] + ns*ES[:,i] + nw*EW[:,i] )
+            model.addConstr( EL[j,i] + EtH[j,i] <= fhte*HtE[j,i] + ns*ES[j,i] + nw*EW[j,i] )
+            model.addConstr( H[j,i] == H[j,i-1] + feth*EtH[j,i] - HL[j,i] - HtE[j,i] )
+            model.addConstr( H[j,i] <= nh )
     
     model.optimize()
     
-    string = "Total cost: {}\nPanels: {}\nTurbines: {}\nH2 needed capacity: {}".format(model.ObjVal,ns.X,nw.X,nh.X)
+    string = "Status: {}\nTotal cost: {}\nPanels: {}\nTurbines: {}\nH2 needed capacity: {}".format(model.Status, model.ObjVal,ns.X,nw.X,nh.X)
     return print(string)
 
 # %%
