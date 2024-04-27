@@ -78,11 +78,39 @@ def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,mw=100,ch=10000,chte=0,fhte=0.75,Mhte=200
     else:
         string = "Status: {}\nTotal cost: {}\nPanels: {}\nTurbines: {}\nH2 needed capacity: {}\nMax EtH: {}\nMax HtE: {}".format(model.Status, model.ObjVal, ns.X,nw.X,nh.X,meth.X,mhte.X)
         print(string)
-        x=np.linspace(0,1,inst)
+        x=np.arange(inst)
         HH=[0.0033*H[0,i].X for i in range(inst)]
-        plt.plot(x,EL[0,:].transpose(),"yellow",x,0.05*HL[0,:].transpose(),"green",x,ns.X*ES.transpose(),"orange",x,nw.X*EW[0,:].transpose(),"red",x,HH,"blue")
-
+        #plt.plot(x,EL[0,:].transpose(),"yellow",x,0.05*HL[0,:].transpose(),"green",x,ns.X*ES.transpose(),"orange",x,nw.X*EW[0,:].transpose(),"red",x,HH,"blue")
+        #plt.plot(x,EL[0,:].transpose(),"yellow",x,0.05*HL[0,:].transpose(),"green",x,ns.X*ES.transpose(),"orange",x,nw.X*EW[0,:].transpose(),"red",x,HH,"blue")
+        
+        #Solar panels and wind turbines
+        
+        plt.subplot(3,1,1)
+        plt.plot(x,EL[0,:].transpose(),"yellow",label = "Electricity Load")
+        plt.plot(x,0.05*HL[0,:].transpose(),"green", label = "Hydrogen Load")
+        plt.title("Loads")
+        plt.legend()
+        
+        plt.subplot(3,1,2)
+        plt.plot(x,ns.X*ES.transpose(),"orange", label = "Solar Power")
+        plt.plot(x,nw.X*EW[0,:].transpose(),"red", label = "Wind Power")
+        plt.legend()
+        plt.title("Power Output")
+        
+        plt.subplot(3,1,3)
+        plt.plot(x,HH,"blue", label = "Stored Hydrogen (Kg?)")
+        plt.legend()
+        plt.title("Stored Hydrogen")
         return model.ObjVal #[ns.X,nw.X,nh.X,mhte.X,meth.X]
+
+# %%
+
+def VarsToArray(VecVar):
+    # VecVar: A list of Gurobi Variables
+    X = VecVar.X
+    M = np.zeros(X.shape)
+    
+    return "miao"
 
 # %%
 
@@ -123,6 +151,7 @@ w1 = np.matrix(w1)
 
 OPT(s1,w1,el1,gl1)
 
+m = OPT2(s1,w1,el1,gl1)
 #Status: 2
 #Total cost: 578375869.0538827
 #Panels: 38276.0
