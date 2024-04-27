@@ -1,5 +1,5 @@
 # %% First Cell
-import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -7,9 +7,6 @@ import math
 from gurobipy import Model, GRB, quicksum, Env
 
 # %%
-
-# Change the current working directory
-os.chdir('/home/frulcino/codes/MOPTA/')
 
 EL=pd.read_excel('data.xlsx',sheet_name='Electricity Load')
 GL=pd.read_excel('data.xlsx',sheet_name='Gas Load')
