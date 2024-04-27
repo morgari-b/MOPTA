@@ -1,0 +1,121 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf840
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;\red54\green54\blue54;
+\red255\green255\blue255;\red0\green0\blue255;\red21\green22\blue23;\red0\green0\blue0;\red21\green22\blue23;
+\red255\green255\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c0;\cssrgb\c27451\c27451\c27451;
+\cssrgb\c100000\c100000\c100000;\csgenericrgb\c0\c0\c100000;\cssrgb\c10980\c11373\c11765;\csgenericrgb\c0\c0\c0;\cssrgb\c10980\c11373\c11765;
+\cssrgb\c100000\c100000\c100000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww8280\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+\
+\pard\pardeftab720\sl216\slmult1\partightenfactor0
+
+\f1\b\fs22 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 FORMATO DATI:\
+
+\b0 \
+Electricity - MWh; H2 gas - kg. "1kg H2 = 50kW electricity"\
+\
+Electricity Load\
+	Quarter (Q1,Q2,Q3,Q4 )\
+	Location_Electricity (1_i, 2_i, 1_r, 2_r, 3_r, 4_r, 5_r for all quarters)\
+	Instance (1\'8596 for all locations)\
+	Load (float >0, odg = 10^1)\
+Gas Load\
+	Quarter (Q1,Q2,Q3,Q4)\
+	Location_Gas (g)\
+	Instance (1\'8596 for all quarters)\
+	Load (float >0, odg = 10^2)\
+Solar\
+	Quarter (Q1,Q2,Q3,Q4)\
+	Instance (1\'8596 for all quarters)\
+	Generation (float>=0, 0 at night, odg = 10^-4, max 0.01)\
+Wind\
+	Quarter (Q1,Q2,Q3,Q4)\
+	Instance (1\'8596 for all quarters)\
+	Generation (float between 0 and 4)\
+\
+
+\b MODELLO:\
+\
+
+\b0 Nodes: \
+- WIND, SOLAR: 	output electricity\
+- ELECTROLYZERS: 	input electricity -- output H2 gas (conversion factor: 0.7)\
+			can store gas briefly (day)\
+			input H2 gas -- output H2 liquid\
+\pard\pardeftab720\sl216\slmult1\partightenfactor0
+\cf3 \outl0\strokewidth0 			input H2 liquid -- output H2 gas
+\b \cf2 \outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\sl216\slmult1\partightenfactor0
+
+\b0 \cf2 - FUEL CELLS:	input H2gas -- output electricity (conversion factor: 0.75)\
+\pard\pardeftab720\sl216\slmult1\partightenfactor0
+\cf3 \outl0\strokewidth0 			can store gas briefly (day)\
+			input H2 gas -- output H2 liquid\
+			input H2 liquid -- output H2 gas
+\b \cf2 \outl0\strokewidth0 \strokec2 \
+\pard\pardeftab720\sl216\slmult1\partightenfactor0
+
+\b0 \cf2 Need to add:\
+- cost of transport of gas from electrolyzers and fuel cells to industrial area\
+- time of transport??\
+- possibility of short term storage\
+- divide storage at electrolyzers from storage at fuel cells, give different costs, add cost of transport in between\
+- storage capacity limits, distinguish gas from liquid\
+- congestion of liquid transport\
+- max EtH and HtE\
+\
+Data to collect:\
+- realistic cost of transportation of gas\
+- realistic costs in general\
+- wind pattern\
+- solar pattern\
+\
+Regarding the model:\
+- how to link different time instances? Days to each other?\
+- does it make sense to divide day and night and use variability on them? Simplify model -- \
+\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\fs24 \cf2 Consider the perspective of policymakers and research organizations. What questions will they be looking to answer, how would they like to interact with your model and results, and what are the assumptions or simplifications that you have used? Remember, they may not be experts in Mathematical Optimization.\
+\
+--> in this sense: all data points to rely on wind more than solar, because we get more power. To policymaker we can give a graph with various values of max turbines (mw), showing decreasing cost.\
+\
+\
+Traendo dalle info in appendice (pag 5) e Data (pag 3)\
+In che senso produco potenza e non energia? Proprio a livello fisico (curiosit\'e0 mia)\
+\
+EtH: 0.7, da 50kWh=0.05MWh ottengo 1kg H2, quindi da 1MWh ottengo 20kg=0.7*??, => ??=28.5kg\
+HtE: 0.75, da 1kg H2 ottengo 33kWh=0.033MWh=0.75*??, => ??=0.044MWh\
+\
+Cose che non mi tornano: 0.7*0.75=0.52, ma 33/50=0.66. ????????????\
+\
+\
+\
+WIND MODELLING:\
+\
+\pard\pardeftab720\partightenfactor0
+
+\i \cf4 \cb5 \strokec4 Bett, P. E., Thornton, H. E., and Clark, R. T.: European wind variability over 140 yr, Adv. Sci. Res., 10, 51\'9658, https://doi.org/10.5194/asr-10-51-2013, 2013.
+\i0 \cf2 \cb1 \strokec2 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf6 \ul \ulc6 https://asr.copernicus.org/articles/10/51/2013/asr-10-51-2013.pdf\cf2 \ulnone \
+Different averages and stddev over Europe, last 140 years\
+Significant but small trend of decreasing wind speed in mediterranean (except Creta), increasing in Baltic.\
+Uses Weibull distribution - parameters k and lambda\
+\
+
+\i Pryor, \cf3 \outl0\strokewidth0 S.C.,\cf2 \outl0\strokewidth0 \strokec2  Barthelmie, \cf3 \outl0\strokewidth0 R.J.\cf2 \outl0\strokewidth0 \strokec2 , Schoof, J.T.: \cf7 \cb5 \strokec7 Inter-annual variability of wind indices across Europ\cf8 e, Wind Energy\strokec2 Volume 9, Issue 1-2\strokec7 \'a0p. 2\cf7 7-38, , \cf2 \strokec2 07 December 2005\cb1   {\field{\*\fldinst{HYPERLINK "https://doi.org/10.1002/we.178"}}{\fldrslt \cb5 https://doi.org/10.1002/we.178}}\cb5 \
+
+\i0 Confirms trends of previous article, observes effect of NAO.\
+\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i \cf9 \cb10 \outl0\strokewidth0 Journal of Geophysical Research: Atmosphere / Volume 123, Issue 12 / p. 6373-6389\cf2 \cb1 \outl0\strokewidth0 \strokec2 \
+}
