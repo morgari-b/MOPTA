@@ -1,0 +1,67 @@
+import sys
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+                             QLabel, QLineEdit, QPushButton, QComboBox, QMessageBox, QFormLayout)
+from PyQt6.QtCore import Qt
+
+def OPT(hydrogen_cost, location, capacity, purity):
+    # Placeholder for the optimization function
+    # Replace this with actual optimization code
+    # Here we simulate a simple output
+    return f"Network optimized for {location} with cost {hydrogen_cost}, capacity {capacity}, purity {purity}"
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Hydrogen Network Optimization")
+        self.setGeometry(100, 100, 400, 300)  # x, y, width, height
+
+        # Central Widget and Layout
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.layout = QVBoxLayout()
+        self.central_widget.setLayout(self.layout)
+
+        # Form layout for inputs
+        form_layout = QFormLayout()
+        self.hydrogen_cost_input = QLineEdit()
+        self.helectrolyzer_cost_input = QLineEdit()
+        self.location_input = QComboBox()
+        self.location_input.addItems(['Location A', 'Location B', 'Location C'])
+        self.capacity_input = QLineEdit()
+        self.purity_input = QLineEdit()
+
+        form_layout.addRow("Hydrogen Storage Unit Cost ($/kg):", self.hydrogen_cost_input)
+        form_layout.addRow("Hydrogen Electrolyzer Cost ($/unit):", self.helectrolyzer_cost_input)
+        form_layout.addRow("Geographical Location:", self.location_input)
+        form_layout.addRow("Production Capacity (kg/day):", self.capacity_input)
+        form_layout.addRow("Purity Level (%):", self.purity_input)
+        
+        self.layout.addLayout(form_layout)
+        # Submit button
+        self.submit_button = QPushButton("Optimize Network")
+        self.submit_button.clicked.connect(self.run_optimization)
+        self.layout.addWidget(self.submit_button)
+
+        # Output area
+        self.output_label = QLabel("Output will be shown here.")
+        self.output_label.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.layout.addWidget(self.output_label)
+
+    def run_optimization(self):
+        hydrogen_cost = self.hydrogen_cost_input.text()
+        location = self.location_input.currentText()
+        capacity = self.capacity_input.text()
+        purity = self.purity_input.text()
+
+        # Call the optimization function
+        result = OPT(hydrogen_cost, location, capacity, purity)
+        
+        # Display the results
+        self.output_label.setText(result)
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())

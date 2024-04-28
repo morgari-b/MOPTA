@@ -106,7 +106,37 @@ def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,mw=100,ch=10000,chte=0,fhte=0.75,Mhte=200
 # %%
 
 def VarsToArray(VecVar):
-    # VecVar: A list of Gurobi Variables
+    # VecVar: A list of Gurobi Variables plt.subplot(3,1,1 plt.subplot(3,1,1)
+        plt.plot(x,EL[0,:].transpose(),"yellow",label = "Electricity Load")
+        plt.plot(x,0.05*HL[0,:].transpose(),"green", label = "Hydrogen Load")
+        plt.title("Loads")
+        plt.legend()
+        
+        plt.subplot(3,1,2)
+        plt.plot(x,ns.X*ES.transpose(),"orange", label = "Solar Power")
+        plt.plot(x,nw.X*EW[0,:].transpose(),"red", label = "Wind Power")
+        plt.legend()
+        plt.title("Power Output")
+        
+        plt.subplot(3,1,3)
+        plt.plot(x,HH,"blue", label = "Stored Hydrogen (Kg?)")
+        plt.legend()
+        plt.title("Stored Hydrogen"))
+        plt.plot(x,EL[0,:].transpose(),"yellow",label = "Electricity Load")
+        plt.plot(x,0.05*HL[0,:].transpose(),"green", label = "Hydrogen Load")
+        plt.title("Loads")
+        plt.legend()
+        
+        plt.subplot(3,1,2)
+        plt.plot(x,ns.X*ES.transpose(),"orange", label = "Solar Power")
+        plt.plot(x,nw.X*EW[0,:].transpose(),"red", label = "Wind Power")
+        plt.legend()
+        plt.title("Power Output")
+        
+        plt.subplot(3,1,3)
+        plt.plot(x,HH,"blue", label = "Stored Hydrogen (Kg?)")
+        plt.legend()
+        plt.title("Stored Hydrogen")
     X = VecVar.X
     M = np.zeros(X.shape)
     
