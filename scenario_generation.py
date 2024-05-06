@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
+from reliability.Fitters import Fit_Weibull_2P
 
 def fit_weibull(Y):
     """
@@ -21,8 +22,9 @@ def fit_weibull(Y):
     """
     parameters_df = pd.DataFrame(columns = Y.columns)
     for var in Y.columns:
-        params = stats.exponweib.fit(Y[var], method = "MLE")
-        parameters_df.loc["scale", var],parameters_df.loc["shape", var] = params[3], params[1]
+        #params = stats.exponweib.fit(Y[var], method = "MLE")
+        params = Fit_Weibull_2P(failures=Y[var].values, print_results = False, show_probability_plot = False)
+        parameters_df.loc["scale", var],parameters_df.loc["shape", var] = params.alpha, params.beta
         
     return parameters_df
 
@@ -84,7 +86,7 @@ def SG_weib(n_scenarios, var_names, parameters_df, E_h):
         
     return scenarios
 
-def SG_weib_example(n_samples = 100, n_scenarios = 100, n_vars = 24, shape = 2, scale = 3 ):
+def SG_weib_example(n_samples = 100, n_scenarios = 100, n_vars = 24, shape = 2, scale = 3, bins = 20):
     """
     Example with randomly generated indipendent weibull distibutions
     Parameters
@@ -112,7 +114,7 @@ def SG_weib_example(n_samples = 100, n_scenarios = 100, n_vars = 24, shape = 2, 
     fig, axes = plt.subplots(2,3, figsize = (15,10))
     fig.suptitle("Overview")
 
-    axes[0,0].hist(Y.iloc[:,0], bins = 20)
+    axes[0,0].hist(Y.iloc[:,0], bins = bins)
     axes[0,0].set_title("Data Histogram")
 
     parameters_df, E_h = fit_multivariate_weib(Y)
@@ -122,13 +124,31 @@ def SG_weib_example(n_samples = 100, n_scenarios = 100, n_vars = 24, shape = 2, 
     fig.colorbar(c, ax=ax)
     ax.set_title("Gaussian copula covariance matrix")
     
+       
+    # Plotting estimated parameters from a DataFrame
     ax = axes[0,2]
-    ax.plot(parameters_df.loc["scale"])
-    scenarios = SG_weib(100,Y.columns, parameters_df, E_h)
+    
+    # Plotting estimated parameters from a DataFrame
+    ax.plot(parameters_df.loc["scale"], label='Estimated Scale', color='blue', linestyle='--')
+    ax.plot(parameters_df.loc["shape"], label='Estimated Shape', color='green', linestyle='--')
+    
+    # Plotting actual parameters using horizontal lines
+    ax.hlines(scale, xmin = Y.columns[0], xmax = Y.columns[-1], colors='blue', linestyles='-', label='Actual Scale')
+    ax.hlines(shape, xmin = Y.columns[0], xmax = Y.columns[-1], colors='green', linestyles='-', label='Actual Shape')
+    
+    # Adding labels
+    ax.set_xlabel('Index')  # Adjust the label as necessary depending on the index meaning
+    ax.set_ylabel('Parameter Value')
+    ax.set_title('Comparison of Estimated and Actual Parameters')
+
+    # Add a legend to differentiate between plots
+    ax.legend()
+
+    scenarios = SG_weib(n_scenarios,Y.columns, parameters_df, E_h)
 
 
 
-    axes[1,0].hist(scenarios.iloc[:,0], bins = 20)
+    axes[1,0].hist(scenarios.iloc[:,0], bins = bins)
     axes[1,0].set_title("Data Scenarios")
 
     plt.show()
