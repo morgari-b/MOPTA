@@ -42,7 +42,6 @@ axes[0, 1].set_title("Marginal distribution of var0")
 mean_est = Y.mean(axis=0)
 scale_est = np.sqrt(Y.var(axis=0, ddof=1))
 
-### random checks
 
 #uniform variables estimation
 X_h = pd.DataFrame(index=Y.index, columns=Y.columns)
