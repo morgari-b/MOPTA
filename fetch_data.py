@@ -45,6 +45,9 @@ def fetch_data(start, end, country_code, api_key, max_retries = 3):
             print(f"Fetching data from {start_date} to {current_end_date}")
             generation = client.query_generation_per_plant(country_code, start=start_date, end=current_end_date)
             full_generation_data = pd.concat([full_generation_data, generation])
+            filename = f'GenerationData/generation_data_{country_code}_{start_date}_to_{current_end_date}.csv'
+            generation.to_csv(filename, index=False)
+            print(f"Data saved to {filename}")
         except Exception as e:
             print(f"Error fetching datam retrying: {e}")
             for i in np.arange(max_retries):
@@ -63,7 +66,7 @@ def fetch_data(start, end, country_code, api_key, max_retries = 3):
     return full_generation_data
 
 
-# The script now tries to fetch the data, and no matter the outcome, it attempts to save what has been fetched.
+
 
 
 # %% load key
@@ -73,10 +76,10 @@ client = EntsoePandasClient(api_key=api_key)
 
 
 # %% set parameters 
-start = pd.Timestamp('20220301', tz='Europe/Brussels')
-end = pd.Timestamp('20220306', tz='Europe/Brussels')
+start = pd.Timestamp('20190710', tz='Europe/Brussels')
+end = pd.Timestamp('20231230', tz='Europe/Brussels')
 country_code = 'BE'  # Belgium ISO code
-energy_type_list = ["Wind Offshore", "Wind Onshore"]
+#energy_type_list = ["Wind Offshore", "Wind Onshore"]
 average_wind_generation = 4*2.539914194598637 #hour wind generation for 1h intervals
 # %% fetch data
 # Fetch generation per plant
@@ -85,7 +88,6 @@ average_wind_generation = 4*2.539914194598637 #hour wind generation for 1h inter
 try:
     generation_data = fetch_data(start, end, country_code, api_key)
 finally:
-    # Save the data to CSV regardless of whether the fetch was completely successful
     filename = f'generation_data_{country_code}_{2022}_to_{2023}.csv'
     generation_data.to_csv(filename, index=False)
     print(f"Data saved to {filename}")
