@@ -14,8 +14,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
 from reliability.Fitters import Fit_Weibull_2P
-
-def fit_weibull(Y):
+import os
+os.chdir('/home/frulcino/codes/MOPTA/')
+def fit_weibull(Y, method = "LS"):
     """
     Y : pandas dataframe having as columns variables and as rows scenarios
     returns dataframe having estimated with MLE weibull parameters.
@@ -23,12 +24,12 @@ def fit_weibull(Y):
     parameters_df = pd.DataFrame(columns = Y.columns)
     for var in Y.columns:
         #params = stats.exponweib.fit(Y[var], method = "MLE")
-        params = Fit_Weibull_2P(failures=Y[var].values, print_results = False, show_probability_plot = False)
+        params = Fit_Weibull_2P(failures=Y[var].values, print_results = False, show_probability_plot = False, method = method)
         parameters_df.loc["scale", var],parameters_df.loc["shape", var] = params.alpha, params.beta
         
     return parameters_df
 
-def fit_multivariate_weib(Y):
+def fit_multivariate_weib(Y, method = "LS"):
     """
     Fit data with multivariate distribution having Weibull marginals coupled with Gaussian copula.
     input
@@ -39,7 +40,7 @@ def fit_multivariate_weib(Y):
         
     """
     #weibul distribution estimation
-    parameters_df = fit_weibull(Y)
+    parameters_df = fit_weibull(Y, method)
 
     #copula estimation
     
@@ -52,6 +53,11 @@ def fit_multivariate_weib(Y):
         
     #copula covariance estimation:
     E_h = np.cov(O_h.T, ddof = 1)
+    
+    
+    c= plt.imshow(E_h, interpolation = "nearest")
+    plt.colorbar(c)
+    plt.title("Gaussian copula covariance matrix")
     
     return parameters_df, E_h
 
@@ -152,3 +158,47 @@ def SG_weib_example(n_samples = 100, n_scenarios = 100, n_vars = 24, shape = 2, 
     axes[1,0].set_title("Data Scenarios")
 
     plt.show()
+  
+def date_format(df, country):
+  grouped = df[country].groupby(lambda date: (date.dayofyear, date.hour), axis = 0)
+  ran = False
+  n_instances = len(grouped)
+  X = {}
+  for time_instance, time_instance_df in grouped:
+      time_instance_df.index = time_instance_df.index.year
+      X[time_instance] = time_instance_df          
+  X = pd.DataFrame(X).sort_index()
+  X.columns.names = "day", "hour"
+  
+  #drop last day:
+  X = X.loc[:,:(365,23)]
+  return X
+      #print(time_instance, time_instance_df)
+      #  
+#%% fetch data
+
+
+wind_pu = pd.read_csv("WindNinja/renewables_ninja_europe_wind_output_1_current.csv", index_col = 0)
+PV_pu = pd.read_csv("PVNinja/ninja_pv_europe_v1.1_merra2.csv", index_col = 0)
+wind_pu.index = pd.to_datetime(wind_pu.index, format="%d/%m/%Y %H:%M")
+PV_pu.index = pd.to_datetime(PV_pu.index, format = "%Y-%m-%d %H:%M:%S")
+
+# %% format data for country
+countries = wind_pu.columns
+country = countries[0]
+
+X = date_format(wind_pu, country)
+
+
+#params_dict = {} #for each country
+#%% fit
+params = fit_multivariate_weib(X)
+
+#%%
+E = params[1]
+E_zoom = E[0:24*7,0:24*7]
+c= plt.imshow(E_zoom, interpolation = "nearest")
+plt.colorbar(c)
+plt.title("Gaussian copula covariance matrix")
+
+
