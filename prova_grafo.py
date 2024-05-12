@@ -24,9 +24,7 @@ for i in range(4):
     el2 = el2 + 4*EL.loc[EL["Quarter"]=="Q{}".format(i+1)].groupby((EL["Instance"]-1)//4)["Load"].sum().to_list()
     gl2 = gl2 + 4*GL.loc[GL["Quarter"]=="Q{}".format(i+1)].groupby((GL["Instance"]-1)//4)["Load"].sum().to_list()
     s2 = s2 + 4*S.loc[S["Quarter"]=="Q{}".format(i+1)].groupby((S["Instance"]-1)//4)["Generation"].sum().to_list()
-    # first attempt: wind is trated like others. second attempt: consider wind as it is
     w2 = w2 + 4*W.loc[W["Quarter"]=="Q{}".format(i+1)].groupby((W["Instance"]-1)//4)["Generation"].sum().to_list()
-    #w2 = w2 + W.loc[W["Quarter"]=="Q{}".format(i+1)]["Generation"].to_list()
 el2 = np.matrix(el2)
 gl2 = np.matrix(gl2)
 s2 = np.matrix(s2)
@@ -133,8 +131,7 @@ def OPT(ES,EW,EL,HL,
         plt.plot(x,HtE[0,:].X,"blue", label = "HtE")
         plt.legend()
         plt.title("H conversion")
-        return EtH.X, HtE.X
-    #[ns.X,nw.X,nh.X,mhte.X,meth.X]
+        return [ns.X,nw.X,nh.X,mhte.X,meth.X]
 
 # %%
 
