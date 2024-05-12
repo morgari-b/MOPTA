@@ -21,24 +21,9 @@ from itertools import product
 # Change the current working directory
 #os.chdir('/home/frulcino/codes/MOPTA/')
 
-EL=pd.read_excel('data.xlsx',sheet_name='Electricity Load')
-GL=pd.read_excel('data.xlsx',sheet_name='Gas Load')
-S=pd.read_excel('data.xlsx',sheet_name='Solar')
-W=pd.read_excel('data.xlsx',sheet_name='Wind')
+ES=pd.read_csv('scenarios/PV_scenario100',index_col=0).T
+EW=pd.read_csv('scenarios/wind_scenarios.csv',index_col=0).T
 
-el=[]
-gl=[]
-s=[]
-w=[]
-for i in range(4):
-    el = el + 4*EL.loc[EL["Quarter"]=="Q{}".format(i+1)].groupby((EL["Instance"]-1)//4)["Load"].sum().to_list()
-    gl = gl + 4*GL.loc[GL["Quarter"]=="Q{}".format(i+1)].groupby((GL["Instance"]-1)//4)["Load"].sum().to_list()
-    s = s + 4*S.loc[S["Quarter"]=="Q{}".format(i+1)].groupby((S["Instance"]-1)//4)["Generation"].sum().to_list()
-    w = w + 4*W.loc[W["Quarter"]=="Q{}".format(i+1)].groupby((W["Instance"]-1)//4)["Generation"].sum().to_list()
-el = np.matrix(el)
-gl = np.matrix(gl)
-s = np.matrix(s)
-w = np.matrix(w)
 
 #%%
 def OPT2(ES,EW,EL,HL,
@@ -67,7 +52,7 @@ def OPT2(ES,EW,EL,HL,
     
     #from graph gather this info:
     d=1
-    inst=384
+    inst=365*24
     Ns = 1
     Nw = 1
     Nel = 7 #nodes of electricity load
@@ -109,14 +94,19 @@ def OPT2(ES,EW,EL,HL,
     
     # constraints
     for j in range(d):
-        for i in range(inst):
+        
+        # hydrogen at hl:
+        for i in range(365):
+            model.addConstrs(quicksum(HL[0,i+ii] for ii in range(24))==quicksum(z_hl[z,hl,j,i] for z in range(Nz)) for hl in range(Nhl)) #assume you get at 8 all load for next day, HL[hl,j,i]
+               
+        for i in range(inst-1):
             # electricity at s,w,z,fc,el nodes:
             model.addConstrs(quicksum(s_el[s,el,j,i] for el in range(Nel)) + 
                              quicksum(s_z[s,z,j,i] for z in range(Nz)) <= 
-                             ES[0,i] for s in range(Ns))                       # electricity exiting at every PV farm, ES[s,j,i] format?????
+                             ns[s]*ES[j,i] for s in range(Ns))                       # electricity exiting at every PV farm, ES[s,j,i] format?????
             model.addConstrs(quicksum(w_el[w,el,j,i] for el in range(Nel)) + 
                              quicksum(w_z[w,z,j,i] for z in range(Nz)) <= 
-                             ES[0,i] for w in range(Nw))                       # electricity exiting at every wind farm
+                             nw[w]*EW[j,i] for w in range(Nw))                       # electricity exiting at every wind farm
             model.addConstrs(quicksum(s_z[s,z,j,i] for s in range(Ns)) +
                              quicksum(w_z[w,z,j,i] for w in range(Nw)) ==
                              EtH[z,j,i] for z in range(Nz))                    # electricity converted to H2 at every elecrolyzer
@@ -127,23 +117,23 @@ def OPT2(ES,EW,EL,HL,
                              quicksum(fc_el[fc,el,j,i] for fc in range(Nfc)) ==
                              EL[0,i] for el in range(Nel))                     # electricity consumed at every load node, EL[el,j,i]
             
-            # hydrogen at z,fc,hl:
-            model.addConstrs(quicksum(quicksum(z_hl[z,hl,j,i+ii] for hl in range(Nhl)) + 
-                                      quicksum(z_fc[z,fc,j,i+ii] for fc in range (Nfc)) for ii in range(24)) ==
-                             28.5*feth*EtH[z,j,i] for z in range(Nz)) 
+            # hydrogen at z,fc:
+            model.addConstrs(Hz[z,j,i+1]==Hz[z,j,i]+28.5*feth*EtH[z,j,i] -     # comment on conversion
+                             quicksum(z_hl[z,hl,j,i//24] for hl in range(Nhl))*(i%24==8) -
+                             quicksum(z_fc[z,fc,j,i//24] for fc in range(Nfc))*(i%24==8) for z in range(Nz))
+            model.addConstrs(Hfc[fc,j,i+1]==Hfc[fc,j,i]-HtE[fc,j,i] +
+                             quicksum(z_fc[z,fc,j,i//24]*(i%24==12) for z in range(Nz)) for fc in range(Nfc))
+            model.addConstrs(Hz[z,j,i]<=nhz[z] for z in range(Nz))
+            model.addConstrs(Hfc[fc,j,i]<=nhfc[fc] for fc in range(Nfc))
             
-            # NO STO SBAGLIANDO TUTTO : somme sulle 24h sono al load, mi dicono quanto togliere alle 8
-            
-            #model.addConstrs(Hz[z,j,i] <= 0 for z in range(Nz))
-            #model.addConstr( quicksum(EL[k,j,i] for k in range(Nel)) + quicksum(EtH[k,j,i] for k in range(Nz) <= quicksum(0.044*fhte*HtE[k,j,i] for k in range(fc) + quicksum(ns[k]*ES[k,j,i] for k in range(Ns))) + quicksum(nw[k]*EW[k,j,i] for k in range(Nw))))
-            # hydrogen at z,fc,hl nodes:
-            #model.addConstr( H[j,i] == H[j,i-1] + 28.5*feth*EtH[j,i] - HL[j,i] - HtE[j,i] )
-            #model.addConstr( H[j,i] <= nh )
-            #model.addConstr( EtH[j,i] <= meth)
-            #model.addConstr( HtE[j,i] <= mhte)
-    #model.addConstr( nw <= mw )
-    #model.addConstr( meth <= Meth )
-    #model.addConstr( mhte <= Mhte )     
+            # convergence efficiency at z and fc:
+            model.addConstrs(EtH[z,j,i]<=meth[z] for z in range(Nz))
+            model.addConstrs(HtE[fc,j,i]<=mhte[fc] for fc in range(Nfc))
+    model.addConstrs( meth[z] <= Meth for z in range(Nz))
+    model.addConstrs( mhte[fc] <= Mhte for fc in range(Nfc))   
+    
+    #maximum wind turbines at a farm:
+    model.addConstrs(nw[w]<=mw for w in range(Nw))
     
     model.optimize()
     #if model.Status!=2:
@@ -154,10 +144,6 @@ def OPT2(ES,EW,EL,HL,
 
 #%%
 
-ES=s
-EW=w
-EL=el
-HL=gl
 
 #def OPT2(ES,EW,EL,HL,
         #solar el production

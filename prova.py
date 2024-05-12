@@ -9,7 +9,7 @@ from gurobipy import Model, GRB, quicksum, Env
 # %%
 
 # Change the current working directory
-os.chdir('/home/frulcino/codes/MOPTA/')
+#os.chdir('/home/frulcino/codes/MOPTA/')
 
 EL=pd.read_excel('data.xlsx',sheet_name='Electricity Load')
 GL=pd.read_excel('data.xlsx',sheet_name='Gas Load')
@@ -31,7 +31,7 @@ s = np.matrix(s)
 w = np.matrix(w)
 
 # %%
-def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,mw=100,ch=10000,chte=0,fhte=0.75,Mhte=200000,ceth=0,feth=0.7,Meth=15000):
+def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,mw=100,ch=7,chte=0,fhte=0.75,Mhte=200000,ceth=0,feth=0.7,Meth=15000):
     #cost of solar panels
     #cost of wind turbines
     #max socially acceptable wind turbines
