@@ -291,7 +291,11 @@ wind_pu = pd.read_csv("../WindNinja/renewables_ninja_europe_wind_output_1_curren
 PV_pu = pd.read_csv("../PVNinja/ninja_pv_europe_v1.1_merra2.csv", index_col = 0)
 wind_pu.index = pd.to_datetime(wind_pu.index, format="%d/%m/%Y %H:%M")
 PV_pu.index = pd.to_datetime(PV_pu.index, format = "%Y-%m-%d %H:%M:%S")
-
+path = "data.xlsx"
+EL=pd.read_excel(path,sheet_name='Electricity Load')
+GL=pd.read_excel(path,sheet_name='Gas Load')
+S=pd.read_excel(path,sheet_name='Solar')
+W=pd.read_excel(path,sheet_name='Wind')
 # %% format data for country
 #countries = wind_pu.columns
 #country = countries[0]
@@ -319,6 +323,44 @@ parameters_df, E_h, night_hours = fit_multivariate_beta(X_PV)
 n_scenarios = 10
 var_names = parameters_df.columns
 
+#%% load scenarios
+
+#demand = pd.read_csv("../DemandEnergy/time_series_60min_singleindex.csv")
+wind_scenarios = pd.read_csv("scenarios/wind_scenarios.csv", index_col=0)
+PV_scenarios = pd.read_csv("scenarios/PV_scenario100.csv", index_col=0)
+
+#%% format demand from df
+n_scenarios = 100
+n_hours = 24*365
+location = "1_i"
+season = "Q1"
+df = EL
+column = "Load"
+location_column = "Location_Electricity"
+m_to_s = [f"Q{month%12// 3 + 1}" for month in range(1, 13)] #month to season
+EL=pd.read_excel(path,sheet_name='Electricity Load')
 
 
+def quarters_df_tp_year(file_name, location, df, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365):
+    demand_scenarios = pd.DataFrame(np.zeros((n_scenarios,n_hours)), columns = pd.date_range("01/01/2023", periods = n_hours, freq = "h"))
+    m_to_s = [f"Q{month%12// 3 + 1}" for month in range(1, 13)] #month to season
+    for month in np.arange(12):
+        season = m_to_s[month]
+        season_df = df.loc[df["Quarter"] == season] #fetch season
+        season_df = season_df.loc[season_df[location_column] == location] #fetch location
+        season_df = season_df[column].groupby(lambda x: x//4).sum()
+        S_demand =  demand_scenarios.iloc[:,(demand_scenarios.columns.month -1== month)]
+        n_rows, n_cols = S_demand.shape
+        demand_scenarios.iloc[:,(demand_scenarios.columns.month -1== month)] = np.array([list(season_df)* (n_cols // 24)]*n_scenarios)
+    if save:
+        demand_scenarios.to_csv("scenarios/"+file_name+f"{location}")
+    return demand_scenarios
+
+#%% # save electiricty: 
+locations = EL["Location_Electricity"].unique()
+for location in locations:
+    quarters_df_tp_year("electric_demand", location, EL, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365)
+
+#%%
+quarters_df_tp_year("hydrogen_demand", "g", GL, column, "Location_Gas", save = True, n_scenarios = 100, n_hours = 24*365)
 
