@@ -49,6 +49,7 @@ O_h = pd.DataFrame(index=Y.index, columns=Y.columns)
 for var in Y.columns:
     X_h[var] = norm.cdf(Y[var], loc=mean_est[var], scale=scale_est[var])
     O_h[var] = norm.ppf(X_h[var])
+    
 # Histogram of transformed data to uniform distribution using estimated CDF
 axes[0, 2].hist(X_h.iloc[:, 0], bins=20, color='lightgreen', edgecolor='black')
 axes[0, 2].set_title("Uniform distrib by composing data via estimated CDF") #se non sembra uniforma not a good estimation

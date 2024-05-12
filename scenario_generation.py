@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 from reliability.Fitters import Fit_Weibull_2P
 import os
+from scipy.sparse import dia_matrix, save_npz, load_npz
 os.chdir('/home/frulcino/codes/MOPTA/')
 
 
@@ -54,7 +55,7 @@ def fit_weibull(Y, method = "LS"):
 
 
     
-def fit_multivariate_weib(Y, method = "LS"):
+def fit_multivariate_weib(Y, simplify = False, max_dist = 24*3, method = "LS"):
     """
     Fit data with multivariate distribution having Weibull marginals coupled with Gaussian copula.
     input
@@ -83,6 +84,14 @@ def fit_multivariate_weib(Y, method = "LS"):
     c= plt.imshow(E_h, interpolation = "nearest")
     plt.colorbar(c)
     plt.title("Gaussian copula covariance matrix")
+    
+    if simplify:
+        E_shape = E_h.shape[0]
+        row_index, col_index =np.indices(E_h.shape)
+        distance_matrix = np.abs(row_index - col_index)
+        mask = distance_matrix > max_dist
+        E_h[mask] = 0
+        
     
     return parameters_df, E_h
 
@@ -198,6 +207,7 @@ def fit_beta(Y):
     """
     
     night_hours = list(Y.iloc[:,list(Y.mean() <= 0.05)].columns)
+    #print(night_hours)
     Y = Y.iloc[:,list(Y.mean() > 0.05)]
     parameters_df = pd.DataFrame(columns = Y.columns)
     
@@ -212,11 +222,13 @@ def fit_beta(Y):
         
     return parameters_df, night_hours
 
-def fit_multivariate_beta(Y):
+def fit_multivariate_beta(Y, simplify = False, max_dist = 24*3):
     """
     Fit data with multivariate distribution having Weibull marginals coupled with Gaussian copula.
     input
         Y: Pandas dataframe taking having as columns variables and rows as samples
+        mask: if True, set cov = 0 for variables which are max_dist apart
+        max_dist: distance between variables after which we assume independence
     output
         parameters_df: df having for each variable the estimated parameters of the Weibull distribution
         E_h: the estimated covariance matrix of the Gaussian Copula
@@ -241,11 +253,16 @@ def fit_multivariate_beta(Y):
     #copula covariance estimation:
     E_h = np.cov(O_h.T, ddof = 1) #non posso usare Y_h direttamente?
     
-
     c= plt.imshow(E_h, interpolation = "nearest")
     plt.colorbar(c)
     plt.title("Gaussian copula covariance matrix")
-  
+    if simplify:
+        E_shape = E_h.shape[0]
+        row_index, col_index =np.indices(E_h.shape)
+        distance_matrix = np.abs(row_index - col_index)
+        mask = distance_matrix > max_dist
+        E_h[mask] = 0
+        
     return parameters_df, E_h, night_hours
 #%%
 def SG_beta(n_scenarios, var_names, parameters_df, E_h, night_hours, save = True, filename = "PV_scenario"):
@@ -296,23 +313,61 @@ EL=pd.read_excel(path,sheet_name='Electricity Load')
 GL=pd.read_excel(path,sheet_name='Gas Load')
 S=pd.read_excel(path,sheet_name='Solar')
 W=pd.read_excel(path,sheet_name='Wind')
-# %% format data for country
-#countries = wind_pu.columns
-#country = countries[0]
-
-#X = date_format(wind_pu, country)
-
-
-#params_dict = {} #for each country
-#%% fit
-#params = fit_multivariate_weib(X)
+# %% fit wind for country
+countries = wind_pu.columns
+c = 0
+n_countries = len(countries)
+simplify = True
 
 #%%
-#E = params[1]
-#E_zoom = E[0:24*7,0:24*7]
-#c= plt.imshow(E_zoom, interpolation = "nearest")
-#plt.colorbar(c)
-#plt.title("Gaussian copula covariance matrix")
+for country in countries:
+    print(f"Perc: {c/n_countries*100}%, fitting {country}")
+    X = date_format(wind_pu, country)
+    params, E_h = fit_multivariate_weib(X, simplify=True)
+    params.to_csv(f"parameters/marginals-wind-{country}")
+    if simplify:
+        E_h = dia_matrix(E_h)
+        save_npz(f"parameters/copula-wind-{country}",E_h)
+    #pd.DataFrame(E_h).to_csv(f"parameters/copula-wind-{country}", float_format='%.3f')
+    c += 1
+    
+
+#params_dict = {} #for each country
+#%% fit solar
+
+iso_to_country = {
+    'AT': 'Austria', 'BE': 'Belgium', 'BG': 'Bulgaria', 'HR': 'Croatia', 'CY': 'Cyprus',
+    'CZ': 'Czech Republic', 'DK': 'Denmark', 'EE': 'Estonia', 'FI': 'Finland', 'FR': 'France',
+    'DE': 'Germany', 'GR': 'Greece', 'HU': 'Hungary', 'IE': 'Ireland, Republic of (EIRE)',
+    'IT': 'Italy', 'LV': 'Latvia', 'LT': 'Lithuania', 'LU': 'Luxembourg', 'MT': 'Malta',
+    'NL': 'Netherlands', 'PL': 'Poland', 'PT': 'Portugal', 'RO': 'Romania', 'SK': 'Slovakia',
+    'SI': 'Slovenia', 'ES': 'Spain', 'SE': 'Sweden', 'GB': 'United Kingdom', 'AL': 'Albania',
+    'BA': 'Boznia and Herzegovina', 'CH': 'Switzerland',  'MK': 'North Macedonia', 'RS': 'Serbia',
+    'MD': 'Moldavia', 'SK': 'Slovakia', 'ME': 'Montenegro', 'NO': 'Norway'
+}
+
+c = 0
+PV_countries = list(PV_pu.columns)
+for pv_country in PV_countries:
+    country = iso_to_country[pv_country]
+    print(f"Perc: {c/n_countries*100}%, PV fitting {country}")
+    X = date_format(PV_pu, pv_country)
+    params, E_h, night_hours= fit_multivariate_beta(X, simplify=True)
+    params.to_csv(f"parameters/marginals-PV-{country}")
+    pd.DataFrame(night_hours, columns = ("day","hour")).to_csv(f"parameters/night_hours-PV-{country}")
+    if simplify:
+        E_h = dia_matrix(E_h)
+        save_npz(f"parameters/copula-PV-{country}",E_h)
+        
+    c += 1  
+    
+
+#%%
+E = E_h
+E_zoom = E[0:24*10,0:24*10]
+c= plt.imshow(E_zoom, interpolation = "nearest")
+plt.colorbar(c)
+plt.title("Gaussian copula covariance matrix")
 
 # %%
 X_PV = date_format(PV_pu,"AL")
@@ -353,14 +408,14 @@ def quarters_df_tp_year(file_name, location, df, column, location_column, save =
         n_rows, n_cols = S_demand.shape
         demand_scenarios.iloc[:,(demand_scenarios.columns.month -1== month)] = np.array([list(season_df)* (n_cols // 24)]*n_scenarios)
     if save:
-        demand_scenarios.to_csv("scenarios/"+file_name+f"{location}")
+        demand_scenarios.to_csv("scenarios/"+file_name+f"-{location}.csv")
     return demand_scenarios
 
 #%% # save electiricty: 
 locations = EL["Location_Electricity"].unique()
 for location in locations:
-    quarters_df_tp_year("electric_demand", location, EL, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365)
+    quarters_df_tp_year("electric-demand", location, EL, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365)
 
 #%%
-quarters_df_tp_year("hydrogen_demand", "g", GL, column, "Location_Gas", save = True, n_scenarios = 100, n_hours = 24*365)
+quarters_df_tp_year("hydrogen-demand", "g", GL, column, "Location_Gas", save = True, n_scenarios = 100, n_hours = 24*365)
 
