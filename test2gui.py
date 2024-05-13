@@ -3,7 +3,7 @@ import os# Change the current working directory
 #os.chdir('/home/frulcino/codes/MOPTA/')
 
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-                             QLabel, QLineEdit, QPushButton, QComboBox, QMessageBox, QFormLayout,  QTabWidget)
+                             QLabel, QLineEdit, QPushButton, QComboBox, QMessageBox, QFormLayout)
 from PyQt6.QtCore import Qt, QObject, QThread, pyqtSignal
 import matplotlib
 matplotlib.use('QT5Agg')
@@ -70,37 +70,7 @@ class ScenarioGenerator(QObject):
         self.progress.emit("Done.")
         self.finished.emit()  # Emit finished signal when done
 
-#create tab widget
-class MyTabWidget(QWidget): 
-    def __init__(self, parent): 
-        super(QWidget, self).__init__(parent) 
-        self.layout = QVBoxLayout(self) 
-  
-        # Initialize tab screen 
-        self.tabs = QTabWidget() 
-        self.tab1 = QWidget() 
-        self.tab2 = QWidget() 
-        self.tab3 = QWidget() 
-        self.tabs.resize(300, 200) 
-  
-        # Add tabs 
-        self.tabs.addTab(self.tab1, "SG") 
-        self.tabs.addTab(self.tab2, "Optimize") 
-        self.tabs.addTab(self.tab3, "Results") 
-  
-        # Create first tab 
-        self.tab1.layout = QVBoxLayout() 
-        self.tab1.setLayout(self.tab1.layout) 
-        self.tab2.layout = QVBoxLayout() 
-        self.tab2.setLayout(self.tab2.layout) 
-        self.tab3.layout = QVBoxLayout() 
-        self.tab3.setLayout(self.tab3.layout) 
-        # Add tabs to widget 
-        self.layout.addWidget(self.tabs) 
-        self.setLayout(self.layout) 
-          
 class MainWindow(QMainWindow):
-    
     def __init__(self):
         
         #initialize parameters
@@ -109,18 +79,12 @@ class MainWindow(QMainWindow):
         #App layout
         super().__init__()
         self.setWindowTitle("Hydrogen Network Optimization")
-        self.left = 0
-        self.top = 0
-        self.width = 300
-        self.height = 200
-        self.setGeometry(self.left, self.top, self.width, self.height) 
-        
-        #initialize tab widget
-        self.central_widget = MyTabWidget(self)
-        self.setCentralWidget(self.central_widget)
+        self.setGeometry(100, 100, 400, 600)
 
-        #TAB1: Scenario Generation
-        tab1 = self.central_widget.tab1.layout
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.layout = QVBoxLayout(self.central_widget)
+
         form_layout = QFormLayout()
         self.location_input = QComboBox()
         self.location_input.addItems(['Austria',
@@ -154,33 +118,31 @@ class MainWindow(QMainWindow):
         self.n_scenarios_input = QLineEdit()
         form_layout.addRow("Number of Scenarios:", self.n_scenarios_input)
 
-        tab1.addLayout(form_layout)
+        self.layout.addLayout(form_layout)
 
         self.SG_button = QPushButton("Generate Scenarios")
         self.SG_button.clicked.connect(self.start_scenario_generation)
-        tab1.addWidget(self.SG_button)
+        self.layout.addWidget(self.SG_button)
 
         self.SG_output_label = QLabel("Output will be shown here.")
-        tab1.addWidget(self.SG_output_label)
+        self.layout.addWidget(self.SG_output_label)
 
         self.SG_canvas = FigureCanvas(Figure(figsize=(5, 5)))
-        tab1.addWidget(self.SG_canvas)
+        self.layout.addWidget(self.SG_canvas)
         
-        #TAB2:Optimization 
-        tab2 = self.central_widget.tab2.layout
+        # Optimization Button
         self.submit_button = QPushButton("Optimize Network")
         self.submit_button.clicked.connect(self.run_optimization)
-        tab2.addWidget(self.submit_button)
+        self.layout.addWidget(self.submit_button)
         
         # Optimization Output Area
         self.canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=100))
         self.output_label = QLabel("Output will be shown here.")
         self.output_label.setAlignment(Qt.AlignmentFlag.AlignTop)
-        tab2.addWidget(self.output_label)
-        tab2.addWidget(self.canvas)
+        self.layout.addWidget(self.output_label)
+        self.layout.addWidget(self.canvas)
         
-        # Creating tab widgets 
-  
+        
         
     def start_scenario_generation(self):
         n_scenarios = int(self.n_scenarios_input.text() or 1)

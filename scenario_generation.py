@@ -447,10 +447,10 @@ def main():
     #%% # save electiricty: 
     locations = EL["Location_Electricity"].unique()
     for location in locations:
-        quarters_df_tp_year("electric-demand", location, EL, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365)
+        quarters_df_to_year("electric-demand", location, EL, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365)
     
     #%%
-    quarters_df_tp_year("hydrogen-demand", "g", GL, column, "Location_Gas", save = True, n_scenarios = 100, n_hours = 24*365)
+    quarters_df_to_year("hydrogen-demand", "g", GL, column, "Location_Gas", save = True, n_scenarios = 100, n_hours = 24*365)
     
     
     
@@ -469,7 +469,7 @@ if __name__ == "__main__":
     E_h[E_h < 0] = 0 #delete negative entries to make sure matrix is SD
     E_h[pd.isna(E_h)]=0 #should we force simmetry he
     night_hours = Italy["PV"][2]
-    
+    """
     var_names = parameters_df.columns #better names
     n_vars = len(var_names)
     X_scen = pd.DataFrame(np.random.multivariate_normal(np.array([0]*n_vars), E_h, n_scenarios), columns = var_names)
@@ -490,7 +490,7 @@ if __name__ == "__main__":
         scenarios.to_csv("scenarios/"+filename+f"{n_scenarios}")
    
     #scenarios = SG_beta(5, parameters_df = Italy["PV"][0], E_h = Italy["PV"][1], night_hours= night_hours)
-    
+    """
    
     
 
