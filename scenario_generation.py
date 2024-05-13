@@ -16,13 +16,30 @@ from scipy import stats
 from reliability.Fitters import Fit_Weibull_2P
 import os
 from scipy.sparse import dia_matrix, save_npz, load_npz
-os.chdir('/home/frulcino/codes/MOPTA/')
+#os.chdir('/home/frulcino/codes/MOPTA/')
 
 
 #TODOS
 # - Can I use Y instead of O_h directly?
 # %% helper functions
 
+def read_parameters(country):
+    """
+    Get parameters as saved in main()
+    """
+    params = {}
+    wind_params_df = pd.read_csv(f"parameters/marginals-wind-{country}", header = [0,1], index_col= 0)
+    wind_params_df.columns = pd.MultiIndex.from_tuples([(int(x[0]), int(x[1])) for x in wind_params_df.columns], names = ["day","hour"])
+    PV_params_df = pd.read_csv(f"parameters/marginals-PV-{country}", header = [0,1], index_col = 0)
+    PV_params_df.columns = pd.MultiIndex.from_tuples([(int(x[0]), int(x[1])) for x in PV_params_df.columns], names = ["day","hour"])
+    night_hours = pd.read_csv(f"parameters/night_hours-PV-{country}", header = 0, index_col = 0)
+    night_hours = list(zip(list(night_hours.iloc[:,0]),list(night_hours.iloc[:,1])))
+    cov_wind = load_npz(f"parameters/copula-wind-{country}.npz").toarray()
+    cov_PV = load_npz(f"parameters/copula-PV-{country}.npz").toarray()
+    params["wind"] = wind_params_df, cov_wind
+    params["PV"] = PV_params_df, cov_PV, night_hours
+    return params
+ 
 def date_format(df, country):
     grouped = df[country].groupby(lambda date: (date.dayofyear, date.hour), axis = 0)
     ran = False
@@ -95,7 +112,7 @@ def fit_multivariate_weib(Y, simplify = False, max_dist = 24*3, method = "LS"):
     
     return parameters_df, E_h
 
-def SG_weib(n_scenarios, var_names, parameters_df, E_h):
+def SG_weib(n_scenarios, parameters_df, E_h):
     """
 
     Parameters
@@ -114,8 +131,11 @@ def SG_weib(n_scenarios, var_names, parameters_df, E_h):
         each row is a scenario
 
     """
-    n_vars = len(var_names)
+    n_vars = len(parameters_df.columns)
+    var_names = pd.date_range("2024/01/01", periods = n_vars, freq = "h") #better names
+    parameters_df.columns = var_names
     X_scen = pd.DataFrame(np.random.multivariate_normal(np.array([0]*n_vars), E_h, n_scenarios), columns = var_names)
+    print("generated random uniform")
     #convert to uniform domain U and the to inidital domain Y
     U_scen = pd.DataFrame( columns=var_names)
     scenarios = pd.DataFrame( columns=var_names) #scenario dataframe
@@ -265,138 +285,50 @@ def fit_multivariate_beta(Y, simplify = False, max_dist = 24*3):
         
     return parameters_df, E_h, night_hours
 #%%
-def SG_beta(n_scenarios, var_names, parameters_df, E_h, night_hours, save = True, filename = "PV_scenario"):
-        """
-        Parameters
-        ----------
-        n_scenarios : integer
-            number of scenarios to generate
-        parameters_df : panda DataFrame
-            having as columns the variables and as rows "scale" and "shape" parameters of 
-            the Weibull marginal distributions
-        E_h : np.array n_var x n_var
-            estimated covariance matrix of the Gaussian copula
-        
-        Returns
-        -------
-        scenarios: panda DataFrame
-            each row is a scenario
-        
-        """
-        n_vars = len(var_names)
-        X_scen = pd.DataFrame(np.random.multivariate_normal(np.array([0]*n_vars), E_h, n_scenarios), columns = var_names)
-        #convert to uniform domain U and the to initial domain Y
-        U_scen = pd.DataFrame( columns=var_names)
-        scenarios = pd.DataFrame( columns=var_names) #scenario dataframe
-        night_scenarios = pd.DataFrame(np.zeros((n_scenarios, len(night_hours))), columns=night_hours)
-        for var in var_names:
-            U_scen[var] = stats.norm.cdf(X_scen[var])
-            alpha, beta = parameters_df.loc["alpha",var], parameters_df.loc["beta",var]
-            scenarios[var] = stats.beta.ppf(U_scen[var], alpha, beta)
-
-        scenarios = pd.concat([scenarios, night_scenarios], axis = 1)
-        scenarios = scenarios.reindex(sorted(scenarios.columns), axis = 1)
-        n_hours = len(scenarios.columns)
-        scenarios.columns = pd.date_range("01/01/2023", periods = n_hours, freq="h")
-        if save:
-            scenarios.to_csv("scenarios/"+filename+f"{n_scenarios}")
-        return scenarios
-#%% fetch data
-
-
-wind_pu = pd.read_csv("../WindNinja/renewables_ninja_europe_wind_output_1_current.csv", index_col = 0)
-PV_pu = pd.read_csv("../PVNinja/ninja_pv_europe_v1.1_merra2.csv", index_col = 0)
-wind_pu.index = pd.to_datetime(wind_pu.index, format="%d/%m/%Y %H:%M")
-PV_pu.index = pd.to_datetime(PV_pu.index, format = "%Y-%m-%d %H:%M:%S")
-path = "data.xlsx"
-EL=pd.read_excel(path,sheet_name='Electricity Load')
-GL=pd.read_excel(path,sheet_name='Gas Load')
-S=pd.read_excel(path,sheet_name='Solar')
-W=pd.read_excel(path,sheet_name='Wind')
-# %% fit wind for country
-countries = wind_pu.columns
-c = 0
-n_countries = len(countries)
-simplify = True
-
-#%%
-for country in countries:
-    print(f"Perc: {c/n_countries*100}%, fitting {country}")
-    X = date_format(wind_pu, country)
-    params, E_h = fit_multivariate_weib(X, simplify=True)
-    params.to_csv(f"parameters/marginals-wind-{country}")
-    if simplify:
-        E_h = dia_matrix(E_h)
-        save_npz(f"parameters/copula-wind-{country}",E_h)
-    #pd.DataFrame(E_h).to_csv(f"parameters/copula-wind-{country}", float_format='%.3f')
-    c += 1
+def SG_beta(n_scenarios, parameters_df, E_h, night_hours, save = True, filename = "PV_scenario"):
+    """
+    Parameters
+    ----------
+    n_scenarios : integer
+    number of scenarios to generate
+    parameters_df : panda DataFrame
+    having as columns the variables and as rows "scale" and "shape" parameters of 
+    the Weibull marginal distributions
+    E_h : np.array n_var x n_var
+    estimated covariance matrix of the Gaussian copula
     
-
-#params_dict = {} #for each country
-#%% fit solar
-
-iso_to_country = {
-    'AT': 'Austria', 'BE': 'Belgium', 'BG': 'Bulgaria', 'HR': 'Croatia', 'CY': 'Cyprus',
-    'CZ': 'Czech Republic', 'DK': 'Denmark', 'EE': 'Estonia', 'FI': 'Finland', 'FR': 'France',
-    'DE': 'Germany', 'GR': 'Greece', 'HU': 'Hungary', 'IE': 'Ireland, Republic of (EIRE)',
-    'IT': 'Italy', 'LV': 'Latvia', 'LT': 'Lithuania', 'LU': 'Luxembourg', 'MT': 'Malta',
-    'NL': 'Netherlands', 'PL': 'Poland', 'PT': 'Portugal', 'RO': 'Romania', 'SK': 'Slovakia',
-    'SI': 'Slovenia', 'ES': 'Spain', 'SE': 'Sweden', 'GB': 'United Kingdom', 'AL': 'Albania',
-    'BA': 'Boznia and Herzegovina', 'CH': 'Switzerland',  'MK': 'North Macedonia', 'RS': 'Serbia',
-    'MD': 'Moldavia', 'SK': 'Slovakia', 'ME': 'Montenegro', 'NO': 'Norway'
-}
-
-c = 0
-PV_countries = list(PV_pu.columns)
-for pv_country in PV_countries:
-    country = iso_to_country[pv_country]
-    print(f"Perc: {c/n_countries*100}%, PV fitting {country}")
-    X = date_format(PV_pu, pv_country)
-    params, E_h, night_hours= fit_multivariate_beta(X, simplify=True)
-    params.to_csv(f"parameters/marginals-PV-{country}")
-    pd.DataFrame(night_hours, columns = ("day","hour")).to_csv(f"parameters/night_hours-PV-{country}")
-    if simplify:
-        E_h = dia_matrix(E_h)
-        save_npz(f"parameters/copula-PV-{country}",E_h)
-        
-    c += 1  
+    Returns
+    -------
+    scenarios: panda DataFrame
+    each row is a scenario
     
-
-#%%
-E = E_h
-E_zoom = E[0:24*10,0:24*10]
-c= plt.imshow(E_zoom, interpolation = "nearest")
-plt.colorbar(c)
-plt.title("Gaussian copula covariance matrix")
-
-# %%
-X_PV = date_format(PV_pu,"AL")
-#%%
-
-parameters_df, E_h, night_hours = fit_multivariate_beta(X_PV)
-#%%
-n_scenarios = 10
-var_names = parameters_df.columns
-
-#%% load scenarios
-
-#demand = pd.read_csv("../DemandEnergy/time_series_60min_singleindex.csv")
-wind_scenarios = pd.read_csv("scenarios/wind_scenarios.csv", index_col=0)
-PV_scenarios = pd.read_csv("scenarios/PV_scenario100.csv", index_col=0)
-
-#%% format demand from df
-n_scenarios = 100
-n_hours = 24*365
-location = "1_i"
-season = "Q1"
-df = EL
-column = "Load"
-location_column = "Location_Electricity"
-m_to_s = [f"Q{month%12// 3 + 1}" for month in range(1, 13)] #month to season
-EL=pd.read_excel(path,sheet_name='Electricity Load')
-
-
-def quarters_df_tp_year(file_name, location, df, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365):
+    """
+    var_names = parameters_df.columns #better names
+    n_vars = len(var_names)
+    X_scen = pd.DataFrame(np.random.multivariate_normal(np.array([0]*n_vars), E_h, n_scenarios), columns = var_names)
+    #convert to uniform domain U and the to initial domain Y
+    U_scen = pd.DataFrame( columns=var_names)
+    scenarios = pd.DataFrame( columns=var_names) #scenario dataframe
+    night_scenarios = pd.DataFrame(np.zeros((n_scenarios, len(night_hours))), columns=night_hours)
+    for var in var_names:
+        U_scen[var] = stats.norm.cdf(X_scen[var])
+        alpha, beta = parameters_df.loc["alpha",var], parameters_df.loc["beta",var]
+        scenarios[var] = stats.beta.ppf(U_scen[var], alpha, beta)
+    
+    scenarios = pd.concat([scenarios, night_scenarios], axis = 1)
+    scenarios = scenarios.reindex(sorted(scenarios.columns), axis = 1)
+    n_hours = len(scenarios.columns)
+    scenarios.columns = pd.date_range("01/01/2023", periods = n_hours, freq="h")
+    if save:
+        scenarios.to_csv("scenarios/"+filename+f"{n_scenarios}")
+       
+    return scenarios
+    
+    
+def quarters_df_to_year(file_name, location, df, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365):
+    """
+    Convert challenge dataset, to yearly dataset
+    """
     demand_scenarios = pd.DataFrame(np.zeros((n_scenarios,n_hours)), columns = pd.date_range("01/01/2023", periods = n_hours, freq = "h"))
     m_to_s = [f"Q{month%12// 3 + 1}" for month in range(1, 13)] #month to season
     for month in np.arange(12):
@@ -411,11 +343,155 @@ def quarters_df_tp_year(file_name, location, df, column, location_column, save =
         demand_scenarios.to_csv("scenarios/"+file_name+f"-{location}.csv")
     return demand_scenarios
 
-#%% # save electiricty: 
-locations = EL["Location_Electricity"].unique()
-for location in locations:
-    quarters_df_tp_year("electric-demand", location, EL, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365)
-
+def main():
+    #%% fetch data
+    wind_pu = pd.read_csv("../WindNinja/renewables_ninja_europe_wind_output_1_current.csv", index_col = 0)
+    PV_pu = pd.read_csv("../PVNinja/ninja_pv_europe_v1.1_merra2.csv", index_col = 0)
+    wind_pu.index = pd.to_datetime(wind_pu.index, format="%d/%m/%Y %H:%M")
+    PV_pu.index = pd.to_datetime(PV_pu.index, format = "%Y-%m-%d %H:%M:%S")
+    path = "data.xlsx"
+    EL=pd.read_excel(path,sheet_name='Electricity Load')
+    GL=pd.read_excel(path,sheet_name='Gas Load')
+    S=pd.read_excel(path,sheet_name='Solar')
+    W=pd.read_excel(path,sheet_name='Wind')
+    # %% fit wind for country
+    countries = wind_pu.columns
+    
+    n_countries = len(countries)
+    simplify = True
+    
+    iso_to_country = {
+        'AT': 'Austria', 'BE': 'Belgium', 'BG': 'Bulgaria', 'HR': 'Croatia', 'CY': 'Cyprus',
+        'CZ': 'Czech Republic', 'DK': 'Denmark', 'EE': 'Estonia', 'FI': 'Finland', 'FR': 'France',
+        'DE': 'Germany', 'GR': 'Greece', 'HU': 'Hungary', 'IE': 'Ireland, Republic of (EIRE)',
+        'IT': 'Italy', 'LV': 'Latvia', 'LT': 'Lithuania', 'LU': 'Luxembourg', 'MT': 'Malta',
+        'NL': 'Netherlands', 'PL': 'Poland', 'PT': 'Portugal', 'RO': 'Romania', 'SK': 'Slovakia',
+        'SI': 'Slovenia', 'ES': 'Spain', 'SE': 'Sweden', 'GB': 'United Kingdom', 'AL': 'Albania',
+        'BA': 'Boznia and Herzegovina', 'CH': 'Switzerland',  'MK': 'North Macedonia', 'RS': 'Serbia',
+        'MD': 'Moldavia', 'SK': 'Slovakia', 'ME': 'Montenegro', 'NO': 'Norway'
+    }
+    
+    
+    PV_countries = list(PV_pu.columns)
+    
+    countries_in_common = [iso_to_country[x] for x in PV_countries if iso_to_country[x] in countries]
+    
+    #%%
+    
+    c = 0
+    for country in countries:
+        print(f"Perc: {c/n_countries*100}%, fitting {country}")
+        X = date_format(wind_pu, country)
+        params, E_h = fit_multivariate_weib(X, simplify=True)
+        params.to_csv(f"parameters/marginals-wind-{country}")
+        if simplify:
+            E_h = dia_matrix(E_h)
+            save_npz(f"parameters/copula-wind-{country}",E_h)
+        #pd.DataFrame(E_h).to_csv(f"parameters/copula-wind-{country}", float_format='%.3f')
+        c += 1
+        
+    
+    #params_dict = {} #for each country
+    #%% fit solar
+    
+    for pv_country in PV_countries:
+        country = iso_to_country[pv_country]
+        print(f"Perc: {c/n_countries*100}%, PV fitting {country}")
+        X = date_format(PV_pu, pv_country)
+        params, E_h, night_hours= fit_multivariate_beta(X, simplify=True)
+        params.to_csv(f"parameters/marginals-PV-{country}")
+        pd.DataFrame(night_hours, columns = ("day","hour")).to_csv(f"parameters/night_hours-PV-{country}")
+        if simplify:
+            E_h = dia_matrix(E_h)
+            save_npz(f"parameters/copula-PV-{country}",E_h)
+            
+        c += 1  
+        
+    
+    #%%
+    E = E_h
+    E_zoom = E[0:24*10,0:24*10]
+    c= plt.imshow(E_zoom, interpolation = "nearest")
+    plt.colorbar(c)
+    plt.title("Gaussian copula covariance matrix")
+    
+    # %%
+    X_PV = date_format(PV_pu,"AL")
+    #%%
+    
+    parameters_df, E_h, night_hours = fit_multivariate_beta(X_PV)
+    #%%
+    n_scenarios = 10
+    var_names = parameters_df.columns
+    
+    #%% load scenarios
+    
+    #demand = pd.read_csv("../DemandEnergy/time_series_60min_singleindex.csv")
+    wind_scenarios = pd.read_csv("scenarios/wind_scenarios.csv", index_col=0)
+    PV_scenarios = pd.read_csv("scenarios/PV_scenario100.csv", index_col=0)
+    
+    #%% format demand from df
+    n_scenarios = 100
+    n_hours = 24*365
+    location = "1_i"
+    season = "Q1"
+    df = EL
+    column = "Load"
+    location_column = "Location_Electricity"
+    m_to_s = [f"Q{month%12// 3 + 1}" for month in range(1, 13)] #month to season
+    EL=pd.read_excel(path,sheet_name='Electricity Load')
+    
+    
+    
+    
+    #%% # save electiricty: 
+    locations = EL["Location_Electricity"].unique()
+    for location in locations:
+        quarters_df_tp_year("electric-demand", location, EL, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365)
+    
+    #%%
+    quarters_df_tp_year("hydrogen-demand", "g", GL, column, "Location_Gas", save = True, n_scenarios = 100, n_hours = 24*365)
+    
+    
+    
 #%%
-quarters_df_tp_year("hydrogen-demand", "g", GL, column, "Location_Gas", save = True, n_scenarios = 100, n_hours = 24*365)
+    
+if __name__ == "__main__":
+    #main()
+    n_scenarios = 5
+    save = False
+    Italy = read_parameters("Italy")
+    print("read parameters")
+    n_var = len(Italy["wind"][0].columns)
+    var_names = pd.date_range("01/01/2024", periods = n_var, freq = "h") 
+    parameters_df = Italy["PV"][0]
+    E_h = Italy["PV"][1]
+    E_h[E_h < 0] = 0 #delete negative entries to make sure matrix is SD
+    E_h[pd.isna(E_h)]=0 #should we force simmetry he
+    night_hours = Italy["PV"][2]
+    
+    var_names = parameters_df.columns #better names
+    n_vars = len(var_names)
+    X_scen = pd.DataFrame(np.random.multivariate_normal(np.array([0]*n_vars), E_h, n_scenarios), columns = var_names)
+    #convert to uniform domain U and the to initial domain Y
+    U_scen = pd.DataFrame( columns=var_names)
+    scenarios = pd.DataFrame( columns=var_names) #scenario dataframe
+    night_scenarios = pd.DataFrame(np.zeros((n_scenarios, len(night_hours))), columns=night_hours)
+    for var in var_names:
+        U_scen[var] = stats.norm.cdf(X_scen[var])
+        alpha, beta = parameters_df.loc["alpha",var], parameters_df.loc["beta",var]
+        scenarios[var] = stats.beta.ppf(U_scen[var], alpha, beta)
 
+    scenarios = pd.concat([scenarios, night_scenarios], axis = 1)
+    scenarios = scenarios.reindex(sorted(scenarios.columns), axis = 1)
+    n_hours = len(scenarios.columns)
+    scenarios.columns = pd.date_range("01/01/2023", periods = n_hours, freq="h")
+    if save:
+        scenarios.to_csv("scenarios/"+filename+f"{n_scenarios}")
+   
+    #scenarios = SG_beta(5, parameters_df = Italy["PV"][0], E_h = Italy["PV"][1], night_hours= night_hours)
+    
+   
+    
+
+   

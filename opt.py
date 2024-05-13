@@ -9,7 +9,7 @@ Created on Mon Apr 29 17:43:04 2024
 # %% First Cell
 import os
 # Change the current working directory
-os.chdir('/home/frulcino/codes/MOPTA/')
+#os.chdir('/home/frulcino/codes/MOPTA/')
 
 import numpy as np
 import matplotlib
@@ -46,21 +46,23 @@ def load_data(path):
     
     
 def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,mw=100,ch=10000,chte=0,fhte=0.75,Mhte=200000,ceth=0,feth=0.7,Meth=15000):
-    #cost of solar panels
-    #cost of wind turbines
-    #max socially acceptable wind turbines
-    #cost of hydrogen storage???
-    #cost of H to el
-    #efficiency of H to el
-    #max H to el at an instance
-    #cost of el to H
-    #efficiency of el to H
-    #max el to H at an instance
-    #solar el production - dx96 array
-    #wind el production - dx96 array
-    #electricity load - dx96 array
-    #hydrogen load - dx96 array
+    """
+    ES: solar el production - dxinst array
+    EW: wind el production - dxinst array
+    EL: electricity load - dxinst array
+    HL: hydrogen load - dxinst array
+    cs: cost of solar panels
+    c2: cost of wind turbines
+    mw: max socially acceptable wind turbines
+    ch: cost of hydrogen storage???
+    chte: cost of H to el
+    fhte: efficiency of H to el
+    Mhte: max H to el at an instance
+    ceth: cost of el to H
+    feth: efficiency of el to H
+    Meth: max el to H at an instance
     
+    """
     d,inst=np.shape(ES)
     env = Env(params={'OutputFlag': 0})
     model = Model(env=env)
