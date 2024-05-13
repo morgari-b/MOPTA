@@ -359,4 +359,16 @@ model.update()
 
 
 
+model.setParam(GRB.Param.TimeLimit, timelimit)
+model.setParam(GRB.Param.Method, 2)
+
+model.update()
+
+model.setAttr(GRB.Attr.NumStart,1)
+model.setParam(GRB.Param.StartNumber,0))
+
+var.PStart
+var.VarHintVal
+
+
 

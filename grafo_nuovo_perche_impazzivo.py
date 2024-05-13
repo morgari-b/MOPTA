@@ -185,51 +185,58 @@ print(model.Status)
 outputs=[]
 VARS=[1000,100,10000,10000]
 # iteration on data: groups of 5
-for group in range(1,4):
+for group in range(4):
     
     start_time=time.time()
+    model.reset()
     
     model.remove(cons1)
     model.remove(cons2)
     model.remove(cons3)
     model.remove(cons4)
+    model.update()
     
     ES=es[d*group:d*group+d,:]
     EW=ew[d*group:d*group+d,:]
     EL=el[:,d*group:d*group+d,:]
     HL=hl[:,d*group:d*group+d,:]
-      
-    for j in range(d):
-        for i in range(inst):
-            
-            cons1=model.addConstrs(quicksum(s_el[s,el,j,i] for s in range(Ns)) + 
-                                   quicksum(w_el[w,el,j,i] for w in range(Nw)) + 
-                                   quicksum(fc_el[fc,el,j,i] for fc in range(Nfc)) ==
-                                   EL[el,j,i] for el in range(Nel))                     # electricity consumed at every load node, EL[el,j,i]
-            
-            cons2=model.addConstrs(quicksum(s_el[s,el,j,i] for el in range(Nel)) + 
-                                   quicksum(s_z[s,z,j,i] for z in range(Nz)) <= 
-                                   ns[s]*ES[j,i] for s in range(Ns))                       # electricity exiting at every PV farm, ES[s,j,i] format?????
-            
-            cons3=model.addConstrs(quicksum(w_el[w,el,j,i] for el in range(Nel)) + 
-                                   quicksum(w_z[w,z,j,i] for z in range(Nz)) <= 
-                                   nw[w]*EW[j,i] for w in range(Nw))                       # electricity exiting at every wind farm
-            
-            cons4=model.addConstrs(quicksum(z_hl[z,hl,j,i] for z in range(Nz))==HL[hl,j,i] for hl in range(Nhl))
-        #for i in range(365):
-            #cons4=model.addConstrs(quicksum(HL[0,j,i+ii] for ii in range(24))==quicksum(z_hl[z,hl,j,i] for z in range(Nz)) for hl in range(Nhl)) #assume you get at 8 all load for next day, HL[hl,j,i]
-            
-    ns[0].VarHintVal=VARS[0]
-    nw[0].VarHintVal=VARS[1]
-    nhz[0].VarHintVal=VARS[2]
-    nhfc[0].VarHintVal=VARS[3]
+    """
+    ES=es[group,:]
+    EW=ew[group,:]
+    EL=el[:,group,:]
+    HL=hl[:,group,:]
+    """
+
+    cons1=model.addConstrs(quicksum(s_el[s,el,j,i] for s in range(Ns)) + 
+                           quicksum(w_el[w,el,j,i] for w in range(Nw)) + 
+                           quicksum(fc_el[fc,el,j,i] for fc in range(Nfc)) ==
+                           EL[el,j,i] for el in range(Nel) for j in range(d) for i in range(inst))                     # electricity consumed at every load node, EL[el,j,i]
     
+    cons2=model.addConstrs(quicksum(s_el[s,el,j,i] for el in range(Nel)) + 
+                           quicksum(s_z[s,z,j,i] for z in range(Nz)) <= 
+                           ns[s]*ES[j,i] for s in range(Ns) for j in range(d) for i in range(inst))                       # electricity exiting at every PV farm, ES[s,j,i] format?????
+    
+    cons3=model.addConstrs(quicksum(w_el[w,el,j,i] for el in range(Nel)) + 
+                           quicksum(w_z[w,z,j,i] for z in range(Nz)) <= 
+                           nw[w]*EW[j,i] for w in range(Nw) for j in range(d) for i in range(inst))                       # electricity exiting at every wind farm
+    
+    cons4=model.addConstrs(quicksum(z_hl[z,hl,j,i] for z in range(Nz))==HL[hl,j,i] for hl in range(Nhl) for j in range(d) for i in range(inst))
+#for i in range(365):
+    #cons4=model.addConstrs(quicksum(HL[0,j,i+ii] for ii in range(24))==quicksum(z_hl[z,hl,j,i] for z in range(Nz)) for hl in range(Nhl)) #assume you get at 8 all load for next day, HL[hl,j,i]
+                
+    """
+        ns[0].VarHintVal=VARS[0]
+        nw[0].VarHintVal=VARS[1]
+        nhz[0].VarHintVal=VARS[2]
+        nhfc[0].VarHintVal=VARS[3]
+      
+    """
     model.optimize()
     print("Status = {}".format(model.Status))
-    EtH = [EtH[0,0,i].X for i in range(inst)]
-    HZ=[Hz[0,0,i].X for i in range(inst)]
+    #ETH = [EtH[0,0,i].X for i in range(inst)]
+    #HZ=[Hz[0,0,i].X for i in range(inst)]
     
-    plt.plot(np.linspace(0,1,inst),HZ)
+    #plt.plot(np.linspace(0,1,inst),HZ)
     
     VARS=[]
     VARS=VARS+[ns[0].X]
