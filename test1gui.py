@@ -9,7 +9,8 @@ import matplotlib
 matplotlib.use('QT5Agg')
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import pandas as pd
 import numpy as np
 
@@ -49,7 +50,7 @@ class ScenarioGenerator(QObject):
         scenarios = {}
         scenarios["wind"] = SG_weib(n_scenarios, params["wind"][0], params["wind"][1])
         self.progress.emit(f"Wind done, generating PV scenarios for {self.country}...")
-        scenarios["PV"] = SG_beta(n_scenarios, parameters_df = params["PV"][0], E_h = params["PV"][1], night_hours = params["PV"][2], save = False)
+        scenarios["PV"], scenarios["PV_fig"]= SG_beta(n_scenarios, parameters_df = params["PV"][0], E_h = params["PV"][1], night_hours = params["PV"][2], save = False)
         # After processing
         self.progress.emit("Scenarios generated, fetching Electricity loads...")
         #Fetch loads: 
@@ -111,8 +112,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Hydrogen Network Optimization")
         self.left = 0
         self.top = 0
-        self.width = 300
-        self.height = 200
+        self.width = 1000
+        self.height = 500
         self.setGeometry(self.left, self.top, self.width, self.height) 
         
         #initialize tab widget
@@ -163,7 +164,7 @@ class MainWindow(QMainWindow):
         self.SG_output_label = QLabel("Output will be shown here.")
         tab1.addWidget(self.SG_output_label)
 
-        self.SG_canvas = FigureCanvas(Figure(figsize=(5, 5)))
+        self.SG_canvas = FigureCanvas(Figure(figsize=(5, 12)))
         tab1.addWidget(self.SG_canvas)
         
         #TAB2:Optimization 
@@ -173,7 +174,7 @@ class MainWindow(QMainWindow):
         tab2.addWidget(self.submit_button)
         
         # Optimization Output Area
-        self.canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=100))
+        self.canvas = FigureCanvas(Figure(figsize=(5, 12), dpi=100))
         self.output_label = QLabel("Output will be shown here.")
         self.output_label.setAlignment(Qt.AlignmentFlag.AlignTop)
         tab2.addWidget(self.output_label)
@@ -185,11 +186,11 @@ class MainWindow(QMainWindow):
     def start_scenario_generation(self):
         n_scenarios = int(self.n_scenarios_input.text() or 1)
         country = self.location_input.currentText()
-        params = read_parameters(country)
+        self.params = read_parameters(country)
         self.SG_output_label.setText("Parameters have been imported, generating Wind scenarios, this can take a while...")
         
         self.thread = QThread()  # Create a QThread object
-        self.worker = ScenarioGenerator(n_scenarios, country, params)  # Create a worker object
+        self.worker = ScenarioGenerator(n_scenarios, country, self.params)  # Create a worker object
         self.worker.moveToThread(self.thread)  # Move worker to thread
         self.thread.started.connect(self.worker.run)  # Start worker when thread starts
         self.worker.results_ready.connect(self.handle_scenarios_result) #send results to handle_scenarios_results
@@ -227,6 +228,73 @@ class MainWindow(QMainWindow):
     def handle_scenarios_result(self, result):
         print("Handling scenarios result")
         self.scenarios = result #save scenarios for later optimization
+        params = self.params
+        # Create a new figure with 3 rows and 2 columns
+        fig, axs = plt.subplots(3, 2, figsize=(5, 12))
+        fig.suptitle('Scenarios Overview', fontsize=16)
+        
+        # Subplot for Covariance of PV values at different hours
+        c_pv = axs[0, 0].imshow(params["PV"][1][0:24*3, 0:24*3], interpolation="nearest", aspect='auto')
+        fig.colorbar(c_pv, ax=axs[0, 0])
+        axs[0, 0].set_title("Covariance of PV values at different hours")
+        axs[0, 0].set_xlabel("Hour")
+        axs[0, 0].set_ylabel("Hour")
+        
+        # Subplot for Covariance of Wind values at different hours
+        c_wind = axs[0, 1].imshow(params["wind"][1][0:24*3, 0:24*3], interpolation="nearest", aspect='auto')
+        fig.colorbar(c_wind, ax=axs[0, 1])
+        axs[0, 1].set_title("Covariance of Wind values at different hours")
+        axs[0, 1].set_xlabel("Hour")
+        axs[0, 1].set_ylabel("Hour")
+        
+        # Subplot for PV and Wind Power Output through the Year
+        wind_scenarios = self.scenarios["wind"]
+        PV_scenarios = self.scenarios["PV"]
+        n_scenarios = wind_scenarios.shape[0]
+        colormap = cm.get_cmap('tab10', 2 * n_scenarios)
+        
+        for index, row in enumerate(wind_scenarios.iterrows()):
+            axs[1, 0].plot(row[1].index, row[1].values, color=colormap(index), alpha=0.7)
+        axs[1, 0].set_title("Wind Power Output through the Year")
+        axs[1, 0].set_xlabel("Datetime")
+        axs[1, 0].set_ylabel("Power Output (p.u.)")
+        axs[1, 0].legend(["Wind Power"], loc='upper right')
+        
+        for index, row in enumerate(PV_scenarios.iterrows()):
+            axs[1, 1].plot(row[1].index, row[1].values, color=colormap(n_scenarios + index), alpha=0.7)
+        
+        axs[1, 1].set_title("PV Power Output through the Year")
+        axs[1, 1].set_xlabel("Datetime")
+        axs[1, 1].set_ylabel("Power Output (p.u.)")
+        axs[1, 1].legend(["PV Power"], loc='upper right')
+        
+        # Subplot for 3 Days of PV and Wind Power Output
+        wind_scenario = wind_scenarios.iloc[0, 0:24*3]
+        solar_scenario = PV_scenarios.iloc[0, 0:24*3]
+        
+        axs[2, 0].plot(wind_scenario.index, wind_scenario, color="blue", alpha=0.7)
+        axs[2, 1].plot(solar_scenario.index, solar_scenario, color="yellow", alpha=0.7)
+        
+        axs[2, 0].set_title("Wind Output for Three Days")
+        axs[2, 0].set_xlabel("Datetime")
+        axs[2, 0].set_ylabel("Power Output (p.u.)")
+        axs[2, 0].legend(["Wind Power"], loc='upper right')
+        
+        axs[2, 1].set_title("PV Output for Three Days")
+        axs[2, 1].set_xlabel("Datetime")
+        axs[2, 1].set_ylabel("Power Output (p.u.)")
+        axs[2, 1].legend(["PV Power"], loc='upper right')
+        
+        # Adjust layout
+        fig.tight_layout(rect=[0, 0, 1, 0.96])
+        
+        #fig.tight_layout(rect=[0, 0, 1, 0.96])
+        
+
+        
+        self.SG_canvas.figure.clf()
+        self.SG_canvas.figure = fig
+        self.SG_canvas.draw()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
