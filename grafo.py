@@ -194,9 +194,10 @@ Meth=15000
 env = Env(params={'OutputFlag': 0})
 model = Model(env=env)
 
-d=5
+d=1
 
-inst=365*24
+inst=4*24
+#inst=365*24
 Nel = 7
 Ns = 1
 Nw = 1
@@ -236,8 +237,8 @@ w_el = model.addVars(product(range(Nw),range(Nel),range(d),range(inst)))
 w_z = model.addVars(product(range(Nw),range(Nz),range(d),range(inst)))
 fc_el = model.addVars(product(range(Nfc),range(Nel),range(d),range(inst)))
 # hydrogen road transport:
-z_fc = model.addVars(product(range(Nz),range(Nfc),range(d),range(365)), obj=czfc) # ASSUMPTION: trucks depart at 8 in the morning, once a day, with predicted H2 industrial load / needed fuel cell storage for the whole day.(32%24==8)*var
-z_hl = model.addVars(product(range(Nz),range(Nhl),range(d),range(365)), obj=czhl)
+z_fc = model.addVars(product(range(Nz),range(Nfc),range(d),range(inst/24)), obj=czfc) # ASSUMPTION: trucks depart at 8 in the morning, once a day, with predicted H2 industrial load / needed fuel cell storage for the whole day.(32%24==8)*var
+z_hl = model.addVars(product(range(Nz),range(Nhl),range(d),range(inst/24)), obj=czhl)
 # POSSIBLE ADDITION: connect generator nodes with each other? To avoid congestion?
 
 
@@ -283,7 +284,7 @@ el=EL
 hl=HL
 
 outputs=[]
-
+VARS=[1000,100,10000,10000]
 # iteration on data: groups of 5
 for group in range(2):
     
@@ -307,16 +308,22 @@ for group in range(2):
                                    EL[el,j,i] for el in range(Nel))                     # electricity consumed at every load node, EL[el,j,i]
             cons2=model.addConstrs(quicksum(s_el[s,el,j,i] for el in range(Nel)) + 
                                    quicksum(s_z[s,z,j,i] for z in range(Nz)) <= 
-                                 ns[s]*ES[j,i] for s in range(Ns))                       # electricity exiting at every PV farm, ES[s,j,i] format?????
+                                   ns[s]*ES[j,i] for s in range(Ns))                       # electricity exiting at every PV farm, ES[s,j,i] format?????
             cons3=model.addConstrs(quicksum(w_el[w,el,j,i] for el in range(Nel)) + 
                                    quicksum(w_z[w,z,j,i] for z in range(Nz)) <= 
                                    nw[w]*EW[j,i] for w in range(Nw))                       # electricity exiting at every wind farm
-        for i in range(365):
-            model.remove(cons4)        # hydrogen at hl
+        for i in range(int(inst/24):
             cons4=model.addConstrs(quicksum(HL[0,j,i+ii] for ii in range(24))==quicksum(z_hl[z,hl,j,i] for z in range(Nz)) for hl in range(Nhl)) #assume you get at 8 all load for next day, HL[hl,j,i]
-            
+    
+    ns[0].Start=VARS[0]
+    nw[0].Start=VARS[1]
+    nhz[0].Start=VARS[2]
+    nhfc[0].Start=VARS[3]
+    
     model.optimize()
-    outputs=outputs + [[ns[0].X,nw[0].X,nhz[0].X,nhfc[0].X]]
+    
+    VARS=[ns[0].X,nw[0].X,nhz[0].X,nhfc[0].X]
+    outputs=outputs + [VARS]
     iter_time=time.time()-start_time
     # if model.Status!=2:
     print("Status = {}".format(model.Status))
@@ -326,4 +333,30 @@ for group in range(2):
 
 
 #%%
+
+env = Env(params={'OutputFlag': 0})
+model=Model(env=env)
+x=model.addVars(product(range(3),range(2)),obj=1)
+#c=model.addConstr(x[0]<=4)
+
+model.optimize()
+
+
+all_vars = model.getVars()
+values = model.getAttr("X", all_vars)
+names = model.getAttr("VarName", all_vars)
+for i in range(len(all_vars)):
+    names[i].Start=values[i]
+
+model.addConstrs(x[0,i]>=3 for i in range(2))
+x[0,:].Start=[4,3]
+
+
+
+model.update()
+#c.rhs = 3
+#model.optimize()
+
+
+
 

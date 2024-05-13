@@ -20,7 +20,7 @@ el=[]
 gl=[]
 s=[]
 w=[]
-for i in range(4):
+for i in range(1):
     el = el + [EL.loc[EL["Quarter"]=="Q{}".format(i+1)].groupby("Instance")["Load"].sum().to_list()]
     gl = gl + [GL.loc[GL["Quarter"]=="Q{}".format(i+1)]["Load"].to_list()]
     s = s + [S.loc[S["Quarter"]=="Q{}".format(i+1)]["Generation"].to_list()]
@@ -111,8 +111,7 @@ def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,mw=100,ch=7,chte=0,fhte=0.75,Mhte=200000,
         plt.plot(x,HtE[0,:].X,"blue", label = "HtE")
         plt.legend()
         plt.title("H conversion")
-        return EtH.X, HtE.X
-    #[ns.X,nw.X,nh.X,mhte.X,meth.X]
+        return [ns.X,nw.X,nh.X,mhte.X,meth.X]
 
 # %%
 
