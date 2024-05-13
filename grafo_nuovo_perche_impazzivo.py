@@ -89,12 +89,12 @@ ceth=0
 feth=0.7
 Meth=150000
 
-env = Env(params={'OutputFlag': 0})
+env = Env(params={'OutputFlag':0})
 env.setParam('Presolve', 0)
 env.setParam('LPWarmStart', 2)
 model = Model(env=env)
 
-d=4
+d=1
 inst=24
 #inst=365*24
 
@@ -185,7 +185,7 @@ print(model.Status)
 outputs=[]
 VARS=[1000,100,10000,10000]
 # iteration on data: groups of 5
-for group in range(1):
+for group in range(1,4):
     
     start_time=time.time()
     
@@ -219,10 +219,10 @@ for group in range(1):
         #for i in range(365):
             #cons4=model.addConstrs(quicksum(HL[0,j,i+ii] for ii in range(24))==quicksum(z_hl[z,hl,j,i] for z in range(Nz)) for hl in range(Nhl)) #assume you get at 8 all load for next day, HL[hl,j,i]
             
-    ns[0].Start=VARS[0]
-    nw[0].Start=VARS[1]
-    nhz[0].Start=VARS[2]
-    nhfc[0].Start=VARS[3]
+    ns[0].VarHintVal=VARS[0]
+    nw[0].VarHintVal=VARS[1]
+    nhz[0].VarHintVal=VARS[2]
+    nhfc[0].VarHintVal=VARS[3]
     
     model.optimize()
     print("Status = {}".format(model.Status))
