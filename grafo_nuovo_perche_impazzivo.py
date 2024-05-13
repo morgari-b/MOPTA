@@ -27,8 +27,18 @@ EL=np.zeros([7,100,8760])
 for i,loc in enumerate(['1_i','2_i','3_r','4_r','5_r','1_r','2_r']):
     el=pd.read_csv('scenarios/electric_demand{}.csv'.format(loc),index_col=0).to_numpy()
     EL[i,:,:]=el
-HL=np.zeros([1,100,8760])
-HL[0,:,:]=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).to_numpy()
+EL=np.sum(EL,0)
+#HL=np.zeros([1,100,8760])
+#HL[0,:,:]=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).to_numpy()
+HL=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).to_numpy()
+
+es=ES[:5,:]
+ew=EW[:5,:]
+el=EL[:5,:]
+hl=HL[:5,:]
+
+
+
 
 #%%
 
