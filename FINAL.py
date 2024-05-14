@@ -32,112 +32,101 @@ EL=np.sum(EL,0)
 #HL[0,:,:]=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).to_numpy()
 HL=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).to_numpy()
 
-es=ES[:5,:]
-ew=EW[:5,:]
-el=EL[:5,:]
-hl=HL[:5,:]
+es=ES[:11,:]
+ew=EW[:11,:]
+el=EL[:11,:]
+hl=HL[:11,:]
 
 
 
 
 #%% MODEL
 
-start_time=time.time()
 
-d=1
-inst=24*365
-
-
-cs=4000
-cw=3000000
-Mns=np.inf
-Mnw=100
-Mnh=np.inf
-Mns=np.inf
-ch=7
-chte=0
-fhte=0.75
-Mhte=200000
-ceth=0
-feth=0.7
-Meth=15000
-
-start_time=time.time()
-
-
-env = Env(params={'OutputFlag': 0})
-model = Model(env=env)
-
-ns = model.addVar(vtype=GRB.INTEGER, obj=cs,lb=0)
-nw = model.addVar(vtype=GRB.INTEGER, obj=cw,lb=0)    
-nh = model.addVar(vtype=GRB.CONTINUOUS, obj=ch,lb=0) #integer?    
-HtE = model.addVars(product(range(d),range(inst)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg      
-EtH = model.addVars(product(range(d),range(inst)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
-H = model.addVars(product(range(d),range(inst)),vtype=GRB.CONTINUOUS,lb=0)
-mhte=model.addVar(vtype=GRB.CONTINUOUS,obj=0.01)
-meth=model.addVar(vtype=GRB.CONTINUOUS,obj=0.01)
-
-model.addConstr( ns <= Mns )
-model.addConstr( nw <= Mnw )
-model.addConstr( nh <= Mnh )
-model.addConstr( meth <= Meth )
-model.addConstr( mhte <= Mhte )  
-
-model.addConstrs( H[j,i] <= nh for i in range(inst) for j in range(d))
-model.addConstrs( EtH[j,i] <= meth for i in range(inst) for j in range(d))
-model.addConstrs( HtE[j,i] <= mhte for i in range(inst) for j in range(d))
-
-var_time=time.time()-start_time
-print('Setting up model, no data: ',var_time,'s')
-
-model.optimize()
-print(model.Status)
-
-#%%
-
-outputs=[]
-VARS=[1000,100,10000000]
-
-cons1=model.addConstr(ns>=0)
-cons2=model.addConstr(ns>=0)
-cons3=model.addConstr(ns>=0)
-
-
-for group in range(4):
-    
+def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=100,Mnh=np.inf,chte=2,fhte=0.75,Mhte=np.inf,ceth=200,feth=0.7,Meth=np.inf):
+            
     start_time=time.time()
-    model.reset()
     
-    model.remove(cons1)
-    model.remove(cons2)
-    model.remove(cons3)
+    D,inst = np.shape(es)
+    rounds=min(rounds,D//d)
+    
+    env = Env(params={'OutputFlag': 0})
+    model = Model(env=env)
+    model.setParam('Timelimit',30)
+    model.setParam("MIPGap",0.01)
+    
+    ns = model.addVar(vtype=GRB.INTEGER, obj=cs,lb=0)
+    nw = model.addVar(vtype=GRB.INTEGER, obj=cw,lb=0)    
+    nh = model.addVar(vtype=GRB.CONTINUOUS, obj=ch,lb=0) #integer?    
+    HtE = model.addVars(product(range(d),range(inst)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg      
+    EtH = model.addVars(product(range(d),range(inst)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
+    H = model.addVars(product(range(d),range(inst)),vtype=GRB.CONTINUOUS,lb=0)
+    mhte=model.addVar(vtype=GRB.CONTINUOUS,obj=0.01)
+    meth=model.addVar(vtype=GRB.CONTINUOUS,obj=0.01)
+    
+    model.addConstr( ns <= Mns )
+    model.addConstr( nw <= Mnw )
+    model.addConstr( nh <= Mnh )
+    model.addConstr( meth <= Meth )
+    model.addConstr( mhte <= Mhte )  
+    
+    model.addConstrs( H[j,i] <= nh for i in range(inst) for j in range(d))
+    model.addConstrs( EtH[j,i] <= meth for i in range(inst) for j in range(d))
+    model.addConstrs( HtE[j,i] <= mhte for i in range(inst) for j in range(d))
+    
 
-    model.update()
+    outputs=[]
+    VARS=[1000,100,10000000]
     
-    ES=es[d*group:d*group+d,:]
-    EW=ew[d*group:d*group+d,:]
-    EL=el[d*group:d*group+d,:]
-    HL=hl[d*group:d*group+d,:]
-
-
-    cons1=model.addConstrs( EL[j,i] + EtH[j,i] <= 0.044*fhte*HtE[j,i] + ns*ES[j,i] + nw*EW[j,i] for i in range(inst) for j in range(d)) # put == so no waste: we don't know the future, convert what we have asap
-    cons2=model.addConstrs( H[j,i+1] == H[j,i] + 28.5*feth*EtH[j,i] - HL[j,i] - HtE[j,i] for i in range(inst-1) for j in range(d))
-    cons3=model.addConstrs( H[j,0] == H[j,inst-1] + 28.5*feth*EtH[j,inst-1] - HL[j,inst-1] - HtE[j,inst-1] for j in range(d))  #CIRCULAR
+    cons1=model.addConstr(ns>=0)
+    cons2=model.addConstr(ns>=0)
+    cons3=model.addConstr(ns>=0)
+    
+    var_time=time.time()-start_time
+    print('Model has been set up, this took ',np.round(var_time,4),'s.\nNow starting the optimization. ',rounds,' batches of',d,'scenarios each will be optimized. This should take around 30s per batch.')
+    
+    #model.optimize()
     
     
-    print('Model ready: {}s'.format(time.time()-start_time))
-    
-    model.optimize()
-    if model.Status!=2:
-        print("Status = {}".format(model.Status))
-    else:
-        string = "Status: {}\nOptimization time: {}\nTotal cost: {}\nPanels: {}\nTurbines: {}\nH2 needed capacity: {}\nMax EtH: {}\nMax HtE: {}".format(model.Status, time.time()-start_time, model.ObjVal, ns.X,nw.X,nh.X,meth.X,mhte.X)
-        print(string)
+    for group in range(rounds):
         
-        VARS=[ns.X,nw.X,nh.X]       
-        outputs=outputs + [VARS]
-
+        start_time=time.time()
+        #model.reset()
+        
+        model.remove(cons1)
+        model.remove(cons2)
+        model.remove(cons3)
     
-
-
-
+        model.update()
+        
+        ES=es[d*group:d*group+d,:]
+        EW=ew[d*group:d*group+d,:]
+        EL=el[d*group:d*group+d,:]
+        HL=hl[d*group:d*group+d,:]
+    
+    
+        cons1=model.addConstrs( EL[j,i] + EtH[j,i] <= 0.033*fhte*HtE[j,i] + ns*ES[j,i] + nw*EW[j,i] for i in range(inst) for j in range(d)) 
+        cons2=model.addConstrs( H[j,i+1] == H[j,i] + 30*feth*EtH[j,i] - HL[j,i] - HtE[j,i] for i in range(inst-1) for j in range(d))
+        cons3=model.addConstrs( H[j,0] == H[j,inst-1] + 30*feth*EtH[j,inst-1] - HL[j,inst-1] - HtE[j,inst-1] for j in range(d))  #CIRCULAR
+        
+        ns.VarHintVal=VARS[0]
+        nw.VarHintVal=VARS[1]
+        nh.VarHintVal=VARS[2]
+        
+        #print('Model ready: {}s'.format(time.time()-start_time))
+        
+        model.optimize()
+        if model.Status!=2:
+            print("Status = {}".format(model.Status))
+        else:
+            VARS=[ns.X,nw.X,nh.X]       
+            outputs=outputs + [VARS]
+            string = "Round {} of {}:\nOptimal values: {}\nOptimization time: {}".format(group,rounds,VARS, time.time()-start_time)
+            #string=string+"\nTotal cost: {}\nPanels: {}\nTurbines: {}\nH2 needed capacity: {}\nMax EtH: {}\nMax HtE: {}".format(model.ObjVal, ns.X,nw.X,nh.X,meth.X,mhte.X)
+            print(string)
+            return outputs
+    
+        
+    
+    
+    
