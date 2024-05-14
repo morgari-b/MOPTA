@@ -322,36 +322,8 @@ def SG_beta(n_scenarios, parameters_df, E_h, night_hours, save = True, filename 
     if save:
         scenarios.to_csv("scenarios/"+filename+f"{n_scenarios}")
         
-    # Create a new figure
-    fig, axs = plt.subplots(3, 1, figsize=(10, 12))
-    fig.suptitle('Scenarios Overview', fontsize=16)
-    
-    # Subplot for Covariance of PV values at different hours
-    c = axs[0].imshow(E_h[0:24*3, 0:24*3], interpolation="nearest", aspect='auto')
-    fig.colorbar(c, ax=axs[0])
-    axs[0].set_title("Covariance of PV values at different hours")
-    axs[0].set_xlabel("Hour")
-    axs[0].set_ylabel("Hour")
-    
-    # Subplot for PV Power Output through the Year
-    for row in scenarios.iterrows():
-        axs[1].plot(row[1], color="orange", alpha=0.7)
-    axs[1].set_title("PV Power Output through the Year")
-    axs[1].set_xlabel("Datetime")
-    axs[1].set_ylabel("Power Output (kW)")
-    axs[1].legend(["PV Power"], loc='upper right')
-    
-    # Subplot for 3 Days of PV Power Output
-    for row in scenarios.iloc[:, 0:24*3].iterrows():
-        axs[2].plot(row[1], color="blue", alpha=0.7)
-    axs[2].set_title("PV Power Output for 3 Days")
-    axs[2].set_xlabel("Datetime")
-    axs[2].set_ylabel("Power Output (kW)")
-    axs[2].legend(["3 Days of PV Power"], loc='upper right')
-    
-    fig.tight_layout(rect=[0, 0, 1, 0.96])
        
-    return scenarios, fig
+    return scenarios
     
     
 def quarters_df_to_year(file_name, location, df, column, location_column, save = True, n_scenarios = 100, n_hours = 24*365):
