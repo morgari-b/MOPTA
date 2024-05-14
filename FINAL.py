@@ -43,7 +43,7 @@ hl=HL[:11,:]
 #%% MODEL
 
 
-def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=100,Mnh=np.inf,chte=2,fhte=0.75,Mhte=np.inf,ceth=200,feth=0.7,Meth=np.inf):
+def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=np.inf,Mnh=np.inf,chte=2,fhte=0.75,Mhte=np.inf,ceth=200,feth=0.7,Meth=np.inf):
             
     start_time=time.time()
     
@@ -121,10 +121,10 @@ def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=100,Mn
         else:
             VARS=[ns.X,nw.X,nh.X]       
             outputs=outputs + [VARS]
-            string = "Round {} of {}:\nOptimal values: {}\nOptimization time: {}".format(group,rounds,VARS, time.time()-start_time)
+            string = "Round {} of {}:\nOptimal values: {}\nOptimization time: {}".format(group+1,rounds,VARS, time.time()-start_time)
             #string=string+"\nTotal cost: {}\nPanels: {}\nTurbines: {}\nH2 needed capacity: {}\nMax EtH: {}\nMax HtE: {}".format(model.ObjVal, ns.X,nw.X,nh.X,meth.X,mhte.X)
             print(string)
-            return outputs
+    return outputs
     
         
     
