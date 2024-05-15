@@ -1,0 +1,9 @@
+gurobipy==11.0.1
+matplotlib==3.8.0
+numpy==1.26.4
+pandas==2.2.2
+pypsa==0.27.0
+PyQt6==6.7.0
+PyQt6_sip==13.6.0
+reliability==0.8.16
+scipy==1.13.0
