@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -13,6 +14,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
+import matplotlib.cm as cm
 from reliability.Fitters import Fit_Weibull_2P
 import os
 from scipy.sparse import dia_matrix, save_npz, load_npz
@@ -28,14 +30,14 @@ def read_parameters(country):
     Get parameters as saved in main()
     """
     params = {}
-    wind_params_df = pd.read_csv(f"parameters/marginals-wind-{country}", header = [0,1], index_col= 0)
+    wind_params_df = pd.read_csv(f"parameters2/marginals-wind-{country}", header = [0,1], index_col= 0)
     wind_params_df.columns = pd.MultiIndex.from_tuples([(int(x[0]), int(x[1])) for x in wind_params_df.columns], names = ["day","hour"])
-    PV_params_df = pd.read_csv(f"parameters/marginals-PV-{country}", header = [0,1], index_col = 0)
+    PV_params_df = pd.read_csv(f"parameters2/marginals-PV-{country}", header = [0,1], index_col = 0)
     PV_params_df.columns = pd.MultiIndex.from_tuples([(int(x[0]), int(x[1])) for x in PV_params_df.columns], names = ["day","hour"])
-    night_hours = pd.read_csv(f"parameters/night_hours-PV-{country}", header = 0, index_col = 0)
+    night_hours = pd.read_csv(f"parameters2/night_hours-PV-{country}", header = 0, index_col = 0)
     night_hours = list(zip(list(night_hours.iloc[:,0]),list(night_hours.iloc[:,1])))
-    cov_wind = load_npz(f"parameters/copula-wind-{country}.npz").toarray()
-    cov_PV = load_npz(f"parameters/copula-PV-{country}.npz").toarray()
+    cov_wind = load_npz(f"parameters2/copula-wind-{country}.npz").toarray()
+    cov_PV = load_npz(f"parameters2/copula-PV-{country}.npz").toarray()
     params["wind"] = wind_params_df, cov_wind
     params["PV"] = PV_params_df, cov_PV, night_hours
     return params
@@ -72,7 +74,7 @@ def fit_weibull(Y, method = "LS"):
 
 
     
-def fit_multivariate_weib(Y, simplify = False, max_dist = 24*3, method = "LS"):
+def fit_multivariate_weib(Y, simplify = False, max_dist = 24*3, method = "MLE"):
     """
     Fit data with multivariate distribution having Weibull marginals coupled with Gaussian copula.
     input
@@ -92,7 +94,8 @@ def fit_multivariate_weib(Y, simplify = False, max_dist = 24*3, method = "LS"):
     for var in Y.columns:
         #bring data to uniform domain
         X_h[var] = stats.exponweib.cdf(Y[var], scale = parameters_df.loc["scale",var],a = 1, c = parameters_df.loc["shape",var])
-        O_h[var] = stats.exponweib.ppf(X_h[var], scale = parameters_df.loc["scale",var],a = 1, c = parameters_df.loc["shape",var])
+        #O_h[var] = stats.exponweib.ppf(X_h[var], scale = parameters_df.loc["scale",var],a = 1, c = parameters_df.loc["shape",var])
+        O_h[var] = stats.norm.ppf(X_h[var]) 
         
     #copula covariance estimation:
     E_h = np.cov(O_h.T, ddof = 1)
@@ -268,7 +271,8 @@ def fit_multivariate_beta(Y, simplify = False, max_dist = 24*3):
         #bring data to uniform domain
         alpha, beta = parameters_df.loc["alpha", var], parameters_df.loc["beta", var]
         X_h[var] = stats.beta.cdf(Y[var], alpha, beta)
-        O_h[var] = stats.beta.ppf(X_h[var], alpha, beta)
+        # O_h[var] = stats.exponweib.ppf(X_h[var], scale = parameters_df.loc["scale",var],a = 1, c = parameters_df.loc["shape",var])
+        O_h[var] = stats.norm.ppf(X_h[var]) 
         
     #copula covariance estimation:
     E_h = np.cov(O_h.T, ddof = 1) #non posso usare Y_h direttamente?
@@ -343,9 +347,9 @@ def quarters_df_to_year(file_name, location, df, column, location_column, save =
     if save:
         demand_scenarios.to_csv("scenarios/"+file_name+f"-{location}.csv")
     return demand_scenarios
-
-def main():
-    #%% fetch data
+ #%% fetch data
+def fit_Ninja():
+    #%%
     wind_pu = pd.read_csv("../WindNinja/renewables_ninja_europe_wind_output_1_current.csv", index_col = 0)
     PV_pu = pd.read_csv("../PVNinja/ninja_pv_europe_v1.1_merra2.csv", index_col = 0)
     wind_pu.index = pd.to_datetime(wind_pu.index, format="%d/%m/%Y %H:%M")
@@ -380,38 +384,38 @@ def main():
     #%%
     
     c = 0
-    for country in countries:
+    for country in countries[10:]:
         print(f"Perc: {c/n_countries*100}%, fitting {country}")
         X = date_format(wind_pu, country)
         params, E_h = fit_multivariate_weib(X, simplify=True)
-        params.to_csv(f"parameters/marginals-wind-{country}")
+        params.to_csv(f"parameters2/marginals-wind-{country}")
         if simplify:
             E_h = dia_matrix(E_h)
-            save_npz(f"parameters/copula-wind-{country}",E_h)
+            save_npz(f"parameters2/copula-wind-{country}",E_h)
         #pd.DataFrame(E_h).to_csv(f"parameters/copula-wind-{country}", float_format='%.3f')
         c += 1
         
     
     #params_dict = {} #for each country
     #%% fit solar
-    
+    c=0
     for pv_country in PV_countries:
         country = iso_to_country[pv_country]
         print(f"Perc: {c/n_countries*100}%, PV fitting {country}")
         X = date_format(PV_pu, pv_country)
         params, E_h, night_hours= fit_multivariate_beta(X, simplify=True)
-        params.to_csv(f"parameters/marginals-PV-{country}")
+        params.to_csv(f"parameters2/marginals-PV-{country}")
         pd.DataFrame(night_hours, columns = ("day","hour")).to_csv(f"parameters/night_hours-PV-{country}")
         if simplify:
             E_h = dia_matrix(E_h)
-            save_npz(f"parameters/copula-PV-{country}",E_h)
+            save_npz(f"parameters2/copula-PV-{country}",E_h)
             
         c += 1  
         
     
     #%%
     E = E_h
-    E_zoom = E[0:24*10,0:24*10]
+    E_zoom = E[0:24*3,0:24*3]
     c= plt.imshow(E_zoom, interpolation = "nearest")
     plt.colorbar(c)
     plt.title("Gaussian copula covariance matrix")
@@ -458,41 +462,84 @@ def main():
 #%%
     
 if __name__ == "__main__":
-    #main()
-    n_scenarios = 5
-    save = False
-    Italy = read_parameters("Italy")
-    print("read parameters")
-    n_var = len(Italy["wind"][0].columns)
-    var_names = pd.date_range("01/01/2024", periods = n_var, freq = "h") 
-    parameters_df = Italy["PV"][0]
-    E_h = Italy["PV"][1]
-    E_h[E_h < 0] = 0 #delete negative entries to make sure matrix is SD
-    E_h[pd.isna(E_h)]=0 #should we force simmetry he
-    night_hours = Italy["PV"][2]
-    """
-    var_names = parameters_df.columns #better names
-    n_vars = len(var_names)
-    X_scen = pd.DataFrame(np.random.multivariate_normal(np.array([0]*n_vars), E_h, n_scenarios), columns = var_names)
-    #convert to uniform domain U and the to initial domain Y
-    U_scen = pd.DataFrame( columns=var_names)
-    scenarios = pd.DataFrame( columns=var_names) #scenario dataframe
-    night_scenarios = pd.DataFrame(np.zeros((n_scenarios, len(night_hours))), columns=night_hours)
-    for var in var_names:
-        U_scen[var] = stats.norm.cdf(X_scen[var])
-        alpha, beta = parameters_df.loc["alpha",var], parameters_df.loc["beta",var]
-        scenarios[var] = stats.beta.ppf(U_scen[var], alpha, beta)
-
-    scenarios = pd.concat([scenarios, night_scenarios], axis = 1)
-    scenarios = scenarios.reindex(sorted(scenarios.columns), axis = 1)
-    n_hours = len(scenarios.columns)
-    scenarios.columns = pd.date_range("01/01/2023", periods = n_hours, freq="h")
-    if save:
-        scenarios.to_csv("scenarios/"+filename+f"{n_scenarios}")
-   
-    #scenarios = SG_beta(5, parameters_df = Italy["PV"][0], E_h = Italy["PV"][1], night_hours= night_hours)
-    """
-   
+    scenarios = {}
+    scenarios["PV"]=pd.read_csv('scenarios/PV_scenario100.csv',index_col=0)
+    scenarios["PV"].columns = pd.to_datetime(scenarios["PV"].columns)
+    scenarios["wind"]=pd.read_csv('scenarios/wind_scenarios.csv',index_col=0)
+    scenarios["wind"].columns = pd.to_datetime(scenarios["PV"].columns)
+    params = read_parameters("Italy")
+    #%%
+    fig, ax = plt.subplots(figsize=(6, 6))
+    c_pv = ax.imshow(params["PV"][1][0:24*3, 0:24*3], interpolation="nearest", aspect='auto')
+    fig.colorbar(c_pv, ax=ax)
+    ax.set_title("Covariance of PV values at different hours")
+    ax.set_xlabel("Hour")
+    ax.set_ylabel("Hour")
+    #plt.savefig('images/covariance_PV.png')
+    #plt.close()
+    #%%
+    # Subplot for Covariance of Wind values at different hours
+    fig, ax = plt.subplots(figsize=(6, 6))
+    c_wind = ax.imshow(params["wind"][1][0:24*3, 0:24*3], interpolation="nearest", aspect='auto')
+    fig.colorbar(c_wind, ax=ax)
+    ax.set_title("Covariance of Wind values at different hours")
+    ax.set_xlabel("Hour")
+    ax.set_ylabel("Hour")
+    #plt.savefig('images/covariance_wind.png')
+    #plt.close()
+    #%%
+    # Subplot for PV Power Output through the Year
+    wind_scenarios = scenarios["wind"]
+    PV_scenarios = scenarios["PV"]
+    n_scenarios = wind_scenarios.shape[0]
     
-
-   
+    max_iter = 3  # plot at most 5 scenarios
+    wind_scenarios = pd.DataFrame(wind_scenarios.iloc[:max_iter, :])
+    PV_scenarios = pd.DataFrame(PV_scenarios.iloc[:max_iter, :])
+    colormap = cm.get_cmap('tab10', 2 * max_iter)
+    
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for index, row in enumerate(wind_scenarios.iterrows()):
+        ax.plot(row[1].index, row[1].values, color=colormap(index), alpha=0.7)
+    ax.set_title("Wind Power through the Year")
+    ax.set_xlabel("Datetime")
+    ax.set_ylabel("Power Output (capacity factor)")
+    ax.legend([f"Scenario {i+1}" for i in range(max_iter)], loc='upper right')
+    plt.savefig('images/wind_power_output_year.png')
+    plt.close()
+    #%%
+    # Subplot for PV Power Output through the Year
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for index, row in enumerate(PV_scenarios.iterrows()):
+        ax.plot(row[1].index, row[1].values, color=colormap(max_iter + index), alpha=0.7)
+    ax.set_title("PV Power Output through the Year")
+    ax.set_xlabel("Datetime")
+    ax.set_ylabel("Power Output (capacity factor)")
+    ax.legend([f"PV Power {i+1}" for i in range(max_iter)], loc='upper right')
+    plt.savefig('images/PV_power_output_year.png')
+    plt.close()
+    #%%
+    # Subplot for 3 Days of Wind Power Output
+    day = 7*24
+    dday = 5
+    wind_scenario = wind_scenarios.iloc[0:max_iter, day*24:24*(day + dday)]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for index, row in enumerate(wind_scenario.iterrows()):
+        ax.plot(row[1].index, row[1].values, color=colormap(index), alpha=0.7)
+    ax.set_title("Wind Output for Three Days")
+    ax.set_xlabel("Datetime")
+    ax.set_ylabel("Power Output (capacity factor)")
+    ax.legend([f"Wind Power {i+1}" for i in range(max_iter)], loc='upper right')
+    #plt.savefig('images/wind_power_output_3days.png')
+    #plt.close()
+    #%%
+    solar_scenario = PV_scenarios.iloc[0:, day*24:day*24+24*dday]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for index, row in enumerate(solar_scenario.iterrows()):
+        ax.plot(row[1].index, row[1].values, color=colormap(max_iter + index), alpha=0.7)
+    ax.set_title("PV Output for Three Days")
+    ax.set_xlabel("Datetime")
+    ax.set_ylabel("Power Output (capacity factor)")
+    ax.legend([f"PV Power {i+1}" for i in range(max_iter)], loc='upper right')
+    #plt.savefig('images/PV_power_output_3days.png')
+    #plt.close()

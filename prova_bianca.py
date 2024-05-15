@@ -43,8 +43,8 @@ def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,Mns=np.inf,Mnw=100,Mnh=np.inf,ch=7,chte=0
     EW: wind el production - dxinst array
     EL: electricity load - dxinst array
     HL: hydrogen load - dxinst array
-    cs: cost of solar panels
-    c2: cost of wind turbines
+    Mns: cost of solar panels
+    Mnw: cost of wind turbines
     mw: max socially acceptable wind turbines
     ch: cost of hydrogen storage???
     chte: cost of H to el
@@ -90,18 +90,22 @@ def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,Mns=np.inf,Mnw=100,Mnh=np.inf,ch=7,chte=0
     model.optimize()
     if model.Status!=2:
         print("Status = {}".format(model.Status))
-        return None
+        return None, None, model.Status
     else:
         string = "Status: {}\nOptimization time: {}\nTotal cost: {}\nPanels: {}\nTurbines: {}\nH2 needed capacity: {}\nMax EtH: {}\nMax HtE: {}".format(model.Status, time.time()-start_time, model.ObjVal, ns.X,nw.X,nh.X,meth.X,mhte.X)
         print(string)
-        x=np.arange(inst)
+        time_range = pd.date_range("2024/01/01", periods = ES.shape[1], freq = "h")
+        x = time_range
         HH=[0.0033*H[0,i].X for i in range(inst)]
-        ETH=[EtH[0,i].X for i in range(inst)]
-        HTE=[HtE[0,i].X for i in range(inst)]
+        ETH=pd.DataFrame([EtH[0,i].X for i in range(inst)], index = x)
+        HTE=pd.DataFrame([HtE[0,i].X for i in range(inst)], index = x)
         #plt.plot(x,EL[0,:].transpose(),"yellow",x,0.05*HL[0,:].transpose(),"green",x,ns.X*ES.transpose(),"orange",x,nw.X*EW[0,:].transpose(),"red",x,HH,"blue")
         #plt.plot(x,EL[0,:].transpose(),"yellow",x,0.05*HL[0,:].transpose(),"green",x,ns.X*ES.transpose(),"orange",x,nw.X*EW[0,:].transpose(),"red",x,HH,"blue")
         
-        #Solar panels and wind turbines
+        #Add date
+        
+        ES =  pd.DataFrame(ES, columns = time_range)
+        EW =  pd.DataFrame(EW, columns = time_range)
         
          # Create a new figure
         fig = plt.Figure(figsize=(8, 7))
@@ -111,28 +115,29 @@ def OPT(ES,EW,EL,HL,cs=4000,cw=3000000,Mns=np.inf,Mnw=100,Mnh=np.inf,ch=7,chte=0
         ax1 = fig.add_subplot(3, 1, 1)
         ax1.plot(x, EL[0, :].T, color="yellow", label="Electricity Load")
         ax1.plot(x, 0.05 * HL[0, :].T, color="green", label="Hydrogen Load")
-        ax1.set_title("Loads")
+        ax1.set_title("Loads  (MWh)")
         ax1.legend()
         
         # Subplot for Power Output
         ax2 = fig.add_subplot(3, 1, 2)
-        ax2.plot(x, ns.X * ES[0, :].T, color="orange", label="Solar Power")
-        ax2.plot(x, nw.X * EW[0, :].T, color="red", label="Wind Power")
-        ax2.set_title("Power Output")
+        
+        ax2.plot(x, ns.X * ES.iloc[0, :].T, color="orange", label="Solar Power")
+        ax2.plot(x, nw.X * EW.iloc[0, :].T, color="red", label="Wind Power")
+        ax2.set_title("Power Output  (MWh)")
         ax2.legend()
         
         # Subplot for Stored Hydrogen
         ax3 = fig.add_subplot(3, 1, 3)
-        ax3.plot(x, HH, color="blue", label="Stored Hydrogen (Kg?)")
-        ax3.set_title("Stored Hydrogen")
+        ax3.plot(x, HH, color="blue", label="Stored Hydrogen")
+        ax3.set_title("Stored Hydrogen  (MW)")
         ax3.legend()
         
         # Display the figure
-        plt.show()
+        #plt.show()
         
-        results = [ns.X,nw.X,nh.X,mhte.X,meth.X]
+        results = [ns.X,nw.X,nh.X,mhte.X,meth.X, ETH, HTE]
         
-        return results, fig
+        return results, fig, model.Status
     
 
 # %%
