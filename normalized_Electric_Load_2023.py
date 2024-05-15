@@ -3,7 +3,7 @@
 
 import pandas as pd
 
-LOAD_23=pd.read_excel('morgari/Downloads/monthly_hourly_load_values_2023.xlsx', usecols=['DateUTC','CountryCode','Value'],index_col='DateUTC')
+LOAD_23=pd.read_excel('scenarios/monthly_hourly_load_values_2023.xlsx', usecols=['DateUTC','CountryCode','Value'],index_col='DateUTC')
 
 load=pd.DataFrame()
 for country in LOAD_23['CountryCode'].unique():
