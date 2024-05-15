@@ -43,7 +43,7 @@ hl=HL[:11,:]
 #%% MODEL
 
 
-def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=np.inf,Mnh=np.inf,chte=2,fhte=0.75,Mhte=np.inf,ceth=200,feth=0.7,Meth=np.inf):
+def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=100,Mnh=np.inf,chte=2,fhte=0.75,Mhte=np.inf,ceth=200,feth=0.7,Meth=np.inf):
             
     start_time=time.time()
     
@@ -83,7 +83,7 @@ def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=np.inf
     cons3=model.addConstr(ns>=0)
     
     var_time=time.time()-start_time
-    print('Model has been set up, this took ',np.round(var_time,4),'s.\nNow starting the optimization. ',rounds,' batches of',d,'scenarios each will be optimized. This should take around 30s per batch.')
+    print('Model has been set up, this took ',np.round(var_time,4),'s.\nNow starting the optimization. ',rounds,' batches of',d,'scenarios each will be optimized. This should take around 30s per batch.\n')
     
     #model.optimize()
     
@@ -121,7 +121,7 @@ def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=np.inf
         else:
             VARS=[ns.X,nw.X,nh.X]       
             outputs=outputs + [VARS]
-            string = "Round {} of {}:\nOptimal values: {}\nOptimization time: {}".format(group+1,rounds,VARS, time.time()-start_time)
+            string = "Round {} of {}:\nOptimal values: {}\nOptimization time: {}\n".format(group+1,rounds,VARS, time.time()-start_time)
             #string=string+"\nTotal cost: {}\nPanels: {}\nTurbines: {}\nH2 needed capacity: {}\nMax EtH: {}\nMax HtE: {}".format(model.ObjVal, ns.X,nw.X,nh.X,meth.X,mhte.X)
             print(string)
     return outputs
