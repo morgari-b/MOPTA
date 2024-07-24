@@ -10,6 +10,8 @@ for country in LOAD_23['CountryCode'].unique():
     load[country]=LOAD_23.loc[LOAD_23['CountryCode']==country]['Value'].groupby('DateUTC').mean().asfreq('h',method='ffill')
     load['AL'].loc[:'2023-12-05 22:00:00']=load['AL'].loc[:'2023-12-05 22:00:00'].div(load['AL'].loc[:'2023-12-05 22:00:00'].mean())
     load['AL'].loc['2023-12-05 23:00:00':]=load['AL'].loc['2023-12-05 23:00:00':].div(load['AL'].loc['2023-12-05 23:00:00':].mean())
-    load.div(load.mean())
+load=load.div(load.mean())
 
+#%%
 
+load.to_csv('scenarios/electricity_load.csv')
