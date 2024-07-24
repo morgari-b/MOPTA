@@ -79,7 +79,7 @@ def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**6,Mnw=500,Mnh
     cons3=model.addConstr(ns>=0)
     
     var_time=time.time()-start_time
-    print('Model has been set up, this took ',np.round(var_time,4),'s.\nNow starting the optimization. ',rounds,' batches of',d,'scenarios each will be optimized. This should take around 30s per batch.\n')
+    #print('Model has been set up, this took ',np.round(var_time,4),'s.\nNow starting the optimization. ',rounds,' batches of',d,'scenarios each will be optimized. This should take around 30s per batch.\n')
     
     
     for group in range(rounds):
@@ -127,14 +127,15 @@ def OPT(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**6,Mnw=500,Mnh
 
 #%%
 outputs,HH,ETH,HTE = OPT(ES,EW,EL,HL,d=1,rounds=100)
+
 df=pd.DataFrame(outputs)
-df.to_csv("Outputs/outputs.csv", header=False, index=False)
+#df.to_csv("Outputs/outputs.csv", header=False, index=False)
 df=pd.DataFrame(ETH)
-df.to_csv("Outputs/eth.csv", header=False, index=False)
+#df.to_csv("Outputs/eth.csv", header=False, index=False)
 df=pd.DataFrame(HTE)
-df.to_csv("Outputs/hte.csv", header=False, index=False)
+#df.to_csv("Outputs/hte.csv", header=False, index=False)
 df=pd.DataFrame(HH)
-df.to_csv("Outputs/hh.csv", header=False, index=False)
+#df.to_csv("Outputs/hh.csv", header=False, index=False)
 
 #%% plot of results
 
@@ -148,6 +149,7 @@ obj=MATRIX.iloc[:,5]
 plt.scatter(ns,nw,c=obj)
 #ax = plt.axes(projection ="3d")
 #ax.scatter3D(ns,nw,nh,c=obj)
+
 
 
     

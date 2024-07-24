@@ -383,8 +383,8 @@ class MainWindow(QMainWindow):
             generators_cost = result[0]*self.network.cs + result[1]*self.network.cw + result[2]*self.network.ch
             operation_cost = result[5].sum()*self.network.ceth + result[6].sum()*self.network.chte
             print(operation_cost)
-            self.results_label.setText(f"Number of solar panels: {int(result[0])} \nNumber of Wind Turbines: {int(result[1])} \nHydrogen Storage Capacity (Kg): {result[2]} \nPower Cells Capacity (Kg/h): {result[3]} \nElectrolyzers Capacity (MWh): {result[3]}"+
-                                       f"\nCost of Generators: {generators_cost} euros, One year Operation costs: {operation_cost} ")
+            self.output_label.setText(f"Number of solar panels: {int(result[0])} \nNumber of Wind Turbines: {int(result[1])} \nHydrogen Storage Capacity (Kg): {result[2]} \nPower Cells Capacity (Kg/h): {result[3]} \nElectrolyzers Capacity (MWh): {result[3]}"+
+                                       f"\nCost of Generators: {generators_cost} euros, One year Operation costs: {int(operation_cost)} ")
         else:
             self.output_label.setText("Optimization failed, problem is unfeasible.")
             

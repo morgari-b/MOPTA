@@ -1,5 +1,6 @@
 # Renewable Energy Scenario Generation and Optimization
 
+Team name: Clowder
 This repository contains scripts for generating scenarios of wind and solar power output and optimizing an electrical grid supported by hydrogen storage. The scenario generation process considers the stochastic behavior of wind and solar power, and the optimization ensures the grid's reliability under various scenarios.
 
 ### Installation
