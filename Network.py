@@ -154,15 +154,13 @@ eu.costs = costs
 #%%
 
 # Import scenarios
-
-
 elec_load_df = pd.read_csv('scenarios/electricity_load.csv')
 elec_load_df = elec_load_df[['DateUTC', 'IT', 'ES', 'AT', 'FR']]
 time_index = pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
 
 elec_load_scenario = xr.DataArray(
     np.expand_dims(elec_load_df[['IT', 'ES', 'AT', 'FR']].values, axis = 2), #add one dimension to correspond with scenarios
-    coords={'time': time_index, 'node': ['IT', 'ES', 'AT', 'FR'], 'scenario': [1]},
+    coords={'time': time_index, 'node': ['IT', 'ES', 'AT', 'FR'], 'scenario': [0]},
     dims=['time', 'node', 'scenario']
 )
 
@@ -259,26 +257,38 @@ def OPT2(Network,
         for j in range(d): 
             for k in range(Nnodes):
                 for i in range(inst-1):
-                    cons2[j,i,k].rhs = HL[i,k,j] #time,node,scenario or if you prefer to not remember use isel
-                    print(ES[i,k,j])
+                    cons2[j,i,k].rhs = HL[i,k,j] #time,node,scenario or if you prefer to not remember use isel     
                 cons3[j,k].rhs  = HL[inst-1,k,j]
-        cons1=model.addConstrs(ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j] + 0.033*Network.n['fhte'].iloc[k]*HtE[j,i,k] - EtH[j,i,k] -
-                               quicksum(P_edge[j,i,l] for l in Network.edgesP.loc[Network.edgesP['start_node']==Network.n.index.to_list()[k]].index.to_list()) +
-                               quicksum(P_edge[j,i,l] for l in Network.edgesP.loc[Network.edgesP['end_node']==Network.n.index.to_list()[k]].index.to_list()) 
-                               >= EL[i,k,j] for k in range(Nnodes) for j in range(d) for i in range(inst))
+        
+        try:    
+            cons1=model.addConstrs(ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j] + 0.033*Network.n['fhte'].iloc[k]*HtE[j,i,k] - EtH[j,i,k] -
+                                quicksum(P_edge[j,i,l] for l in Network.edgesP.loc[Network.edgesP['start_node']==Network.n.index.to_list()[k]].index.to_list()) +
+                                quicksum(P_edge[j,i,l] for l in Network.edgesP.loc[Network.edgesP['end_node']==Network.n.index.to_list()[k]].index.to_list()) 
+                                >= EL[i,k,j] for k in range(Nnodes) for j in range(d) for i in range(inst))
+        except IndexError as e:
+            print(f"IndexError occurred at i={i}, j={j}, k={k}")
+            print(f"ES shape: {ES.shape}")
+            print(f"EW shape: {EW.shape}")
+            print(f"HtE shape: {HtE.shape}")
+            print(f"EtH shape: {EtH.shape}")
+            print(f"P_edge shape: {P_edge.shape}")
+            print(f"Network.n indices: {Network.n.index.to_list()}")
+            print(f"Network.edgesP start_node indices: {Network.edgesP['start_node'].index.to_list()}")
+            print(f"Network.edgesP end_node indices: {Network.edgesP['end_node'].index.to_list()}")
+            raise e  # Re-raise the exception after logging the details
         
         model.optimize()
         if model.Status!=2:
             print("Status = {}".format(model.Status))
         else:
-            VARS=[np.ceil(ns.X),np.ceil(nw.X),nh.X,mhte.X,meth.X]       
+            VARS=[np.ceil([ns[k].X for k in range(Nnodes)]),np.ceil([nw[k].X for k in range(Nnodes)]),np.ceil([nh[k].X for k in range(Nnodes)]),np.ceil([mhte[k].X for k in range(Nnodes)]),np.ceil([meth[k].X for k in range(Nnodes)])]       
             outputs=outputs + [VARS+[model.ObjVal]] 
             print("Round {} of {} - opt time: {}s.".format(group+1,rounds, np.round(time.time()-gr_start_time,3)))
             
     return outputs#,HH,ETH,HTE
 # %%
 eu.costs.shape[0]
-ouputs = OPT2(eu)
+outputs = OPT2(eu)
 # %%
 
 # %%
