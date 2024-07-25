@@ -308,7 +308,7 @@ def OPT3(Network,
 
     nodes = Network.n.index.to_list()
     scenarios = range(d)
-    time_steps = range(inst)
+    time_steps = list(x.values for x in eu.loadE_t.coords["time"])
     Pedges = list(zip(eu.edgesP['start_node'].to_list(),eu.edgesP['end_node'].to_list()))
     #print(Pedges.keys())
     Hedges = list(zip(eu.edgesH['start_node'].to_list(),eu.edgesH['end_node'].to_list()))
@@ -339,19 +339,19 @@ def OPT3(Network,
     model.addConstrs( H[j,t,k] <= nh[k] for t in time_steps for j in scenarios for k in nodes) 
     model.addConstrs( EtH[j,t,k] <= meth[k] for t in time_steps for j in scenarios for k in nodes)
     model.addConstrs( HtE[j,t,k] <= mhte[k] for t in time_steps for j in scenarios for k in nodes)
-    model.addConstrs( P_edge[j,t,(n0,n1)] <= Network.edgesP['NTC'] + addNTC[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Pedges)
-    model.addConstrs( H_edge[j,t,(n0,n1)] <= Network.edgesH['MH'].iloc[k] + addMH[k] for t in time_steps for j in scenarios for (n0,n1) in Hedges)
+    #model.addConstrs( P_edge[j,t,(n0,n1)] <= Network.edgesP[eu.edgesP['end_node'] == n1][eu.edgesP['start_node'] == n0]['NTC'] + addNTC[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Pedges)
+    #model.addConstrs( H_edge[j,t,(n0,n1)] <= Network.edgesP[eu.edgesP['end_node'] == n1][eu.edgesP['start_node'] == n0]['NTC'] + addMH[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Hedges)
 
     outputs=[]
     VARS=[]
     #todo perchè lo rimuoviamo questo?
     cons1=model.addConstrs(nh[n]>=0 for n in nodes )#for j in range(d) for i in time_steps)
     #todo: sobstitute 30 with a parameter
-    cons2=model.addConstrs(  H[j,t,k] - H[j,t+1,n] + 30*Network.n['feth'].iloc[k]*EtH[j,t,k] - HtE[j,t,k] -  
-                           quicksum(H_edge[j,t,(n,m)] for m in nodes if (m,n) in Hedges) +
-                           quicksum(H_edge[j,t,(m,n)] for m in nodes if (n,m) in Hedges)
+    cons2=model.addConstrs(  H[j,t,n] - H[j,t+1,n] + 30*Network.n['feth'].loc[n]*EtH[j,t,n] - HtE[j,t,n] -  
+                           quicksum(H_edge[j,t,(n,m)] for m in nodes if (n,m) in Hedges) +
+                           quicksum(H_edge[j,t,(m,n)] for m in nodes if (m,n) in Hedges)
                            ==0 for j in scenarios for t in time_steps[:-1] for n in nodes)
-    cons3=model.addConstrs(- H[j,0,n] + H[j,inst-1,n] + 30*Network.n['feth'].iloc[n]*EtH[j,inst-1,n] - HtE[j,inst-1,n] -
+    cons3=model.addConstrs(- H[j,0,n] + H[j,inst-1,n] + 30*Network.n['feth'].loc[n]*EtH[j,inst-1,n] - HtE[j,inst-1,n] -
                            quicksum(H_edge[j,inst-1,(n,m)] for m in nodes if (n,m) in Hedges) +
                            quicksum(H_edge[j,inst-1,(m,n)] for m in nodes if (m,n) in Hedges)
                            ==0 for j in scenarios for n in nodes)
@@ -370,14 +370,14 @@ def OPT3(Network,
         for j in scenarios: 
             for k in nodes:
                 for i in range(inst-1):
-                    cons2[j,i,k].rhs = HL[i,k,j] #time,node,scenario or if you prefer to not remember use isel     
-                cons3[j,k].rhs  = HL[inst-1,k,j]
+                    cons2[j,i,k].rhs = HL.sel(time = i, node = k, scenario = j) #time,node,scenario or if you prefer to not remember use isel     
+                cons3[j,k].rhs  = HL.sel(time = inst-1,node = k, scenario = j)
         
         try:    
-            cons1=model.addConstrs(ns[n]*ES[t,n,j] + nw[n]*EW[t,n,j] + 0.033*Network.n['fhte'].iloc[n]*HtE[j,t,n] - EtH[j,t,n] -
-                                quicksum(P_edge[j,t,(n,m)] for m in nodes if (m,n) in Pedges) +
-                                quicksum(P_edge[j,i,(m,n)] for m in nodes if (n,m) in Pedges) 
-                                >= EL[i,k,j] for n in nodes for j in scenarios for t in time_steps)
+            cons1=model.addConstrs(ns[n]*ES[t,n,j] + nw[n]*EW[t,n,j] + 0.033*Network.n['fhte'].loc[n]*HtE[j,t,n] - EtH[j,t,n] -
+                                quicksum(P_edge[j,t,(n,m)] for m in nodes if (n,m) in Pedges) +
+                                quicksum(P_edge[j,i,(m,n)] for m in nodes if (m,n) in Pedges) 
+                                >= EL.isel(time = t, node = n, scenario = j) for n in nodes for j in scenarios for t in time_steps)
         except IndexError as e:
             print(f"IndexError occurred at t={t}, n={n}, j={j}")
             print(f"ES shape: {ES.shape}")
