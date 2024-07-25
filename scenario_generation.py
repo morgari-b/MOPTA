@@ -436,7 +436,7 @@ def fit_renewables(iso_code, simplify=False, save=False):
 
 #%%
 
-all_params = fit_Ninja()
+all_params = fit_renewables("IT")
 #%%
 def fit_Ninja_all():
     """
