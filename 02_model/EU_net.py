@@ -279,11 +279,10 @@ def OPT2(Network,
     for group in range(rounds):
         gr_start_time=time.time()
 
-    
-        ES = Network.genS_t.sel(scenario = slice(d*group, (d+1)*group))
-        EW = Network.genW_t.sel(scenario = slice(d*group, (d+1)*group))
-        EL = Network.loadP_t.sel(scenario = slice(d*group, (d+1)*group))
-        HL = Network.loadH_t.sel(scenario = slice(d*group, (d+1)*group))
+        ES = Network.genS_t.sel(scenario = slice(d*group, d*(group+1)))
+        EW = Network.genW_t.sel(scenario = slice(d*group, d*(group+1)))
+        EL = Network.loadE_t.sel(scenario = slice(d*group, d*(group+1)))
+        HL = Network.loadH_t.sel(scenario = slice(d*group, d*(group+1)))
 
         model.remove(cons1)
         for j in range(d): 

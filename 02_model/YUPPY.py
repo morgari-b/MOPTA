@@ -54,6 +54,8 @@ def import_generated_scenario(path, nrows,  scenario, node_names = None):
         dims=['time', 'node', 'scenario']
     )
     return scenario
+
+
 def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mnh=10**9,chte=2,fhte=0.75,Mhte=10**6,ceth=200,feth=0.7,Meth=10**5):
             
     start_time=time.time()
@@ -171,6 +173,15 @@ class Network:
         #for hex in A:
          # folium.PolyLine(hex,weight=5,color='blue', opacity=.2).add_to(m)
         m.save("Network.html")
+
+        
+    def get_edgesP(self,start_node,end_node):
+        return self.edgesP[self.edgesP['start_node']==start_node][self.edgesP['end_node']==end_node]
+
+    def get_edgesH(self,start_node,end_node):
+        return self.edgesH[self.edgesH['start_node']==start_node][self.edgesH['end_node']==end_node]
+    
+
     def neighbour_edgesP(self,direction, node_index):
         """
         Returns a list of edge indices that are connected to a given node in a specified direction.
@@ -244,7 +255,6 @@ class time_aggregator:
 # %%
 agg = time_aggregator(30*24)
 
-# %%
 
 #%% OPT2 - Network
 def EU():
@@ -318,9 +328,7 @@ def EU():
     eu.loadP_t = elec_load_scenario
     return eu
 
-def OPT2(Network,
-         d=1,rounds=1
-         ):
+def OPT2(Network, d=1,rounds=1,long_outs=False):
     
     if Network.costs.shape[0] == 1: #if the costs are the same:
         cs, cw, ch, chte, ceth, cNTC, cMH = Network.costs['cs'][0], Network.costs['cw'][0], Network.costs['ch'][0], Network.costs['chte'][0], Network.costs['ceth'][0], Network.costs['cNTC'][0], Network.costs['cMH'][0]
@@ -366,9 +374,16 @@ def OPT2(Network,
 
     outputs=[]
     VARS=[]
-    #todo perchè lo rimuoviamo questo?
+    HX=Network.genW_t.copy()
+    HX[:,:,:]=0
+    EtHX=HX.copy()
+    HtEX=HX.copy()
+    P_edgeX=HX.copy()
+    H_edgeX=HX.copy()
+    
+    #todo perchè lo rimuoviamo questo? # perché è quello che va sostituito in toto ad ogni giro... è qui come fermaposto
     cons1=model.addConstrs(nh[k]>=0 for k in range(Nnodes) )#for j in range(d) for i in range(inst))
-    #todo: sobstitute 30 with a parameter
+    #todo: sobstitute 30 with a parameter # NO!! 30 e poi sotto 0.033 sono i rate di conversione kg di idrogeno - MW se la conversione fosse 100% efficiente, non sono parametri.
     cons2=model.addConstrs(- H[j,i+1,k] + H[j,i,k] + 30*Network.n['feth'].iloc[k]*EtH[j,i,k] - HtE[j,i,k] -  
                            quicksum(H_edge[j,i,l] for l in Network.edgesH.loc[Network.edgesH['start_node']==Network.n.index.to_list()[k]].index.to_list()) +
                            quicksum(H_edge[j,i,l] for l in Network.edgesH.loc[Network.edgesH['end_node']==Network.n.index.to_list()[k]].index.to_list())
@@ -382,7 +397,6 @@ def OPT2(Network,
     for group in range(rounds):
         gr_start_time=time.time()
 
-       
         ES = Network.genS_t.sel(scenario = slice(d*group, d*(group+1)))
         EW = Network.genW_t.sel(scenario = slice(d*group, d*(group+1)))
         EL = Network.loadP_t.sel(scenario = slice(d*group, d*(group+1)))
@@ -420,7 +434,23 @@ def OPT2(Network,
             outputs=outputs + [VARS+[model.ObjVal]] 
             print("Round {} of {} - opt time: {}s.".format(group+1,rounds, np.round(time.time()-gr_start_time,3)))
             
-    return outputs#,HH,ETH,HTE
+        if long_outs==True:
+            for i in range(inst):
+                for j in range(d):
+                    for k in range(Nnodes):
+                        HX[i,k,j]=H[j,i,k].X
+                        EtHX[i,k,j]=EtH[j,i,k].X
+                        HtEX[i,k,j]=HtE[j,i,k].X
+                    for k in range(NEedges):
+                        P_edgeX[i,k,j]=P_edge[j,i,k].X
+                    for k in range(NHedges):
+                        H_edgeX[i,k,j]=H_edge[j,i,k].X
+                
+    if long_outs == False:
+        return outputs
+    else:
+        return outputs, HX, EtHX, HtEX, P_edgeX,H_edgeX
+
 
 # %%
 
