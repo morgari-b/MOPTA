@@ -113,77 +113,78 @@ class Network:
 #%%
 
 #%%
-EU=pd.DataFrame([['Italy',41.90,12.48],
-                ['Spain',40.42,-3.70],
-                ['Austria',48.21,16.37],
-                ['France',48.86,2.35]], 
-                columns=['node','lat','long']).set_index('node')
-             
-#ho spostato qui così è un parametro di input
-EU['Mhte']=10**6  # maximum hydrogen transport cost
-EU['Meth']=10**5  # maximum electricity transport cost
-EU['feth']=0.7  # fraction of electricity in hydrogen
-EU['fhte']=0.75  # fraction of electricity in hydrogen
-EU['Mns'] = 10000
-EU['Mnw'] = 10000
-EU['Mnh'] = 10000
 
-EU_e=pd.DataFrame([  ['France','Italy'],
-                     ['Austria','Italy'],
-                     ['France','Spain'],
-                     ['France','Austria']  ],columns=['start_node','end_node'])
-
-EU_h=pd.DataFrame([  ['France','Italy'],
-                     ['Austria','Italy'],
-                     ['France','Spain'],
-                     ['France','Austria']  ],columns=['start_node','end_node'])
-
-#ho spostato qui così è un parametro di input
-EU_e['NTC']=1000  # maximum transportation cost for electricity
-EU_h['MH']=500  # maximum transportation cost for hydrogen
-
-#costs
-costs = pd.DataFrame([["All",4000, 3000000, 10,2,200,1000,10000]],columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
-
-eu = Network()
-
-eu.n = EU
-eu.edgesP = EU_e
-eu.edgesH = EU_h
-eu.costs = costs
-
-# eu.loadE[1]=pd.read_csv('scenarios/electricity_load.csv',usecols=['IT','ES','AT','FR']).set_index(pd.date_range('2023-01-01 00:00:00','2023-12-31 23:00:00',freq='h')).T.set_index(eu.n.index)
-# eu.genW[1]=pd.read_csv('scenarios/wind_scenarios.csv',index_col=0).head(4).set_index(eu.n.index)
-# eu.genS[1]=pd.read_csv('scenarios/PV_scenario.csv',index_col=0).head(4).set_index(eu.n.index)
-# eu.loadH[1]=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).head(4).set_index(eu.n.index)
-
+def EU():
+    EU=pd.DataFrame([['Italy',41.90,12.48],
+                    ['Spain',40.42,-3.70],
+                    ['Austria',48.21,16.37],
+                    ['France',48.86,2.35]], 
+                    columns=['node','lat','long']).set_index('node')
+                 
+    #ho spostato qui così è un parametro di input
+    EU['Mhte']=10**6  # maximum hydrogen transport cost
+    EU['Meth']=10**5  # maximum electricity transport cost
+    EU['feth']=0.7  # fraction of electricity in hydrogen
+    EU['fhte']=0.75  # fraction of electricity in hydrogen
+    EU['Mns'] = 10000
+    EU['Mnw'] = 10000
+    EU['Mnh'] = 10000
+    
+    EU_e=pd.DataFrame([  ['France','Italy'],
+                         ['Austria','Italy'],
+                         ['France','Spain'],
+                         ['France','Austria']  ],columns=['start_node','end_node'])
+    
+    EU_h=pd.DataFrame([  ['France','Italy'],
+                         ['Austria','Italy'],
+                         ['France','Spain'],
+                         ['France','Austria']  ],columns=['start_node','end_node'])
+    
+    #ho spostato qui così è un parametro di input
+    EU_e['NTC']=1000  # maximum transportation cost for electricity
+    EU_h['MH']=500  # maximum transportation cost for hydrogen
+    
+    #costs
+    costs = pd.DataFrame([["All",4000, 3000000, 10,2,200,1000,10000]],columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
+    
+    eu = Network()
+    
+    eu.n = EU
+    eu.edgesP = EU_e
+    eu.edgesH = EU_h
+    eu.costs = costs
+    
+    # eu.loadE[1]=pd.read_csv('scenarios/electricity_load.csv',usecols=['IT','ES','AT','FR']).set_index(pd.date_range('2023-01-01 00:00:00','2023-12-31 23:00:00',freq='h')).T.set_index(eu.n.index)
+    # eu.genW[1]=pd.read_csv('scenarios/wind_scenarios.csv',index_col=0).head(4).set_index(eu.n.index)
+    # eu.genS[1]=pd.read_csv('scenarios/PV_scenario.csv',index_col=0).head(4).set_index(eu.n.index)
+    # eu.loadH[1]=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).head(4).set_index(eu.n.index)
 
 #%%
 
-# Import scenarios
-elec_load_df = pd.read_csv('scenarios/electricity_load.csv')
-elec_load_df = elec_load_df[['DateUTC', 'IT', 'ES', 'AT', 'FR']]
-time_index = range(elec_load_df.shape[0])#pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
-
-elec_load_scenario = xr.DataArray(
-    np.expand_dims(elec_load_df[['IT', 'ES', 'AT', 'FR']].values, axis = 2), #add one dimension to correspond with scenarios
-    coords={'time': time_index, 'node': ['Italy', 'Spain', 'Austria', 'France'], 'scenario': [0]},
-    dims=['time', 'node', 'scenario']
-)
-
-scenario = 0
-wind_scenario = import_generated_scenario('scenarios/wind_scenarios.csv',4,scenario, node_names= ['Italy', 'Spain', 'Austria', 'France'])
-pv_scenario = import_generated_scenario('scenarios/PV_scenario.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
-hydrogen_demand_scenario = import_generated_scenario('scenarios/hydrogen_demandg.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
-
-eu.genW_t = wind_scenario
-eu.genS_t = pv_scenario
-eu.loadH_t = hydrogen_demand_scenario
-eu.loadP_t = elec_load_scenario
+    # Import scenarios
+    elec_load_df = pd.read_csv('01_scenario_generation/scenarios/electricity_load_2023.csv')
+    elec_load_df = elec_load_df[['DateUTC', 'IT', 'ES', 'AT', 'FR']]
+    time_index = range(elec_load_df.shape[0])#pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
+    
+    elec_load_scenario = xr.DataArray(
+        np.expand_dims(elec_load_df[['IT', 'ES', 'AT', 'FR']].values, axis = 2), #add one dimension to correspond with scenarios
+        coords={'time': time_index, 'node': ['Italy', 'Spain', 'Austria', 'France'], 'scenario': [0]},
+        dims=['time', 'node', 'scenario']
+    )
+    
+    scenario = 0
+    wind_scenario = import_generated_scenario('01_scenario_generation/scenarios/wind_scenarios.csv',4,scenario, node_names= ['Italy', 'Spain', 'Austria', 'France'])
+    pv_scenario = import_generated_scenario('01_scenario_generation/scenarios/PV_scenario.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
+    hydrogen_demand_scenario = import_generated_scenario('01_scenario_generation/scenarios/hydrogen_demandg.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
+    
+    eu.genW_t = wind_scenario
+    eu.genS_t = pv_scenario
+    eu.loadH_t = hydrogen_demand_scenario
+    eu.loadP_t = elec_load_scenario
 
 #%% to do: make time frames smaller
 #eu.genW_t.isel(scenario = [0],node = slice(1,3)).isel(node = 0)
-eu.genW_t.shape
+#eu.genW_t.shape
 
 #%%
 def OPT2(Network,
@@ -200,7 +201,7 @@ def OPT2(Network,
     Nnodes = Network.n.shape[0]
     NEedges = Network.edgesP.shape[0]
     NHedges = Network.edgesH.shape[0]
-    D = eu.loadP_t.shape[2] #number of scenarios
+    D = Network.loadP_t.shape[2] #number of scenarios
     inst = Network.loadP_t.shape[0] #number of time steps T
     rounds=min(rounds,D//d)
     print("\nSTARTING OPT2 -- setting up model for {} batches of {} scenarios.\n".format(rounds,d))
@@ -251,10 +252,10 @@ def OPT2(Network,
         gr_start_time=time.time()
 
     
-        ES = Network.genS_t.sel(scenario = slice(d*group, (d+1)*group))
-        EW = Network.genW_t.sel(scenario = slice(d*group, (d+1)*group))
-        EL = Network.loadP_t.sel(scenario = slice(d*group, (d+1)*group))
-        HL = Network.loadH_t.sel(scenario = slice(d*group, (d+1)*group))
+        ES = Network.genS_t.sel(scenario = slice(d*group, d*(group+1)))
+        EW = Network.genW_t.sel(scenario = slice(d*group, d*(group+1)))
+        EL = Network.loadE_t.sel(scenario = slice(d*group, d*(group+1)))
+        HL = Network.loadH_t.sel(scenario = slice(d*group, d*(group+1)))
 
         model.remove(cons1)
         for j in range(d): 
@@ -284,13 +285,13 @@ def OPT2(Network,
         if model.Status!=2:
             print("Status = {}".format(model.Status))
         else:
-            VARS=[np.ceil([ns[k].X for k in range(Nnodes)]),np.ceil([nw[k].X for k in range(Nnodes)]),np.ceil([nh[k].X for k in range(Nnodes)]),np.ceil([mhte[k].X for k in range(Nnodes)]),np.ceil([meth[k].X for k in range(Nnodes)])]       
+            VARS=[np.ceil([ns[k].X for k in range(Nnodes)]),np.ceil([nw[k].X for k in range(Nnodes)]),np.array([nh[k].X for k in range(Nnodes)]),np.array([mhte[k].X for k in range(Nnodes)]),np.array([meth[k].X for k in range(Nnodes)])]       
             outputs=outputs + [VARS+[model.ObjVal]] 
             print("Round {} of {} - opt time: {}s.".format(group+1,rounds, np.round(time.time()-gr_start_time,3)))
             
     return outputs#,HH,ETH,HTE
 # %%
-eu.costs.shape[0]
+#eu.costs.shape[0]
 #outputs = OPT2(eu)
 
 #%% Ho riscritto il modello in maniera un po' più canon
@@ -309,16 +310,16 @@ def OPT3(Network,
     Nnodes = Network.n.shape[0]
     NPedges = Network.edgesP.shape[0]
     NHedges = Network.edgesH.shape[0]
-    D = eu.loadP_t.shape[2] #total number of scenarios
+    D = Network.loadP_t.shape[2] #total number of scenarios
     inst = Network.loadP_t.shape[0] #number of time steps T
     rounds=min(rounds,D//d)
 
     nodes = Network.n.index.to_list()
     scenarios = range(d)
     time_steps = range(inst)#list(x.values for x in eu.loadP_t.coords["time"])
-    Pedges = list(zip(eu.edgesP['start_node'].to_list(),eu.edgesP['end_node'].to_list()))
+    Pedges = list(zip(Network.edgesP['start_node'].to_list(),Network.edgesP['end_node'].to_list()))
     #print(Pedges.keys())
-    Hedges = list(zip(eu.edgesH['start_node'].to_list(),eu.edgesH['end_node'].to_list()))
+    Hedges = list(zip(Network.edgesH['start_node'].to_list(),Network.edgesH['end_node'].to_list()))
     print("\nSTARTING OPT2 -- setting up model for {} batches of {} scenarios.\n".format(rounds,d))
     
     env = Env(params={'OutputFlag': 0})
@@ -370,11 +371,11 @@ def OPT3(Network,
         gr_start_time=time.time()
 
     
-        ES = Network.genS_t.sel(scenario = slice(d*group, (d+1)*group))
-        EW = Network.genW_t.sel(scenario = slice(d*group, (d+1)*group))
-        EL = Network.loadP_t.sel(scenario = slice(d*group, (d+1)*group))
-        HL = Network.loadH_t.sel(scenario = slice(d*group, (d+1)*group))
-
+        ES = Network.genS_t.sel(scenario = slice(d*group, d*(group+1)))
+        EW = Network.genW_t.sel(scenario = slice(d*group, d*(group+1)))
+        EL = Network.loadE_t.sel(scenario = slice(d*group, d*(group+1)))
+        HL = Network.loadH_t.sel(scenario = slice(d*group, d*(group+1)))
+        
         model.remove(cons1)
         for j in scenarios: 
             for k in nodes:
@@ -411,5 +412,5 @@ def OPT3(Network,
 
 
 # %% 
-results = OPT3(eu)
+#results = OPT3(eu)
 # %%
