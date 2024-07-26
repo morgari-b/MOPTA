@@ -9,12 +9,14 @@ import gurobipy as gp
 import time
 from itertools import product
 from matplotlib.dates import DayLocator, MonthLocator, DateFormatter, AutoDateLocator, ConciseDateFormatter #, mdates
-
+import os
+os.chdir("C:/Users/ghjub/codes/MOPTA/02_model")
 #IMPORTANT TODOS:
 
 #LESS IMPORTANT TODOS:
 # -ogni tanto usiamo h e altre volte H per l'idrogeno
-#%%
+
+
 def clearvars():    
     for el in sorted(globals()):
         if '__' not in el:
@@ -108,9 +110,29 @@ class Network:
 
     def get_edgesH(self,start_node,end_node):
         return self.edgesH[self.edgesH['start_node']==start_node][self.edgesH['end_node']==end_node]
-    
 
-#%%
+    def neighbour_edgesP(self,direction, node_index):
+        """
+        Returns a list of edge indices that are connected to a given node in a specified direction.
+
+        Parameters:
+            direction (str): The direction of the edges to be retrieved. '+' for outgoing edges and '-' for incoming edges.
+            node_index (int): The index of the node in the graph.
+
+        Returns:
+            list: A list of edge indices that are connected to the given node in the specified direction.
+        """
+        if direction == '+':
+            return self.edgesP.loc[self.edgesP['start_node']==self.n.index.to_list()[node_index]].index.to_list()
+        if direction == '-':
+            return self.edgesP.loc[self.edgesP['end_node']==self.n.index.to_list()[node_index]].index.to_list()
+
+    def neighbour_edgesH(self,direction, node_index):
+        if direction == '+':
+            return self.edgesH.loc[self.edgesH['start_node']==self.n.index.to_list()[node_index]].index.to_list()
+        if direction == '-':
+            return self.edgesH.loc[self.edgesH['end_node']==self.n.index.to_list()[node_index]].index.to_list()
+
 
 #%%
 EU=pd.DataFrame([['Italy',41.90,12.48],
@@ -158,10 +180,14 @@ eu.costs = costs
 # eu.loadH[1]=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).head(4).set_index(eu.n.index)
 
 
+
+# Import scenarios
 #%%
 
 # Import scenarios
-elec_load_df = pd.read_csv('scenarios/electricity_load.csv')
+#01_scenario_generation\scenarios\electricity_load_2023.csv
+scen_path = '../01_scenario_generation/scenarios/'
+elec_load_df = pd.read_csv(scen_path+'electricity_load_2023.csv')
 elec_load_df = elec_load_df[['DateUTC', 'IT', 'ES', 'AT', 'FR']]
 time_index = range(elec_load_df.shape[0])#pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
 
@@ -170,17 +196,20 @@ elec_load_scenario = xr.DataArray(
     coords={'time': time_index, 'node': ['Italy', 'Spain', 'Austria', 'France'], 'scenario': [0]},
     dims=['time', 'node', 'scenario']
 )
-
+#%%
 scenario = 0
-wind_scenario = import_generated_scenario('scenarios/wind_scenarios.csv',4,scenario, node_names= ['Italy', 'Spain', 'Austria', 'France'])
-pv_scenario = import_generated_scenario('scenarios/PV_scenario.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
-hydrogen_demand_scenario = import_generated_scenario('scenarios/hydrogen_demandg.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
+wind_scenario = import_generated_scenario(scen_path+'wind_scenarios.csv',4,scenario, node_names= ['Italy', 'Spain', 'Austria', 'France'])
+pv_scenario = import_generated_scenario(scen_path+'PV_scenario.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
+hydrogen_demand_scenario = import_generated_scenario(scen_path+'hydrogen_demandg.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
 
 eu.genW_t = wind_scenario
 eu.genS_t = pv_scenario
 eu.loadH_t = hydrogen_demand_scenario
 eu.loadP_t = elec_load_scenario
 
+#%% to do: make time frames smaller
+
+eu.neighbour_edgesH('-', 0)
 #%% to do: make time frames smaller
 #eu.genW_t.isel(scenario = [0],node = slice(1,3)).isel(node = 0)
 eu.genW_t.shape
@@ -293,123 +322,3 @@ def OPT2(Network,
 eu.costs.shape[0]
 #outputs = OPT2(eu)
 
-#%% Ho riscritto il modello in maniera un po' più canon
-def OPT3(Network,
-         d=1,rounds=1
-         ):
-    
-    if Network.costs.shape[0] == 1: #if the costs are the same:
-        cs, cw, ch, chte, ceth, cNTC, cMH = Network.costs['cs'][0], Network.costs['cw'][0], Network.costs['ch'][0], Network.costs['chte'][0], Network.costs['ceth'][0], Network.costs['cNTC'][0], Network.costs['cMH'][0]
-    else:
-        print("add else") #actually we can define the costs appropriately using the network class directly
-    
-
-    start_time=time.time()
-    
-    Nnodes = Network.n.shape[0]
-    NPedges = Network.edgesP.shape[0]
-    NHedges = Network.edgesH.shape[0]
-    D = eu.loadP_t.shape[2] #total number of scenarios
-    inst = Network.loadP_t.shape[0] #number of time steps T
-    rounds=min(rounds,D//d)
-
-    nodes = Network.n.index.to_list()
-    scenarios = range(d)
-    time_steps = range(inst)#list(x.values for x in eu.loadP_t.coords["time"])
-    Pedges = list(zip(eu.edgesP['start_node'].to_list(),eu.edgesP['end_node'].to_list()))
-    #print(Pedges.keys())
-    Hedges = list(zip(eu.edgesH['start_node'].to_list(),eu.edgesH['end_node'].to_list()))
-    print("\nSTARTING OPT2 -- setting up model for {} batches of {} scenarios.\n".format(rounds,d))
-    
-    env = Env(params={'OutputFlag': 0})
-    model = Model(env=env)
-    model.setParam('LPWarmStart',1)
-    #model.setParam('Method',1)
-    
-    ns = model.addVars(nodes,vtype=GRB.CONTINUOUS, obj=cs,ub=Network.n['Mns'])
-    nw = model.addVars(nodes,vtype=GRB.CONTINUOUS, obj=cw,ub=Network.n['Mnw'])    
-    nh = model.addVars(nodes,vtype=GRB.CONTINUOUS, obj=ch,ub=Network.n['Mnh'])   
-    mhte = model.addVars(nodes,vtype=GRB.CONTINUOUS,obj=0.01, ub=Network.n['Mhte'])
-    meth = model.addVars(nodes,vtype=GRB.CONTINUOUS,obj=0.01,ub=Network.n['Meth'])
-    addNTC = model.addVars(Pedges,vtype=GRB.CONTINUOUS,obj=cNTC) 
-    addMH = model.addVars(Hedges,vtype=GRB.CONTINUOUS,obj=cMH) 
-    
-    HtE = model.addVars(product(scenarios,time_steps,nodes),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg      
-    EtH = model.addVars(product(scenarios,time_steps,nodes),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
-    H = model.addVars(product(scenarios,time_steps,nodes),vtype=GRB.CONTINUOUS,lb=0)
-    P_edge = model.addVars(product(scenarios,time_steps,Pedges),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY) #could make sense to sosbstitute Nodes with Network.nodes and so on Nedges with n.edgesP['start_node'],n.edgesP['end_node'] or similar
-    
-    #fai due grafi diversi
-    H_edge = model.addVars(product(scenarios,time_steps,Hedges),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY)
-
-    #todo: add starting capacity for generators (the same as for liners)
-    model.addConstrs( H[j,t,k] <= nh[k] for t in time_steps for j in scenarios for k in nodes) 
-    model.addConstrs( EtH[j,t,k] <= meth[k] for t in time_steps for j in scenarios for k in nodes)
-    model.addConstrs( HtE[j,t,k] <= mhte[k] for t in time_steps for j in scenarios for k in nodes)
-    
-    #yodo: add opposite sign constraint
-    #model.addConstrs( P_edge[j,t,(n0,n1)] <= Network.get_edgesP(n0,n1)['NTC'] + addNTC[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Pedges)
-    #model.addConstrs( H_edge[j,t,(n0,n1)] <= Network.get_edgesH(n0,n1)['NTC'] + addMH[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Hedges)
-
-    outputs=[]
-    VARS=[]
-    #todo perchè lo rimuoviamo questo?
-    cons1=model.addConstrs(nh[n]>=0 for n in nodes )#for j in range(d) for i in time_steps)
-    #todo: sobstitute 30 with a parameter
-    cons2=model.addConstrs(  H[j,t,n] - H[j,t+1,n] + 30*Network.n['feth'].loc[n]*EtH[j,t,n] - HtE[j,t,n] -  
-                           quicksum(H_edge[j,t,(n,m)] for m in nodes if (n,m) in Hedges) +
-                           quicksum(H_edge[j,t,(m,n)] for m in nodes if (m,n) in Hedges)
-                           ==0 for j in scenarios for t in time_steps[:-1] for n in nodes)
-    cons3=model.addConstrs(- H[j,0,n] + H[j,inst-1,n] + 30*Network.n['feth'].loc[n]*EtH[j,inst-1,n] - HtE[j,inst-1,n] -
-                           quicksum(H_edge[j,inst-1,(n,m)] for m in nodes if (n,m) in Hedges) +
-                           quicksum(H_edge[j,inst-1,(m,n)] for m in nodes if (m,n) in Hedges)
-                           ==0 for j in scenarios for n in nodes)
-    print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
-    
-    for group in range(rounds):
-        gr_start_time=time.time()
-
-    
-        ES = Network.genS_t.sel(scenario = slice(d*group, (d+1)*group))
-        EW = Network.genW_t.sel(scenario = slice(d*group, (d+1)*group))
-        EL = Network.loadP_t.sel(scenario = slice(d*group, (d+1)*group))
-        HL = Network.loadH_t.sel(scenario = slice(d*group, (d+1)*group))
-
-        model.remove(cons1)
-        for j in scenarios: 
-            for k in nodes:
-                for i in range(inst-1):
-                    cons2[j,i,k].rhs = HL.sel(time = i, node = k, scenario = j) #time,node,scenario or if you prefer to not remember use isel     
-                cons3[j,k].rhs  = HL.sel(time = inst-1,node = k, scenario = j)
-        
-        try:    
-            cons1=model.addConstrs(ns[n]*ES.sel(node = n)[t,j] + nw[n]*EW.sel(node = n)[t,j] + 0.033*Network.n['fhte'].loc[n]*HtE[j,t,n] - EtH[j,t,n] -
-                                quicksum(P_edge[j,t,(n,m)] for m in nodes if (n,m) in Pedges) +
-                                quicksum(P_edge[j,i,(m,n)] for m in nodes if (m,n) in Pedges) 
-                                >= EL.sel(time = t, node = n, scenario = j) for n in nodes for j in scenarios for t in time_steps)
-        except IndexError as e:
-            print(f"IndexError occurred at t={t}, n={n}, j={j}")
-            print(f"ES shape: {ES.shape}")
-            print(f"EW shape: {EW.shape}")
-            print(f"HtE shape: {HtE.shape}")
-            print(f"EtH shape: {EtH.shape}")
-            print(f"P_edge shape: {P_edge.shape}")
-            print(f"Network.n indices: {Network.n.index.to_list()}")
-            print(f"Network.edgesP start_node indices: {Network.edgesP['start_node'].index.to_list()}")
-            print(f"Network.edgesP end_node indices: {Network.edgesP['end_node'].index.to_list()}")
-            raise e  # Re-raise the exception after logging the details
-        
-        model.optimize()
-        if model.Status!=2:
-            print("Status = {}".format(model.Status))
-        else:
-            VARS=[np.ceil([ns[k].X for k in nodes]),np.ceil([nw[k].X for k in nodes]),np.ceil([nh[k].X for k in nodes]),np.ceil([mhte[k].X for k in nodes]),np.ceil([meth[k].X for k in nodes])]       
-            outputs=outputs + [VARS+[model.ObjVal]] 
-            print("Round {} of {} - opt time: {}s.".format(group+1,rounds, np.round(time.time()-gr_start_time,3)))
-            
-    return outputs#,HH,ETH,HTE
-
-
-# %% 
-results = OPT3(eu)
-# %%
