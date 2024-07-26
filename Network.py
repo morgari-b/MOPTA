@@ -37,7 +37,7 @@ def import_generated_scenario(path, nrows,  scenario, node_names = None):
 
    """
     df = pd.read_csv(path, index_col = 0).head(nrows)
-    time_index = pd.date_range('2023-01-01 00:00:00', periods=df.shape[1], freq='H')
+    time_index = range(df.shape[1])#pd.date_range('2023-01-01 00:00:00', periods=df.shape[1], freq='H')
     if node_names == None:
         node_names = df.index
 
@@ -103,10 +103,16 @@ class Network:
          # folium.PolyLine(hex,weight=5,color='blue', opacity=.2).add_to(m)
         m.save("Network.html")
 
+    def get_edgesP(self,start_node,end_node):
+        return self.edgesP[self.edgesP['start_node']==start_node][self.edgesP['end_node']==end_node]
+
+    def get_edgesH(self,start_node,end_node):
+        return self.edgesH[self.edgesH['start_node']==start_node][self.edgesH['end_node']==end_node]
     
 
 #%%
 
+#%%
 EU=pd.DataFrame([['Italy',41.90,12.48],
                 ['Spain',40.42,-3.70],
                 ['Austria',48.21,16.37],
@@ -151,12 +157,13 @@ eu.costs = costs
 # eu.genS[1]=pd.read_csv('scenarios/PV_scenario.csv',index_col=0).head(4).set_index(eu.n.index)
 # eu.loadH[1]=pd.read_csv('scenarios/hydrogen_demandg.csv',index_col=0).head(4).set_index(eu.n.index)
 
+
 #%%
 
 # Import scenarios
 elec_load_df = pd.read_csv('scenarios/electricity_load.csv')
 elec_load_df = elec_load_df[['DateUTC', 'IT', 'ES', 'AT', 'FR']]
-time_index = pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
+time_index = range(elec_load_df.shape[0])#pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
 
 elec_load_scenario = xr.DataArray(
     np.expand_dims(elec_load_df[['IT', 'ES', 'AT', 'FR']].values, axis = 2), #add one dimension to correspond with scenarios
@@ -172,7 +179,7 @@ hydrogen_demand_scenario = import_generated_scenario('scenarios/hydrogen_demandg
 eu.genW_t = wind_scenario
 eu.genS_t = pv_scenario
 eu.loadH_t = hydrogen_demand_scenario
-eu.loadE_t = elec_load_scenario
+eu.loadP_t = elec_load_scenario
 
 #%% to do: make time frames smaller
 #eu.genW_t.isel(scenario = [0],node = slice(1,3)).isel(node = 0)
@@ -193,8 +200,8 @@ def OPT2(Network,
     Nnodes = Network.n.shape[0]
     NEedges = Network.edgesP.shape[0]
     NHedges = Network.edgesH.shape[0]
-    D = eu.loadE_t.shape[2] #number of scenarios
-    inst = Network.loadE_t.shape[0] #number of time steps T
+    D = eu.loadP_t.shape[2] #number of scenarios
+    inst = Network.loadP_t.shape[0] #number of time steps T
     rounds=min(rounds,D//d)
     print("\nSTARTING OPT2 -- setting up model for {} batches of {} scenarios.\n".format(rounds,d))
     
@@ -246,7 +253,7 @@ def OPT2(Network,
     
         ES = Network.genS_t.sel(scenario = slice(d*group, (d+1)*group))
         EW = Network.genW_t.sel(scenario = slice(d*group, (d+1)*group))
-        EL = Network.loadE_t.sel(scenario = slice(d*group, (d+1)*group))
+        EL = Network.loadP_t.sel(scenario = slice(d*group, (d+1)*group))
         HL = Network.loadH_t.sel(scenario = slice(d*group, (d+1)*group))
 
         model.remove(cons1)
@@ -284,7 +291,7 @@ def OPT2(Network,
     return outputs#,HH,ETH,HTE
 # %%
 eu.costs.shape[0]
-outputs = OPT2(eu)
+#outputs = OPT2(eu)
 
 #%% Ho riscritto il modello in maniera un po' più canon
 def OPT3(Network,
@@ -302,13 +309,13 @@ def OPT3(Network,
     Nnodes = Network.n.shape[0]
     NPedges = Network.edgesP.shape[0]
     NHedges = Network.edgesH.shape[0]
-    D = eu.loadE_t.shape[2] #total number of scenarios
-    inst = Network.loadE_t.shape[0] #number of time steps T
+    D = eu.loadP_t.shape[2] #total number of scenarios
+    inst = Network.loadP_t.shape[0] #number of time steps T
     rounds=min(rounds,D//d)
 
     nodes = Network.n.index.to_list()
     scenarios = range(d)
-    time_steps = list(x.values for x in eu.loadE_t.coords["time"])
+    time_steps = range(inst)#list(x.values for x in eu.loadP_t.coords["time"])
     Pedges = list(zip(eu.edgesP['start_node'].to_list(),eu.edgesP['end_node'].to_list()))
     #print(Pedges.keys())
     Hedges = list(zip(eu.edgesH['start_node'].to_list(),eu.edgesH['end_node'].to_list()))
@@ -331,7 +338,7 @@ def OPT3(Network,
     EtH = model.addVars(product(scenarios,time_steps,nodes),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
     H = model.addVars(product(scenarios,time_steps,nodes),vtype=GRB.CONTINUOUS,lb=0)
     P_edge = model.addVars(product(scenarios,time_steps,Pedges),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY) #could make sense to sosbstitute Nodes with Network.nodes and so on Nedges with n.edgesP['start_node'],n.edgesP['end_node'] or similar
-    print(P_edge.keys())
+    
     #fai due grafi diversi
     H_edge = model.addVars(product(scenarios,time_steps,Hedges),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY)
 
@@ -339,8 +346,10 @@ def OPT3(Network,
     model.addConstrs( H[j,t,k] <= nh[k] for t in time_steps for j in scenarios for k in nodes) 
     model.addConstrs( EtH[j,t,k] <= meth[k] for t in time_steps for j in scenarios for k in nodes)
     model.addConstrs( HtE[j,t,k] <= mhte[k] for t in time_steps for j in scenarios for k in nodes)
-    #model.addConstrs( P_edge[j,t,(n0,n1)] <= Network.edgesP[eu.edgesP['end_node'] == n1][eu.edgesP['start_node'] == n0]['NTC'] + addNTC[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Pedges)
-    #model.addConstrs( H_edge[j,t,(n0,n1)] <= Network.edgesP[eu.edgesP['end_node'] == n1][eu.edgesP['start_node'] == n0]['NTC'] + addMH[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Hedges)
+    
+    #yodo: add opposite sign constraint
+    #model.addConstrs( P_edge[j,t,(n0,n1)] <= Network.get_edgesP(n0,n1)['NTC'] + addNTC[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Pedges)
+    #model.addConstrs( H_edge[j,t,(n0,n1)] <= Network.get_edgesH(n0,n1)['NTC'] + addMH[(n0,n1)] for t in time_steps for j in scenarios for (n0,n1) in Hedges)
 
     outputs=[]
     VARS=[]
@@ -363,7 +372,7 @@ def OPT3(Network,
     
         ES = Network.genS_t.sel(scenario = slice(d*group, (d+1)*group))
         EW = Network.genW_t.sel(scenario = slice(d*group, (d+1)*group))
-        EL = Network.loadE_t.sel(scenario = slice(d*group, (d+1)*group))
+        EL = Network.loadP_t.sel(scenario = slice(d*group, (d+1)*group))
         HL = Network.loadH_t.sel(scenario = slice(d*group, (d+1)*group))
 
         model.remove(cons1)
@@ -374,10 +383,10 @@ def OPT3(Network,
                 cons3[j,k].rhs  = HL.sel(time = inst-1,node = k, scenario = j)
         
         try:    
-            cons1=model.addConstrs(ns[n]*ES[t,n,j] + nw[n]*EW[t,n,j] + 0.033*Network.n['fhte'].loc[n]*HtE[j,t,n] - EtH[j,t,n] -
+            cons1=model.addConstrs(ns[n]*ES.sel(node = n)[t,j] + nw[n]*EW.sel(node = n)[t,j] + 0.033*Network.n['fhte'].loc[n]*HtE[j,t,n] - EtH[j,t,n] -
                                 quicksum(P_edge[j,t,(n,m)] for m in nodes if (n,m) in Pedges) +
                                 quicksum(P_edge[j,i,(m,n)] for m in nodes if (m,n) in Pedges) 
-                                >= EL.isel(time = t, node = n, scenario = j) for n in nodes for j in scenarios for t in time_steps)
+                                >= EL.sel(time = t, node = n, scenario = j) for n in nodes for j in scenarios for t in time_steps)
         except IndexError as e:
             print(f"IndexError occurred at t={t}, n={n}, j={j}")
             print(f"ES shape: {ES.shape}")
