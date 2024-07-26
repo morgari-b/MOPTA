@@ -11,6 +11,8 @@ VERIFICA CHE IL VECCHIO MODELLO SU NODO SINGOLO E IL NUOVO MODELLO A PIÙ NODI A
 
 """
 
+#%% import modules
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -23,8 +25,10 @@ from matplotlib.dates import DayLocator, MonthLocator, DateFormatter, AutoDateLo
 import xarray as xr
 import folium
 
+from YUPPY import OPT1, OPT2, Network
 
-#%%
+
+#%% class Network
 
 class Network:
     """
@@ -82,7 +86,7 @@ class Network:
 
 
 
-#%%
+#%% OPT1 - single node
 
 def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mnh=10**9,chte=2,fhte=0.75,Mhte=10**6,ceth=200,feth=0.7,Meth=10**5):
             
@@ -145,7 +149,7 @@ def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mn
             
     return outputs#,HH,ETH,HTE
 
-#%%
+#%% OPT2 - network
 def OPT2(Network,
          d=1,rounds=1
          ):
@@ -255,22 +259,20 @@ def OPT2(Network,
     return outputs#,HH,ETH,HTE
 
 
-#%%
+#%% prepare data for both methods
 
-ES=0.015*pd.read_csv('MOPTA/scenarios/PV_scenario100.csv',index_col=0).head(1)
-EW=4*pd.read_csv('MOPTA/scenarios/wind_scenarios.csv',index_col=0).head(1)
-EL=pd.DataFrame(450*pd.read_csv('MOPTA/scenarios/electricity_load.csv',index_col='DateUTC')['BE']).T
-HL=pd.read_csv('MOPTA/scenarios/hydrogen_demandg.csv',index_col=0).head(1)
+# data for OPT1
+
+ES=0.015*pd.read_csv('MOPTA/01_scenario_generation/scenarios/PV_scenario100.csv',index_col=0).head(1)
+EW=4*pd.read_csv('MOPTA/01_scenario_generation/scenarios/wind_scenarios.csv',index_col=0).head(1)
+EL=pd.DataFrame(450*pd.read_csv('MOPTA/01_scenario_generation/scenarios/electricity_load_2023.csv',index_col='DateUTC')['BE']).T
+HL=pd.read_csv('MOPTA/01_scenario_generation/scenarios/hydrogen_demandg.csv',index_col=0).head(1)
+
+# data for OPT2
 
 EU=pd.DataFrame([['Italy',41.90,12.48]], columns=['node','lat','long']).set_index('node')
-EU_e=pd.DataFrame(columns=['start_node','end_node'])
+EU_e=pd.DataFrame(columns=['start_node','end_node']) #empty because only one node
 EU_h=pd.DataFrame(columns=['start_node','end_node'])
-
-#ho spostato qui così è un parametro di input
-EU_e['NTC']=1000  # maximum transportation cost for electricity
-EU_h['MH']=500  # maximum transportation cost for hydrogen
-
-#ho spostato qui così è un parametro di input
 EU['Mhte']=10**6  # maximum hydrogen transport cost
 EU['Meth']=10**5  # maximum electricity transport cost
 EU['feth']=0.7  # fraction of electricity in hydrogen
@@ -278,33 +280,28 @@ EU['fhte']=0.75  # fraction of electricity in hydrogen
 EU['Mns'] = 100000
 EU['Mnw'] = 10000
 EU['Mnh'] = 10000000
-
-#costs
+EU_e['NTC']=1000  # maximum transportation cost for electricity
+EU_h['MH']=500  # maximum transportation cost for hydrogen
 costs = pd.DataFrame([["Italy",4000, 3000000, 10,2,200,1000,10000]],columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
 
 eu = Network()
-
 eu.n = EU
 eu.edgesP = EU_e
 eu.edgesH = EU_h
 eu.costs = costs
-
 eu.genW_t = xr.DataArray(np.expand_dims(EW.T.values, axis = 2), coords={'time': pd.date_range('2023-01-01 00:00:00', periods=EW.shape[1], freq='h'), 'node': ['Italy',], 'scenario': [1,]}, dims=['time', 'node', 'scenario'] )
 eu.genS_t = xr.DataArray(np.expand_dims(ES.T.values, axis = 2), coords={'time': pd.date_range('2023-01-01 00:00:00', periods=ES.shape[1], freq='h'), 'node': ['Italy',], 'scenario': [1,]}, dims=['time', 'node', 'scenario'] )
 eu.loadH_t = xr.DataArray(np.expand_dims(HL.T.values, axis = 2), coords={'time': pd.date_range('2023-01-01 00:00:00', periods=HL.shape[1], freq='h'), 'node': ['Italy',], 'scenario': [1,]}, dims=['time', 'node', 'scenario'] )
 eu.loadE_t = xr.DataArray(np.expand_dims(EL.T.values, axis = 2), coords={'time': pd.date_range('2023-01-01 00:00:00', periods=EL.shape[1], freq='h'), 'node': ['Italy',], 'scenario': [1,]}, dims=['time', 'node', 'scenario'] )
 
 
-#%%
+#%% compute results
 
 out_sing1 = OPT1(ES.to_numpy(),EW.to_numpy(),EL.to_numpy(),HL.to_numpy(),d=1,rounds=1)
-
-#%%
-
 out_sing2 = OPT2(eu)
 
 
-#%%
+#%% results
 
 """
 
@@ -339,6 +336,9 @@ Out[117]:
   array([14054.]),
   array([1028.]),
   2082491174.8506062]]
+
+
+Conclusion: on the same scenario, single node, the two methods give the same result, but the second takes much longer to compute.
 
 """
 
