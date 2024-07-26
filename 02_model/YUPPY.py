@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jul 25 19:17:17 2024
+Created on Fri Jul 26 15:05:49 2024
 
 @author: morgari
 
 
-VERIFICA CHE IL VECCHIO MODELLO SU NODO SINGOLO E IL NUOVO MODELLO A PIÙ NODI APPLICATO AD UN NODO SINGOLO COINCIDANO. RISPOSTA: SÌ COINCIDONO.
+CURRENT WORKING MODELS:
 
 
 """
-
-#%% import modules
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -25,68 +23,7 @@ from matplotlib.dates import DayLocator, MonthLocator, DateFormatter, AutoDateLo
 import xarray as xr
 import folium
 
-from YUPPY import OPT1, OPT2, Network
-
-
-#%% class Network
-
-class Network:
-    """
-    Class to represent a network of nodes and edges.
-    
-    Attributes:
-        n (pandas.DataFrame): DataFrame with index name of node, columns lat and long.
-        edgesP (pandas.DataFrame): DataFrame with columns start node and end node, start coords and end coords.
-        edgesH (pandas.DataFrame): DataFrame with columns start node and end node, start coords and end coords.
-        loadH (pandas.DataFrame): DataFrame with time dependent variables for hydrogen.
-        loadE (pandas.DataFrame): DataFrame with time dependent variables for electricity.
-        genW (pandas.DataFrame): DataFrame with time dependent variables for wind.
-        genS (pandas.DataFrame): DataFrame with time dependent variables for solar.
-    """
-    
-    def __init__(self):
-        """
-        Initialize a Network object.
-        
-        Parameters:
-            nodes (pandas.DataFrame): DataFrame with index name of node, columns lat and long.
-            edgesP (pandas.DataFrame): DataFrame with columns start node and end node, start coords and end coords.
-            edgesH (pandas.DataFrame): DataFrame with columns start node and end node, start coords and end coords.
-        """
-        self.n=pd.DataFrame(columns=['node','lat','long']).set_index('node')
-        # nodes = pd.DataFrame with index name of node, columns lat and long.
-        self.edgesP=pd.DataFrame(columns=['start_node','end_node'])
-        self.edgesH=pd.DataFrame(columns=['start_node','end_node'])
-        # edges = pd.DataFrame with columns start node and end node, start coords and end coords.
-       
-        self.costs = pd.DataFrame(columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
-  
-    
-    def plot(self):
-        """
-        Plot the network using folium.
-        """
-        loc = [self.n['lat'].mean(), self.n["long"].mean()]
-        m = folium.Map(location=loc, zoom_start=5, tiles='CartoDB positron')
-        
-        for node in self.n.index.to_list():
-            folium.Marker(
-                location=(self.n.loc[node, 'lat'],self.n.loc[node, 'long']),
-                icon=folium.Icon(color="green"),
-            ).add_to(m)
-        for edge in self.edgesP.index.to_list():
-            start_node, end_node = self.edgesP.loc[edge,'start_node'],self.edgesP.loc[edge,'end_node']
-            start_loc, end_loc = (self.n.loc[start_node, 'lat'],self.n.loc[start_node, 'long']),(self.n.loc[end_node, 'lat'],self.n.loc[end_node, 'long'])
-            folium.PolyLine([start_loc,end_loc],weight=5,color='blue', opacity=.2).add_to(m)
-        
-        #A=[[[elem[1],elem[0]] for elem in list(x.exterior.coords)] for x in list(data_hex2['geometry'])]
-        #for hex in A:
-         # folium.PolyLine(hex,weight=5,color='blue', opacity=.2).add_to(m)
-        m.save("Network.html")
-
-
-
-#%% OPT1 - single node
+#%% SINGLE NODE
 
 def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mnh=10**9,chte=2,fhte=0.75,Mhte=10**6,ceth=200,feth=0.7,Meth=10**5):
             
@@ -149,7 +86,65 @@ def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mn
             
     return outputs#,HH,ETH,HTE
 
-#%% OPT2 - network
+
+#%% def class Network
+
+class Network:
+    """
+    Class to represent a network of nodes and edges.
+    
+    Attributes:
+        n (pandas.DataFrame): DataFrame with index name of node, columns lat and long.
+        edgesP (pandas.DataFrame): DataFrame with columns start node and end node, start coords and end coords.
+        edgesH (pandas.DataFrame): DataFrame with columns start node and end node, start coords and end coords.
+        loadH (pandas.DataFrame): DataFrame with time dependent variables for hydrogen.
+        loadE (pandas.DataFrame): DataFrame with time dependent variables for electricity.
+        genW (pandas.DataFrame): DataFrame with time dependent variables for wind.
+        genS (pandas.DataFrame): DataFrame with time dependent variables for solar.
+    """
+    
+    def __init__(self):
+        """
+        Initialize a Network object.
+        
+        Parameters:
+            nodes (pandas.DataFrame): DataFrame with index name of node, columns lat and long.
+            edgesP (pandas.DataFrame): DataFrame with columns start node and end node, start coords and end coords.
+            edgesH (pandas.DataFrame): DataFrame with columns start node and end node, start coords and end coords.
+        """
+        self.n=pd.DataFrame(columns=['node','lat','long']).set_index('node')
+        # nodes = pd.DataFrame with index name of node, columns lat and long.
+        self.edgesP=pd.DataFrame(columns=['start_node','end_node'])
+        self.edgesH=pd.DataFrame(columns=['start_node','end_node'])
+        # edges = pd.DataFrame with columns start node and end node, start coords and end coords.
+       
+        self.costs = pd.DataFrame(columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
+  
+    
+    def plot(self):
+        """
+        Plot the network using folium.
+        """
+        loc = [self.n['lat'].mean(), self.n["long"].mean()]
+        m = folium.Map(location=loc, zoom_start=5, tiles='CartoDB positron')
+        
+        for node in self.n.index.to_list():
+            folium.Marker(
+                location=(self.n.loc[node, 'lat'],self.n.loc[node, 'long']),
+                icon=folium.Icon(color="green"),
+            ).add_to(m)
+        for edge in self.edgesP.index.to_list():
+            start_node, end_node = self.edgesP.loc[edge,'start_node'],self.edgesP.loc[edge,'end_node']
+            start_loc, end_loc = (self.n.loc[start_node, 'lat'],self.n.loc[start_node, 'long']),(self.n.loc[end_node, 'lat'],self.n.loc[end_node, 'long'])
+            folium.PolyLine([start_loc,end_loc],weight=5,color='blue', opacity=.2).add_to(m)
+        
+        #A=[[[elem[1],elem[0]] for elem in list(x.exterior.coords)] for x in list(data_hex2['geometry'])]
+        #for hex in A:
+         # folium.PolyLine(hex,weight=5,color='blue', opacity=.2).add_to(m)
+        m.save("Network.html")
+
+#%% OPT2 - Network
+
 def OPT2(Network,
          d=1,rounds=1
          ):
@@ -257,89 +252,3 @@ def OPT2(Network,
             print("Round {} of {} - opt time: {}s.".format(group+1,rounds, np.round(time.time()-gr_start_time,3)))
             
     return outputs#,HH,ETH,HTE
-
-
-#%% prepare data for both methods
-
-# data for OPT1
-
-ES=0.015*pd.read_csv('MOPTA/01_scenario_generation/scenarios/PV_scenario100.csv',index_col=0).head(1)
-EW=4*pd.read_csv('MOPTA/01_scenario_generation/scenarios/wind_scenarios.csv',index_col=0).head(1)
-EL=pd.DataFrame(450*pd.read_csv('MOPTA/01_scenario_generation/scenarios/electricity_load_2023.csv',index_col='DateUTC')['BE']).T
-HL=pd.read_csv('MOPTA/01_scenario_generation/scenarios/hydrogen_demandg.csv',index_col=0).head(1)
-
-# data for OPT2
-
-EU=pd.DataFrame([['Italy',41.90,12.48]], columns=['node','lat','long']).set_index('node')
-EU_e=pd.DataFrame(columns=['start_node','end_node']) #empty because only one node
-EU_h=pd.DataFrame(columns=['start_node','end_node'])
-EU['Mhte']=10**6  # maximum hydrogen transport cost
-EU['Meth']=10**5  # maximum electricity transport cost
-EU['feth']=0.7  # fraction of electricity in hydrogen
-EU['fhte']=0.75  # fraction of electricity in hydrogen
-EU['Mns'] = 100000
-EU['Mnw'] = 10000
-EU['Mnh'] = 10000000
-EU_e['NTC']=1000  # maximum transportation cost for electricity
-EU_h['MH']=500  # maximum transportation cost for hydrogen
-costs = pd.DataFrame([["Italy",4000, 3000000, 10,2,200,1000,10000]],columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
-
-eu = Network()
-eu.n = EU
-eu.edgesP = EU_e
-eu.edgesH = EU_h
-eu.costs = costs
-eu.genW_t = xr.DataArray(np.expand_dims(EW.T.values, axis = 2), coords={'time': pd.date_range('2023-01-01 00:00:00', periods=EW.shape[1], freq='h'), 'node': ['Italy',], 'scenario': [1,]}, dims=['time', 'node', 'scenario'] )
-eu.genS_t = xr.DataArray(np.expand_dims(ES.T.values, axis = 2), coords={'time': pd.date_range('2023-01-01 00:00:00', periods=ES.shape[1], freq='h'), 'node': ['Italy',], 'scenario': [1,]}, dims=['time', 'node', 'scenario'] )
-eu.loadH_t = xr.DataArray(np.expand_dims(HL.T.values, axis = 2), coords={'time': pd.date_range('2023-01-01 00:00:00', periods=HL.shape[1], freq='h'), 'node': ['Italy',], 'scenario': [1,]}, dims=['time', 'node', 'scenario'] )
-eu.loadE_t = xr.DataArray(np.expand_dims(EL.T.values, axis = 2), coords={'time': pd.date_range('2023-01-01 00:00:00', periods=EL.shape[1], freq='h'), 'node': ['Italy',], 'scenario': [1,]}, dims=['time', 'node', 'scenario'] )
-
-
-#%% compute results
-
-out_sing1 = OPT1(ES.to_numpy(),EW.to_numpy(),EL.to_numpy(),HL.to_numpy(),d=1,rounds=1)
-out_sing2 = OPT2(eu)
-
-
-#%% results
-
-"""
-
-STARTING OPT1 -- setting up model for 1 batches of 1 scenarios.
-
-OPT Model has been set up, this took  0.3647 s.
-Round 1 of 1 - opt time: 1.035s.
-
-
-
-STARTING OPT2 -- setting up model for 1 batches of 1 scenarios.
-
-OPT Model has been set up, this took  2.4534 s.
-Round 1 of 1 - opt time: 14.222s.
-
-
-
-out_sing1
-Out[118]: 
-[[87328.0,
-  451.0,
-  3333390.141516082,
-  14053.347524572586,
-  1027.2159299583018,
-  2082491174.8506062]]
-
-out_sing2
-Out[117]: 
-[[array([87328.]),
-  array([451.]),
-  array([3333391.]),
-  array([14054.]),
-  array([1028.]),
-  2082491174.8506062]]
-
-
-Conclusion: on the same scenario, single node, the two methods give the same result, but the second takes much longer to compute.
-
-"""
-
-
