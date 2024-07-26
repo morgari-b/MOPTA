@@ -10,7 +10,7 @@ CURRENT WORKING MODELS:
 
 
 """
-
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -19,12 +19,41 @@ from gurobipy import Model, GRB, Env, quicksum
 import time
 from itertools import product
 from matplotlib.dates import DayLocator, MonthLocator, DateFormatter, AutoDateLocator, ConciseDateFormatter #mdates
-
+import os
+#os.chdir("C:/Users/ghjub/codes/MOPTA/02_model")
 import xarray as xr
 import folium
 
 #%% SINGLE NODE
 
+#LESS IMPORTANT:
+# give name to constriants
+#todo: da spostrare in uno script più sensato
+def import_generated_scenario(path, nrows,  scenario, node_names = None):
+    """
+    Import a generated scenario from a CSV file.
+    Args:            
+        path (str): The path to the CSV file.
+        nrows (int): The number of rows to read from the CSV file (generally the number of nodes).
+        scenario (str): The name of the scenario.
+        nodes (list): list of str containing the name of the noddes
+    Returns:
+        xr.DataArray: The imported scenario as a DataArray with dimensions 'time', 'node', and 'scenario'.
+            The 'time' dimension represents the time index, the 'node' dimension represents the nodes, and the 'scenario'
+            dimension represents the scenario name.
+
+   """
+    df = pd.read_csv(path, index_col = 0).head(nrows)
+    time_index = range(df.shape[1])#pd.date_range('2023-01-01 00:00:00', periods=df.shape[1], freq='H')
+    if node_names == None:
+        node_names = df.index
+
+    scenario = xr.DataArray(
+        np.expand_dims(df.T.values, axis = 2),
+        coords={'time': time_index, 'node': node_names, 'scenario': [scenario]},
+        dims=['time', 'node', 'scenario']
+    )
+    return scenario
 def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mnh=10**9,chte=2,fhte=0.75,Mhte=10**6,ceth=200,feth=0.7,Meth=10**5):
             
     start_time=time.time()
@@ -142,8 +171,152 @@ class Network:
         #for hex in A:
          # folium.PolyLine(hex,weight=5,color='blue', opacity=.2).add_to(m)
         m.save("Network.html")
+    def neighbour_edgesP(self,direction, node_index):
+        """
+        Returns a list of edge indices that are connected to a given node in a specified direction.
+
+        Parameters:
+            direction (str): The direction of the edges to be retrieved. '+' for outgoing edges and '-' for incoming edges.
+            node_index (int): The index of the node in the graph.
+
+        Returns:
+            list: A list of edge indices that are connected to the given node in the specified direction.
+        """
+        if direction == '+':
+            return self.edgesP.loc[self.edgesP['start_node']==self.n.index.to_list()[node_index]].index.to_list()
+        if direction == '-':
+            return self.edgesP.loc[self.edgesP['end_node']==self.n.index.to_list()[node_index]].index.to_list()
+
+    def neighbour_edgesH(self,direction, node_index):
+        if direction == '+':
+            return self.edgesH.loc[self.edgesH['start_node']==self.n.index.to_list()[node_index]].index.to_list()
+        if direction == '-':
+            return self.edgesH.loc[self.edgesH['end_node']==self.n.index.to_list()[node_index]].index.to_list()
+
+
+# %%
+class time_aggregator:
+    def aggregate(self,l, i0,i1):
+        """
+        Aggregates a list into sublists based on the given indices.
+
+        Args:
+            l (list): The list to be aggregated.
+            i0 (int): The starting index of the sublist.
+            i1 (int): The ending index of the sublist.
+
+        Returns:
+            list: The aggregated list with sublists.
+        """
+        if i0 == 0:
+            return [l[i0:i1]]+ l[i1:]
+        elif i1 == len(l):
+            return l[0:i0]+[l[i0:i1]]
+        elif i0 == i1:
+            return l
+        else:
+            return l[0:i0]+[l[i0:i1]]+ l[i1:]
+    def disaggregate(self,l,i):
+        if type(l[i]) is list:
+            return l[0:i] + l[i] + l[i+1:]
+        else:
+            return l  
+
+    def initial_aggregation(self):
+        l = self.time_steps
+        n_days = int(np.floor(self.T / 24))
+        for day in range(n_days): #ragruppo i giorni
+            l = self.aggregate(l, day, day + 24)
+        
+       
+        season = int(np.floor(n_days /10))  #mettiamo 10 giorni interi per intero
+        for i in range(10):
+            print(i)
+            print(l)
+            l = self.disaggregate(l, i * season + 23*i)
+        return l
+
+    def __init__(self,T):
+        self.T=T
+        self.time_steps = list(range(T))
+        self.agg = self.initial_aggregation() #define initial aggregation
+    
+# %%
+agg = time_aggregator(30*24)
+
+# %%
 
 #%% OPT2 - Network
+def EU():
+    """
+    Initializes a network object for the European Union.
+
+    This function creates a network object for the European Union by initializing the necessary attributes. It sets the index of the 'EU' DataFrame to 'node' and assigns values to the 'Mhte', 'Meth', 'feth', 'fhte', 'Mns', 'Mnw', 'Mnh' columns. It also creates two DataFrames, 'EU_e' and 'EU_h', with columns 'start_node' and 'end_node'. The 'EU_e' and 'EU_h' DataFrames are assigned values to the 'NTC' and 'MH' columns respectively. Finally, it creates a 'costs' DataFrame with columns 'node', 'cs', 'cw', 'ch', 'chte', 'ceth', 'cNTC', and 'cMH'.
+
+    Returns:
+        None
+    """
+ 
+    EU=pd.DataFrame([['Italy',41.90,12.48],
+                    ['Spain',40.42,-3.70],
+                    ['Austria',48.21,16.37],
+                    ['France',48.86,2.35]], 
+                    columns=['node','lat','long']).set_index('node')
+                
+    #ho spostato qui così è un parametro di input
+    EU['Mhte']=10**6  # maximum hydrogen transport cost
+    EU['Meth']=10**5  # maximum electricity transport cost
+    EU['feth']=0.7  # fraction of electricity in hydrogen
+    EU['fhte']=0.75  # fraction of electricity in hydrogen
+    EU['Mns'] = 10000
+    EU['Mnw'] = 10000
+    EU['Mnh'] = 10000
+
+    EU_e=pd.DataFrame([  ['France','Italy'],
+                        ['Austria','Italy'],
+                        ['France','Spain'],
+                        ['France','Austria']  ],columns=['start_node','end_node'])
+
+    EU_h=pd.DataFrame([  ['France','Italy'],
+                        ['Austria','Italy'],
+                        ['France','Spain'],
+                        ['France','Austria']  ],columns=['start_node','end_node'])
+
+    #ho spostato qui così è un parametro di input
+    EU_e['NTC']=1000  # maximum transportation cost for electricity
+    EU_h['MH']=500  # maximum transportation cost for hydrogen
+
+    #costs
+    costs = pd.DataFrame([["All",4000, 3000000, 10,2,200,1000,10000]],columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
+    eu = Network()
+    eu.n = EU
+    eu.edgesP = EU_e
+    eu.edgesH = EU_h
+    eu.costs = costs
+
+    # Import scenarios
+    #01_scenario_generation\scenarios\electricity_load_2023.csv
+    scen_path = '../01_scenario_generation/scenarios/'
+    elec_load_df = pd.read_csv(scen_path+'electricity_load_2023.csv')
+    elec_load_df = elec_load_df[['DateUTC', 'IT', 'ES', 'AT', 'FR']]
+    time_index = range(elec_load_df.shape[0])#pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
+
+    elec_load_scenario = xr.DataArray(
+        np.expand_dims(elec_load_df[['IT', 'ES', 'AT', 'FR']].values, axis = 2), #add one dimension to correspond with scenarios
+        coords={'time': time_index, 'node': ['Italy', 'Spain', 'Austria', 'France'], 'scenario': [0]},
+        dims=['time', 'node', 'scenario']
+    )
+    
+    scenario = 0
+    wind_scenario = import_generated_scenario(scen_path+'wind_scenarios.csv',4,scenario, node_names= ['Italy', 'Spain', 'Austria', 'France'])
+    pv_scenario = import_generated_scenario(scen_path+'PV_scenario.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
+    hydrogen_demand_scenario = import_generated_scenario(scen_path+'hydrogen_demandg.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
+
+    eu.genW_t = wind_scenario
+    eu.genS_t = pv_scenario
+    eu.loadH_t = hydrogen_demand_scenario
+    eu.loadP_t = elec_load_scenario
+    return eu
 
 def OPT2(Network,
          d=1,rounds=1
@@ -159,8 +332,8 @@ def OPT2(Network,
     Nnodes = Network.n.shape[0]
     NEedges = Network.edgesP.shape[0]
     NHedges = Network.edgesH.shape[0]
-    D = Network.loadE_t.shape[2] #number of scenarios
-    inst = Network.loadE_t.shape[0] #number of time steps T
+    D = Network.loadP_t.shape[2] #number of scenarios
+    inst = Network.loadP_t.shape[0] #number of time steps T
     rounds=min(rounds,D//d)
     print("\nSTARTING OPT2 -- setting up model for {} batches of {} scenarios.\n".format(rounds,d))
     
@@ -209,14 +382,10 @@ def OPT2(Network,
     for group in range(rounds):
         gr_start_time=time.time()
 
-        # PER GABOR!!!!
-        # così sto prendendo gli stati non gli scenari vanno messi i nodi.
-        # idea: cambia struttura di Network.loadE etc dipendenti dal tempo in modo da avere i paesi come colonna e un'altra colonna con "scenario"
-        # così da avere semplicemente più righe con gli scenari per ogni paese.
-        # aggiusta qui usando lo stesso trucchetto di sotto con ==.
+       
         ES = Network.genS_t.sel(scenario = slice(d*group, d*(group+1)))
         EW = Network.genW_t.sel(scenario = slice(d*group, d*(group+1)))
-        EL = Network.loadE_t.sel(scenario = slice(d*group, d*(group+1)))
+        EL = Network.loadP_t.sel(scenario = slice(d*group, d*(group+1)))
         HL = Network.loadH_t.sel(scenario = slice(d*group, d*(group+1)))
 
         model.remove(cons1)
@@ -252,3 +421,104 @@ def OPT2(Network,
             print("Round {} of {} - opt time: {}s.".format(group+1,rounds, np.round(time.time()-gr_start_time,3)))
             
     return outputs#,HH,ETH,HTE
+
+# %%
+
+def OPT3(Network):
+    if Network.costs.shape[0] == 1: #if the costs are the same:
+        cs, cw, ch, chte, ceth, cNTC, cMH = Network.costs['cs'][0], Network.costs['cw'][0], Network.costs['ch'][0], Network.costs['chte'][0], Network.costs['ceth'][0], Network.costs['cNTC'][0], Network.costs['cMH'][0]
+    else:
+        print("add else") #actually we can define the costs appropriately using the network class directly
+    
+
+    start_time=time.time()
+    Nnodes = Network.n.shape[0]
+    NEedges = Network.edgesP.shape[0]
+    NHedges = Network.edgesH.shape[0]
+    d = Network.loadP_t.shape[2] #number of scenarios
+    inst = Network.loadP_t.shape[0] #number of time steps T
+    
+    env = Env(params={'OutputFlag': 0})
+    model = Model(env=env)
+    model.setParam('LPWarmStart',1)
+    #model.setParam('Method',1)
+    
+    ns = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=cs,ub=Network.n['Mns'])
+    nw = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=cw,ub=Network.n['Mnw'])    
+    nh = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=ch,ub=Network.n['Mnh'])   
+    mhte = model.addVars(Nnodes,vtype=GRB.CONTINUOUS,obj=0.01, ub=Network.n['Mhte'])
+    meth = model.addVars(Nnodes,vtype=GRB.CONTINUOUS,obj=0.01,ub=Network.n['Meth'])
+    addNTC = model.addVars(NEedges,vtype=GRB.CONTINUOUS,obj=cNTC) 
+    addMH = model.addVars(NHedges,vtype=GRB.CONTINUOUS,obj=cMH) 
+    
+    HtE = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg      
+    EtH = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
+    H = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS,lb=0)
+    P_edge = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY) #could make sense to sosbstitute Nodes with Network.nodes and so on Nedges with n.edgesP['start_node'],n.edgesP['end_node'] or similar
+    #fai due grafi diversi
+    H_edge = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY)
+
+    #todo: add starting capacity for generators (the same as for liners)
+    model.addConstrs( H[j,i,k] <= nh[k] for i in range(inst) for j in range(d) for k in range(Nnodes)) 
+    model.addConstrs( EtH[j,i,k] <= meth[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
+    model.addConstrs( HtE[j,i,k] <= mhte[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
+    model.addConstrs( P_edge[j,i,k] <= Network.edgesP['NTC'].iloc[k] + addNTC[k] for i in range(inst) for j in range(d) for k in range(NEedges))
+    model.addConstrs( H_edge[j,i,k] <= Network.edgesH['MH'].iloc[k] + addMH[k] for i in range(inst) for j in range(d) for k in range(NHedges))
+
+    outputs=[]
+    VARS=[]
+    #todo perchè lo rimuoviamo questo?
+    cons1=model.addConstrs(nh[k]>=0 for k in range(Nnodes) )#for j in range(d) for i in range(inst))
+    #todo: sobstitute 30 with a parameter
+    cons2=model.addConstrs(- H[j,i+1,k] + H[j,i,k] + 30*Network.n['feth'].iloc[k]*EtH[j,i,k] - HtE[j,i,k] -  
+                           quicksum(H_edge[j,i,l] for l in Network.edgesH.loc[Network.edgesH['start_node']==Network.n.index.to_list()[k]].index.to_list()) +
+                           quicksum(H_edge[j,i,l] for l in Network.edgesH.loc[Network.edgesH['end_node']==Network.n.index.to_list()[k]].index.to_list())
+                           ==0 for j in range(d) for i in range(inst-1) for k in range(Nnodes))
+    cons3=model.addConstrs(- H[j,0,k] + H[j,inst-1,k] + 30*Network.n['feth'].iloc[k]*EtH[j,inst-1,k] - HtE[j,inst-1,k] -
+                           quicksum(H_edge[j,inst-1,l] for l in Network.edgesH.loc[Network.edgesH['start_node']==Network.n.index.to_list()[k]].index.to_list()) +
+                           quicksum(H_edge[j,inst-1,l] for l in Network.edgesH.loc[Network.edgesH['end_node']==Network.n.index.to_list()[k]].index.to_list())
+                           ==0 for j in range(d) for k in range(Nnodes))
+    print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
+    
+    
+    
+    ES = Network.genS_t
+    EW = Network.genW_t
+    EL = Network.loadP_t
+    HL = Network.loadH_t
+
+    model.remove(cons1)
+    for j in range(d): 
+        for k in range(Nnodes):
+            for i in range(inst-1):
+                cons2[j,i,k].rhs = HL[i,k,j] #time,node,scenario or if you prefer to not remember use isel     
+            cons3[j,k].rhs  = HL[inst-1,k,j]
+    
+    try:    
+        cons1=model.addConstrs(ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j] + 0.033*Network.n['fhte'].iloc[k]*HtE[j,i,k] - EtH[j,i,k] -
+                            quicksum(P_edge[j,i,l] for l in Network.edgesP.loc[Network.edgesP['start_node']==Network.n.index.to_list()[k]].index.to_list()) +
+                            quicksum(P_edge[j,i,l] for l in Network.edgesP.loc[Network.edgesP['end_node']==Network.n.index.to_list()[k]].index.to_list()) 
+                            >= EL[i,k,j] for k in range(Nnodes) for j in range(d) for i in range(inst))
+    except IndexError as e:
+        print(f"IndexError occurred at i={i}, j={j}, k={k}")
+        print(f"ES shape: {ES.shape}")
+        print(f"EW shape: {EW.shape}")
+        print(f"HtE shape: {HtE.shape}")
+        print(f"EtH shape: {EtH.shape}")
+        print(f"P_edge shape: {P_edge.shape}")
+        print(f"Network.n indices: {Network.n.index.to_list()}")
+        print(f"Network.edgesP start_node indices: {Network.edgesP['start_node'].index.to_list()}")
+        print(f"Network.edgesP end_node indices: {Network.edgesP['end_node'].index.to_list()}")
+        raise e  # Re-raise the exception after logging the details
+    
+    model.optimize()
+    if model.Status!=2:
+        print("Status = {}".format(model.Status))
+    else:
+        VARS=[np.ceil([ns[k].X for k in range(Nnodes)]),np.ceil([nw[k].X for k in range(Nnodes)]),np.array([nh[k].X for k in range(Nnodes)]),np.array([mhte[k].X for k in range(Nnodes)]),np.array([meth[k].X for k in range(Nnodes)])]       
+        outputs=outputs + [VARS+[model.ObjVal]] 
+        print("opt time: {}s.".format(np.round(time.time()-start_time,3)))
+            
+    return outputs#,HH,ETH,HTE
+
+# %%
