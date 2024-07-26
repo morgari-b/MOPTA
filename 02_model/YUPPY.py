@@ -24,7 +24,7 @@ import os
 import xarray as xr
 import folium
 
-#%% SINGLE NODE
+#%% import_generated_scenario
 
 #LESS IMPORTANT:
 # give name to constriants
@@ -55,7 +55,7 @@ def import_generated_scenario(path, nrows,  scenario, node_names = None):
     )
     return scenario
 
-
+#%% OPT1 - single node
 def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mnh=10**9,chte=2,fhte=0.75,Mhte=10**6,ceth=200,feth=0.7,Meth=10**5):
             
     start_time=time.time()
@@ -118,7 +118,7 @@ def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mn
     return outputs#,HH,ETH,HTE
 
 
-#%% def class Network
+#%% class Network
 
 class Network:
     """
@@ -205,7 +205,7 @@ class Network:
             return self.edgesH.loc[self.edgesH['end_node']==self.n.index.to_list()[node_index]].index.to_list()
 
 
-# %%
+# %% class time aggregator
 class time_aggregator:
     def aggregate(self,l, i0,i1):
         """
@@ -252,11 +252,7 @@ class time_aggregator:
         self.time_steps = list(range(T))
         self.agg = self.initial_aggregation() #define initial aggregation
     
-# %%
-agg = time_aggregator(30*24)
-
-
-#%% OPT2 - Network
+#%% EU
 def EU():
     """
     Initializes a network object for the European Union.
@@ -328,6 +324,7 @@ def EU():
     eu.loadP_t = elec_load_scenario
     return eu
 
+#%% OPT2
 def OPT2(Network, d=1,rounds=1,long_outs=False):
     
     if Network.costs.shape[0] == 1: #if the costs are the same:
@@ -452,7 +449,7 @@ def OPT2(Network, d=1,rounds=1,long_outs=False):
         return outputs, HX, EtHX, HtEX, P_edgeX,H_edgeX
 
 
-# %%
+# %% OPT3
 
 def OPT3(Network):
     if Network.costs.shape[0] == 1: #if the costs are the same:
