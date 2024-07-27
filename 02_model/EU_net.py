@@ -85,3 +85,5 @@ def EU():
     eu.add_scenarios(wind_scenario, pv_scenario, hydrogen_demand_scenario, elec_load_scenario)
     return eu
 
+
+# %%
