@@ -81,9 +81,7 @@ def EU():
     pv_scenario = import_generated_scenario(scen_path+'PV_scenario.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
     hydrogen_demand_scenario = import_generated_scenario(scen_path+'hydrogen_demandg.csv',4, scenario, node_names=['Italy', 'Spain', 'Austria', 'France'])
 
-    eu.genW_t = wind_scenario
-    eu.genS_t = pv_scenario
-    eu.loadH_t = hydrogen_demand_scenario
-    eu.loadP_t = elec_load_scenario
+
+    eu.add_scenarios(wind_scenario, pv_scenario, hydrogen_demand_scenario, elec_load_scenario)
     return eu
 

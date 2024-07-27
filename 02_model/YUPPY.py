@@ -119,7 +119,75 @@ def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mn
 
 
 #%% class Network
+class time_partition:
+    def aggregate(self,l, i0,i1):
+        """
+        Aggregates a list into sublists based on the given indices.
 
+        Args:
+            l (list): The list to be aggregated.
+            i0 (int): The starting index of the sublist.
+            i1 (int): The ending index of the sublist.
+
+        Returns:
+            list: The aggregated list with sublists.
+        """
+        if i0 == 0:
+            return [l[i0:i1]]+ l[i1:]
+        elif i1 == len(l):
+            return l[0:i0]+[l[i0:i1]]
+        elif i0 == i1:
+            return l
+        else:
+            return l[0:i0]+[l[i0:i1]]+ l[i1:]
+    def disaggregate(self,l,i):
+        if type(l[i]) is list:
+            return l[0:i] + l[i] + l[i+1:]
+        else:
+            return l  
+
+    def initial_aggregation(self):
+        l = self.time_steps
+        n_days = int(np.floor(self.T / 24))
+        for day in range(n_days): #ragruppo i giorni
+            l = self.aggregate(l, day, day + 24)
+        
+       
+        season = int(np.floor(n_days /10))  #mettiamo 10 giorni interi per intero
+        for i in range(10):
+            l = self.disaggregate(l, i * season + 23*i)
+        return l
+
+    def __init__(self,T):
+        self.T=T
+        self.time_steps = list(range(T))
+        self.agg = self.initial_aggregation() #define initial aggregation
+
+    def len(self,i):
+        if type(self.agg[i]) is list:
+            return len(self.agg[i])
+        else:
+            return 1
+
+def df_aggregator(df, time_partition):
+    """
+    Aggregates the data in the given DataFrame `df` based on the time aggregation specified in `agg_time`.
+    In particular it sums the coordinatees found in the same time interbals in time_partition together
+    Parameters:
+        df (xarray.DataArray): The DataFrame containing the data to be aggregated.
+        time_partition (list): A list of time aggregation specifications. Each element in the list can be either a single time value or a list of time values.
+            
+    """
+    summed_df = []
+    for t in time_partition:
+        if type(t) is list:
+            summed_df.append(df.sel(time = t).sum(dim='time'))
+        else:
+            summed_df.append(df.sel(time = t).drop_vars('time', errors='ignore'))
+
+    add_df = xr.concat(summed_df, dim = 'time', coords = 'minimal', compat = 'override').assign_coords(time = ('time', range(len(time_partition))))
+
+    return add_df
 class Network:
     """
     Class to represent a network of nodes and edges.
@@ -150,8 +218,35 @@ class Network:
         # edges = pd.DataFrame with columns start node and end node, start coords and end coords.
        
         self.costs = pd.DataFrame(columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
-  
+
+    def add_scenarios(self, wind_scenario, pv_scenario, hydrogen_demand_scenario, elec_load_scenario):
+        self.genW_t = wind_scenario
+        self.genS_t = pv_scenario
+        self.loadH_t = hydrogen_demand_scenario
+        self.loadP_t = elec_load_scenario
+
+        self.T = self.genW_t.shape[0]
+        self.d = self.genW_t.shape[2]
+    def init_time_partition(self):
+        """
+        Initializes the time partition for the Network.
+        This method creates a `time_partition` object using the `time_partition` class and assigns it to the `self.time_partition` attribute. It then retrieves the aggregation specification from the `agg` attribute of the `time_partition` object.
+        The method then uses the `df_aggregator` function to aggregate the `genW_t`, `genS_t`, `loadH_t`, and `loadP_t` attributes of the `self` object based on the aggregation specification. The aggregated data is assigned to the corresponding attributes of the `self` object.
+        """
+        self.time_partition = time_partition(self.T)
+        agg = self.time_partition.agg
+        self.genW_t_agg = df_aggregator(self.genW_t, agg)
+        self.genS_t_agg = df_aggregator(self.genS_t, agg)
+        self.loadH_t_agg = df_aggregator(self.loadH_t, agg)
+        self.loadP_t_agg = df_aggregator(self.loadP_t, agg)
     
+    def update_time_partition(self):
+        agg = self.time_partition.agg
+        self.genW_t_agg = df_aggregator(self.genW_t, agg)
+        self.genS_t_agg = df_aggregator(self.genS_t, agg)
+        self.loadH_t_agg = df_aggregator(self.loadH_t, agg)
+        self.loadP_t_agg = df_aggregator(self.loadP_t, agg)
+
     def plot(self):
         """
         Plot the network using folium.
@@ -174,8 +269,6 @@ class Network:
          # folium.PolyLine(hex,weight=5,color='blue', opacity=.2).add_to(m)
         m.save("Network.html")
 
-    def T(self):
-        return self.genW_t.shape[0]
     def get_edgesP(self,start_node,end_node):
         return self.edgesP[self.edgesP['start_node']==start_node][self.edgesP['end_node']==end_node]
 
