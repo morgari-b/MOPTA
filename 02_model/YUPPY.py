@@ -147,7 +147,7 @@ class time_partition:
         if type(l[i]) is list:
             return l[0:i] + l[i] + l[i+1:]
         else:
-            return l  
+            raise ValueError(f"{l[i]} is not a list and cannot be disaggregated")
 
     def initial_aggregation(self):
         l = self.time_steps
@@ -165,6 +165,7 @@ class time_partition:
         self.time_steps = list(range(T))
         self.agg = self.initial_aggregation() #define initial aggregation
         self.old_agg = []
+        self.family_tree = [] #list of lists of intervals splitted in some way (todo? become a dictionary mapping which interval in splitted into which intervals)
 
     def len(self,i):
         if type(self.agg[i]) is list:
@@ -174,11 +175,16 @@ class time_partition:
 
     def iter_partition(self,k=1):
         self.old_agg += [self.agg.copy()]
+        family_list = []
         for _ in range(k):
             tp = self.agg
             agg_indices = [i for i in range(len(tp)) if type(tp[i]) is list] #get index of aggregate intervals
             rand_ind = agg_indices[np.random.randint(len(agg_indices))] #get random index
+            new_int =self.agg[rand_ind]
             self.agg = self.disaggregate(self.agg,rand_ind)
+            family_list += [new_int]
+        self.family_tree += [family_list]
+
 
         
         
@@ -449,7 +455,7 @@ def OPT2(Network, d=1,rounds=1,long_outs=False):
 
 def OPT3(Network):
     """
-    Basically OP" but without grouping.
+    Basically OPT2 but without grouping over scenarios.
     """
     if Network.costs.shape[0] == 1: #if the costs are the same:
         cs, cw, ch, chte, ceth, cNTC, cMH = Network.costs['cs'][0], Network.costs['cw'][0], Network.costs['ch'][0], Network.costs['chte'][0], Network.costs['ceth'][0], Network.costs['cNTC'][0], Network.costs['cMH'][0]
