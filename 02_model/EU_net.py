@@ -56,7 +56,7 @@ def EU():
     EU_h['MH']=500  # maximum transportation cost for hydrogen
 
     #costs
-    costs = pd.DataFrame([["All",4000, 3000000, 10,2,200,1000,10000]],columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
+    costs = pd.DataFrame([["All",4000, 3000000, 10,0,2,200,1000,10000]],columns=["node","cs", "cw","ch","chte","ceth","cNTC","cMH"])
     eu = Network()
     eu.n = EU
     eu.edgesP = EU_e

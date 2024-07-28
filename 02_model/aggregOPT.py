@@ -102,8 +102,8 @@ def OPT_agg(Network):
     inst = Network.loadP_t_agg.shape[0] #number of time steps in time partition
     tp_obj = Network.time_partition
     tp = tp_obj.agg #time partition
-    print(f'sanity checl, is inst equal to len tp= {inst == len(tp)}')
-
+    print(f'sanity check, is inst equal to len tp= {inst == len(tp)}')
+    
     env = Env(params={'OutputFlag': 0})
     model = Model(env=env)
     model.setParam('LPWarmStart',1)

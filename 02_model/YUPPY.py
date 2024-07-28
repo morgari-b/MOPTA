@@ -249,6 +249,7 @@ class Network:
 
         self.T = self.genW_t.shape[0]
         self.d = self.genW_t.shape[2]
+        
     def init_time_partition(self):
         """
         Initializes the time partition for the Network.
@@ -331,7 +332,7 @@ class Network:
 def OPT2(Network, d=1,rounds=1,long_outs=False):
     
     if Network.costs.shape[0] == 1: #if the costs are the same:
-        cs, cw, ch, chte, ceth, cNTC, cMH = Network.costs['cs'][0], Network.costs['cw'][0], Network.costs['ch'][0], Network.costs['chte'][0], Network.costs['ceth'][0], Network.costs['cNTC'][0], Network.costs['cMH'][0]
+        cs, cw, ch, ch_t, chte, ceth, cNTC, cMH = Network.costs['cs'][0], Network.costs['cw'][0], Network.costs['ch'][0], Network.costs['ch_t'][0], Network.costs['chte'][0], Network.costs['ceth'][0], Network.costs['cNTC'][0], Network.costs['cMH'][0]
     else:
         print("add else") #actually we can define the costs appropriately using the network class directly
     
@@ -360,7 +361,7 @@ def OPT2(Network, d=1,rounds=1,long_outs=False):
     
     HtE = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg      
     EtH = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
-    H = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS,lb=0)
+    H = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ch_t/d, lb=0)
     P_edge = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY) #could make sense to sosbstitute Nodes with Network.nodes and so on Nedges with n.edgesP['start_node'],n.edgesP['end_node'] or similar
     #fai due grafi diversi
     H_edge = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY)
@@ -452,13 +453,14 @@ def OPT2(Network, d=1,rounds=1,long_outs=False):
         return outputs, HX, EtHX, HtEX, P_edgeX,H_edgeX
 
 
+#%% OPT3
 
 def OPT3(Network):
     """
     Basically OPT2 but without grouping over scenarios.
     """
     if Network.costs.shape[0] == 1: #if the costs are the same:
-        cs, cw, ch, chte, ceth, cNTC, cMH = Network.costs['cs'][0], Network.costs['cw'][0], Network.costs['ch'][0], Network.costs['chte'][0], Network.costs['ceth'][0], Network.costs['cNTC'][0], Network.costs['cMH'][0]
+        cs, cw, ch, ch_t, chte, ceth, cNTC, cMH = Network.costs['cs'][0], Network.costs['cw'][0], Network.costs['ch'][0], Network.costs['ch_t'][0], Network.costs['chte'][0], Network.costs['ceth'][0], Network.costs['cNTC'][0], Network.costs['cMH'][0]
     else:
         print("add else") #actually we can define the costs appropriately using the network class directly
     
@@ -485,7 +487,7 @@ def OPT3(Network):
     
     HtE = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg      
     EtH = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
-    H = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS,lb=0)
+    H = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ch_t/d, lb=0)
     P_edge = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY) #could make sense to sosbstitute Nodes with Network.nodes and so on Nedges with n.edgesP['start_node'],n.edgesP['end_node'] or similar
     #fai due grafi diversi
     H_edge = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY)
