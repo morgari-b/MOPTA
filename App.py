@@ -11,6 +11,22 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+
+#%%
+# import dash
+import os
+os.chdir("C:/Users/ghjub/codes/MOPTA")
+from dash import dcc, html, Input, Output, State, dash_table, DiskcacheManager
+import dash
+import plotly.graph_objects as go
+
+#%%
+# import dash
+import os
+os.chdir("C:/Users/ghjub/codes/MOPTA")
+from dash import dcc, html, Input, Output, State, dash_table, DiskcacheManager
+import dash
+import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 
