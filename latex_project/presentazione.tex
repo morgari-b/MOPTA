@@ -1,0 +1,87 @@
+\documentclass[english]{beamer}
+
+\usepackage{tikz}
+
+\usetikzlibrary {arrows.meta,decorations.text, decorations.pathmorphing, decorations.pathreplacing, decorations.shapes,
+}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{xfrac}
+\usepackage{mathrsfs} 
+
+
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=nty,
+  maxbibnames=99,
+  url=false,  % Exclude URLs
+  % issn = false
+  %doi=false,   % Exclude DOIs
+  %isbn=false
+]{biblatex}
+
+\addbibresource{sample.bib}
+
+\newcommand{\nc}{\newcommand}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cD}{\mathcal{D}}
+\nc{\cV}{\mathcal{V}}
+\nc{\cT}{\mathcal{T}}
+\nc{\bE}{\mathbb{E}}
+
+
+%parameters and variables
+\nc{\PV}{\mathcal{PV}}
+\nc{\HL}{\mathcal{H}^L}
+\nc{\PL}{\mathcal{P}^L}
+\nc{\WW}{\mathcal{W}}
+\nc{\ns}{\text{ns}}
+\nc{\nw}{\text{nw}}
+\nc{\nh}{\text{nh}}
+\nc{\PP}{\text{P}}
+\nc{\HH}{\text{H}}
+\nc{\HS}{\text{H}^S}
+\nc{\CG}{C_{\Sigma}^{\text{Gauss}}}
+\usetikzlibrary{shapes,arrows}
+
+\tikzstyle{block} = [draw, fill=blue!20, rectangle, minimum height=4em, minimum width=6em]
+\tikzstyle{circleblock} = [draw, fill=red!20, circle, minimum height=4em]
+\tikzstyle{line} = [draw, -latex]
+
+
+\title[MTA Competition]{Capacity Expansion of the Energy Grid: Coupled Scenario Generation and Time Aggregation}
+
+\author[G.R., B.U.]{Gabor Riccardi, Bianca Urso}
+
+\institute{University of Pavia (UniPV) \\ Istituto Universitario di Studi Superiori (IUSS)}
+
+\begin{document}
+
+% Generate title page
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+  \titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+
+\input{Introduction.tex}
+%\input{scenariosgeneration.tex}
+%\input{optimizationandtimeaggregation.tex}
+
+
+\section{Results}
+
+\end{document}

@@ -1,611 +1,459 @@
-import sys
-import os# Change the current working directory
-#os.chdir('/home/frulcino/codes/MOPTA/')
 
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-                             QLabel, QLineEdit, QPushButton, QComboBox, QMessageBox, QFormLayout,  QTabWidget)
-from PyQt6.QtCore import Qt, QObject, QThread, pyqtSignal
-import matplotlib
-matplotlib.use('QT5Agg')
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
+#%%
+# import dash
+import os
+os.chdir("C:/Users/ghjub/codes/MOPTA")
+from dash import dcc, html, Input, Output, State, dash_table, DiskcacheManager
+import dash
+import plotly.graph_objects as go
 import pandas as pd
+import xarray as xr
 import numpy as np
+import datetime as dt
+# Import the necessary functions and classes
+#from scenario_generation.scenario_generation import read_parameters, SG_beta, SG_weib, quarters_df_to_year
+#from model.prova_bianca import OPT
+from model.YUPPY import Network
+from model.OPT_methods import OPT_time_partition, OPT3, OPT_agg
+from model.EU_net import EU
+from model.scenario_generation.scenario_generation import import_generated_scenario, generate_independent_scenarios, import_scenarios, plot_scenarios_df, scenario_to_array, country_name_to_iso
+from model.OPloTs import plotOPT3_secondstage, plotOPT_time_partition, node_results_df, plotOPT_pie, plotE_balance, plotH_balance
+import dash_bootstrap_components as dbc
+import plotly.graph_objects as go
+ # Diskcache for non-production apps when developing locally
+import diskcache
+cache = diskcache.Cache("./cache")
+background_callback_manager = DiskcacheManager(cache)
 
-#import our functions:
-from scenario_generation import read_parameters, SG_beta, SG_weib, quarters_df_to_year
-from prova_bianca import OPT
+# data path
+scenarios_path = "model/scenario_generation/scenarios/"
+# Initialize the Dash app
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP],suppress_callback_exceptions=True)
+
+
+
+# init graphs
+scenarios_nodes_graph = go.Figure()
+scenarios_locations_graph = go.Figure()
+
+#dicts for names
+vars_name_d = {"ns" : "N solar panels", "nw":"N wind turbines", "mhte":"N power Cells", "mete":"N fusion cells", "node":"Node"}
+ 
+#TODO: store this so it doesn't get calculated over and over
+# Define the layout
+
+#%% Define the layout of the app
+app.layout = dbc.Container([
+    dcc.Store(id='network-store'),
+    dcc.Location(id='url', refresh=False),  # This will keep track of the current URL
+    dbc.NavbarSimple([
+        dbc.NavItem(dcc.Link('Your Energy Grid', href='/', className='nav-link')),
+        dbc.NavItem(dcc.Link('Scenarios', href='/page-1', className='nav-link')),
+         dbc.NavItem(dcc.Link('Optimize and Results', href='/page-2', className='nav-link')),
+    ], brand='TheClowder App', color='primary', dark=True, className='mb-4'),
+    html.Div(id='page-content')  # This will hold the content of the page based on URL
+])
+
+#%% define network page
+
+define_network_page = html.Div([
+     html.H2("Hydrogen Network Optimization",  className='text-center text-primary mb-4'),
+        dcc.Markdown('''
+        In this section you can define the network you want to optimize or you can modify one of the predefined examples by selecting it in the dropdown menu.
+        '''),
+     dcc.Dropdown(
+            id='example-dropdown',
+            options=[
+                {'label': 'Define your own Energy Grid', 'value': 'define-network'},
+                {'label': 'Small EU Network', 'value': 'small-eu'},
+            ],
+            value='Choose Example'
+        ),
+        html.Div(id='selected-example-output'),
+       
+    #define Nodes
+    dbc.Row([
+       
+        html.H4("Create Network, add node"),
+        dash_table.DataTable(id = 'nodes-table',
+                            data = [],
+                            columns = [{"name": i, "id": i} for i in ["node","location","lat","long","Mhte","Meth","feth","fhte","Mns","Mnw","Mnh","MP_wind","MP_solar","meanP_load","meanH_load"]],
+                            editable=True,
+                            fill_width=True,),
+        dbc.Button("Add node", id='add-node-button', color='success', className='mr-2 mt-2'),
+        ]),
+    #define edges
+    dbc.Row([
+        html.H4("Create Network, add edges", className='mt-4'),    
+        dbc.Col([
+            dash_table.DataTable(id = 'edgesP-table',
+                                data = [],
+                                columns = [{"name": i, "id": i} for i in ['start_node', 'end_node', 'NTC']],
+                            editable=True,
+                            fill_width=True,),
+            dbc.Button("Add P-edge", id='add-Pedge-button', color='success', className='mr-2 mt-2 mb-2'),
+            
+        ]),
+        dbc.Col([
+            dash_table.DataTable(id = 'edgesH-table',
+                                data = [],
+                                columns = [{"name": i, "id": i} for i in ['start_node', 'end_node', 'MH']],
+                                editable=True,
+                                fill_width=True,),
+            dbc.Button("Add H-edge", id='add-Hedge-button', color='success', className='mr-2 mt-2 mb-2'),
+        ])
+    ]),
+    #define costs
+    dbc.Row([
+        dash_table.DataTable(id = 'costs-table',
+                             data =[],
+                             columns = [{"name": i, "id": i} for i in ["cs", "cw","ch","ch_t","chte","ceth","cNTC","cMH"]],
+                             editable=True,
+                             fill_width=True,),
+
+        dbc.Button("Add Cost", id='add-Cost-button', color='success', className='mr-2 mt-2'),
+    ]),
+    dbc.Row([
+        html.Button('Update Network', id='select-example', className='mr-2 mt-2'),
+        html.Iframe(id='map', srcDoc='', width='100%', height='500'),
+    ]),
+   
+    
+])
+
+#%% optimize page
+
+optimize_page = html.Div([
+    html.H2("Optimization and Results", className='text-center text-primary mb-4'),
+    dcc.Markdown('''
+    In this page we solve the model and display the results.
+    '''),
+    dcc.Dropdown(id = "OPT-method-dropdown", 
+                 options = [{'label': 'Hourly time resolution (slow)', 'value': 'OPT3'},
+                            {'label': 'Optimize with time aggregation (less accurate but faster)', 'value': 'OPT_time_partition'}],
+                 value ="Choose optimization method"
+            ),
+    dbc.Button('Run optimization', id='optimize-button', color='success', className='mr-2 mt-2 mb-2'),
+    html.Div(id='optimization-pie-text', children=''),
+    dcc.Graph(id = "generators-pie-graph"),
+    dcc.Graph(id = "E-balance-graph"),
+    dcc.Graph(id = "H-balance-graph"),
+    dcc.Graph(id = "hydrogen-storage-graph"),
+    dcc.Graph(id = "P-edge-graph"),
+    
+])
+#%% page handling callbacks
+
+
+# Define callback to update the page content based on the current URL
+@app.callback(
+    Output('page-content', 'children'),
+    Input('url', 'pathname')
+)
+def display_page(pathname):
+    if pathname == '/page-1':
+        return scenarios_page
+    elif pathname == '/page-2':
+        return optimize_page
+    else:
+        return define_network_page
+#%% define scenarios page  Define the layout of the scenarios page
+#TODO add explanation of plots and say which is which
+scenarios_page = html.Div([
+    html.H2("Generate scenarios", className='text-center text-primary mb-4'),
+    html.Div(children="Select number of scenarios:", className='mb-2'),
+    dcc.Slider(
+        id='my-slider',
+        min=1,
+        max=20,
+        step=1,
+        value=5,
+        marks={str(i): str(i) for i in range(1, 20, 4)},
+    ),
+    html.Div(id='scenario-slider-output-container'),
+    dbc.Button('Generate Scenarios', id='generate-scenarios-button', color='success', className='mr-2 mt-2'),
+    
+    dcc.Markdown(''' 
+    The following plot, shows the p.u. wind power production scenario for each location in the network. 
+    '''),
+    dcc.Graph(id='scenarios-nodes-graph-wind'),
+    dcc.Markdown(''' 
+    The following plots, for each location plot a sample of scenarios of wind power production. 
+    '''),
+    dcc.Graph(id='scenarios-locations-graph-wind'),
+     dcc.Markdown(''' 
+    The following plot, shows the p.u. PV production scenario for each location in the network. 
+    '''),
+    dcc.Graph(id='scenarios-nodes-graph-PV'),
+     dcc.Markdown(''' 
+    The following plots, for each location plot a sample of scenarios of PV power production. 
+    '''),
+    dcc.Graph(id='scenarios-locations-graph-PV'),
+])
+#%% define network callbacs
+#update dataframes after example selection
+# Function to add an empty row
+def add_row(n_clicks, rows, columns):
+    if n_clicks is None:
+        return rows
+
+    cols = [c['id'] for c in columns]
+    df = pd.DataFrame(rows, columns=cols)
+    new_row = pd.DataFrame([[None] * len(columns)], columns=cols)
+    df = pd.concat([df, new_row])
+    return df.to_dict('records')
+
+
+@app.callback(
+    [
+        Output('nodes-table', 'data'),
+        Output('edgesP-table', 'data'),
+        Output('edgesH-table', 'data'),
+        Output('costs-table', 'data'),
+        Output('network-store', 'data', allow_duplicate=True),
+    ],
+    [
+        Input('example-dropdown', 'value'),
+        Input('add-node-button', 'n_clicks'),
+        Input('add-Pedge-button', 'n_clicks'),
+        Input('add-Hedge-button', 'n_clicks'),
+        Input('add-Cost-button', 'n_clicks')
+    ],
+    [
+        State('nodes-table', 'data'),
+        State('nodes-table', 'columns'),
+        State('edgesP-table', 'data'),
+        State('edgesP-table', 'columns'),
+        State('edgesH-table', 'data'),
+        State('edgesH-table', 'columns'),
+        State('costs-table', 'data'),
+        State('costs-table', 'columns')
+    ],
+    prevent_initial_call=True
+)
+def update_tables(example, add_node_clicks, add_Pedge_clicks, add_Hedge_clicks, add_Cost_clicks,
+                  nodes_data, nodes_columns, edgesP_data, edgesP_columns, edgesH_data, edgesH_columns, costs_data, costs_columns):
+    ctx = dash.callback_context
+    triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    print("updating tables...")
+    if triggered_id == 'example-dropdown':
+        if example == 'small-eu':
+            print("setting network to eu")
+            network = EU()
+            network.n.reset_index(inplace=True)
+            
+            return network.n.to_dict('records'), network.edgesP.to_dict('records'), network.edgesH.to_dict('records'), network.costs.to_dict('records'), network.to_dict()
+        elif example == 'define-network':
+            print("resetting network...")
+            network = Network()
+            if 'node' not in network.columns:
+                network.n.reset_index(inplace=True)
+            return network.n.to_dict('records'), network.edgesP.to_dict('records'), network.edgesH.to_dict('records'), network.costs.to_dict('records'), network.to_dict()
+
+    if triggered_id == 'add-node-button':
+        updated_nodes_data = add_row(add_node_clicks, nodes_data, nodes_columns)
+        return updated_nodes_data, edgesP_data, edgesH_data, costs_data, dash.no_update
+
+    if triggered_id == 'add-Pedge-button':
+        updated_edgesP_data = add_row(add_Pedge_clicks, edgesP_data, edgesP_columns)
+        return nodes_data, updated_edgesP_data, edgesH_data, costs_data, dash.no_update
+
+    if triggered_id == 'add-Hedge-button':
+        updated_edgesH_data = add_row(add_Hedge_clicks, edgesH_data, edgesH_columns)
+        return nodes_data, edgesP_data, updated_edgesH_data, costs_data, dash.no_update
+
+    if triggered_id == 'add-Cost-button':
+        updated_costs_data = add_row(add_Cost_clicks, costs_data, costs_columns)
+        return nodes_data, edgesP_data, edgesH_data, updated_costs_data, dash.no_update
+
+    return nodes_data, edgesP_data, edgesH_data, costs_data, dash.no_update
+
+@app.callback(
+    Output('map', 'srcDoc'),
+    Output('network-store', 'data', allow_duplicate=True),
+    Input('select-example', 'n_clicks'),
+    State('nodes-table', 'data'),
+    State('nodes-table', 'columns'),
+    State('edgesP-table', 'data'),
+    State('edgesP-table', 'columns'),
+    State('edgesH-table', 'data'),
+    State('edgesH-table', 'columns'),
+    State('costs-table', 'data'),
+    State('costs-table', 'columns'),
+    State('network-store', 'data'),
+    prevent_initial_call=True
+)
+def update_map(n_clicks, nodes_data, nodes_columns, edgesP_data, edgesP_columns, edgesH_data, edgesH_columns, costs_data, costs_columns, network_data):
+    
+    def dict_to_df(rows, columns):
+        cols = [c['id'] for c in columns]
+        df = pd.DataFrame(rows, columns=cols)
+        return df
+    def cols_to_float(df, cols):
+        for col in cols:
+            df[col] = df[col].astype(float)
+        return df
+    if n_clicks is None:
+        return '', dash.no_update
+
+    network = Network.from_dict(network_data)
+    #print(f"nodes data: {nodes_data}, nodes columns: {nodes_columns}")
+    network.n = dict_to_df(nodes_data, nodes_columns)
+    network.n = cols_to_float(network.n, ['lat', 'long', 'Mhte', 'Meth', 'feth', 'fhte', 'Mns', 'Mnw', 'Mnh'])
+    print(network.n)
+    if 'node' not in network.n.columns:
+        network.n.reset_index(inplace=True)
+    print(network.n)
+    network.edgesP = dict_to_df(edgesP_data, edgesP_columns)
+    network.edgesP = cols_to_float(network.edgesP, ['NTC'])
+    network.edgesH = dict_to_df(edgesH_data, edgesH_columns)
+    network.edgesH = cols_to_float(network.edgesH, ['MH'])
+    network.costs = dict_to_df(costs_data, costs_columns)
+    network.costs = cols_to_float(network.costs, ["cs", "cw","ch","ch_t","chte","ceth","cNTC","cMH"])
+    return network.plot(), network.to_dict()
+
+#%% define scenarios callbacs
+# Define scenarios callbacks
+@app.callback(
+    Output('scenarios-nodes-graph-wind', 'figure'),
+    Output('scenarios-locations-graph-wind', 'figure'),
+    Output('scenarios-nodes-graph-PV', 'figure'),
+    Output('scenarios-locations-graph-PV', 'figure'),
+    Output('network-store', 'data'),
+    Input('generate-scenarios-button', 'n_clicks'),
+    State('my-slider', 'value'),
+    State('network-store', 'data'),
+    background=True,
+    manager=background_callback_manager,
+)
+def generate_scenarios(n_clicks, value, network_data):
+    if n_clicks is None:
+        return go.Figure(), go.Figure(), go.Figure(), go.Figure(), dash.no_update
+    network = Network.from_dict(network_data)
+    network.n_scenarios = value
+    locations = network.n.location.unique().tolist()
+    print(network.n)
+    if len(locations) == 0:
+        raise ValueError("Network must have more than one location")
+    pre_gen_locations = ["France", "Italy", "Spain", "Germany", "Austria"]
+    samples = 10    
+    new_locations = [location for location in locations if location not in pre_gen_locations]
+    plots = {}
+    if len(new_locations) > 1:
+        
+        #print("Generating scenarios...")
+        scenarios = generate_independent_scenarios(new_locations, 200, save=True, saveas=dt.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
+        old_scenarios = import_scenarios("small-EU")
+        scenarios["wind"] = pd.concat([scenarios["wind"], old_scenarios["wind"]], axis=0)
+        scenarios["PV"] = pd.concat([scenarios["PV"], old_scenarios["PV"]], axis=0)
+        scenarios["wind"].reset_index(inplace=True)
+        scenarios["PV"].reset_index(inplace=True)
+        
+    else:
+        #print("We already have those :)")
+        scenarios = import_scenarios("small-EU")
+
+    plots["wind"] = scenarios["wind"][scenarios["wind"]["scenario"] < samples]
+    plots["PV"] = scenarios["PV"][scenarios["PV"]["scenario"] < samples]
+    scenarios["wind"] = scenarios["wind"][scenarios["wind"]["scenario"] < value]
+    scenarios["PV"] = scenarios["PV"][scenarios["PV"]["scenario"] < value]
+
+    #print(type(scenarios["wind"]))
+    network.genW_t = scenario_to_array(scenarios["wind"])
+    network.genS_t = scenario_to_array(scenarios["PV"])
+    wind_figs = plot_scenarios_df(plots["wind"], var_name = "p.u. Wind power output", title1 = "Wind power output in each node", title2 = "Wind power output for various scenarios" )
+    pv_figs = plot_scenarios_df(plots["PV"], var_name = "p.u. PV power output", title1 = "PV power output in each node", title2 = "PV power output for various scenarios")
+
+    #print("Done")
+
+    #TODO model demand as done with production:
+
+    # Import load scenarios
+    #01_scenario_generation\scenarios\electricity_load_2023.csv
+    scen_path = 'model/scenario_generation/scenarios/'
+    elec_load_df = pd.read_csv(scen_path+'electricity_load_2023.csv')
+    time_index = range(elec_load_df.shape[0])#pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
+    scenario = 0
+    elec_load_scenario = xr.DataArray(
+        np.expand_dims(elec_load_df[[country_name_to_iso(location) for location in locations]].values, axis = 2), #add one dimension to correspond with scenarios
+        coords={'time': time_index, 'node':locations, 'scenario': [0]},
+        dims=['time', 'node', 'scenario']
+    )
+    #print(network.n)
+    hydrogen_demand_scenario = import_generated_scenario(scen_path+'hydrogen_demandg.csv',len(locations), scenario, node_names=locations)
+    print("1",network.n)
+    if 'node' not in network.n.columns:
+        network.n.reset_index(inplace=True)
+    print("2",network.n)
+    return wind_figs[0], wind_figs[1], pv_figs[0], pv_figs[1], network.to_dict()
+
+
+#%% optimize page callbacks
+
+
+@app.callback(
+    Output('network-store', 'data', allow_duplicate=True),
+    Output('optimization-pie-text', 'children'),
+    Output('generators-pie-graph', 'figure'),
+    Output('P-edge-graph','figure'),
+    Output('hydrogen-storage-graph', 'figure'),
+    Output('E-balance-graph', 'figure'),
+    Output('H-balance-graph', 'figure'),
+    Input('optimize-button', 'n_clicks'),
+    State('network-store','data'),
+    State('OPT-method-dropdown', 'value'),
+    background=True,
+    manager=background_callback_manager,
+    prevent_initial_call=True)
+def optimize(n_clicks, data, method):
+    #print("selected method:",method)
+    if n_clicks is None:
+        return dash.no_update
+    #TODO save results
+    print("comment out after testing...")
+    network = Network.from_dict(data)
+    print("3",network.n)
+    if 'node' not in network.n.columns:
+        if "index" in network.n.columns:
+            network.n["node"] = network.n["index"]
+        else:
+            network.n.reset_index(inplace=True)
+    print("4",network.n)
+    #network = EU(1)
+    if method == 'OPT3':
+        #print("OPT3 selected, running...")
+        #print("type edge", type(network.edgesP.index.to_list()[0]))
+        #print("Optimizing over n scenario: ",  network.n_scenarios)
+        results = OPT3(network)
+        hydro_fig = plotOPT3_secondstage(results, network, "H",  yaxis_title = "Hydrogen Storage (Kg)", title = "Hydrogen Storage over time")
+        P_edge_fig = plotOPT3_secondstage(results, network, "P_edge", yaxis_title="Power flow (MWh)", title = "Power flow through lines", xaxis_title = "Time")
+        #node_results = node_results_df(results)
+        first_text = "Hover over the graph to see the explicit optimization results"
+        generators_pie_fig =  plotOPT_pie(results,network, vars = ["ns","nw","mhte"],  label_names = ["Solar","Wind", "Power Cells"], title_text = "Number of generators by type and percentage of maximum energy production")
+        x = network.genS_t.time
+        Ebalance_fig = plotE_balance( network, results, x = x)
+        Hbalance_fig = plotH_balance(network, results, x= x)
+
+    if method == 'OPT_time_partition':
+        #results = OPT_time_partition(network, N_iter = 10, N_refining = 2)
+        results = OPT_agg(network)
+        last_results = results[-1]
+        first_text = "Hover over the graph to see the explicit optimization results"
+        generators_pie_fig =  plotOPT_pie(last_results,network, vars = ["ns","nw","mhte"],  label_names = ["Solar","Wind", "Power Cells"], title_text = "Number of generators by type and percentage of maximum energy production")
+        P_edge_fig = go.Figure()
+        hydro_fig = go.Figure()
+        Ebalance_fig = plotE_balance( network, last_results, plot_H = False)
+        Hbalance_fig = plotH_balance( network, last_results)
+        
+
+        #TODO: add generation chart
+    #network.results = results #TODO: convert decently to json
+
+    return network.to_dict(),first_text, generators_pie_fig,P_edge_fig, hydro_fig, Ebalance_fig, Hbalance_fig
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True, port=7051)
 
 
 # %%
-"""
-TODOS:
-    - Generalize scenario generation:
-        - More years
-        - Grouped 
-        - Option for running on only Challenge Days
-"""
-
-class Network:
-    """
-    Network class, saving parameters of model and having optimization methods
-    cs=4000, cw=3000000,ch=10,Mns=np.inf,Mnw=np.inf,Mnh=np.inf,chte=2,fhte=0.75,Mhte=np.inf,ceth=200,feth=0.7,Meth=np.inf
-    """
-    def __init__(self):
-        #cs=4000,cw=3000000,Mns=np.inf,Mnw=100,Mnh=np.inf,ch=7,chte=0,fhte=0.75,Mhte=200000,ceth=0,feth=0.7,Meth=15000
-        self.cs = 4000
-        self.cw = 3000000
-        self.ch = 10
-        self.Mns = np.inf
-        self.Mnw = np.inf
-        self.Mnh = np.inf
-        self.chte = 2
-        self.Mhte = np.inf
-        self.ceth = 200
-        self.feth = 0.7
-        self.fhte=0.75
-        self.Meth = np.inf
-        self.PV_Pmax = 0.015
-        self.wind_Pmax = 4
-        self.n_scenarios_opt = 5
-
-    def run_optimization(self, ES, EW, EL, HL):
-        ES = ES*self.PV_Pmax
-        EW = EW*self.wind_Pmax
-        result, fig, status = OPT(ES=ES, EW=EW, EL=EL, HL=HL, cs=self.cs, cw=self.cw, Mns=self.Mns, Mnw=self.Mnw, Mnh=self.Mnh, ch=self.ch, chte=self.chte, fhte=self.fhte, Mhte=self.Mhte, ceth=self.ceth, feth=self.feth, Meth=self.Meth)
-
-        return result, fig, status 
-
-class OptimizationWorker(QObject):
-    finished = pyqtSignal()
-    progress = pyqtSignal(str)
-    result_ready = pyqtSignal(object, object, object)  # Emit result and figure
-
-    def __init__(self, scenarios, network):
-        super().__init__()
-        self.scenarios = scenarios
-        self.network = network
-        self.n_scenarios_opt = network.n_scenarios_opt
-
-    def run(self):
-        # Perform the optimization
-        ES = np.matrix(self.scenarios["PV"].iloc[:self.n_scenarios_opt,:])
-        print(f"ES shape is {ES.shape} while n_scenarios is {self.n_scenarios_opt}")
-        EW =  np.matrix(self.scenarios["wind"].iloc[:self.n_scenarios_opt,:])
-        EL_dict = self.scenarios["Electricity_load"]
-        first = True
-        for location_df in EL_dict.values():
-            if first:
-                EL = np.matrix(location_df.iloc[:self.n_scenarios_opt,:])
-                first = False
-            else:
-                EL += np.matrix(location_df.iloc[:self.n_scenarios_opt,:])
-
-        HL = np.matrix(self.scenarios["Hydrogen_load"].iloc[:self.n_scenarios_opt,:])
-        self.progress.emit(f"Creating and solving model with {self.n_scenarios_opt} scenarios, this should take around {int(self.n_scenarios_opt / 5 * 30)} seconds...")
-        result, fig , status= self.network.run_optimization(ES,EW,EL,HL)
-
-        # Emit the result
-        self.result_ready.emit(result, fig, status)
-        self.finished.emit()
-
-
-# Worker class that handles the long-running task
-class ScenarioGenerator(QObject):
-    finished = pyqtSignal()  # Signal to indicate completion
-    progress = pyqtSignal(str)  # Signal to send progress text back to GUI
-    results_ready = pyqtSignal(object)
-    
-    def __init__(self, n_scenarios, country, params): #qua posso mettere altri parameteri di generazione, tipo se usare scenare già fatti o meno
-        super().__init__()
-        self.n_scenarios = n_scenarios
-        self.country = country
-        self.params = params
-        self.result = None #read only after SG
-        
-
-    def run(self):
-        
-        # Generate Scenarios
-        scenarios = {}
-        if self.country == "Italy (pre generated)":
-            self.progress.emit(f"Fetching scenarios for {self.country}...")
-            n_scenarios = 100
-            scenarios["PV"]=pd.read_csv('scenarios/PV_scenario100.csv',index_col=0)
-            scenarios["PV"].columns = pd.to_datetime(scenarios["PV"].columns)
-            scenarios["wind"]=pd.read_csv('scenarios/wind_scenarios.csv',index_col=0)
-            scenarios["wind"].columns = pd.to_datetime(scenarios["PV"].columns)
-        else:
-            self.progress.emit(f"Generating scenarios, this can take a while...")
-            n_scenarios = self.n_scenarios
-            params = self.params
-            
-            scenarios["wind"] = SG_weib(n_scenarios, params["wind"][0], params["wind"][1])
-            self.progress.emit(f"Wind done, generating PV scenarios for {self.country}...")
-            scenarios["PV"] = SG_beta(n_scenarios, parameters_df = params["PV"][0], E_h = params["PV"][1], night_hours = params["PV"][2], save = False)
-            # After processing
-            self.progress.emit("Scenarios generated, fetching Electricity loads...")
-        #Fetch loads: 
-        path = "data.xlsx"
-        EL=pd.read_excel(path,sheet_name='Electricity Load')
-        GL=pd.read_excel(path,sheet_name='Gas Load')
-        locations = EL["Location_Electricity"].unique()
-        scenarios["Electricity_load"] = {}
-        scenarios["Hydrogen_load"] = {}
-        for location in locations:
-            #loads are provided by one single day for season, for each location, we expand the days to each day in the season for all year
-            scenarios["Electricity_load"][location] = quarters_df_to_year("electric-demand", location, EL, "Load", "Location_Electricity", save = False, n_scenarios = n_scenarios, n_hours = 24*365)
-        #%%
-        self.progress.emit("Scenarios generated, fetching Hydrogen loads...")
-        scenarios["Hydrogen_load"] = quarters_df_to_year("hydrogen-demand", "g", GL, "Load", "Location_Gas", save = False, n_scenarios = n_scenarios, n_hours = 24*365) #to change if there are more than one load
-        self.result = scenarios
-        self.results_ready.emit(self.result)
-        self.progress.emit("Done.")
-        self.finished.emit()  # Emit finished signal when done
-
-#create tab widget
-class MyTabWidget(QWidget): 
-    def __init__(self, parent): 
-        super(QWidget, self).__init__(parent) 
-        self.layout = QVBoxLayout(self) 
-  
-        # Initialize tab screen 
-        self.tabs = QTabWidget() 
-        self.tab1 = QWidget() 
-        self.tab2 = QWidget() 
-        self.tab3 = QWidget() 
-        self.tabs.resize(300, 200) 
-  
-        # Add tabs 
-        self.tabs.addTab(self.tab1, "SG") 
-        self.tabs.addTab(self.tab2, "Optimize") 
-        self.tabs.addTab(self.tab3, "Results") 
-  
-        # Create first tab 
-        self.tab1.layout = QVBoxLayout() 
-        self.tab1.setLayout(self.tab1.layout) 
-        self.tab2.layout = QVBoxLayout() 
-        self.tab2.setLayout(self.tab2.layout) 
-        self.tab3.layout = QVBoxLayout() 
-        self.tab3.setLayout(self.tab3.layout) 
-        # Add tabs to widget 
-        self.layout.addWidget(self.tabs) 
-        self.setLayout(self.layout) 
-          
-class MainWindow(QMainWindow):
-    
-    def __init__(self):
-        
-        #initialize parameters
-        self.network = Network()
-        self.scenarios = None
-        
-        
-        #App layout
-        super().__init__()
-        self.setWindowTitle("Hydrogen Network Optimization")
-        self.left = 0
-        self.top = 0
-        self.width = 1000
-        self.height = 800
-        self.setGeometry(self.left, self.top, self.width, self.height) 
-        
-        #initialize tab widget
-        self.central_widget = MyTabWidget(self)
-        self.setCentralWidget(self.central_widget)
-
-        #TAB1: Scenario Generation
-        tab1 = self.central_widget.tab1.layout
-        form_layout = QFormLayout()
-        self.location_input = QComboBox()
-        self.location_input.addItems(['Italy (pre generated)',
-                                     'Austria',
-                                     'Belgium',
-                                     'Bulgaria',
-                                     'Cyprus',
-                                     'Czech Republic',
-                                     'Germany',
-                                     'Denmark',
-                                     'Estonia',
-                                     'Spain',
-                                     'Finland',
-                                     'France',
-                                     'Greece',
-                                     'Croatia',
-                                     'Hungary',
-                                     'Italy',
-                                     'Lithuania',
-                                     'Luxembourg',
-                                     'Latvia',
-                                     'Malta',
-                                     'Netherlands',
-                                     'Poland',
-                                     'Portugal',
-                                     'Romania',
-                                     'Sweden',
-                                     'Slovenia',
-                                     'Slovakia'])  # Countries
-        form_layout.addRow("Geographical Location:", self.location_input)
-
-        self.n_scenarios_input = QLineEdit()
-        form_layout.addRow("Number of Scenarios:", self.n_scenarios_input)
-
-        tab1.addLayout(form_layout)
-
-        self.SG_button = QPushButton("Generate Scenarios")
-        self.SG_button.clicked.connect(self.start_scenario_generation)
-        tab1.addWidget(self.SG_button)
-
-        self.SG_output_label = QLabel("Output will be shown here.")
-        tab1.addWidget(self.SG_output_label)
-
-        self.SG_canvas = FigureCanvas(Figure(figsize=(5, 12)))
-        tab1.addWidget(self.SG_canvas)
-        
-        #TAB2:Optimization, ask parameters from user:
-        """
-        todo: would be nice if it run more than once with different parameters which radically change network behavior:
-            - high storage costs incentivizes 
-        cs: cost of solar panels
-        Mnw: cost of wind turbines
-        Mns: max socially acceptable wind turbines
-        ch: cost of hydrogen storage???
-        chte: cost of H to el
-        fhte: efficiency of H to el
-        Mhte: max H to el at an instance
-        ceth: cost of el to H
-        feth: efficiency of el to H
-        Meth: max el to H at an instance
-        """
-        
-        tab2 = self.central_widget.tab2.layout
-        opt_form_layout = QFormLayout()
-        self.cs_input = QLineEdit()
-        self.cw_input = QLineEdit()
-        self.Mnw_input = QLineEdit()
-        self.Mns_input = QLineEdit()
-        self.ch_input = QLineEdit()
-        self.chte_input = QLineEdit()
-        self.ceth_input = QLineEdit()
-        self.Meth_input = QLineEdit()
-        self.wind_Pmax_input = QLineEdit()
-        self.PV_Pmax_input = QLineEdit()
-        self.n_scenarios_opt_input = QLineEdit()
-        opt_form_layout.addRow(f"Cost of Solar panels (euro/unit), default value: {self.network.cs}", self.cs_input)
-        opt_form_layout.addRow(f"Cost of SWind turbines (euro/unit), default value: {self.network.cw}", self.cw_input)
-        opt_form_layout.addRow(f"Maximum number of Wind turbines, default value: {self.network.Mnw}", self.Mnw_input)
-        opt_form_layout.addRow(f"Maximum number of Solar panels, default value: {self.network.Mns}", self.Mns_input)
-        opt_form_layout.addRow(f"Cost of Hydrogen Storage (euro/kg), default value: {self.network.ch}", self.ch_input)
-        opt_form_layout.addRow(f"Cost of Power Cell operation (euro/Kg), default value:  {self.network.chte}", self.chte_input)
-        opt_form_layout.addRow(f"Cost of Electrolyzer operation, default value: {self.network.ceth}", self.ceth_input)
-        opt_form_layout.addRow(f"Maximum Electrolyzer Capacity (kg/h), default value: {self.network.Meth}", self.Meth_input)
-        opt_form_layout.addRow(f"Maximum Power output of a Wind turbine (MWh), default value: {self.network.wind_Pmax} ", self.wind_Pmax_input)
-        opt_form_layout.addRow(f"Maximum Power output of a Solar panel (MWh), default value: {self.network.PV_Pmax} ", self.PV_Pmax_input)
-        opt_form_layout.addRow(f"Number of scenarios to run for Optimization, default value: {self.network.n_scenarios_opt}",self.n_scenarios_opt_input)
-        
-        tab2.addLayout(opt_form_layout)
-        
-        
-        self.output_label = QLabel("Press button to solve Model.")
-        self.output_label.setAlignment(Qt.AlignmentFlag.AlignBottom)
-        tab2.addWidget(self.output_label)
-        self.submit_button = QPushButton("Optimize Network")
-        self.submit_button.clicked.connect(self.run_optimization)
-        tab2.addWidget(self.submit_button)
-        
-        
-        #TAB3:Results
-        tab3 = self.central_widget.tab3.layout
-        self.results_label = QLabel("Results will be shown here.")
-        self.results_label.setAlignment(Qt.AlignmentFlag.AlignTop)
-        tab3.addWidget(self.results_label)
-        # Optimization Output Area, Plots and explanation
-        self.canvas = FigureCanvas(Figure(figsize=(5, 12), dpi=100))
-        tab3.addWidget(self.canvas)
-        
-        # Creating tab widgets 
-  
-        
-    def start_scenario_generation(self):
-        n_scenarios = int(self.n_scenarios_input.text() or 5)
-        country = self.location_input.currentText()
-        if country == 'Italy (pre generated)':
-            self.params = read_parameters("Italy")
-        else:
-            self.params = read_parameters(country)
-            self.SG_output_label.setText("Parameters have been imported, generating Wind scenarios, this can take a while...")
-        
-        
-        self.thread = QThread()  # Create a QThread object
-        self.worker = ScenarioGenerator(n_scenarios, country, self.params)  # Create a worker object
-        self.worker.moveToThread(self.thread)  # Move worker to thread
-        self.thread.started.connect(self.worker.run)  # Start worker when thread starts
-        self.worker.results_ready.connect(self.handle_scenarios_result) #send results to handle_scenarios_results
-        self.worker.finished.connect(self.thread.quit)  # Quit thread when worker is done
-        self.worker.finished.connect(self.worker.deleteLater)  # Delete worker when done
-        self.thread.finished.connect(self.thread.deleteLater)  # Delete thread when done
-        self.worker.progress.connect(self.update_output_label)  # Connect progress signal to update the GUI
-        self.SG_output_label.setText("Done.")
-        self.thread.start()
-    
-    def run_optimization(self):
-        
-        #Set network parameters
-        #self.network = Network() #reinitialize network
-        self.network.cs = float(self.cs_input.text() or self.network.cs)
-        self.network.cw = float(self.cw_input.text() or self.network.cw)
-        self.network.Mnw = float(self.Mnw_input.text() or self.network.Mnw)
-        self.network.Mns = float(self.Mns_input.text() or self.network.Mns)
-        self.network.ch = float(self.ch_input.text() or self.network.ch)
-        self.network.chte = float(self.chte_input.text() or self.network.chte)
-        self.network.ceth = float(self.ceth_input.text() or self.network.ceth)
-        self.network.Meth = float(self.Meth_input.text() or self.network.Meth)
-        self.network.wind_Pmax = float(self.wind_Pmax_input.text() or self.network.wind_Pmax)
-        self.network.PV_Pmax = float(self.PV_Pmax_input.text() or self.network.PV_Pmax)
-        
-        self.network.n_scenarios_opt = int(self.n_scenarios_opt_input.text() or self.network.n_scenarios_opt)
-        scenarios = self.scenarios
-        if scenarios is None:
-            self.output_label.setText("Generate Scenarios before running optimization")
-        else:
-            # Create the worker and thread
-            self.optimization_thread = QThread()
-            self.optimization_worker = OptimizationWorker(scenarios, self.network)
-            self.optimization_worker.moveToThread(self.optimization_thread)
-    
-            # Connect signals
-            self.optimization_thread.started.connect(self.optimization_worker.run)
-            self.optimization_worker.finished.connect(self.optimization_thread.quit)
-            self.optimization_worker.finished.connect(self.optimization_worker.deleteLater)
-            self.optimization_thread.finished.connect(self.optimization_thread.deleteLater)
-            self.optimization_worker.progress.connect(self.update_optimization_label)
-            self.optimization_worker.result_ready.connect(self.update_optimization_result)
-    
-            # Start the thread
-            self.optimization_thread.start()
-
-    def update_optimization_label(self, text):
-        #updates optimization label
-        self.output_label.setText(text)
-        
-    def update_optimization_result(self, result, fig, status):
-        #updates scenario generationlabel
-        if status == 2:
-            self.output_label.setText("Optimization Succesful.")
-            self.canvas.figure.clf()
-            self.canvas.figure = fig
-            self.canvas.draw()
-            self.canvas.figure.tight_layout()
-            self.canvas.resize(self.canvas.size())
-            self.canvas.updateGeometry()
-            generators_cost = result[0]*self.network.cs + result[1]*self.network.cw + result[2]*self.network.ch
-            operation_cost = result[5].sum()*self.network.ceth + result[6].sum()*self.network.chte
-            print(operation_cost)
-            self.output_label.setText(f"Number of solar panels: {int(result[0])} \nNumber of Wind Turbines: {int(result[1])} \nHydrogen Storage Capacity (Kg): {result[2]} \nPower Cells Capacity (Kg/h): {result[3]} \nElectrolyzers Capacity (MWh): {result[3]}"+
-                                       f"\nCost of Generators: {generators_cost} euros, One year Operation costs: {int(operation_cost)} ")
-        else:
-            self.output_label.setText("Optimization failed, problem is unfeasible.")
-            
-
-    def update_output_label(self, text):
-        self.SG_output_label.setText(text)
-        
-    def handle_scenarios_result(self, result):
-        print("Handling scenarios result")
-        self.scenarios = result #save scenarios for later optimization
-        params = self.params
-        # Create a new figure with 3 rows and 2 columns
-        fig, axs = plt.subplots(3, 2, figsize=(5, 12))
-        fig.suptitle('Scenarios Overview', fontsize=16)
-        
-        
-        # Subplot for Covariance of PV values at different hours
-        c_pv = axs[0, 0].imshow(params["PV"][1][0:24*3, 0:24*3], interpolation="nearest", aspect='auto')
-        fig.colorbar(c_pv, ax=axs[0, 0])
-        axs[0, 0].set_title("Covariance of PV values at different hours")
-        axs[0, 0].set_xlabel("Hour")
-        axs[0, 0].set_ylabel("Hour")
-        
-        # Subplot for Covariance of Wind values at different hours
-        c_wind = axs[0, 1].imshow(params["wind"][1][0:24*3, 0:24*3], interpolation="nearest", aspect='auto')
-        fig.colorbar(c_wind, ax=axs[0, 1])
-        axs[0, 1].set_title("Covariance of Wind values at different hours")
-        axs[0, 1].set_xlabel("Hour")
-        axs[0, 1].set_ylabel("Hour")
-        print("plotted covariance")
-        
-    
-        # Subplot for PV and Wind Power Output through the Year
-        wind_scenarios = self.scenarios["wind"]
-        PV_scenarios = self.scenarios["PV"]
-        n_scenarios = wind_scenarios.shape[0]
-        
-        
-        max_iter = min(n_scenarios, 4) #plot at most 5 scenarios
-        wind_scenarios = wind_scenarios.iloc[:max_iter,:]
-        print(wind_scenarios.shape)
-        PV_scenarios =PV_scenarios.iloc[:max_iter,:]
-        colormap = cm.get_cmap('tab10', 2 * max_iter)
-        for index, row in enumerate(wind_scenarios.iterrows()):
-            axs[1, 0].plot(row[1].index, row[1].values, color=colormap(index), alpha=0.7)
-        axs[1, 0].set_title("Wind Power Output through the Year")
-        axs[1, 0].set_xlabel("Datetime")
-        axs[1, 0].set_ylabel("Power Output (p.u.)")
-        axs[1, 0].legend(["Wind Power"], loc='upper right')
-        print("plotted wind")
-        for index, row in enumerate(PV_scenarios.iterrows()):
-            print(index)
-            axs[1, 1].plot(row[1].index, row[1].values, color=colormap(max_iter + index), alpha=0.7)
-        
-        axs[1, 1].set_title("PV Power Output through the Year")
-        axs[1, 1].set_xlabel("Date")
-        axs[1, 1].set_ylabel("Power Output (capacity factor)")
-        axs[1, 1].legend(["PV Power"], loc='upper right')
-        print("plotted pv")
-        
-        # Subplot for 3 Days of PV and Wind Power Output
-        wind_scenario = wind_scenarios.iloc[0:max_iter, 0:24*3]
-        solar_scenario = PV_scenarios.iloc[0:max_iter, 0:24*3]
-        for index, row in enumerate(wind_scenario.iterrows()):
-            axs[2, 0].plot(row[1].index, row[1].values,  color=colormap(index), alpha=0.7)
-            
-        for index, row in enumerate(solar_scenario.iterrows()):
-            axs[2, 1].plot(row[1].index, row[1].values,  color=colormap(max_iter + index), alpha=0.7)
-        
-        axs[2, 0].set_title("Wind Output for Three Days")
-        axs[2, 0].set_xlabel("Date")
-        axs[2, 0].set_ylabel("Power Output (capacity factor)")
-        axs[2, 0].legend(["Wind Power"], loc='upper right')
-        
-        axs[2, 1].set_title("PV Output for Three Days")
-        axs[2, 1].set_xlabel("Date")
-        axs[2, 1].set_ylabel("Power Output (capacity factor)")
-        axs[2, 1].legend(["PV Power"], loc='upper right')
-        
-        print("plotted the rest")
-        # Adjust layout
-        fig.tight_layout(rect=[0, 0, 1, 0.96])
-          
-        self.SG_canvas.figure.clf()
-        self.SG_canvas.figure = fig
-        self.SG_canvas.draw()
-        self.SG_canvas.figure.tight_layout()
-        self.SG_canvas.resize(self.canvas.size())
-        self.SG_canvas.updateGeometry()
-        print("drew plot")
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
-
-
-
-"""
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        
-        self.setWindowTitle("Hydrogen Network Optimization")
-        self.setGeometry(100, 100, 400, 600)  # x, y, width, height
-        
-        # Central Widget and Layout
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
-        self.layout = QVBoxLayout()
-        self.central_widget.setLayout(self.layout)
-        
-        # Form layout for inputs
-        SGform_layout = QFormLayout()
-        SGform_layout.addRow(QLabel("Scenario Generation"))
-        
-        self.location_input = QComboBox()
-        self.location_input.addItems(['Austria',
-                                     'Belgium',
-                                     'Bulgaria',
-                                     'Cyprus',
-                                     'Czech Republic',
-                                     'Germany',
-                                     'Denmark',
-                                     'Estonia',
-                                     'Spain',
-                                     'Finland',
-                                     'France',
-                                     'Greece',
-                                     'Croatia',
-                                     'Hungary',
-                                     'Italy',
-                                     'Lithuania',
-                                     'Luxembourg',
-                                     'Latvia',
-                                     'Malta',
-                                     'Netherlands',
-                                     'Poland',
-                                     'Portugal',
-                                     'Romania',
-                                     'Sweden',
-                                     'Slovenia',
-                                     'Slovakia'])  # Add location items
-        SGform_layout.addRow("Geographical Location:", self.location_input)
-        self.n_scenarios_input = QLineEdit()
-        SGform_layout.addRow("Number of Scenarios:", self.location_input)
-        self.hydrogen_cost_input = QLineEdit()
-        SGform_layout.addRow("Hydrogen Storage Unit Cost ($/kg):", self.hydrogen_cost_input)
-        self.layout.addLayout(SGform_layout)
-        SG_output_layout = QVBoxLayout()
-        # Scenario Generation Button
-        self.SG_button = QPushButton("Generate Scenarios")
-        self.SG_button.clicked.connect(self.SG)
-        SG_output_layout.addWidget(self.SG_button)
-        
-        # Scenario Generation Output Area
-        self.SG_canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=100))
-        self.SG_output_label = QLabel("Output will be shown here.")
-        self.SG_output_label.setAlignment(Qt.AlignmentFlag.AlignTop)
-        SG_output_layout.addWidget(self.SG_output_label)
-        SG_output_layout.addWidget(self.SG_canvas)
-        self.layout.addLayout(SG_output_layout)
-        # Add the form layout to the main layout before other widgets
-        
-        
-       
-        
-        # Optimization Button
-        self.submit_button = QPushButton("Optimize Network")
-        self.submit_button.clicked.connect(self.run_optimization)
-        self.layout.addWidget(self.submit_button)
-        
-        # Optimization Output Area
-        self.canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=100))
-        self.output_label = QLabel("Output will be shown here.")
-        self.output_label.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.layout.addWidget(self.output_label)
-        self.layout.addWidget(self.canvas)
-
-        
-    def SG(self):
-        
-        n_scenarios = self.n_scenarios_input.text()
-        country = self.location_input.currentText()
-        self.SG_output_label.setText(f"Importing PV and Wind parameters for {country}...")
-        if n_scenarios == "":
-            n_scenarios = 1
-        else:
-            n_scenarios = float(self.n_scenarios)
-            
-        params = read_parameters(country)
-        self.SG_output_label.setText(f"Parameters have been imported, generating Wind scenarios, this can take a while...")
-        EW = SG_weib(n_scenarios, params["wind"][0], params["wind"][1])
-        self.SG_output_label.setText("PGenerated Wind scenarios, generating PV scenarios...")
-        ES = SG_beta(n_scenarios, parameters_df = params["PV"][0], E_h = params["PV"][1], night_hours = params["PV"][2], save = False)
-        
-        
-        
-    
-    def run_optimization(self):
-        hs_cost = self.hydrogen_cost_input.text() #hydrogen storage cost
-        if hs_cost != "":
-            hs_cost = float(hs_cost)
-        else:
-            hs_cost = 10000
-            
-        
-        print(type(hs_cost), hs_cost, "yeee")
-        # Call the optimization function
-        result, fig = run_OPT(ch=hs_cost) 
-        self.canvas.figure.clf()
-        self.canvas.figure = fig
-        self.canvas.draw()
-        
-        # Display the results
-        self.output_label.setText(str(result))
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
-"""

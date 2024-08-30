@@ -1,0 +1,56 @@
+
+\section{Time Aggregation and Optimization}
+
+
+\begin{frame}{Time clustering}
+
+
+  Given an initial time horizon \(\cT = \{1, \ldots, T\}\), we can consider partitions of \(\cT\) as a family of disjoint subsets whose union is \(\cT\). We only consider those partitions where every subset is an interval of \(\cT\). We refer to these as time partitions. Given a time partition \(P\), we can consider the corresponding model obtained by considering each interval in \(P\) as a single time step. For every \(I\) in \(P\), we define:
+  \[
+  ES_{j,I,n} \coloneqq \sum_{i \in I} ES_{j,i,n}, \quad EW_{j,I,n} \coloneqq \sum_{i \in I} EW_{j,i,n}
+  \]
+  and similarly for \(HL_{j,I,n}\) and \(HR_{j,I,n}\). We denote the model obtained by the time partition \(P\) as \(CEP_P\).
+%magari leggendosi geographic clustering potrebbe dare un'idea. Magari unire assieme cose con produzione simile può 
+\end{frame}
+
+\begin{frame}{Time Clustering}
+
+\begin{tikzpicture}
+%draw first time partition
+\nc{\step}{0.5}
+\nc{\tblock}{+(-\step/2,-\step/2) rectangle ++(\step/2 + \step*0,\step/2)}
+\draw (1,1) node{\(\cT = \{1, \ldots, T\}\)};
+\foreach \x in {1,...,20}
+  {
+  \draw (\x*\step,0) \tblock;
+  \draw (\x*\step,0) node{\x};
+  }
+\draw (\step,\step) node [rotate=-90] (BR) {\textbraceleft};
+
+\draw [->,decorate,
+decoration={snake,amplitude=.4mm,segment length=2mm,post length=1mm}]
+(10*\step,-1 ) -- (10*\step,-3)
+node [right,text width=3cm,align=center,midway]
+{
+Time Clustering 
+};
+
+\nc{\y}{-4}
+\draw (2.5,\y-1) node{\(\cT = \{1, \ldots,\{13,14,15\},\ldots, T\}\)};
+\foreach \x in {1,...,12}
+  {
+  \draw (\x*\step,\y) \tblock;
+  \draw (\x*\step,\y) node{\x};
+  }
+
+\filldraw[fill=red!40,draw=black] (13*\step,\y) +(-\step/2,-\step/2) rectangle  ++(\step/2+\step*2,\step/2); %draw clustered time partitions
+\draw (13*\step,\y) node{\(13\)};
+\draw (14*\step,\y) node{\(14\)};
+\draw (15*\step,\y) node{\(15\)};
+\foreach \x in {16,...,20}
+  {
+  \draw (\x*\step,\y) \tblock;
+  \draw (\x*\step,\y) node{\x};
+  }
+\end{tikzpicture}
+\end{frame}

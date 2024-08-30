@@ -2,8 +2,11 @@ gurobipy==11.0.1
 matplotlib==3.8.0
 numpy==1.26.4
 pandas==2.2.2
-pypsa==0.27.0
-PyQt6==6.7.0
-PyQt6_sip==13.6.0
+plotly==5.22.0
+dash==2.0.0
+folium==0.17.0
+xarray==0.24.2
+time==0.3.8
+itertools==1.0.2
 reliability==0.8.16
 scipy==1.13.0

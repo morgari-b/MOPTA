@@ -1,14 +1,14 @@
 # Renewable Energy Scenario Generation and Optimization
 
 Team name: Clowder
-This repository contains scripts for generating scenarios of wind and solar power output and optimizing an electrical grid supported by hydrogen storage. The scenario generation process considers the stochastic behavior of wind and solar power, and the optimization ensures the grid's reliability under various scenarios.
+This repository contains scripts for generating scenarios of wind and solar power output and optimizing an electrical grid supported by hydrogen storage. The scenario generation process considers the stochastic behavior of wind and solar power, and the optimization ensures the grid's reliability under various scenarios. To tackle computational complexity of the problem, an time aggragtion method is introduced.
 
 ### Installation
 
 1. Clone the repository
 ```
-git clone https://github.com/yourusername/renewable-energy-scenarios.git
-cd renewable-energy-scenarios
+git clone https://github.com/yourusername/MOPTA
+cd MOPTA
 ```
 2. Install the required dependencies
 ```
@@ -30,12 +30,12 @@ pip install -r requirements.txt
 
 ## Scripts
 
-### 1. `RenewableGridApp.py`
+### 1. `App.py`
 
-This script contains the implementation of a PyQt-based graphical user interface (GUI) for generating scenarios and optimizing the electrical grid.
+This script contains the implementation of a Plotly-based graphical user interface (GUI) for generating scenarios and optimizing the electrical grid.
 
 #### Key Features:
-- Provides a user-friendly interface for inputting parameters and generating scenarios.
+- Provides a user-friendly interface for creating and Energy Grid and generating scenarios.
 - Displays the generated scenarios and optimization results graphically.
 - Utilizes threading to ensure the GUI remains responsive during long computations.
 - Cost and social acceptance parameters are easily costumizable
@@ -43,10 +43,14 @@ This script contains the implementation of a PyQt-based graphical user interface
 #### Usage:
 Run the script using Python:
 ```bash
-python test1gui.py
+python App.py
 ```
 
-### 2. scenario_generation.py
+### 2. model/scenario_generation
+
+This folder constains all the scripts necessary for the fitting of stochastic random variables related to the grind and for generating scenarios.
+
+#### 2.1 scenario_generation.py
 
 This script focuses on the scenario generation process for wind and solar power output.
 Key Features:
@@ -64,19 +68,38 @@ Functions:
   - fit_multivariate_beta: Couples Beta distributions with a Gaussian copula.
   - SG_beta: Generates scenarios using the fitted Beta parameters and copula.
 
+#### 2.2 parameters_countries
 
-### 3. OPT.py
+Folder containing the fitted parameters for wind and PV distributions in european countries. the files starting with "copula" contain the covariance matrix of the Guassian copula of the corresponding multidimensional variable. Files starting with "marginals" containg the parameters describing the Weibull and Beta distributions describing Wind an PV variables respectively. "night_hours" files record hours during the year in which there is no PV production.
+### 3. model
 
-opt.py is a Python script designed to perform optimization of energy system components using the Gurobi optimization library. The script optimizes the configuration of energy sources and storage to minimize costs or maximize efficiency, considering various constraints and parameters.
+the "model" folder contains the scripts to model the network and time partitions and the various optimization methods employed in the app.
+
+
+#### 3.3 YUPPY.py
+YUPPY.py defines the class Network to model the energy grid and the class time_partition to keep track of the time partitions iterations.
+
+#### 3.2 OPT_methods,py
+
+OPT_methods.py is a Python script designed to perform optimization of energy system components using the Gurobi optimization library. The script optimizes the configuration of energy sources and storage to minimize costs or maximize efficiency, considering various constraints and parameters.
 Features
 
-  - Load and preprocess energy system data from an Excel file.
+  - Load network object as de
   - Define and solve optimization problems using Gurobi.
   - Save and export optimization results to CSV files.
   - Plot results to visualize the optimization outcomes.
 
 Functions:
 
-  -load_data(filepath): Loads data from the specified Excel file.
-  -OPT(ES, EW, EL, HL, cs, cw, mw, ch, chte, fhte, Mhte, ceth, feth, Meth): Defines and solves the optimization problem. ES, EW, EL and HL correspond to scenarios datasets respectively for Solar Power, Wind Power, Electric Load and Hydrogen Load. The columns correspond to timesteps and rows to scenarios. 
-  -run_OPT(cs=4000, cw=3000000, mw=100, ch=10000, chte=0, fhte=0.75, Mhte=200000, ceth=0, feth=0.7, Meth=15000): Loads data and runs the optimization with default or specified parameters.
+  -OPT3: takes as input a network and optimizes it using without any time aggragration. This is equivalent to solving with the finest time partition. This is the most accurate but also slowest model.
+  -OPT_agg: takes as input a network with a define time_partition and solve the corresponding relaxed method.
+  -OPT_time_partition: iteratevely optimizes over finer time partitions leveraging the warm start method.
+
+  #### 3.3 OPloTs.py
+
+  Contains the functions for plotting the results of the optimizaiton methods in OPT_methods.py
+
+
+  #### 3.4 EU_net.py
+
+  Contains "EU", a small example network of five nodes in the European Union.
