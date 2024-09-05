@@ -44,29 +44,6 @@ def solution_to_xarray(var, dims, coords):
 #%% class Network
 class time_partition:
 
-    def interval_subsets(self,interval,tp):
-        """
-        Get the indexes of elements in the given time partition `tp` that are subsets of the given `interval`.
-
-        Parameters:
-            interval (set): The set of elements to check for subset membership.
-            tp (list): The list of elements to search for subsets of `interval`.
-
-        Returns:
-            list: The indexes of elements in `tp` that are subsets of `interval`.
-        """
-        indexes = []
-        for i in range(len(tp)):
-            l = tp[i]
-            if type(l) is list:
-                if set(l).issubset(interval):
-                    indexes.append(i)
-            else:
-                if l in interval:
-                    indexes.append(i)
-        return indexes
-    def order_intervals(L):
-        return sorted(L, key=lambda l: l[0])
     def aggregate(self,l, i0,i1):
         """
         Aggregates a list into sublists based on the given indices.
@@ -121,6 +98,13 @@ class time_partition:
         day = n_days-1
         l = self.aggregate(l, 2*day + 1, 3*day + 1 + 14)
         l = self.aggregate(l, 2*day + 2, 3*day + 2 + 4)
+        l1 = []
+        for i in l:
+            if type(i) is int: #ho modificato qui protrebbe creare problemi, stavo cercando di togliere liste vuote.
+                l1 += i
+            elif len(i) > 1:
+                l1.append(i)
+        l = l1
         #season = int(np.floor(n_days /10))  #mettiamo 10 giorni interi per intero
         #for i in range(10):
         #    l = self.disaggregate(l, i * season + 23*i)
@@ -146,7 +130,7 @@ class time_partition:
         else:
             return 1
 
-    def iter_partition(self,k=1):
+    def random_iter_partition(self,k=1):
         self.old_agg += [self.agg.copy()]
         family_list = []
         for _ in range(k):
@@ -209,6 +193,33 @@ class time_partition:
             else:
                 l.append(i)
         return l
+
+    @staticmethod
+    def order_intervals(L):
+        return sorted(L, key=lambda l: l[0])
+
+    @staticmethod
+    def interval_subsets(interval,tp):
+        """
+        Get the indexes of elements in the given time partition `tp` that are subsets of the given `interval`.
+
+        Parameters:
+            interval (set): The set of elements to check for subset membership.
+            tp (list): The list of elements to search for subsets of `interval`.
+
+        Returns:
+            list: The indexes of elements in `tp` that are subsets of `interval`.
+        """
+        indexes = []
+        for i in range(len(tp)):
+            l = tp[i]
+            if type(l) is list:
+                if set(l).issubset(interval):
+                    indexes.append(i)
+            else:
+                if l in interval:
+                    indexes.append(i)
+        return indexes
         
 
 def df_aggregator(df, time_partition):
