@@ -25,8 +25,8 @@ from model.OPloTs import node_results_df, plotOPT3_secondstage, plotOPT_time_par
 #%%
 #TODO do not redefine EL, HL and so on for every iteration.
 
-eu1 = EU(2, init_method= "day_night_aggregation") #,init_method = 'day_night_aggregation'
-eu2 = EU(2, init_method= "day_aggregation")
+eu1 = EU(10, init_method= "day_night_aggregation") #,init_method = 'day_night_aggregation'
+eu2 = EU(10, init_method= "day_aggregation")
 #%%
 eu = EU(1)
 #%%
@@ -264,6 +264,7 @@ else:
 print("total time: {}s.".format(np.round(time.time()-start_time,3)))
 #%%    return VARS
 for iter in range(10):
+    iter_start_time = time.time()
     network.time_partition.random_iter_partition(k=1)
     family_tree = network.time_partition.family_tree
     splitted_intervals = time_partition.order_intervals(family_tree[-1])
@@ -298,8 +299,9 @@ for iter in range(10):
                                 quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                                 quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
                                 >= EL.isel(node=k, time=tp[i], scenario = 0).sum(dim = 'time') for k in range(Nnodes)  for j in range(d) for i in split_indeces))
-
+    print(f"Iter model time: {np.round(time.time()-iter_start_time,3)}s.")
     model.optimize()
+    print(f"Iter opt time: {np.round(time.time()-iter_start_time,3)}s.")
     if model.Status!=2:
         print("Status = {}".format(model.Status))
     else:
@@ -327,7 +329,9 @@ for iter in range(10):
             "var_to_interval":dict(zip(range(T),time_partition.tuplize(tp)))  
         }
         iter_sol.append(VARS)
-        print(f"opt time {np.round(time.time()-opt_start_time,3)}s.")
+    
+
+print(f"Total opt time: {np.round(time.time()-opt_start_time,3)}s.")
     
 
 # %%
