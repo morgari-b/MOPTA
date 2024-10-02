@@ -89,11 +89,13 @@ Features
   - Save and export optimization results to CSV files.
   - Plot results to visualize the optimization outcomes.
 
-Functions:
+Optimization methods:
 
   -OPT3: takes as input a network and optimizes it using without any time aggragration. This is equivalent to solving with the finest time partition. This is the most accurate but also slowest model.
   -OPT_agg: takes as input a network with a define time_partition and solve the corresponding relaxed method.
-  -OPT_time_partition: iteratevely optimizes over finer time partitions leveraging the warm start method.
+  -OPT_time_partition: iteratevely optimizes over finer time partitions leveraging the warm start method: corresponds to a constraints and column aggregation with same weight.
+  -OPT_agg2: similar to OPT_time_partition but we add all the variables in the beginning, and then add aggregated time constraints. At each iteration we add the time constraints corresponding to the refined intervals. This is a constraint aggregation method.
+    Note: OPT_agg2 only works when disaggregating intervals into singletons, it doesn't work when splitting intervals into smaller intervals of lenght greater than one.
 
   #### 3.3 OPloTs.py
 
