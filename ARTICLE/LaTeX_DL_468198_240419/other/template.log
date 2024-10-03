@@ -1,0 +1,249 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  30 SEP 2024 09:45
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**/home/morgari/Documents/MOPTA/ARTICLE/LaTeX_DL_468198_240419/template.tex
+(/home/morgari/Documents/MOPTA/ARTICLE/LaTeX_DL_468198_240419/template.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+
+LaTeX Info: File `example.eps' already exists on the system.
+            Not generating it from this source.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/fix-cm.sty
+Package: fix-cm 2020/11/24 v1.1t fixes to LaTeX
+ (/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding TS1 on input line 47.
+)) (./svjour3.cls
+Document Class: svjour3 2007/05/08 v3.2 
+LaTeX document class for Springer journals
+Class Springer-SVJour3 Info: extra/valid Springer sub-package (-> *.clo) 
+(Springer-SVJour3)           not found in option list of \documentclass
+(Springer-SVJour3)           - autoactivating "global" style.
+(./svglov3.clo
+File: svglov3.clo 2009/12/18 v3.2 style option for standardised journals
+
+SVJour Class option: svglov3.clo for standardised journals
+)
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 147.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 148.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 149.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 150.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 151.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 152.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 153.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 154.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 155.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 156.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 157.
+\logodepth=\dimen140
+\headerboxheight=\dimen141
+\betweenumberspace=\dimen142
+\aftertext=\dimen143
+\headlineindent=\dimen144
+\c@inst=\count187
+\c@auth=\count188
+\instindent=\dimen145
+\authrun=\box51
+\authorrunning=\toks17
+\titrun=\box52
+\titlerunning=\toks18
+\combirun=\box53
+\c@lastpage=\count189
+\rubricwidth=\dimen146
+\c@section=\count190
+\c@subsection=\count191
+\c@subsubsection=\count192
+\c@paragraph=\count193
+\c@subparagraph=\count194
+\spthmsep=\dimen147
+\c@theorem=\count195
+\c@figure=\count196
+\c@table=\count197
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\figcapgap=\dimen148
+\tabcapgap=\dimen149
+\figgap=\dimen150
+\bibindent=\dimen151
+\@tempcntc=\count198
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen152
+\Gin@req@width=\dimen153
+) (/usr/share/texlive/texmf-dist/tex/latex/psnfss/mathptmx.sty
+Package: mathptmx 2020/03/25 PSNFSS-v9.3 Times w/ Math, improved (SPQR, WaS) 
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 28.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ztmcm/m/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ztmcm/m/n on input line 28.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 29.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ztmcm/m/it on input line 29.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ztmcm/m/it on input line 29.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 30.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 31.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 31.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 31.
+\symbold=\mathgroup4
+\symitalic=\mathgroup5
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 34.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ptm/m/it on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 35.
+LaTeX Info: Redefining \hbar on input line 50.
+)
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 62.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count199
+\l__pdf_internal_box=\box54
+) (./template.aux)
+\openout1 = `template.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+ (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count266
+\scratchdimen=\dimen154
+\scratchbox=\box55
+\nofMPsegments=\count267
+\nofMParguments=\count268
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count269
+\MPscratchDim=\dimen155
+\MPnumerator=\count270
+\makeMPintoPDFobject=\count271
+\everyMPtoPDFconversion=\toks21
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+\big@size=\dimen156
+
+
+Package mathptmx Warning: There are no bold math fonts on input line 96.
+
+LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line 96.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
+File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
+)
+LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line 96.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlztmcm.fd
+File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
+)
+LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line 96.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsztmcm.fd
+File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
+)
+LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line 96.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxztmcm.fd
+File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 96.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 96.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 96.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 96.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 96.
+ [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+Package epstopdf Info: Source file: <example.eps>
+(epstopdf)                    date: 2008-06-12 09:01:30
+(epstopdf)                    size: 304 bytes
+(epstopdf)             Output file: <example-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-09-30 08:46:40
+(epstopdf)                    size: 2489 bytes
+(epstopdf)             Command: <repstopdf --outfile=example-eps-converted-to.pdf example.eps>
+(epstopdf)             \includegraphics on input line 129.
+Package epstopdf Info: Output file is already uptodate.
+<example-eps-converted-to.pdf, id=9, 202.7575pt x 202.7575pt>
+File: example-eps-converted-to.pdf Graphic file (type pdf)
+<use example-eps-converted-to.pdf>
+Package pdftex.def Info: example-eps-converted-to.pdf  used on input line 129.
+(pdftex.def)             Requested size: 202.757pt x 202.757pt.
+Package epstopdf Info: Source file: <example.eps>
+(epstopdf)                    date: 2008-06-12 09:01:30
+(epstopdf)                    size: 304 bytes
+(epstopdf)             Output file: <example-eps-converted-to.pdf>
+(epstopdf)                    date: 2024-09-30 08:46:40
+(epstopdf)                    size: 2489 bytes
+(epstopdf)             Command: <repstopdf --outfile=example-eps-converted-to.pdf example.eps>
+(epstopdf)             \includegraphics on input line 139.
+Package epstopdf Info: Output file is already uptodate.
+File: example-eps-converted-to.pdf Graphic file (type pdf)
+<use example-eps-converted-to.pdf>
+Package pdftex.def Info: example-eps-converted-to.pdf  used on input line 139.
+(pdftex.def)             Requested size: 253.5pt x 253.50812pt.
+ [2 <./example-eps-converted-to.pdf>] [3] (./template.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 1893 strings out of 474222
+ 32341 string characters out of 5748733
+ 1929975 words of memory out of 5000000
+ 24147 multiletter control sequences out of 15000+600000
+ 584977 words of font info for 85 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 57i,8n,65p,460b,326s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on template.pdf (3 pages, 62114 bytes).
+PDF statistics:
+ 43 PDF objects out of 1000 (max. 8388607)
+ 26 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+
