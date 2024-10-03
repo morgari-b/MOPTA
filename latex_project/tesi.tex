@@ -37,6 +37,11 @@
 %\usepackage{hyperref} %Ricordati di caricarlo alla fine
 \pgfplotsset{compat=1.18}
 
+\usepackage{xcolor}
+\usepackage{todonotes}
+\newcommand{\gr}[2][]{\todo[color=violet!40!,#1]{\textsf{GR:} #2}}
+\newcommand{\bm}[2][]{\todo[color=blue!20,#1]{\textsf{BM:} #2}}
+
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\dw}{d_w}
 \DeclareMathOperator{\C}{C_{tc}}
@@ -81,7 +86,8 @@
 \nc{\CG}{C_{\Sigma}^{\text{Gauss}}}
 \nc{\var}{Var}
 \nc{\pf}[1]{#1_{\#}} %push forward
-
+\nc{\rows}{S}
+\nc{\cols}{R}
 
 \nc{\cu}{{\barline{\nabla}}}
 \nc{\infint}{(-\infty,\infty]}
@@ -567,7 +573,42 @@ Let \(V_{\cP} \subset \bR^{N_{\cP}}\) and \(V_{P'} \subset \bR^{N_{P'}}\) be the
 \end{observation}
 
 Thus, by iteratively solving finer time partitions, we converge to the optimal solution of \(\cP\).
+\subsection{Variables and Constraints aggregation}
 
+Varying time aggregation can be seen as a rows and columns aggregation of the original LP model.
+Consider the general linear problem:
+\begin{align}
+\label{eq:LP}
+\min_{x \in \bR^{n}} &c^T x \\ 
+\text{s.t.} &\quad Ax = b \\
+&x \geq 0
+\end{align}
+
+Where \(A\) is a \(m \times n\) matrix. Then given \(sigma = \{\rows_1, \rows_2, \ldots, \rows_n\)\} a partition \([n]\) and \(\omega = \{\cols_1, \cols_2, \ldots, \cols_m\}\) a partition of \([m]\), corresponding respectively to a partition of the rows and columns of \(A\).
+We obtaining the corresponding aggregated problem by substituting for each set \(\rows\) in \(\sigma\) all of the rows in \(\cols\) with a single row, and for each set \(R\) in \(\omega\) all of the columns in \(R\) with one column.
+One way to substitute a set of rows (columns) with one row (colum) si by takings as a row (colum) a convex sum of the rows (columns) in the set, this is refered to as a \emph{weighted aggregation}.
+In the considered problem we have the following different types of constraints: Electricity Balance, Hydrogen Balance, Hydrogen Storage and magnitude constraints for each variable.
+Given a time partition \(P\), we obtain the corresponging partition of rows \(\sigma\) and columns \(\omega\) as follows: each set \(S \in \sigma\) corresponds to all the constraints of the same type, scenario and in which the time index \(t\) is in the same time interval in \(T\) in \(P\).
+Analogly, we have the following types of variables: Power generation, Hydrogen generagion, Power flow, Hydrogen flow and Hydrogen storage. And each set \(R \in \omega\) corresponds to all the variables (columns) of the same type, scenario and in which the time index \(t\) is in the same time interval in \(T\) in \(P\).
+Then the rows and columns are combined by a weighed aggregation with equal weights. This aggregation has the caracteristic that the aggregated problem "look the same" as the original problem, this is due to the fact that if we wrote the original model directly with the aggregated time steps we would've obtained the aggregated model.
+We call an aggregation with this characteristic a \emph{structure preserving aggregation} which is defined as:
+
+\begin{definition} \gr[]{mhhh these arenot enough assumptions eheh}
+  Given an LP problem \eqref{eq:LP}, we say that a weighed aggregation respect to the partitions \(\sigma,\, \omega\) is \emph{structure preserving} if for each \(R \in \sigma\), and for each \(r \in R\), there exists maps \(f: \sigma_{>1} \to [m]\), \(g: \omega \to [n]\), such that \(\tilde A_{R,S} = A_{f(R),f(S)} \) 
+\end{definition}
+we kind of want aggregated variables to appear in distinct aggregated constraints, this way if we have a solution of the aggregated problem we can easily obtain the solution of the original problem by multiplying the corresponding variables by a constant depending on the constant coefficient which is not necessarly the same as the aggregated constraint. 
+Same holds for the constraints that are aggregated together.
+\begin{observation}
+
+\end{observation}
+\vspace{1cm}
+
+...solving a structure preserving aggregation gives a solution for the original problem with different constant vector (counting unaggregated variables as constant)...
+
+
+
+
+\subsection{Choosing an initial Time Partition}
 \subsection{Warmstart}
 Let \(P'\) be a finer time partition than \(P\). Given an optimal basic feasible solution of \(CEP_{P}\), we can use it to efficiently warm start the solution of \(CEP_{\cP'}\). This is done by, keeping the variables and constraints of \(CEP_{P}\) and adding additional constraints to \(CEP_{\cP'}\) to further link the additional variables with those of \(CEP_{P}\). For every \(I \in P\), scenario \(j\), and edge \(k\), we add the following constraints to \(CEP_{P'}\):
 
