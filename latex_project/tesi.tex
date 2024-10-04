@@ -587,6 +587,9 @@ Consider the general linear problem:
 Where \(A\) is a \(m \times n\) matrix. Then given \(sigma = \{\rows_1, \rows_2, \ldots, \rows_n\)\} a partition \([n]\) and \(\omega = \{\cols_1, \cols_2, \ldots, \cols_m\}\) a partition of \([m]\), corresponding respectively to a partition of the rows and columns of \(A\).
 We obtaining the corresponding aggregated problem by substituting for each set \(\rows\) in \(\sigma\) all of the rows in \(\cols\) with a single row, and for each set \(R\) in \(\omega\) all of the columns in \(R\) with one column.
 One way to substitute a set of rows (columns) with one row (colum) si by takings as a row (colum) a convex sum of the rows (columns) in the set, this is refered to as a \emph{weighted aggregation}.
+And we obtain the corresponding aggregated LP problem 
+\begin{align} \min_{x \in \bR^{n}} &\tilde{c}^T x \\ \text{s.t.} &\quad \tilde{A} \tilde{x} = \tilde{b} \\ &x \geq 0 \end{align}
+Where \(\dilde{A}\) is a \(|\delta| \times |\sigma|\) matrix.
 In the considered problem we have the following different types of constraints: Electricity Balance, Hydrogen Balance, Hydrogen Storage and magnitude constraints for each variable.
 Given a time partition \(P\), we obtain the corresponging partition of rows \(\sigma\) and columns \(\omega\) as follows: each set \(S \in \sigma\) corresponds to all the constraints of the same type, scenario and in which the time index \(t\) is in the same time interval in \(T\) in \(P\).
 Analogly, we have the following types of variables: Power generation, Hydrogen generagion, Power flow, Hydrogen flow and Hydrogen storage. And each set \(R \in \omega\) corresponds to all the variables (columns) of the same type, scenario and in which the time index \(t\) is in the same time interval in \(T\) in \(P\).
@@ -594,7 +597,7 @@ Then the rows and columns are combined by a weighed aggregation with equal weigh
 We call an aggregation with this characteristic a \emph{structure preserving aggregation} which is defined as:
 
 \begin{definition} \gr[]{mhhh these arenot enough assumptions eheh}
-  Given an LP problem \eqref{eq:LP}, we say that a weighed aggregation respect to the partitions \(\sigma,\, \omega\) is \emph{structure preserving} if for each \(R \in \sigma\), and for each \(r \in R\), there exists maps \(f: \sigma_{>1} \to [m]\), \(g: \omega \to [n]\), such that \(\tilde A_{R,S} = A_{f(R),f(S)} \) 
+  Given an LP problem \eqref{eq:LP}, we say that a weighed aggregation respect to the partitions \(\sigma,\, \omega\) is \emph{structure preserving} if for each \(R \in \sigma\), and for each \(r \in R\), there exists maps \(f^r: \supp(\tilde{A}_R)\to \supp(\tilde{A_r})\), such that \(\tilde A_{R,S} = A_{r,f(S)} \). Where 
 \end{definition}
 we kind of want aggregated variables to appear in distinct aggregated constraints, this way if we have a solution of the aggregated problem we can easily obtain the solution of the original problem by multiplying the corresponding variables by a constant depending on the constant coefficient which is not necessarly the same as the aggregated constraint. 
 Same holds for the constraints that are aggregated together.
