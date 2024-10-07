@@ -402,7 +402,8 @@ Thus, by iteratively solving finer time partitions, we converge to the optimal s
 \subsection{Variables and Constraints aggregation}
 TODOS:
 \begin{itemize}
-  \item When is aggregated solution also optimal?
+  \item When is the cost of the aggregated solutions equal to the cost of the original problem respect to the corresponding unaggregated solutioon?
+  \item Whn is the corresponding unaggregated solution optimal for the original problem?
   \item How to estend obs so that it holds for ED. 
   \item rimuovere che combinazioni devono essere convesse, fa casino e non cambia niente
   \item How to get a scenario for which the aggregated ED solution is feasible
@@ -465,8 +466,8 @@ By the definition of \(\rho_r\):
 \begin{align*}
 \rho_r \sum_{S \in \supp(\tilde{A}_R)_{>1}} \tilde{A}_{R,S} \tilde{x}_S 
 &= \rho_r (\tilde{A} \tilde{x} - \tilde{A}_{\colP_{=1}} \tilde{x}_{\colP_{=1}}) \\
-&= \rho_r (\tilde{b} - \tilde{A}_{\colP_{=1}} \tilde{x}_{\colP_{=1}}) \\
-&= \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\rho_r}
+&= \rho_r (\tilde{b}_R - \tilde{A}_{R,\colP_{=1}} \tilde{x}_{\colP_{=1}}) \\
+&= b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}
 \end{align*}
 
 Thus, we obtain:
@@ -488,8 +489,14 @@ Then \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \colon
 \end{proposition}
 
 
+\begin{observation}
+  Under the hypothesis of the previous proposition, if  \((\rowP, \colP)\) is an equal weight aggregation, then the cost of the aggregated problem 
+  is equal to the cost of the unaggregated problem. \gr[]{can we generalize this?}
+\end{observation}
 
+While row aggregation of a linear problem is a relaxation of the original problem, the same does not apply to column aggregation. However, the column aggregation used for the  Capacity Expansion Problem in this work is still a relaxation. More generally column aggregation leads to a relaxation whenever, for every set \( C \in \rowP \) of variables that are aggregated together, each variable in \( C \) has the same coefficients in every row of the aggregated problem defined by \( \rowP \), except for those rows where all the coefficients of the variables are zero.
 
+Then if the weights of the columns correspond to the coefficients of the variables in the aggregated problem (We substitute the columns corresponding to \( C \) with a vector of all ones). The previous conditions ensures that such weights are well defined and do not depend on the non-null row considered.
 
 
 \section{COMPUTATIONAL RESULTS}

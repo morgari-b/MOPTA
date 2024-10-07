@@ -1,9 +1,9 @@
 # Fdb version 4
-["pdflatex"] 1728295771.09574 "c:/Users/ghjub/codes/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1728295773.56129 0
-  "articolo.aux" 1728295773 3046 e4729b558fa1e69ef94a176a3f3228e9 "pdflatex"
-  "articolo.out" 1728295773 632 c734cdba71a8de589b33608a7d54e917 "pdflatex"
-  "articolo.tex" 1728295767 45696 bf34db4c4238f53a82fe0746dcb8b65a ""
-  "c:/Users/ghjub/codes/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1728295767 45696 bf34db4c4238f53a82fe0746dcb8b65a ""
+["pdflatex"] 1728319015.381 "c:/Users/ghjub/codes/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1728319017.75996 0
+  "articolo.aux" 1728319017 3298 96849f3adc8373c5614469fc7111a46b "pdflatex"
+  "articolo.out" 1728319017 632 c734cdba71a8de589b33608a7d54e917 "pdflatex"
+  "articolo.tex" 1728319016 47024 87f3b54fd4e97ba5b3577d7e2cadd4c4 ""
+  "c:/Users/ghjub/codes/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1728319016 47024 87f3b54fd4e97ba5b3577d7e2cadd4c4 ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc" 1722436357 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "c:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1722436724 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1722438922 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -24,11 +24,13 @@
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1722435935 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1722435935 1528 abec98dbc43e172678c11b3b9031252a ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmr10.tfm" 1722435935 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
+  "c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmss10.tfm" 1722435935 1316 b636689f1933f24d1294acdf6041daaa ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm" 1722435935 1124 6c73e740cf17375f03eec0ee63599741 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm" 1722438628 688 37338d6ab346c2f1466b29e195316aa4 ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1722435346 30251 6afa5cb1d0204815a708a080681d4674 ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1722435346 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1722435346 35752 024fb6c41858982481f6968b5fc26508 ""
+  "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb" 1722435346 24457 5cbb7bdf209d5d1ce9892a9b80a307cc ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1722435346 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1722435346 34694 870c211f62cb72718a00e353f14f254d ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb" 1722438628 16077 4737ac34f0fb5608550f3780a0202c22 ""
