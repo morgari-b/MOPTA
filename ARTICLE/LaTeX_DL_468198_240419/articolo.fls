@@ -458,10 +458,10 @@ INPUT c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
 INPUT c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
 INPUT c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
 INPUT c:/texlive/2024/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
+INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmss10.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/vf/adobe/times/zptmcm7y.vf
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm
-INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmss10.tfm
 INPUT articolo.aux
 INPUT ./articolo.out
 INPUT ./articolo.out
