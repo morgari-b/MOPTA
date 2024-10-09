@@ -400,6 +400,7 @@ Let \(V_{\cP} \subset \bR^{N_{\cP}}\) and \(V_{P'} \subset \bR^{N_{P'}}\) be the
 
 Thus, by iteratively solving finer time partitions, we converge to the optimal solution of \(\cP\).
 \subsection{Variables and Constraints aggregation}
+\textcolor{violet}{
 TODOS:
 \begin{itemize}
   \item When is the cost of the aggregated solutions equal to the cost of the original problem respect to the corresponding unaggregated solutioon?
@@ -410,7 +411,9 @@ TODOS:
   \item How to easily compute when an aggregated interval is "far" from such fesible scenario
   \item Unaggregate on those intervals first.
   \item Add examples
+  \item If the non aggregated variables are mixed integers, everything works the same.
 \end{itemize}
+}
 \gr[inline]{Secondo me ci sta scriverlo in maniera un filo generale perchè:
 Così questo metodo non è ristretto a solo (ed esattamente) a questo modello,  magari diventa chiaro che aggiungendo generatori tradizionali tutto funciona comunque e top.
 Oppure per problemi totalmente diversi ma con una struttura simile.
@@ -493,10 +496,12 @@ Define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{
 Then \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\) is well defined and is feasible for the unaggregated problem \eqref{eq:LP}.
 \end{proposition}
 
-
+\textcolor{violet}{
+Def: f type functions maps C to the index in r with the same coefficient (same type).
 Ass: Union of supports is all variables.
+}
 \begin{observation}
-  Under the hypothesis of the previous proposition, if \(\tilde{C}_C = c_{f(r,C)}\) and if \( f^r(C) = f^{r'}(C')\) then \(C = C'\) and \(\{f^r(X)\}_{r \in \cup_{R\in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C}\). then the cost of the aggregated problem 
+  Under the hypothesis of the previous proposition, if \(\tilde{C}_C = c_{f(r,C)}\) and if \( f^r(C) = f^{r'}(C')\) then \(C = C'\) and \(\{f^r(C)\}_{r \in \cup_{R\in \rowP_{>1}}, C \in \colP} = \cup_{C \in \colP_{>1}}C\) o forse è meglio dire: \(\{f^r(C)\}_{r \in \cup_{R\in \rowP_{>1}}}R = C\).. then the cost of the aggregated problem 
   is equal to the cost of the unaggregated problem. 
 \end{observation}
 \begin{proof}
@@ -514,12 +519,37 @@ Ass: Union of supports is all variables.
 
 While row aggregation of a linear problem is a relaxation of the original problem, the same does not apply to column aggregation. However, the column aggregation used for the  Capacity Expansion Problem in this work is still a relaxation. More generally column aggregation leads to a relaxation whenever, for every set \( C \in \rowP \) of variables that are aggregated together, each variable in \( C \) has the same coefficients in every row of the aggregated problem defined by \( \rowP \), except for those rows where all the coefficients of the variables are zero.
 
-Then if the weights of the columns correspond to the coefficients of the variables in the aggregated problem (We substitute the columns corresponding to \( C \) with a vector of all ones). The previous conditions ensures that such weights are well defined and do not depend on the non-null row considered.
+Then if the weights of the columns correspond to the coefficients of the variables in the aggregated problem (We substitute the columns corresponding to \( C \) with a vector containing one in every row in which the coefficients in \(C\) are non zero, otherwise we substitute with one). The previous conditions ensures that such weights are well defined and do not depend on the non-null row considered.
 We refer to this as a \emph{constant-coefficients column agreggation}
 
 \begin{observation}
-Under the hypothesis of the previous two observations and is a constant-coefficients column aggregation, then the relaxation is exact. Thas is \(x\) is an optimal solution of the original problem \eqref{eq:LP}. \gr[]{da scrivere meglio ma devo fuggire}
+Under the hypothesis of the previous two observations and is a constant-coefficients column aggregation, then the relaxation is exact. Thas is \(x\) is an optimal solution of the original problem \eqref{eq:LP}.
 \end{observation}
+
+\begin{proof}
+  Let \(x\) be a solution to the unaggregated problem \eqref{eq:LP}. For all \(C \in \colP_{=1}\) let \(\tilde{x}_C \coloneqq x_C\).
+  Since  \(\{f^r(C)\}_{r \in \cup_{R\in \rowP_{>1}}, C \in \colP} = \cup_{C \in \colP_{>1}}C\), for all \(c \in C \in \colP_{>1}\), exists \(r \in R \in \rowP_{>1}\) and \(C \in \colP_{>1}\) such that \(f^r(C) = c\).
+  Then let \(\tilde{x}_C \coloneqq \sum_{c \in C}A_{r,c}x_c\). Since if \(f^{r}(C)= f^{r'}(C')\) implies that \(C=C'\), \(x\) is well defined.
+  Lastly for all \(R \in \rowP\) we have:
+  \[\tilde{A}_R\tilde{x} = \sum_{r \in R} \left( \sum_{C \in \colP_{=1}}\tilde{\rho}_rA_{r,c}\tilde{x}_C + \sum_{C\in \supp(\tilde{A}_r)_{>1}} \tilde{x}_C \right) = \sum_{r \in R} \left( \sum_{C \in \colP_{=1}}\tilde{\rho}_rA_{r,c}x_C + \sum_{C\in \supp(\tilde{A}_r)_{>1}} \sum_{c \in C}A_{r,c}x_c \right) = \sum_{r \in R} \tilde{\rho_r} b_r = \tilde{b}_R 
+  \]
+  \qed
+\end{proof}
+
+\section{APPLICATION TO CAPACITY EXPANSION PROBLEM}
+We now apply the results of the previous section to the Capacity Expansion Problem. 
+\textcolor{violet}{
+TODO:
+\begin{itemize}
+  \item What are the connected components of the hypergraph as defined in the previous sectors? each connected component looks like the hypergraph of the ED at a fixed timestep. Why can we not consider the edges corresponding to hydrogen storage? because however \(\rho\)s are chosen, they hold, so they don't force \(\rho\) to be equal over the nodes it connects.
+  \item What does it mean? Given an aggregated problem, we are interested in which time intervals are problematic, since the ones which have well define \(\rho\) could be disgragated and obtain the same solution, we disgragate the ones in which the \(\rho\)s are far from being well defines, that is we have two constraints in the same connected components with really different \(\rho_r\).
+  \item What is \(\rho_r\), since the aggregated variables are only second stage variables. Let's consider \(\rho_r\) with \(r \in R\), and let \(t_r\) and \(n \in \cN\) be respectively the time step and the node corresponding to the constraint \(r\).Let the net energy production at time \(t\) in \(n\): that is demand in \(n\) minus any renewable power produced in \(n\). Then \(\rho_r\) corresponds to fraction between the net energy production at time \(t\) and the net energy production during the interval \(T\) with \(t \in T\).
+  \item How to disaggregate: Thus we calculate \(\rho_(n,t)\) for all nodes in the network and al timestep, and disagregate thos with highest variance for fixed \(t\). (since, fixed t the should all be equal for the solution be feasible for the problem obtained by disagregating the time interval T). \\
+  \item How much to disaggregate: One could either subdivide each time interval into finer time intervals, or to the single timesteps. For the former, one could keep the intervals in which the variance of \(\rho_r\) is small, together, and divide in single timesteps the rest.
+  \item Initial aggregation: to calculate \(\rho_r\) we need to have solved already an aggregated problem, so it's not too insightful. But we can start by grouping together intervals by putting "peaks" on the extremes, that is peak of demand and production, and then subdividing equally the so obtained intervals.
+  \item Write well how to calculate \(\rho_r\)
+\end{itemize}
+}
 \section{COMPUTATIONAL RESULTS}
 \subsection{SINGLE NODE NETWORK}
 First, an electrical grid with a single node is considered (corresponding ideally to an area with uniform
