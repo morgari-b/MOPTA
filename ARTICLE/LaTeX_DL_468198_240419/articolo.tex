@@ -403,15 +403,16 @@ Thus, by iteratively solving finer time partitions, we converge to the optimal s
 \textcolor{violet}{
 TODOS:
 \begin{itemize}
-  \item When is the cost of the aggregated solutions equal to the cost of the original problem respect to the corresponding unaggregated solutioon?
-  \item Whn is the corresponding unaggregated solution optimal for the original problem?
+  \item When is the cost of the aggregated solutions equal to the cost of the original problem respect to the corresponding unaggregated solutioon? \textcolor{red}{done}
+  \item When is the corresponding unaggregated solution optimal for the original problem? \textcolor{red}{done}
   \item How to estend obs so that it holds for ED. 
   \item rimuovere che combinazioni devono essere convesse, fa casino e non cambia niente
   \item How to get a scenario for which the aggregated ED solution is feasible
   \item How to easily compute when an aggregated interval is "far" from such fesible scenario
-  \item Unaggregate on those intervals first.
+  \item Unaggregate on those intervals first. \textcolor{red}{done}
   \item Add examples
   \item If the non aggregated variables are mixed integers, everything works the same.
+  \item For \(\rho_r\) constraints which behave well under generalisez convex combinations of variables can be excluded.
 \end{itemize}
 }
 \gr[inline]{Secondo me ci sta scriverlo in maniera un filo generale perchè:
@@ -444,14 +445,18 @@ where \(\tilde{A}\) is a \(\tilde{m}\times \tilde{n}\) matrix.
 
 In the problem under consideration, we have various types of constraints: Electricity Balance, Hydrogen Balance, Hydrogen Storage, and bounds on the variables. Given a time partition \(P\), we define \(\rowP\) and \(\colP\) such that each set \(S \in \rowP\) corresponds to all constraints of the same type, scenario, and time index \(t\) that falls within the same time interval in \(T\) as \(P\). Similarly, the variables (such as Power generation, Hydrogen generation, etc.) are partitioned in \(\colP\) based on the same criteria.
 
-Rows and columns are combined via equal-weight aggregation. This aggregation maintains the structure of the original problem, meaning that had we formulated the model directly with the aggregated time steps, we would have arrived at the same model. We refer to this as a \emph{structure-preserving aggregation}, which is defined as follows:
+Rows and columns are combined via equal-weight aggregation. This aggregation maintains the structure of the original problem, 
+meaning that had we formulated the model directly with the aggregated time steps, we would have arrived at the same model.
+ We refer to this as a \emph{structure-preserving aggregation}, which is defined as follows:
 
 \begin{definition}
 Given an LP problem \eqref{eq:LP}, we say that a weighted aggregation with respect to partitions \(\rowP, \colP\) is \emph{structure-preserving} if for each \(R \in \rowP\) and each \(r \in R\), there exists a bijection \(f^r: \supp(\tilde{A}_R)_{>1} \to \supp(A_r)_{>1}\) such that \(\tilde{A}_{R,S} = A_{r,f(S)}\). Here, \(\supp(v)\) denotes the set of non-zero entries of \(v\), and \(\supp(\tilde{A}_R)_{>1}\) refers to the set of indices corresponding to sets \(R \in \colP\) of size greater than 1.
 \end{definition}
-
-This implies that the coefficients of the aggregated variables in the aggregated problem match those in the original problem for unaggregated variables. While obtaining a feasible solution to \eqref{eq:LP} from \eqref{eq:LPaggr} is not always guaranteed, it is possible under certain assumptions.
-
+Where if \(F\) is a family of sets we denote as \(F_{=k}, F_{>k}\) respectively the sets of \(F\) with size equal to \(k\) and greater than \(k\).
+In particular \(\supp(\tilde{A}_R)_{>1} \subset \colP\) is the set of indices corresponding to sets \(R \in \colP\) of size greater than 1. And \(\supp(A_r)_{>1}\) is the set of indices such that \(r \in R \in \colP\) with \(R\) of size greater than 1.
+This implies that the coefficients of the aggregated variables in the aggregated problem match those in the original problem for the corresponding unaggregated variables, \(f^r\) can be seen as a function mapping the aggregated variables to variables of the same "type" in the unaggregated constraint.
+ While obtaining a feasible solution to \eqref{eq:LP} from \eqref{eq:LPaggr} is not always guaranteed, it is possible under certain assumptions.
+Here, if \(B\) is a matrix having \(I,J\) as set of indexes for the rows and columns respctively, then, for all \(I' \subset I\) and \(J' \subset J\), we denote with \(B_{I',J'}\) the submatrix of \(B\) havins rows in \(I'\) and columns in \(J'\).
 \begin{observation}
 \label{ob:aggrconstr}
 If \((\rowP, \colP)\) is a structure-preserving aggregation, let \(R \in \rowP\) and \(r \in R\). Let \(\tilde{x}\) be a solution to the aggregated problem \eqref{eq:LPaggr}. If \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\), define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_r
@@ -473,7 +478,7 @@ A_r x &= \sum_{i \in \supp(A_r)} A_{r,i} x_i \\
 By the definition of \(\rho_r\):
 \begin{align*}
 \rho_r \sum_{S \in \supp(\tilde{A}_R)_{>1}} \tilde{A}_{R,S} \tilde{x}_S 
-&= \rho_r (\tilde{A} \tilde{x} - \tilde{A}_{\colP_{=1}} \tilde{x}_{\colP_{=1}}) \\
+&= \rho_r (\tilde{A}_R \tilde{x} - \tilde{A}_{R,\colP_{=1}} \tilde{x}_{\colP_{=1}}) \\
 &= \rho_r (\tilde{b}_R - \tilde{A}_{R,\colP_{=1}} \tilde{x}_{\colP_{=1}}) \\
 &= b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}
 \end{align*}
@@ -485,9 +490,22 @@ A_r x = b_r
 \qed
 \end{proof}
 
+\begin{observation}
+  Let \(\tilde{\rho}_r \in \bR\) for all \(r \in R \in \rowP\) be the weights of the row aggregation.
+  Let \(\rho_r\) for \(r \in R \in \rowP_{>1}\) be defined as in \ref{ob:aggrconstr}, if \(\tilde{\rho}_r \geq 0\). If \(\rho_r\) is well define, then we have, for all \(R \in \rowP_{>1}\):
+  \begin{equation}
+    \tilde{\rho}_R^T \rho_R = 1
+  \end{equation}
+\end{observation}
+\begin{proof}
+  \[
+  \tilde{\rho}_R^T \rho_R = \sum_{r \in R} \tilde{\rho}_r \rho_r =  \frac{\rho_r(b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}})}{\tilde{b}_r
+  - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}} = 1
+  \] 
+\end{proof}
 A structure-preserving aggregation does not necessarily ensure a feasible solution for all constraints in the original problem. Observation \ref{ob:aggrconstr} demonstrates how to partially construct a solution \(x\) for constraint \(r\), from \(\tilde{x}\) by appropriately scaling the aggregated variables in the support of \(A_r\).
 
-If two constraints share common variables that are aggregated, then \(\rho_r\) must equal \(\rho_{r'}\). This condition can be better visualized as a hypergraph with nodes representing the aggregated variables, and edges representing the subsets of variables that appear together in a constraint. If two constraints share variables in the same connected component of the hypergraph, then their scaling factors \(\rho_r\) and \(\rho_{r'}\) must be equal.
+If two constraints \(r,r'\), share common variables that are aggregated, then \(\rho_r\) must equal \(\rho_{r'}\). This condition can be better visualized as a hypergraph with nodes representing the aggregated variables, and edges representing the subsets of variables that appear together in a constraint. If two constraints share variables in the same connected component of the hypergraph, then their scaling factors \(\rho_r\) and \(\rho_{r'}\) must be equal.
 Thus we have:
 \begin{proposition}
 If \((\rowP, \colP)\) is a structure-preserving aggregation. Let \(\tilde{x}\) be a solution 
@@ -496,10 +514,7 @@ Define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{
 Then \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\) is well defined and is feasible for the unaggregated problem \eqref{eq:LP}.
 \end{proposition}
 
-\textcolor{violet}{
-Def: f type functions maps C to the index in r with the same coefficient (same type).
-Ass: Union of supports is all variables.
-}
+
 \begin{observation}
   Under the hypothesis of the previous proposition, if \(\tilde{C}_C = c_{f(r,C)}\) and if \( f^r(C) = f^{r'}(C')\) then \(C = C'\) and \(\{f^r(C)\}_{r \in \cup_{R\in \rowP_{>1}}, C \in \colP} = \cup_{C \in \colP_{>1}}C\) o forse è meglio dire: \(\{f^r(C)\}_{r \in \cup_{R\in \rowP_{>1}}}R = C\).. then the cost of the aggregated problem 
   is equal to the cost of the unaggregated problem. 
@@ -517,14 +532,18 @@ Ass: Union of supports is all variables.
 \end{proof}
 
 
-While row aggregation of a linear problem is a relaxation of the original problem, the same does not apply to column aggregation. However, the column aggregation used for the  Capacity Expansion Problem in this work is still a relaxation. More generally column aggregation leads to a relaxation whenever, for every set \( C \in \rowP \) of variables that are aggregated together, each variable in \( C \) has the same coefficients in every row of the aggregated problem defined by \( \rowP \), except for those rows where all the coefficients of the variables are zero.
+While row aggregation of a linear problem is a relaxation of the original problem, the same does not apply to column aggregation. However, the column aggregation used for the  Capacity Expansion Problem in this work is still a relaxation. In general a column aggregation of a linear problem is a relaxation of the original problem whenever it is a \emph{constant-coefficients column aggregation}, that is:
+\begin{definition}
+  A column aggregation  of a linear problem with weights \(\tilde{\rho}_c,\; c \in C \in \colP \) is a \emph{constant-coefficients column aggregation}  if for all \(c \in C \in \colP\) for all rows \(r \in [m]\), we have \(\tilde{\rho}_cA_{r,c} = \frac{1}{|C|}\) or  \(\tilde{\rho}_cA_{r,c} = 0\).  
+ 
 
-Then if the weights of the columns correspond to the coefficients of the variables in the aggregated problem (We substitute the columns corresponding to \( C \) with a vector containing one in every row in which the coefficients in \(C\) are non zero, otherwise we substitute with one). The previous conditions ensures that such weights are well defined and do not depend on the non-null row considered.
-We refer to this as a \emph{constant-coefficients column agreggation}
+\end{definition}
+That is if for every set \( C \in \rowP \) of variables that are aggregated together, each variable in \( C \) has the same coefficients in every row of the aggregated problem defined by \( \rowP \) and the coefficient is equal to the aggregation weight of the corresponding variable, except for those rows where all the coefficients of the variables are zero.
+We then substitute the columns corresponding to \( C \) with a vector containing one in every row in which the coefficients in \(C\) are non zero, otherwise we substitute with zero.
 
-\begin{observation}
+\begin{proposition}
 Under the hypothesis of the previous two observations and is a constant-coefficients column aggregation, then the relaxation is exact. Thas is \(x\) is an optimal solution of the original problem \eqref{eq:LP}.
-\end{observation}
+\end{proposition}
 
 \begin{proof}
   Let \(x\) be a solution to the unaggregated problem \eqref{eq:LP}. For all \(C \in \colP_{=1}\) let \(\tilde{x}_C \coloneqq x_C\).
