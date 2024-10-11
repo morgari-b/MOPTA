@@ -452,6 +452,11 @@ meaning that had we formulated the model directly with the aggregated time steps
 \begin{definition}
 Given an LP problem \eqref{eq:LP}, we say that a weighted aggregation with respect to partitions \(\rowP, \colP\) is \emph{structure-preserving} if for each \(R \in \rowP\) and each \(r \in R\), there exists a bijection \(f^r: \supp(\tilde{A}_R)_{>1} \to \supp(A_r)_{>1}\) such that \(\tilde{A}_{R,S} = A_{r,f(S)}\). Here, \(\supp(v)\) denotes the set of non-zero entries of \(v\), and \(\supp(\tilde{A}_R)_{>1}\) refers to the set of indices corresponding to sets \(R \in \colP\) of size greater than 1.
 \end{definition}
+
+\textcolor{violet}{
+Altre cose da considerare di aggiungere a questa definizione: \(f^{r'}(C') = f^r(C) \implies C=C'\) e \(\cup_{r\in R \in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C\)
+Usiamo entrambe le ipotesi aggiuntive più avanti, la prima ci dice che se mandiamo du variabili \(C,C'\) del problema agregato nella stessa variabile, allora le due variabili iniziali sono la stessa. La seconda che a ogni variabili non agregata corrisponde una variabile aggregata.
+}
 Where if \(F\) is a family of sets we denote as \(F_{=k}, F_{>k}\) respectively the sets of \(F\) with size equal to \(k\) and greater than \(k\).
 In particular \(\supp(\tilde{A}_R)_{>1} \subset \colP\) is the set of indices corresponding to sets \(R \in \colP\) of size greater than 1. And \(\supp(A_r)_{>1}\) is the set of indices such that \(r \in R \in \colP\) with \(R\) of size greater than 1.
 This implies that the coefficients of the aggregated variables in the aggregated problem match those in the original problem for the corresponding unaggregated variables, \(f^r\) can be seen as a function mapping the aggregated variables to variables of the same "type" in the unaggregated constraint.
@@ -490,19 +495,8 @@ A_r x = b_r
 \qed
 \end{proof}
 
-\begin{observation}
-  Let \(\tilde{\rho}_r \in \bR\) for all \(r \in R \in \rowP\) be the weights of the row aggregation.
-  Let \(\rho_r\) for \(r \in R \in \rowP_{>1}\) be defined as in \ref{ob:aggrconstr}, if \(\tilde{\rho}_r \geq 0\). If \(\rho_r\) is well define, then we have, for all \(R \in \rowP_{>1}\):
-  \begin{equation}
-    \tilde{\rho}_R^T \rho_R = 1
-  \end{equation}
-\end{observation}
-\begin{proof}
-  \[
-  \tilde{\rho}_R^T \rho_R = \sum_{r \in R} \tilde{\rho}_r \rho_r =  \frac{\rho_r(b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}})}{\tilde{b}_r
-  - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}} = 1
-  \] 
-\end{proof}
+
+
 A structure-preserving aggregation does not necessarily ensure a feasible solution for all constraints in the original problem. Observation \ref{ob:aggrconstr} demonstrates how to partially construct a solution \(x\) for constraint \(r\), from \(\tilde{x}\) by appropriately scaling the aggregated variables in the support of \(A_r\).
 
 If two constraints \(r,r'\), share common variables that are aggregated, then \(\rho_r\) must equal \(\rho_{r'}\). This condition can be better visualized as a hypergraph with nodes representing the aggregated variables, and edges representing the subsets of variables that appear together in a constraint. If two constraints share variables in the same connected component of the hypergraph, then their scaling factors \(\rho_r\) and \(\rho_{r'}\) must be equal.
@@ -540,6 +534,34 @@ While row aggregation of a linear problem is a relaxation of the original proble
 \end{definition}
 That is if for every set \( C \in \rowP \) of variables that are aggregated together, each variable in \( C \) has the same coefficients in every row of the aggregated problem defined by \( \rowP \) and the coefficient is equal to the aggregation weight of the corresponding variable, except for those rows where all the coefficients of the variables are zero.
 We then substitute the columns corresponding to \( C \) with a vector containing one in every row in which the coefficients in \(C\) are non zero, otherwise we substitute with zero.
+
+\begin{observation}
+  Let \(\tilde{\rho}_r \in \bR\) for all \(r \in R \in \rowP\) be the weights of the row aggregation.
+  Let \(\rho_r\) for \(r \in R \in \rowP_{>1}\) be defined as in \ref{ob:aggrconstr}, if \(\tilde{\rho}_r \geq 0\). If \(\rho_r\) is well defined for all \(r \in R\), then we have, for all \(R \in \rowP_{>1}\):
+  \begin{equation}
+    \tilde{\rho}_R^T \rho_R = 1
+  \end{equation}
+\end{observation}
+\begin{proof}
+  \[
+  \tilde{\rho}_R^T \rho_R = \sum_{r \in R} \tilde{\rho}_r \rho_r =  \frac{\sum_{r \in R}\tilde{\rho}_r(b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}})}{\tilde{b}_r
+  - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}} = 1
+  \] 
+\end{proof}
+From this observations we have a class of constraints, which however \(\rho\) is fixed remain valid, and thus the corresponding edges can be removed from the hypergraph associated to the aggregation.
+That is, if we define \(\rho\) on the hypergraph obtained by removing edges, then the corresponding \(x\) will be feasible for this class of constraints.
+\begin{observation}
+  If \(\colP\) is a constant-coefficients column aggregation, and \((\rowP, \colP)\) a constant weight aggregation such that \(f^{r'}(C') = f^r(C) \implies C=C'\) e \(\cup_{r\in R \in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C\). For \(r \in \rowP_{=1}\) such that for all \(R \in \rowP_{>1}\) and for all 
+  \(C \in \colP_{>1}\) such that \(C \cap \supp(A_{r,c}) \neq \emptyset\), \(A_{r,f^{r'}(C)} = \rho_{r'}\) for all \(r' \in R\) with \(R^{(C)} \in \rowP_{>1}\) such that \(C \in \supp(A_{R^{(C)}})\)
+  then if \(\rho\) is such that \( \rho_R \in \bR\) for all \(R \in \rho_{>1}\), we have \(\rho_Rx_R = 1\), then \(A_rx=b_r\).
+\end{observation}
+\begin{proof}
+  \[
+  A_rx = \sum_{C \in \colP_{=1}}A_{r,C}x_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}} A_{r,f^{r'}(C)}x_{f^{r'}(C)} = \sum_{C \in \colP_{=1}}\tilde{A}_{r,C}\tilde{x}_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}}\tilde{\rho}_{r'} \rho_{r'}\tilde{x}_{R,C} = \tilde{b}_r = b_r
+   \]
+\end{proof}
+
+We refer to these constraints a \emph{\(\rho\) agnostic constraints}. We can now consider the hypergraph as defined before without the row agnostic constraints.
 
 \begin{proposition}
 Under the hypothesis of the previous two observations and is a constant-coefficients column aggregation, then the relaxation is exact. Thas is \(x\) is an optimal solution of the original problem \eqref{eq:LP}.
