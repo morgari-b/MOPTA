@@ -449,12 +449,16 @@ Rows and columns are combined via equal-weight aggregation. This aggregation mai
 meaning that had we formulated the model directly with the aggregated time steps, we would have arrived at the same model.
  We refer to this as a \emph{structure-preserving aggregation}, which is defined as follows:
 
-\begin{definition}
-Given an LP problem \eqref{eq:LP}, we say that a weighted aggregation with respect to partitions \(\rowP, \colP\) is \emph{structure-preserving} if for each \(R \in \rowP\) and each \(r \in R\), there exists a bijection \(f^r: \supp(\tilde{A}_R)_{>1} \to \supp(A_r)_{>1}\) such that \(\tilde{A}_{R,S} = A_{r,f(S)}\). Here, \(\supp(v)\) denotes the set of non-zero entries of \(v\), and \(\supp(\tilde{A}_R)_{>1}\) refers to the set of indices corresponding to sets \(R \in \colP\) of size greater than 1.
-\end{definition}
+ \begin{definition}
+  Given an LP problem \eqref{eq:LP}, we say that a weighted aggregation with respect to partitions \(\rowP, \colP\) is \emph{structure-preserving} if for each \(R \in \rowP\) and each \(r \in R\), there exists a bijection \(f^r: \supp(\tilde{A}_R)_{>1} \to \supp(A_r)_{>1}\) such that \(\tilde{A}_{R,S} = A_{r,f(S)}\). And the following conditions hold:
+  \begin{enumerate}
+    \item \(f^{r'}(C') = f^r(C) \implies C=C'\)
+    \item \(\{f^r(C)\}_{r\in R \in \rowP_{>1}, C \in \colP_{>1}} = \cup_{C \in \colP_{>1}}C\)
+  \end{enumerate}
+  \end{definition}
 
 \textcolor{violet}{
-Altre cose da considerare di aggiungere a questa definizione: \(f^{r'}(C') = f^r(C) \implies C=C'\) e \(\{f^r(C)\}_{r\in R \in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C\).
+Per alcune oss le seguendi condizioni si possono togliere: \(f^{r'}(C') = f^r(C) \implies C=C'\) e \(\{f^r(C)\}_{r\in R \in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C\).
 Usiamo entrambe le ipotesi aggiuntive più avanti, la prima ci dice che se mandiamo du variabili \(C,C'\) del problema agregato nella stessa variabile, allora le due variabili iniziali sono la stessa. La seconda che a ogni variabili non agregata corrisponde una variabile aggregata.
 }
 Where if \(F\) is a family of sets we denote as \(F_{=k}, F_{>k}\) respectively the sets of \(F\) with size equal to \(k\) and greater than \(k\).
@@ -495,47 +499,8 @@ A_r x = b_r
 \qed
 \end{proof}
 
-
-
-A structure-preserving aggregation does not necessarily ensure a feasible solution for all constraints in the original problem. Observation \ref{ob:aggrconstr} demonstrates how to partially construct a solution \(x\) for constraint \(r\), from \(\tilde{x}\) by appropriately scaling the aggregated variables in the support of \(A_r\).
-
-If two constraints \(r,r'\), share common variables that are aggregated, then \(\rho_r\) must equal \(\rho_{r'}\). This condition can be better visualized as a hypergraph with nodes representing the aggregated variables, and edges representing the subsets of variables that appear together in a constraint. If two constraints share variables in the same connected component of the hypergraph, then their scaling factors \(\rho_r\) and \(\rho_{r'}\) must be equal.
-Thus we have:
-\begin{proposition}
-If \((\rowP, \colP)\) is a structure-preserving aggregation. Let \(\tilde{x}\) be a solution 
-to the aggregated problem \eqref{eq:LPaggr}. If for all \(r \in R \in \rowP_{>1}\) such that  \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} = 0\) we have \(A_{r,\colP_{=1}} = 0\) and \(b_r=0\).
-Define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_R - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}}\) for all \(r \in R \in \rowP_{>1}\) such that   \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\). If \(rho_r \geq 0\) and is constant over the connected components of the hypergraph associated to \ref{eq:LP}. 
-Then \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\) is well defined and is feasible for the unaggregated problem \eqref{eq:LP}.
-\end{proposition}
-
-
 \begin{observation}
-  Under the hypothesis of the previous proposition, if \(\tilde{C}_C = c_{f(r,C)}\) and if \( f^r(C) = f^{r'}(C')\) then \(C = C'\) and \(\{f^r(C)\}_{r \in \cup_{R\in \rowP_{>1}}, C \in \colP} = \cup_{C \in \colP_{>1}}C\) o forse è meglio dire: \(\{f^r(C)\}_{r \in \cup_{R\in \rowP_{>1}}}R = C\).. then the cost of the aggregated problem 
-  is equal to the cost of the unaggregated problem. 
-\end{observation}
-\begin{proof}
-  Let \(\tilde{x}\) be a solution to the aggregated problem \eqref{eq:LPaggr}. For all \(C \in \colP_{>1}\) the cost corresponding to the variable \(\tilde{x}_C\) is 
-  \[
-  \tilde{c}_C\tilde{x}_C = \tilde{c}_C\sum_{r \in R}\rho_r\tilde{x}_C = \tilde{c}_C\sum_{r \in R}x_{f(r,C)} = \sum{c}_{r \in R}c_{f(r,C)}x_{f(r,C)}
-  \]
-  Which correspond to the cost of the variables \(\{x_{f(r,C)}\}_{r \in R}\). Thus
-  \[
-  \tilde{c}\tilde{x} = \sum_{C \in \colP_{=1}}\tilde{c}_C\tilde{x}_C + \sum_{C \in \colP_{>1}}\tilde{c}_C\tilde{x}_C = \sum_{C \in \colP_{=1}}c_Cx_C + \sum_{C \in \colP_{>1}}\sum_{r \in R}c_{f(r,C)}x_{f(r,C)} =  \sum_{C \in \colP_{=1}}c_Cx_C + \sum_{j \in \cup_{C \in \colP_{>1}}C}c_{i}x_{i} =  cx
-  \]
-
-\end{proof}
-
-
-While row aggregation of a linear problem is a relaxation of the original problem, the same does not apply to column aggregation. However, the column aggregation used for the  Capacity Expansion Problem in this work is still a relaxation. In general a column aggregation of a linear problem is a relaxation of the original problem whenever it is a \emph{constant-coefficients column aggregation}, that is:
-\begin{definition}
-  A column aggregation  of a linear problem with weights \(\tilde{\rho}_c,\; c \in C \in \colP \) is a \emph{constant-coefficients column aggregation}  if for all \(c \in C \in \colP\) for all rows \(r \in [m]\), we have \(\tilde{\rho}_cA_{r,c} = \frac{1}{|C|}\) or  \(\tilde{\rho}_cA_{r,c} = 0\).  
- 
-
-\end{definition}
-That is if for every set \( C \in \rowP \) of variables that are aggregated together, each variable in \( C \) has the same coefficients in every row of the aggregated problem defined by \( \rowP \) and the coefficient is equal to the aggregation weight of the corresponding variable, except for those rows where all the coefficients of the variables are zero.
-We then substitute the columns corresponding to \( C \) with a vector containing one in every row in which the coefficients in \(C\) are non zero, otherwise we substitute with zero.
-
-\begin{observation}
+  \label{ob:rhoconvex}
   Let \(\tilde{\rho}_r \in \bR\) for all \(r \in R \in \rowP\) be the weights of the row aggregation.
   Let \(\rho_r\) for \(r \in R \in \rowP_{>1}\) be defined as in \ref{ob:aggrconstr}, if \(\tilde{\rho}_r \geq 0\). If \(\rho_r\) is well defined for all \(r \in R\), then we have, for all \(R \in \rowP_{>1}\):
   \begin{equation}
@@ -548,16 +513,17 @@ We then substitute the columns corresponding to \( C \) with a vector containing
   - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}} = 1
   \] 
 \end{proof}
-From this observations we have a class of constraints, which however \(\rho\) is fixed remain valid, and thus the corresponding edges can be removed from the hypergraph associated to the aggregation.
-That is, if we define \(\rho\) on the hypergraph obtained by removing edges, then the corresponding \(x\) will be feasible for this class of constraints.
+
+A structure-preserving aggregation does not inherently guarantee feasibility for all constraints in the original problem. However, Observation \ref{ob:aggrconstr} illustrates how to partially reconstruct a solution \(x\) for a specific constraint \(r\) by appropriately scaling the aggregated variables within the support of \(A_r\). 
+
 \begin{definition}
-  For a constant-coefficient, structure-preserving, row and column aggregation \((\rowP,\colP)\), such that \(f^{r'}(C') = f^r(C) \implies C=C'\) and \\ \(\{f^r(C)\}_{r\in R \in \rowP_{>1}, C \in \colP_{>1}} = \cup_{C \in \colP_{>1}}C\).
+  For a structure-preserving, row and column aggregation \((\rowP,\colP)\), such that \(f^{r'}(C') = f^r(C) \implies C=C'\) and \\ \(\{f^r(C)\}_{r\in R \in \rowP_{>1}, C \in \colP_{>1}} = \cup_{C \in \colP_{>1}}C\).
   A constraint \(r \in \rowP_{=1}\) is \(\rho\)-agnostic if for all \(C \in \colP_{>1}\) such that \(C \cap \supp(A_{r,c}) \neq \emptyset\), 
-  \[A_{r,f^{r'}(C)} = \rho_{r'} \text{ for all } r' \in R^{(C)} \]
+  \[A_{r,f^{r'}(C)} = \rho_{r'}\tilde{A}_{r,C} \text{ for all } r' \in R^{(C)} \]
    with \(R^{(C)} \in \rowP_{>1}\) such that \(C \in \supp(A_{R^(C)})\).
 \end{definition}
 \begin{observation}
-  If \(\colP\) is a constant-coefficients column aggregation, and \((\rowP, \colP)\) a constant weight aggregation such that  For \(r \in \rowP_{=1}\) such that for all , then \(A_rx=b_r\).
+ Let \(x\) be as in Obs \ref{ob:rhoconvex}. If \(r \in \rowP_{=1}\) is a row-agnostic constraint, then \(A_rx=b_r\).
 \end{observation}
 
 \begin{proof}
@@ -567,13 +533,55 @@ Since \(\tilde{\rho}_R^T \rho_R = 1\), we have:
    \]
 \end{proof}
 
-We refer to these constraints a \emph{\(\rho\) agnostic constraints}. We can now consider the hypergraph as defined before without the row agnostic constraints.
+We can now define the hypergraph associated to the aggregation \((\rowP, \colP)\).
+\begin{definition}
+  The \emph{hypergraph associated to the aggregation \((\rowP, \colP)\)} is the hypergraph \(\cN, \cE\) having as nodes the aggregated variables \(\cN \coloneqq \colP_{>1}\) and as edges the subsest of \(\cN\) that appear together in not row-agnostic constraints.
+\end{definition}
+
+When two edges (constraints) in the hypergraph, \(r\) and \(r'\), share aggregated variables, the scaling factors \(\rho_r\) and \(\rho_{r'}\) must be equal to maintain consistency. 
+Then if \(\rho_r\) can be defined consistently, by applying observation \ref{ob:aggrconstr}, to all \(r \in R \in \rowP_{>1}\) we can construct a feasible solution for the unaggregated problem \eqref{eq:LPunaggr}. Thus we have: 
+\begin{proposition}
+\label{prop:xaggfeasible}
+If \((\rowP, \colP)\) is a structure-preserving aggregation. Let \(\tilde{x}\) be a solution 
+to the aggregated problem \eqref{eq:LPaggr}. If for all \(r \in R \in \rowP_{>1}\) such that  \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} = 0\) we have \(A_{r,\colP_{=1}} = 0\) and \(b_r=0\).
+Define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_R - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}}\) for all \(r \in R \in \rowP_{>1}\) such that   \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\). If \(rho_r \geq 0\) and is constant over the connected components of the hypergraph associated to \((\rowP, \colP)\). 
+Then \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\) is well defined and is feasible solution for the unaggregated problem \eqref{eq:LP}.
+\end{proposition}
+
+
+\begin{observation}
+  \label{ob:costpreserving}
+  Let \(x\), \(\tilde{x}\) be as defined as in proposition \ref{prop:xaggfeasible}. If \(\tilde{\rho}_r\tilde{c}_C = c_{f(r,C)}\) for some \(r \in R \in \rowP_{>1}\). Then the cost of \(\tilde{x}\) for the aggregated problem 
+  is equal to the cost of \(x\) in the unaggregated problem. 
+\end{observation}
+\begin{proof}
+  Let \(\tilde{x}\) be a solution to the aggregated problem \eqref{eq:LPaggr}. Using observation \ref{ob:rhoconvex}, for all \(C \in \colP_{>1}\) the cost corresponding to the variable \(\tilde{x}_C\) is 
+  \[
+  \tilde{c}_C\tilde{x}_C = \tilde{c}_C\sum_{r \in R}\tilde{\rho}_r\rho_r\tilde{x}_C = \sum_{r \in R}\tilde{c}_C\tilde{\rho}_r\rho_r\tilde{x}_C  = \sum_{r \in R}c_{f(r,C)}x_{f(r,C)}
+  \]
+  Which correspond to the cost of the variables \(\{x_{f(r,C)}\}_{r \in R}\). Thus
+  \[
+  \tilde{c}\tilde{x} = \sum_{C \in \colP_{=1}}\tilde{c}_C\tilde{x}_C + \sum_{C \in \colP_{>1}}\tilde{c}_C\tilde{x}_C = \sum_{C \in \colP_{=1}}c_Cx_C + \sum_{C \in \colP_{>1}}\sum_{r \in R}c_{f(r,C)}x_{f(r,C)} =  \sum_{C \in \colP_{=1}}c_Cx_C + \sum_{j \in \cup_{C \in \colP_{>1}}C}c_{i}x_{i} =  cx
+  \]
+
+\end{proof}
+
+
+While row aggregation of a linear problem is a relaxation of the original problem, the same does not apply to column aggregation. However, the column aggregation used for the  Capacity Expansion Problem in this work is still a relaxation. In general a column aggregation of a linear problem is a relaxation of the original problem whenever it is a \emph{constant-coefficients column aggregation}, that is:
+\begin{definition}
+  A column aggregation  of a linear problem with weights \(\tilde{\rho}_c,\; c \in C \in \colP \) is a \emph{constant-coefficients column aggregation}  if for all \(c \in C \in \colP\) for all rows \(r \in [m]\), we have \(\tilde{\rho}_cA_{r,c} = \frac{1}{|C|}\) or  \(\tilde{\rho}_cA_{r,c} = 0\).  
+\end{definition}
+
+That is if for every set \( C \in \rowP \) of variables that are aggregated together, each variable in \( C \) has the same coefficients in every row of the aggregated problem defined by \( \rowP \) and the coefficient is equal to the aggregation weight of the corresponding variable, except for those rows where all the coefficients of the variables are zero.
+We then substitute the columns corresponding to \( C \) with a vector containing one in every row in which the coefficients in \(C\) are non zero, otherwise we substitute with zero.
 
 \begin{proposition}
-Under the hypothesis of the previous two observations and is a constant-coefficients column aggregation, then the relaxation is exact. Thas is \(x\) is an optimal solution of the original problem \eqref{eq:LP}.
+If \((\rowP,\colP)\) is a structure-preserving, constant-coefficients column aggregation,
+if the hypothesis of proposition \ref{prop:xaggfeasible} holds then the aggregated problem \eqref{eq:LPaggr} is exact and \(x\) is an optimal solution.
 \end{proposition}
 
 \begin{proof}
+  Since for observation \ref{ob:costpreserving}, the cost of the aggregated problem is equal to the cost of \(x\) in the unaggregated problem, we only need to show that the aggregated problem is a relaxation of the unaggregated problem.
   Let \(x\) be a solution to the unaggregated problem \eqref{eq:LP}. For all \(C \in \colP_{=1}\) let \(\tilde{x}_C \coloneqq x_C\).
   Since  \(\{f^r(C)\}_{r \in \cup_{R\in \rowP_{>1}}, C \in \colP} = \cup_{C \in \colP_{>1}}C\), for all \(c \in C \in \colP_{>1}\), exists \(r \in R \in \rowP_{>1}\) and \(C \in \colP_{>1}\) such that \(f^r(C) = c\).
   Then let \(\tilde{x}_C \coloneqq \sum_{c \in C}A_{r,c}x_c\). Since if \(f^{r}(C)= f^{r'}(C')\) implies that \(C=C'\), \(x\) is well defined.
@@ -582,6 +590,7 @@ Under the hypothesis of the previous two observations and is a constant-coeffici
   \]
   \qed
 \end{proof}
+
 
 \section{APPLICATION TO CAPACITY EXPANSION PROBLEM}
 We now apply the results of the previous section to the Capacity Expansion Problem. 
