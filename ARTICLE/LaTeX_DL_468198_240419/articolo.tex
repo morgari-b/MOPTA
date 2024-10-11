@@ -454,7 +454,7 @@ Given an LP problem \eqref{eq:LP}, we say that a weighted aggregation with respe
 \end{definition}
 
 \textcolor{violet}{
-Altre cose da considerare di aggiungere a questa definizione: \(f^{r'}(C') = f^r(C) \implies C=C'\) e \(\cup_{r\in R \in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C\)
+Altre cose da considerare di aggiungere a questa definizione: \(f^{r'}(C') = f^r(C) \implies C=C'\) e \(\{f^r(C)\}_{r\in R \in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C\).
 Usiamo entrambe le ipotesi aggiuntive più avanti, la prima ci dice che se mandiamo du variabili \(C,C'\) del problema agregato nella stessa variabile, allora le due variabili iniziali sono la stessa. La seconda che a ogni variabili non agregata corrisponde una variabile aggregata.
 }
 Where if \(F\) is a family of sets we denote as \(F_{=k}, F_{>k}\) respectively the sets of \(F\) with size equal to \(k\) and greater than \(k\).
@@ -550,12 +550,18 @@ We then substitute the columns corresponding to \( C \) with a vector containing
 \end{proof}
 From this observations we have a class of constraints, which however \(\rho\) is fixed remain valid, and thus the corresponding edges can be removed from the hypergraph associated to the aggregation.
 That is, if we define \(\rho\) on the hypergraph obtained by removing edges, then the corresponding \(x\) will be feasible for this class of constraints.
+\begin{definition}
+  For a constant-coefficient, structure-preserving, row and column aggregation \((\rowP,\colP)\), such that \(f^{r'}(C') = f^r(C) \implies C=C'\) and \\ \(\{f^r(C)\}_{r\in R \in \rowP_{>1}, C \in \colP_{>1}} = \cup_{C \in \colP_{>1}}C\).
+  A constraint \(r \in \rowP_{=1}\) is \(\rho\)-agnostic if for all \(C \in \colP_{>1}\) such that \(C \cap \supp(A_{r,c}) \neq \emptyset\), 
+  \[A_{r,f^{r'}(C)} = \rho_{r'} \text{ for all } r' \in R^{(C)} \]
+   with \(R^{(C)} \in \rowP_{>1}\) such that \(C \in \supp(A_{R^(C)})\).
+\end{definition}
 \begin{observation}
-  If \(\colP\) is a constant-coefficients column aggregation, and \((\rowP, \colP)\) a constant weight aggregation such that \(f^{r'}(C') = f^r(C) \implies C=C'\) e \(\cup_{r\in R \in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C\). For \(r \in \rowP_{=1}\) such that for all \(R \in \rowP_{>1}\) and for all 
-  \(C \in \colP_{>1}\) such that \(C \cap \supp(A_{r,c}) \neq \emptyset\), \(A_{r,f^{r'}(C)} = \rho_{r'}\) for all \(r' \in R\) with \(R^{(C)} \in \rowP_{>1}\) such that \(C \in \supp(A_{R^{(C)}})\)
-  then if \(\rho\) is such that \( \rho_R \in \bR\) for all \(R \in \rho_{>1}\), we have \(\rho_Rx_R = 1\), then \(A_rx=b_r\).
+  If \(\colP\) is a constant-coefficients column aggregation, and \((\rowP, \colP)\) a constant weight aggregation such that  For \(r \in \rowP_{=1}\) such that for all , then \(A_rx=b_r\).
 \end{observation}
+
 \begin{proof}
+Since \(\tilde{\rho}_R^T \rho_R = 1\), we have:
   \[
   A_rx = \sum_{C \in \colP_{=1}}A_{r,C}x_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}} A_{r,f^{r'}(C)}x_{f^{r'}(C)} = \sum_{C \in \colP_{=1}}\tilde{A}_{r,C}\tilde{x}_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}}\tilde{\rho}_{r'} \rho_{r'}\tilde{x}_{R,C} = \tilde{b}_r = b_r
    \]

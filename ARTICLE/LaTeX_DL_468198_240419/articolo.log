@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  11 OCT 2024 12:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  11 OCT 2024 14:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -943,19 +943,19 @@ Overfull \hbox (56.7941pt too wide) detected at line 524
 
 
 [10]
-Overfull \hbox (96.71457pt too wide) detected at line 561
+Overfull \hbox (96.71457pt too wide) detected at line 567
 \OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] []\OML/ztmcm/m/it/10 ^^Z[][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
  []
 
 
-Overfull \hbox (95.884pt too wide) detected at line 576
+Overfull \hbox (95.884pt too wide) detected at line 582
 [][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
  []
 
 
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 593--593
+Underfull \hbox (badness 10000) in paragraph at lines 599--599
 
  []
 
@@ -976,18 +976,18 @@ Package rerunfilecheck Info: File `articolo.out' has not changed.
 (rerunfilecheck)             Checksum: 16021587FF1B5A58E34137C71E6B75B8;892.
  ) 
 Here is how much of TeX's memory you used:
- 34082 strings out of 473584
- 781219 string characters out of 5732363
+ 34083 strings out of 473584
+ 781231 string characters out of 5732363
  1945908 words of memory out of 5000000
  56308 multiletter control sequences out of 15000+600000
  594376 words of font info for 113 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,11n,107p,1840b,844s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (13 pages, 164886 bytes).
+Output written on articolo.pdf (13 pages, 165035 bytes).
 PDF statistics:
- 235 PDF objects out of 1000 (max. 8388607)
- 190 compressed objects within 2 object streams
- 63 named destinations out of 1000 (max. 500000)
+ 236 PDF objects out of 1000 (max. 8388607)
+ 191 compressed objects within 2 object streams
+ 64 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 
