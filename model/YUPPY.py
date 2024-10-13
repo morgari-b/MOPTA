@@ -517,6 +517,9 @@ class Network:
             n.edgesH.index = n.edgesH.index.astype(int)
 
         return n
+    
+    def average_scenario(self):
+        self.ave=1
 
 
 

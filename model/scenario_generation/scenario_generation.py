@@ -16,7 +16,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
 import matplotlib.cm as cm
-from reliability.Fitters import Fit_Weibull_2P
+#from reliability.Fitters import Fit_Weibull_2P
 import os
 from scipy.sparse import dia_matrix, save_npz, load_npz
 import xarray as xr
@@ -24,7 +24,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import xarray as xr
-os.chdir("C:/Users/ghjub/codes/MOPTA")
+#os.chdir("C:/Users/ghjub/codes/MOPTA")
 
 #TODO: fix if there are more locations for each country )use same scenario)
 #TODOS
@@ -106,7 +106,7 @@ def import_scenario(path): #TODO: add node selections
             The 'time' dimension represents the time index, the 'node' dimension represents the nodes, and the 'scenario'
             dimension represents the scenario name.
     """
-    df = pd.read_csv(path, index_col = 0)
+    df = pd.read_csv(path, index_col = 0,encoding='unicode_escape',low_memory=False)
     return scenario_to_array(df)
 
 def import_scenarios(name):

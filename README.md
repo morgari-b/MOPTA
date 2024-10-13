@@ -71,6 +71,8 @@ Functions:
 #### 2.2 parameters_countries
 
 Folder containing the fitted parameters for wind and PV distributions in european countries. the files starting with "copula" contain the covariance matrix of the Guassian copula of the corresponding multidimensional variable. Files starting with "marginals" containg the parameters describing the Weibull and Beta distributions describing Wind an PV variables respectively. "night_hours" files record hours during the year in which there is no PV production.
+
+
 ### 3. model
 
 the "model" folder contains the scripts to model the network and time partitions and the various optimization methods employed in the app.

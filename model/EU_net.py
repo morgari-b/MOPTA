@@ -73,7 +73,7 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     EU_h['MH']=500  # maximum transportation for hydrogen
 
     #costs
-    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0,0,1000,10000]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH"])
+    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0,0,1000,10000,0.5,4]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH","cH_edge","cP_edge"])
     eu = Network(init_method = init_method )
     eu.n = EU
     eu.edgesP = EU_e
@@ -96,15 +96,15 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
    
     scenario = 0
     
-    wind_scenario = import_scenario(path + 'small-EU-wind-scenarios.csv')
-    pv_scenario = import_scenario(path + 'small-Eu-PV-scenarios.csv')
+    wind_scenario = import_scenario(path + 'small-eu-wind-scenarios2.csv')  # THERE ARE STILL PROBLEMS, I JUST TOOK IT OUT (used PV scenarios for wind as well, see line 107)
+    pv_scenario = import_scenario(path + 'small-eu-PV-scenarios.csv')
     hydro = import_generated_scenario(path+'hydrogen_demandg.csv',5, scenario, node_names=['Italy', 'Spain', 'Austria', 'France','Germany'])
     hydro_mean = hydro.mean(dim = ["time","scenario"])
     hydrogen_demand_scenario = hydro / hydro_mean
     eu.n_scenarios = n_scenarios
 
     
-    eu.add_scenarios(wind_scenario * max_wind, pv_scenario * max_solar, hydrogen_demand_scenario, elec_load_scenario)
+    eu.add_scenarios(pv_scenario * max_wind, pv_scenario * max_solar, hydrogen_demand_scenario, elec_load_scenario)
     eu.init_time_partition()
 
     return eu
