@@ -1,5 +1,5 @@
 
-# %%
+# %% import
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -84,7 +84,7 @@ def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mn
 
 
     
-#%% OPT2
+#%% OPT2 - network
 def OPT2(network, d=1,rounds=1,long_outs=False):
     
     if network.costs.shape[0] == 1: #if the costs are the same:
@@ -208,7 +208,7 @@ def OPT2(network, d=1,rounds=1,long_outs=False):
     else:
         return outputs, HX, EtHX, HtEX, P_edgeX,H_edgeX
 
-#%% OPT 3
+#%% OPT 3 - network
 
 def OPT3(network):
     """
@@ -344,7 +344,7 @@ def OPT_agg(network):
 
 	"""
     if network.costs.shape[0] == 1: #if the costs are the same:
-       cs, cw, ch, ch_t, chte, ceth, cNTC, cMH = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0]
+       cs, cw, ch, ch_t, chte, ceth, cNTC, cMH, cH_edge, cP_edge = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0], network.costs['cH_edge'][0], network.costs['cP_edge'][0]
     else:
         print("add else") #actually we can define the costs appropriately using the network class directly
 
@@ -375,9 +375,9 @@ def OPT_agg(network):
     HtE = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg
     EtH = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
     H = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS,lb=0)
-    P_edge = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY) #could make sense to sosbstitute Nodes with network.nodes and so on Nedges with n.edgesP['start_node'],n.edgesP['end_node'] or similar
+    P_edge = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY,obj=cP_edge) #could make sense to sosbstitute Nodes with network.nodes and so on Nedges with n.edgesP['start_node'],n.edgesP['end_node'] or similar
     #fai due grafi diversi
-    H_edge = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY)
+    H_edge = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY,obj=cH_edge)
 
     #todo: add starting capacity for generators (the same as for liners)
     model.addConstrs( H[j,i,k] <= nh[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
@@ -483,6 +483,143 @@ def OPT_agg(network):
     return [VARS]#HH,ETH,HTE
 
 
+
+
+#%% OPT_agg_correct
+
+def OPT_agg_correct(network):
+    """
+	Performs optimization on a given network.
+    The network has an initialized time partition to aggregate the data and variables approriately.
+    The aggregated model is then solved. The aggregated model is a relaxation of the original model (solved in OPT3).
+
+	Parameters:
+	- network: an instance of the network class.
+
+	Returns:
+	- outputs: a list containing the optimized variables and the objective value.
+
+	"""
+    if network.costs.shape[0] == 1: #if the costs are the same:
+       cs, cw, ch, ch_t, chte, ceth, cNTC, cMH, cH_edge, cP_edge = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0], network.costs['cH_edge'][0], network.costs['cP_edge'][0]
+    else:
+        print("add else") #actually we can define the costs appropriately using the network class directly
+
+
+    start_time=time.time()
+    Nnodes = network.n.shape[0]
+    NEedges = network.edgesP.shape[0]
+    NHedges = network.edgesH.shape[0]
+    d = network.n_scenarios 
+    inst = network.loadP_t_agg.shape[0] #number of time steps in time partition
+    tp_obj = network.time_partition
+    tp = tp_obj.agg #time partition
+    print(f'sanity check, is inst equal to len tp= {inst == len(tp)}')
+
+    env = Env(params={'OutputFlag': 0})
+    model = Model(env=env)
+    model.setParam('LPWarmStart',1)
+    #model.setParam('Method',1)
+    #time and scenario indipendent variables
+    ns = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=cs,ub=network.n['Mns'])
+    nw = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=cw,ub=network.n['Mnw'])
+    nh = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=ch,ub=network.n['Mnh'])
+    mhte = model.addVars(Nnodes,vtype=GRB.CONTINUOUS,obj=0.01, ub=network.n['Mhte'])
+    meth = model.addVars(Nnodes,vtype=GRB.CONTINUOUS,obj=0.01,ub=network.n['Meth'])
+    addNTC = model.addVars(NEedges,vtype=GRB.CONTINUOUS,obj=cNTC)
+    addMH = model.addVars(NHedges,vtype=GRB.CONTINUOUS,obj=cMH)
+
+    HtE = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg
+    EtH = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
+    H = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS,lb=0)
+    P_edge_pos = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS, obj=cP_edge)
+    P_edge_neg = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS, obj=cP_edge)
+    H_edge_pos = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS, obj=cH_edge)
+    H_edge_neg = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS, obj=cH_edge)
+
+    #todo: add starting capacity for generators (the same as for liners)
+    model.addConstrs( H[j,i,k] <= nh[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
+    model.addConstrs( EtH[j,i,k] <= meth[k]*tp_obj.len(i) for i in range(inst) for j in range(d) for k in range(Nnodes))
+    model.addConstrs( HtE[j,i,k] <= mhte[k]*tp_obj.len(i) for i in range(inst) for j in range(d) for k in range(Nnodes))
+    model.addConstrs( P_edge_pos[j,i,k] - P_edge_neg[j,i,k] <= (network.edgesP['NTC'].iloc[k] + addNTC[k])*tp_obj.len(i) for i in range(inst) for j in range(d) for k in range(NEedges))
+    model.addConstrs( H_edge_pos[j,i,k]-H_edge_neg[j,i,k] <= (network.edgesH['MH'].iloc[k] + addMH[k])*tp_obj.len(i) for i in range(inst) for j in range(d) for k in range(NHedges))
+    model.addConstrs( P_edge_pos[j,i,k] - P_edge_neg[j,i,k] >= -(network.edgesP['NTC'].iloc[k] + addNTC[k])*tp_obj.len(i) for i in range(inst) for j in range(d) for k in range(NEedges))
+    model.addConstrs( H_edge_pos[j,i,k]-H_edge_neg[j,i,k] >= -(network.edgesH['MH'].iloc[k] + addMH[k])*tp_obj.len(i) for i in range(inst) for j in range(d) for k in range(NHedges))
+
+    VARS=[]
+
+    ES = network.genS_t_agg
+    EW = network.genW_t_agg
+    EL = network.loadP_t_agg
+    HL = network.loadH_t_agg
+
+   
+    if network.loadP_t_agg.shape[2] > 1:
+        model.addConstrs((- H[j,(i+1)%inst,k] + H[j,i,k] + 30*network.n['feth'].iloc[k]*EtH[j,i,k] - HtE[j,i,k] -
+                        quicksum(H_edge_pos[j,i,l]-H_edge_neg[j,i,l] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                        quicksum(H_edge_pos[j,i,l]-H_edge_neg[j,i,l] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
+                        == HL[i,k,j] for j in range(d) for i in range(inst) for k in range(Nnodes)))
+
+        
+        model.addConstrs((ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j] + 0.033*network.n['fhte'].iloc[k]*HtE[j,i,k] - EtH[j,i,k] -
+                            quicksum(P_edge_pos[j,i,l] - P_edge_neg[j,i,l] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                            quicksum(P_edge_pos[j,i,l] - P_edge_neg[j,i,l] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
+                            >= EL[i,k,j] for k in range(Nnodes) for j in range(d) for i in range(inst)))
+    
+    else:
+        model.addConstrs((- H[j,(i+1)%inst,k] + H[j,i,k] + 30*network.n['feth'].iloc[k]*EtH[j,i,k] - HtE[j,i,k] -
+                        quicksum(H_edge_pos[j,i,l]-H_edge_neg[j,i,l] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                        quicksum(H_edge_pos[j,i,l]-H_edge_neg[j,i,l] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
+                        == HL[i,k,0] for j in range(d) for i in range(inst) for k in range(Nnodes)))
+
+
+        model.addConstrs((ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j] + 0.033*network.n['fhte'].iloc[k]*HtE[j,i,k] - EtH[j,i,k] -
+                            quicksum(P_edge_pos[j,i,l] - P_edge_neg[j,i,l] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                            quicksum(P_edge_pos[j,i,l] - P_edge_neg[j,i,l] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
+                            >= EL[i,k,0] for k in range(Nnodes) for j in range(d) for i in range(inst)))
+        
+    print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
+    model.optimize()
+    if model.Status!=2:
+        print("Status = {}".format(model.Status))
+    else:
+        node_dims = ["scenario","time","node"]
+        if 'node' in network.n.columns:
+            network.n.set_index('node',inplace=True)
+        node_coords = [ range(d), range(inst),  network.n.index.to_list()]
+        edge_dims = ["scenario","time","edge"]
+        edge_coords = [ range(d),  range(inst), range(NEedges)]
+        VARS={
+            "ns":np.ceil([ns[k].X for k in range(Nnodes)]),
+            "nw":np.ceil([nw[k].X for k in range(Nnodes)]),
+            "nh":np.array([nh[k].X for k in range(Nnodes)]),
+            "mhte":np.array([mhte[k].X for k in range(Nnodes)]),
+            "meth":np.array([meth[k].X for k in range(Nnodes)]),
+            "addNTC":np.array([addNTC[l].X for l in range(NEedges)]),
+            "addMH":np.array([addMH[l].X for l in range(NHedges)]),
+            "H":solution_to_xarray(H, node_dims, node_coords),
+            "EtH":solution_to_xarray(EtH, node_dims, node_coords),
+            "P_edge_pos":solution_to_xarray(P_edge_pos, edge_dims, edge_coords),
+            "H_edge_pos":solution_to_xarray(H_edge_pos, edge_dims, edge_coords),
+            "P_edge_neg":solution_to_xarray(P_edge_neg, edge_dims, edge_coords),
+            "H_edge_neg":solution_to_xarray(H_edge_neg, edge_dims, edge_coords),
+            "HtE":solution_to_xarray(HtE, node_dims, node_coords),
+            "obj":model.ObjVal,
+            "interval_to_var":dict(zip(time_partition.tuplize(tp),range(inst))),
+            "var_to_interval":dict(zip(range(inst),time_partition.tuplize(tp)))  
+        }
+
+                                                   
+
+        print("opt time: {}s.".format(np.round(time.time()-start_time,3)))
+
+    return [VARS]#HH,ETH,HTE
+
+
+
+
+#%%
+
 #OPT_agg2(network):
 #  """
 # 	Performs optimization on a given network.
@@ -500,7 +637,9 @@ def OPT_agg(network):
 #     return [VARS]#HH,ETH,HTE
 # """
 
-# %% define network
+# # %% 
+# define network 
+
 # eu = EU()
 # eu.init_time_partition()
 #notagg_results = OPT3(eu)
@@ -1477,44 +1616,44 @@ def OPT_agg2(network, N_iter):
         
 #%%
 #nnode_to_node = dict(zip(range(Nnodes),network.n['node'].to_list()))
-if __name__ == "__main__":
-    time_coords = list(var_to_interval.keys())
-    H_sol = solution_to_xarray(var=H, dims=['scenario', 'time', 'node'], coords=[range(d), time_coords, network.n.index.to_list()])
-    last_tp_indeces = [interval_to_var[t] for t in tuplize(tp)]
-    H_sol = H_sol.sel(time=last_tp_indeces)
-    H_sol = H_sol.assign_coords(time=range(len(tp)))
-    # Fill the array with values from the Gurobi solution
-    # for (scenario, time, node), var in H.items():
-    #     H_values[scenario, time, node] = var.X
+# if __name__ == "__main__":
+#     time_coords = list(var_to_interval.keys())
+#     H_sol = solution_to_xarray(var=H, dims=['scenario', 'time', 'node'], coords=[range(d), time_coords, network.n.index.to_list()])
+#     last_tp_indeces = [interval_to_var[t] for t in tuplize(tp)]
+#     H_sol = H_sol.sel(time=last_tp_indeces)
+#     H_sol = H_sol.assign_coords(time=range(len(tp)))
+#     # Fill the array with values from the Gurobi solution
+#     # for (scenario, time, node), var in H.items():
+#     #     H_values[scenario, time, node] = var.X
 
 
-    # # Create an xarray DataArray from the NumPy array
-    # H_xarray = xr.DataArray(
-    #     H_values,
-    #     dims=['scenario', 'time', 'node'],
-    #     coords={'scenario': range(d), 'time': range(inst), 'node': range(Nnodes)}
-    # )
+#     # # Create an xarray DataArray from the NumPy array
+#     # H_xarray = xr.DataArray(
+#     #     H_values,
+#     #     dims=['scenario', 'time', 'node'],
+#     #     coords={'scenario': range(d), 'time': range(inst), 'node': range(Nnodes)}
+#     # )
 
 
-    # #create a list of the variables
-    # variables = ['nh','mhte','meth']
+#     # #create a list of the variables
+#     # variables = ['nh','mhte','meth']
 
-    #%%if outputs is not empty, create the subplots
-    if outputs != []:
-        fig = make_subplots(rows=len(variables), cols=1)
-        for i, var in enumerate(variables):
-            for j, output in enumerate(outputs):
-                fig.add_trace(go.Scatter(x=list(range(len(output[0][0]))), y=output[0][i], name=f'Scenario {j+1}'),row=i+1, col=1)
-            fig.update_layout(height=600*len(variables), title=f'{var} variables')
-        fig.show()
+#     #%%if outputs is not empty, create the subplots
+#     if outputs != []:
+#         fig = make_subplots(rows=len(variables), cols=1)
+#         for i, var in enumerate(variables):
+#             for j, output in enumerate(outputs):
+#                 fig.add_trace(go.Scatter(x=list(range(len(output[0][0]))), y=output[0][i], name=f'Scenario {j+1}'),row=i+1, col=1)
+#             fig.update_layout(height=600*len(variables), title=f'{var} variables')
+#         fig.show()
 
-    #otherwise print a message
-    else:
-        print("No outputs to plot")
+#     #otherwise print a message
+#     else:
+#         print("No outputs to plot")
 
-    #%%
+#     #%%
 
-    fig = px.line(x=["a","b","c"], y=[1,3,2], title="sample figure")
-    print(fig)
-    fig.show()
-    # %%
+#     fig = px.line(x=["a","b","c"], y=[1,3,2], title="sample figure")
+#     print(fig)
+#     fig.show()
+#     # %%

@@ -41,7 +41,8 @@ def solution_to_xarray(var, dims, coords):
 
 
 
-#%% class Network
+#%% class time_partition
+
 class time_partition:
 
     def aggregate(self,l, i0,i1):
@@ -221,6 +222,7 @@ class time_partition:
                     indexes.append(i)
         return indexes
         
+# %% df_aggregator
 
 def df_aggregator(df, time_partition):
     """
@@ -304,9 +306,9 @@ def df_aggregator2(network, df0, prev_df, splitted_intervals, son_indeces_lists)
     new_df = new_df.assign_coords(time=('time', new_time_coords))
     
     return new_df
-#%%
 
-#%%
+#%% class Network
+
 class Network:
     """
     Class to represent a network of nodes and edges.
