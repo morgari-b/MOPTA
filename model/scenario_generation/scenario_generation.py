@@ -106,7 +106,7 @@ def import_scenario(path): #TODO: add node selections
             The 'time' dimension represents the time index, the 'node' dimension represents the nodes, and the 'scenario'
             dimension represents the scenario name.
     """
-    df = pd.read_csv(path, index_col = 0,encoding='unicode_escape',low_memory=False)
+    df = pd.read_csv(path, index_col = 0)#,encoding='unicode_escape',low_memory=False)
     return scenario_to_array(df)
 
 def import_scenarios(name):
