@@ -23,7 +23,7 @@ from model.EU_net import EU
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 import plotly.express as px
-from model.OPT_methods import OPT_agg_correct
+from model.OPT_methods import OPT_agg_correct, OPT3
 
 #%%
 
@@ -34,6 +34,9 @@ from model.OPT_methods import OPT_agg_correct
 #   - loss function to optimal scenario
 #   - rolling horizon optimization 2days at a time
 #   - messages telling me when it fails
+
+#TODO: capire perchè è feasible anche se non usa stoccaggio di idrogeno
+#TODO: sistemare relazione cona ggregazione temporale (così) i timestep della domanda sono sfasati con lo stoccaggio di idrogeno
 
 
 def Validate(network,VARS,scenarios):
@@ -88,10 +91,10 @@ def Validate(network,VARS,scenarios):
     HtE = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg
     EtH = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
     H = model.addVars(product(range(d),range(inst),range(Nnodes)),vtype=GRB.CONTINUOUS,lb=0)
-    P_edge_pos = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS, obj=cP_edge)
-    P_edge_neg = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS, obj=cP_edge)
-    H_edge_pos = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS, obj=cH_edge)
-    H_edge_neg = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS, obj=cH_edge)
+    P_edge_pos = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS, obj=cP_edge, lb=0)
+    P_edge_neg = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS, obj=cP_edge, lb=0)
+    H_edge_pos = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS, obj=cH_edge, lb=0)
+    H_edge_neg = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS, obj=cH_edge, lb=0)
     
     #todo: add starting capacity for generators (the same as for liners)
     model.addConstrs( H[j,i,k] <= nh[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
@@ -202,13 +205,13 @@ def Validate(network,VARS,scenarios):
                                  coords = dict(zip(["scenario","time","node"],[range(d),pd.date_range(day,freq='h',periods=inst),network.n.index.to_list()])))
             Hs = xr.concat([Hs,Hss],dim='time')
             print('opt time: ',np.round(time.time()-start_time,4),'s. Day: ',str(day))
-    
+    return Hs
     
     
     
             
         
-        return None
+    
 
 
 # %% trials
@@ -216,13 +219,17 @@ def Validate(network,VARS,scenarios):
 eu=EU()
 VARS=OPT_agg_correct(eu)
 
+#%%
 scenarios = import_scenario_val(5,5)
 #%%
 Validate(eu,VARS,scenarios)
 
+#%%
+eu1 = EU(n_scenarios=1)
+VARS1 = OPT3(eu1)
+
+#%%
+Hs = Validate(eu1,VARS1,scenarios)
 
 
 # %% debugging
-
-#network=eu
-

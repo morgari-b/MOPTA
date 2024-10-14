@@ -44,8 +44,8 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     #ho spostato qui così è un parametro di input
     EU['Mhte']=10**6  # maximum hydrogen transport cost
     EU['Meth']=10**5  # maximum electricity transport cost
-    EU['feth']=0.3  # fraction of electricity in hydrogen
-    EU['fhte']=0.3  # fraction of electricity in hydrogen
+    EU['feth']=0.8  # efficiency of electricity in hydrogen
+    EU['fhte']=0.8  # effficiency of electricity in hydrogen
     EU['Mns'] = 100000000
     EU['Mnw'] = 100000000
     EU['Mnh'] = 1000000000
