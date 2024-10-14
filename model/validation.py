@@ -37,7 +37,7 @@ from model.OPT_methods import OPT_agg_correct, OPT3
 
 #TODO: capire perchè è feasible anche se non usa stoccaggio di idrogeno
 #TODO: sistemare relazione cona ggregazione temporale (così) i timestep della domanda sono sfasati con lo stoccaggio di idrogeno
-
+#TODO: dividere costi di trasmissione per numero di scenari.
 
 def Validate(network,VARS,scenarios):
          
