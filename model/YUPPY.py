@@ -18,11 +18,62 @@ import os
 #os.chdir("C:/Users/ghjub/codes/MOPTA/02_model")
 import xarray as xr
 import folium
+from model.scenario_generation.scenario_generation import import_generated_scenario, import_scenario, scenario_to_array
 
 
 
 #%% import_generated_scenario
 
+def import_scenario_val(start,stop):
+    
+    path = "model/scenario_generation/scenarios/"
+    elec_load_df = pd.read_csv(path+'electricity_load_2023.csv')
+    elec_load_df = elec_load_df[['DateUTC', 'IT', 'ES', 'AT', 'FR','DE']]
+    time_index = range(elec_load_df.shape[0])#pd.date_range('2023-01-01 00:00:00', '2023-12-31 23:00:00', freq='H')
+
+    elec_load_scenario = xr.DataArray(
+        np.expand_dims(elec_load_df[['IT', 'ES', 'AT', 'FR','DE']].values, axis = 2), #add one dimension to correspond with scenarios
+        coords={'time': time_index, 'node': ['Italy', 'Spain', 'Austria', 'France','Germany'], 'scenario': [0]},
+        dims=['time', 'node', 'scenario']
+    )
+    
+    ave = [31532.209018, 26177.184589, 6645.657078, 48598.654281, 52280.658229 ]
+    a = xr.DataArray(ave,dims=['node'], coords={'node':['Italy','Spain','Austria','France','Germany']})
+    elec_load_scenario=elec_load_scenario*a
+    
+    #wind_scenario = 4*scenario_to_array(pd.read_csv(path +'small-eu-wind-scenarios3.csv', index_col = 0))
+    wind_scenario = 4*import_scenario(path + 'small-eu-wind-scenarios3.csv')
+    pv_scenario = 0.01*import_scenario(path + 'small-eu-PV-scenarios.csv')
+    
+    
+    df = pd.read_csv(path+'hydrogen_demandg.csv', index_col = 0).head()
+    time_index = range(df.shape[1])#pd.date_range('2023-01-01 00:00:00', periods=df.shape[1], freq='H')
+    node_names=['Italy', 'Spain', 'Austria', 'France','Germany']
+
+    hydro = xr.DataArray(
+        np.expand_dims(df.T.values, axis = 2),
+        coords={'time': time_index, 'node': node_names, 'scenario': [0]},
+        dims=['time', 'node', 'scenario'] )
+    hydro_mean = hydro.mean(dim = ["time","scenario"]) 
+    hydrogen_demand_scenario = hydro / hydro_mean
+    
+    
+    #hydrogen_demand_scenario2 = import_scenario(path + 'hydrogen_demandg.csv')
+    
+    #eu.add_scenarios(wind_scenario * max_wind, pv_scenario * max_solar, hydrogen_demand_scenario, elec_load_scenario)
+    
+    scenarios = {
+        'wind_scenario' : wind_scenario.sel(scenario=slice(start,stop)),
+        'pv_scenario' : pv_scenario.sel(scenario=slice(start,stop)),
+        'hydrogen_demand_scenario' : hydrogen_demand_scenario,
+        'elec_load_scenario' : elec_load_scenario
+        }
+    
+    
+    return scenarios
+
+
+# %%
 #LESS IMPORTANT:
 # give name to constriants
 #todo: da spostrare in uno script più sensato
@@ -41,7 +92,8 @@ def solution_to_xarray(var, dims, coords):
 
 
 
-#%% class Network
+#%% class time_partition
+
 class time_partition:
 
     def aggregate(self,l, i0,i1):
@@ -221,6 +273,7 @@ class time_partition:
                     indexes.append(i)
         return indexes
         
+# %% df_aggregator
 
 def df_aggregator(df, time_partition):
     """
@@ -304,9 +357,9 @@ def df_aggregator2(network, df0, prev_df, splitted_intervals, son_indeces_lists)
     new_df = new_df.assign_coords(time=('time', new_time_coords))
     
     return new_df
-#%%
 
-#%%
+#%% class Network
+
 class Network:
     """
     Class to represent a network of nodes and edges.

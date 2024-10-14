@@ -12,8 +12,8 @@ import time
 from itertools import product
 from matplotlib.dates import DayLocator, MonthLocator, DateFormatter, AutoDateLocator, ConciseDateFormatter #, mdates
 import os
-from .YUPPY import  Network # import_generated_scenario
-from .scenario_generation.scenario_generation import import_generated_scenario, import_scenario
+from model.YUPPY import  Network # import_generated_scenario
+from model.scenario_generation.scenario_generation import import_generated_scenario, import_scenario
 #os.chdir("C:/Users/ghjub/codes/MOPTA/model")
 
 
@@ -29,7 +29,7 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     Returns:
         None
     """
-    max_wind = 4 
+    
     max_wind = 4 
     max_solar = 10 / 1000
 
@@ -46,8 +46,8 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     EU['Meth']=10**5  # maximum electricity transport cost
     EU['feth']=0.3  # fraction of electricity in hydrogen
     EU['fhte']=0.3  # fraction of electricity in hydrogen
-    EU['Mns'] = 10000
-    EU['Mnw'] = 10000
+    EU['Mns'] = 100000000
+    EU['Mnw'] = 100000000
     EU['Mnh'] = 1000000000
     EU['MP_wind'] = max_wind
     EU['MP_solar'] = max_solar
@@ -73,7 +73,7 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     EU_h['MH']=500  # maximum transportation for hydrogen
 
     #costs
-    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0,0,1000,10000]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH"])
+    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0,0,1000,10000,0.5,4]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH","cH_edge","cP_edge"])
     eu = Network(init_method = init_method )
     eu.n = EU
     eu.edgesP = EU_e
@@ -92,18 +92,20 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
         coords={'time': time_index, 'node': ['Italy', 'Spain', 'Austria', 'France','Germany'], 'scenario': [0]},
         dims=['time', 'node', 'scenario']
     )
-    elec_load_scenario = elec_load_scenario 
+    ave= [31532.209018, 26177.184589, 6645.657078, 48598.654281, 52280.658229]
+    a = xr.DataArray(ave,dims=['node'], coords={'node':['Italy','Spain','Austria','France','Germany']})
+    elec_load_scenario=elec_load_scenario*a
    
     scenario = 0
     
-    wind_scenario = import_scenario(path + 'small-EU-wind-scenarios.csv')
-    pv_scenario = import_scenario(path + 'small-Eu-PV-scenarios.csv')
+    wind_scenario = import_scenario(path + 'small-eu-wind-scenarios3.csv')
+    pv_scenario = import_scenario(path + 'small-eu-PV-scenarios.csv')
     hydro = import_generated_scenario(path+'hydrogen_demandg.csv',5, scenario, node_names=['Italy', 'Spain', 'Austria', 'France','Germany'])
     hydro_mean = hydro.mean(dim = ["time","scenario"])
     hydrogen_demand_scenario = hydro / hydro_mean
-    eu.n_scenarios = n_scenarios
-
     
+    
+    eu.n_scenarios = n_scenarios
     eu.add_scenarios(wind_scenario * max_wind, pv_scenario * max_solar, hydrogen_demand_scenario, elec_load_scenario)
     eu.init_time_partition()
 
