@@ -1437,11 +1437,18 @@ def OPT_time_partition_old(network, N_iter = 5, N_refining = 1):
     return outputs
 #%% OPT_agg2
 
-def OPT_agg2(network, N_iter):
-    #     """
-    #     Same as OPT_agg but adds all T variables from the start
-    #     (this way we have a constraint generation for all T variables)
-    #     """
+def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
+    """
+    This function solves the optimization problem using the Gurobi solver. It takes as input a network object and the number of iterations for the optimization. It returns a list of dictionaries, where each dictionary contains the solution of the optimization problem at each iteration.
+
+    The function first sets up the optimization problem by defining the variables, constraints and objective function. Then it iteratively solves the optimization problem for each iteration of the time partition. It adds constraints to the model at each iteration by using the addConstrs method of the Gurobi model class. The function also prints the total optimization time and the time for each iteration.
+
+    The function is useful for solving the optimization problem for a given network for different time partitions. The output of the function can be used to analyze the results of the optimization problem for different time partitions.
+
+    The function returns a list of dictionaries, where each dictionary contains the solution of the optimization problem at each iteration. The dictionary contains the following keys: 'ns', 'nw', 'nh', 'mhte', 'meth', 'addNTC', 'addMH', 'H', 'EtH', 'P_edge', 'H_edge', 'HtE', 'obj', 'interval_to_var' and 'var_to_interval'. The values of the keys are the solution of the optimization problem at each iteration.
+    The function prints the total optimization time and the time for each iteration. The function also prints the status of the optimization problem at each iteration.
+
+    """
     if network.costs.shape[0] == 1: #if the costs are the same:
         cs, cw, ch, ch_t, chte, ceth, cNTC, cMH = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0]
     else:
@@ -1562,7 +1569,13 @@ def OPT_agg2(network, N_iter):
     #%  return VARS
     for iter in range(N_iter):
         iter_start_time = time.time()
-        network.time_partition.random_iter_partition(k=1)
+
+        VARS = iter_sol[-1]
+        if iter_method == "random":
+            network.time_partition.random_iter_partition(k=1)
+        elif iter_method == "rho":
+            network.rho_iter_partition(VARS, k=k)
+
         family_tree = network.time_partition.family_tree
         splitted_intervals = time_partition.order_intervals(family_tree[-1])
         #print(splitted_intervals)
@@ -1628,7 +1641,7 @@ def OPT_agg2(network, N_iter):
             iter_sol.append(VARS)
         
 
-    print(f"Total opt time: {np.round(time.time()-opt_start_time,3)}s.")
+    print(f"Total opt time: {np.round(time.time()-start_time,3)}s.")
     return iter_sol
         
 #%%

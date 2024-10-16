@@ -72,6 +72,120 @@ def import_scenario_val(start,stop):
     
     return scenarios
 
+def df_aggregator2(network, df0, prev_df, splitted_intervals, son_indeces_lists):
+    """
+    Aggregates the data in the given DataFrame `df` based on the time aggregation specified in `network.time_partition`.
+    
+    Parameters:
+        network (Network): The network object containing the time partition specification.
+        df0 (xarray.DataArray): The original DataFrame containing the data to be aggregated.
+        prev_df (xarray.DataArray): The previous aggregation of df0, respect to the partition old_tp.
+        splitted_intervals (list): A list of time intervals that were split from the original time partition.
+        son_indeces_lists (list): A list of lists containing the indices of the son intervals in the time partition.
+    
+    Returns:
+        xarray.DataArray: The aggregated DataFrame.
+    """
+    df00 = df0.assign_coords({'time': range(df0.shape[0])})
+    tp_obj = network.time_partition
+    old_tp = tp_obj.old_agg[-1]
+    tp = tp_obj.agg
+    father_indices = [old_tp.index(i) for i in splitted_intervals if i in old_tp]
+
+    slices = []
+    
+    # Add initial slice
+    if father_indices[0] > 0:
+        slices.append(prev_df.sel(time=slice(None, father_indices[0]-1)).drop_vars('time', errors='ignore'))
+    
+    for i in range(len(father_indices) - 1):
+        son_indices = son_indeces_lists[i]
+        
+        # Add son indices slices
+        for t in (tp[j] for j in son_indices):
+            if isinstance(t, list):
+                slices.append(df00.sel(time=t).sum(dim='time').drop_vars('time', errors='ignore'))
+            else:
+                slices.append(df00.sel(time=t).drop_vars('time', errors='ignore'))
+        
+        # Add slice between current and next father index
+        if father_indices[i] + 1 <= father_indices[i + 1] - 1:
+            slices.append(prev_df.sel(time=slice(father_indices[i] + 1, father_indices[i + 1] - 1)).drop_vars('time', errors='ignore'))
+    
+    # Add final son indices slices
+    son_indices = son_indeces_lists[-1]
+    for t in (tp[i] for i in son_indices):
+        if isinstance(t, list):
+            slices.append(df00.sel(time=t).sum(dim='time').drop_vars('time', errors='ignore'))
+        else:
+            slices.append(df00.sel(time=t).drop_vars('time', errors='ignore'))
+    
+    # Add final slice
+    if father_indices[-1] + 1 < len(prev_df['time']):
+        slices.append(prev_df.sel(time=slice(father_indices[-1] + 1, None)).drop_vars('time', errors='ignore'))
+
+    # Concatenate all slices
+    new_df = xr.concat(slices, dim='time', coords='minimal', compat='override')
+
+    # Assign new time coordinates
+    new_time_coords = range(len(new_df['time']))
+    new_df = new_df.assign_coords(time=('time', new_time_coords))
+    
+    return new_df
+
+
+def get_rho(n,VARS, n_max = 10):
+    """
+    given a network and a solution to an aggregated problem, calculates the rho value for each constraint
+    """
+    #rho for a constraint
+    tp = n.time_partition.agg
+    HL = n.loadH_t
+    PL = n.loadP_t
+    ES = n.genS_t
+    EW = n.genW_t
+    nw = xr.DataArray(VARS["nw"], dims='node', coords={'node': HL.coords['node']})
+    ns = xr.DataArray(VARS["ns"], dims='node', coords={'node': HL.coords['node']})
+    ES = ES.assign_coords(time=PL.coords['time'])
+    EW = EW.assign_coords(time=PL.coords['time'])
+    Pnett = PL - nw*EW - ns*ES 
+    Hnett = HL #we don't haev any hydrogen generations corresponding to time independent variables
+    pt = n.time_partition.partitionize(tp)
+    intervals = [i for L in [[k]*len(pt[k]) for k in range(len(tp))] for i in L]
+    Pnett = Pnett.assign_coords(interval=('time',intervals))
+    Hnett = Hnett.assign_coords(interval=('time',intervals))
+        #P_net.append(Pnett)
+        #H_net.append(Hnett)
+
+    rhoP = Pnett.groupby('interval') / (Pnett.groupby('interval').sum())
+    rhoH = Hnett.groupby('interval') / (Hnett.groupby('interval').sum())
+    varhop = rhoP.var(dim='node')
+    varhoh = rhoH.var(dim='node')
+    varho = varhop + varhoh
+
+    
+    return rhoP, rhoH, varho
+# 'top_n_coords' now contains the coordinates of the top 'n' values
+
+def xr_top_n(x, n_max, dim = 'time'):
+    # Stack all dimensions into a single one for easier sorting
+    stacked = x.stack(all_dims=x.dims).copy()
+    # Find the coordinates of the top 'n' values
+    top_n_coords = {dim: []}
+    max_values = []
+    for _ in range(n_max):
+        # Get the position of the maximum value
+        max_idx = stacked.argmax('all_dims')
+        max_value = stacked.isel(all_dims=max_idx).values.item()
+        max_values.append(max_value)
+        # Get the coordinates corresponding to the maximum value
+        max_coords = stacked.isel(all_dims=max_idx).coords
+        # Store the coordinates
+        top_n_coords[dim].append(int(max_coords[dim]))
+        # Set the current maximum value to a very low value to exclude it in the next iteration
+        stacked[max_idx] = float('-inf')
+
+    return top_n_coords
 
 # %%
 #LESS IMPORTANT:
@@ -206,19 +320,23 @@ class time_partition:
         else:
             print(f"{new_int} is a singleton")
     
-    
     def iter_partition_intervals(tp_obj, intervals):
         "completly disaggregates intervals in intervals"
         tp_obj.old_agg += [tp_obj.agg.copy()]
         family_list = []
+        intervals = sorted(intervals)[::-1] #reverse intervals order so that disaggregating does not change the indexes.
         for t in intervals:
             new_int =tp_obj.agg[t]
-            if new_int is list:
-                tp_obj.agg = tp_obj.disaggregate(tp_obj.agg,rand_ind)
+            if type(new_int) is list:
+                tp_obj.agg = tp_obj.disaggregate(tp_obj.agg,t)
                 family_list += [new_int]
             else:
                 print(f"{new_int} is a singleton")
-        tp_obj.family_tree += [time_partitiotp_obj.order_intervals(family_list)]
+        if len(family_list) > 0:
+            print("appending new intervals to family tree")
+            tp_obj.family_tree += [tp_obj.order_intervals(family_list)]
+        else:
+            print("No intervals where splitted, iteration left partion identical")
 
     def to_dict(self):
         """
@@ -255,6 +373,16 @@ class time_partition:
         for i in tp:
             if type(i) is list:
                 l.append(tuple(i))
+            else:
+                l.append(i)
+        return l
+
+    @staticmethod
+    def partitionize(tp):
+        l = []
+        for i in tp:
+            if type(i) is int:
+                l.append([i])
             else:
                 l.append(i)
         return l
@@ -310,123 +438,7 @@ def df_aggregator(df, time_partition):
     return add_df
 
 
-def df_aggregator2(network, df0, prev_df, splitted_intervals, son_indeces_lists):
-    """
-    Aggregates the data in the given DataFrame `df` based on the time aggregation specified in `network.time_partition`.
-    
-    Parameters:
-        network (Network): The network object containing the time partition specification.
-        df0 (xarray.DataArray): The original DataFrame containing the data to be aggregated.
-        prev_df (xarray.DataArray): The previous aggregation of df0, respect to the partition old_tp.
-        splitted_intervals (list): A list of time intervals that were split from the original time partition.
-        son_indeces_lists (list): A list of lists containing the indices of the son intervals in the time partition.
-    
-    Returns:
-        xarray.DataArray: The aggregated DataFrame.
-    """
-    df00 = df0.assign_coords({'time': range(df0.shape[0])})
-    tp_obj = network.time_partition
-    old_tp = tp_obj.old_agg[-1]
-    tp = tp_obj.agg
-    father_indices = [old_tp.index(i) for i in splitted_intervals if i in old_tp]
 
-    slices = []
-    
-    # Add initial slice
-    if father_indices[0] > 0:
-        slices.append(prev_df.sel(time=slice(None, father_indices[0]-1)).drop_vars('time', errors='ignore'))
-    
-    for i in range(len(father_indices) - 1):
-        son_indices = son_indeces_lists[i]
-        
-        # Add son indices slices
-        for t in (tp[j] for j in son_indices):
-            if isinstance(t, list):
-                slices.append(df00.sel(time=t).sum(dim='time').drop_vars('time', errors='ignore'))
-            else:
-                slices.append(df00.sel(time=t).drop_vars('time', errors='ignore'))
-        
-        # Add slice between current and next father index
-        if father_indices[i] + 1 <= father_indices[i + 1] - 1:
-            slices.append(prev_df.sel(time=slice(father_indices[i] + 1, father_indices[i + 1] - 1)).drop_vars('time', errors='ignore'))
-    
-    # Add final son indices slices
-    son_indices = son_indeces_lists[-1]
-    for t in (tp[i] for i in son_indices):
-        if isinstance(t, list):
-            slices.append(df00.sel(time=t).sum(dim='time').drop_vars('time', errors='ignore'))
-        else:
-            slices.append(df00.sel(time=t).drop_vars('time', errors='ignore'))
-    
-    # Add final slice
-    if father_indices[-1] + 1 < len(prev_df['time']):
-        slices.append(prev_df.sel(time=slice(father_indices[-1] + 1, None)).drop_vars('time', errors='ignore'))
-
-    # Concatenate all slices
-    new_df = xr.concat(slices, dim='time', coords='minimal', compat='override')
-
-    # Assign new time coordinates
-    new_time_coords = range(len(new_df['time']))
-    new_df = new_df.assign_coords(time=('time', new_time_coords))
-    
-    return new_df
-
-
-def get_rho(n,VARS, n_max = 10):
-    """
-    given a network and a solution to an aggregated problem, calculates the rho value for each constraint
-    """
-    #rho for a constraint
-    tp = n.time_partition.agg
-    I = tp[0]
-
-    P_net = []
-    H_net = []
-    HL = n.loadH_t
-    PL = n.loadP_t
-    ES = n.genS_t
-    EW = n.genW_t
-    nw = xr.DataArray(VARS["nw"], dims='node', coords={'node': HL.coords['node']})
-    ns = xr.DataArray(VARS["ns"], dims='node', coords={'node': HL.coords['node']})
-    ES = ES.assign_coords(time=PL.coords['time'])
-    EW = EW.assign_coords(time=PL.coords['time'])
-    Pnett = PL - nw*EW - ns*ES 
-    Hnett = HL #we don't haev any hydrogen generations corresponding to time independent variables
-    intervals = [i for L in [[k]*len(tp[k]) for k in range(len(tp))] for i in L]
-    Pnett = Pnett.assign_coords(interval=('time',intervals))
-    Hnett = Hnett.assign_coords(interval=('time',intervals))
-        #P_net.append(Pnett)
-        #H_net.append(Hnett)
-
-    rhoP = Pnett.groupby('interval') / (Pnett.groupby('interval').sum())
-    rhoH = Hnett.groupby('interval') / (Hnett.groupby('interval').sum())
-    varhop = rhoP.var(dim='node')
-    varhoh = rhoH.var(dim='node')
-    varho = varhop + varhoh
-
-    
-    return rhoP, rhoH, varho
-# 'top_n_coords' now contains the coordinates of the top 'n' values
-
-def xr_top_n(x, n_max, dim = 'time'):
-    # Stack all dimensions into a single one for easier sorting
-    stacked = x.stack(all_dims=x.dims).copy()
-    # Find the coordinates of the top 'n' values
-    top_n_coords = {dim: []}
-    max_values = []
-    for _ in range(n_max):
-        # Get the position of the maximum value
-        max_idx = stacked.argmax('all_dims')
-        max_value = stacked.isel(all_dims=max_idx).values.item()
-        max_values.append(max_value)
-        # Get the coordinates corresponding to the maximum value
-        max_coords = stacked.isel(all_dims=max_idx).coords
-        # Store the coordinates
-        top_n_coords[dim].append(int(max_coords[dim]))
-        # Set the current maximum value to a very low value to exclude it in the next iteration
-        stacked[max_idx] = float('-inf')
-
-    return top_n_coords
 #%% class Network
 
 class Network:
@@ -509,14 +521,17 @@ class Network:
         self.time_partition.iter_partition(k)
         self.update_time_partition()
 
-    def rho_iter_partition(self,VARS):
+    def rho_iter_partition(self,VARS, k=1):
         "a posteriori iteration method"
         rhoP, rhoH, varho = get_rho(self, VARS)
+        tp = self.time_partition.agg
         varho_grpd =varho.groupby('interval').sum()#drop singletons intervals
         varho_grpd = varho_grpd.where(varho_grpd['interval'].isin([k for k in range(len(tp)) if type(tp[k]) is list]), drop = True) 
-        top_n_intervals = xr_top_n(varho_grpd, 10, dim='interval')
+        top_n_intervals = xr_top_n(varho_grpd, k, dim='interval')['interval']
+        #print(top_n_intervals)
         self.time_partition.iter_partition_intervals(top_n_intervals)
-        self.update_time_partition()
+       #TODO: uncomment 
+       #self.update_time_partition()
 
     def plot(self):
         """
