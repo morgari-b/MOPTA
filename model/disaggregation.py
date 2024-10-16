@@ -34,26 +34,14 @@ VARS = VARS[0]
 # %%
 
 n = eu
-
-#rho for a constraint
-tp = n.time_partition.agg
-I = tp[0]
-
-P_net = []
-H_net = []
-HL = n.loadH_t
-PL = n.loadP_t
-ES = n.genS_t
-EW = n.genW_t
-nw = xr.DataArray(VARS["nw"], dims='node', coords={'node': HL.coords['node']})
-ns = xr.DataArray(VARS["ns"], dims='node', coords={'node': HL.coords['node']})
-#%%
-#for t in I:
-Pnett = PL - nw*EW - ns*ES 
-Hnett = HL #we don't haev any hydrogen generations corresponding to time independent variables
-    #P_net.append(Pnett)
-    #H_net.append(Hnett)
-    
-
-
 # %%
+tp_obj = n.time_partition
+tp = tp_obj.agg
+
+rhoP, rhoH, varho = get_rho(n, VARS)
+varho_grpd =varho.groupby('interval').sum()#drop singletons intervals
+varho_grpd = varho_grpd.where(varho_grpd['interval'].isin([k for k in range(len(tp)) if type(tp[k]) is list]), drop = True) 
+top_n_intervals = xr_top_n(varho_grpd, 10, dim='interval')
+# %% iter partition
+
+    # %%
