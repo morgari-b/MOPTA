@@ -285,7 +285,7 @@ class time_partition:
         if method is not None and callable(method):
             self.agg = method()
         else:
-            #print(f"Method {init_method} not found or not callable")
+            print(f"Method {init_method} not found or not callable")
         
         self.old_agg = []
         self.family_tree = [] #list of lists of intervals splitted in some way (todo? become a dictionary mapping which interval in splitted into which intervals)
@@ -318,7 +318,7 @@ class time_partition:
             family_list += [new_int]
             self.family_tree += [time_partition.order_intervals(family_list)]
         else:
-            #print(f"{new_int} is a singleton")
+            print(f"{new_int} is a singleton")
     
     def iter_partition_intervals(tp_obj, intervals):
         "completly disaggregates intervals in intervals"
@@ -331,12 +331,12 @@ class time_partition:
                 tp_obj.agg = tp_obj.disaggregate(tp_obj.agg,t)
                 family_list += [new_int]
             else:
-                #print(f"{new_int} is a singleton")
+                print(f"{new_int} is a singleton")
         if len(family_list) > 0:
             #print("appending new intervals to family tree")
             tp_obj.family_tree += [tp_obj.order_intervals(family_list)]
         else:
-            #print("No intervals where splitted, iteration left partion identical")
+            print("No intervals where splitted, iteration left partion identical")
 
     def to_dict(self):
         """
@@ -571,8 +571,8 @@ class Network:
                 end_loc = (valid_nodes.loc[end_node, 'lat'], valid_nodes.loc[end_node, 'long'])
                 folium.PolyLine([start_loc, end_loc], weight=5, color='blue', opacity=.2).add_to(m)
             else:
-                #print("node not valid edge",start_node,end_node)
-                #print(self.n)
+                print("node not valid edge",start_node,end_node)
+                print(self.n)
         
         self.n.reset_index(inplace=True)
         return m._repr_html_()
@@ -667,7 +667,7 @@ class Network:
                     da = xr.DataArray.from_dict(value)
                     setattr(n, attr, da)
             else:
-                #print(f"Some attribute is not supported: {attr} has value of type: {type(value)}")
+                print(f"Some attribute is not supported: {attr} has value of type: {type(value)}")
         
         #n.n = n.n.set_index('node')
         if type(n.edgesP.index[0]) == str:

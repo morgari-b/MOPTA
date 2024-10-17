@@ -74,7 +74,7 @@ def OPT1(es,ew,el,hl,d=5,rounds=4,cs=4000, cw=3000000,ch=10,Mns=10**5,Mnw=500,Mn
         
         model.optimize()
         if model.Status!=2:
-            #print("Status = {}".format(model.Status))
+            print("Status = {}".format(model.Status))
         else:
             VARS=[np.ceil(ns.X),np.ceil(nw.X),nh.X,mhte.X,meth.X]       
             outputs=outputs + [VARS+[model.ObjVal]] 
@@ -90,7 +90,7 @@ def OPT2(network, d=1,rounds=1,long_outs=False):
     if network.costs.shape[0] == 1: #if the costs are the same:
         cs, cw, ch, ch_t, chte, ceth, cNTC, cMH = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0]
     else:
-        #print("add else") #actually we can define the costs appropriately using the network class directly
+        print("add else") #actually we can define the costs appropriately using the network class directly
     
 
     start_time=time.time()
@@ -172,24 +172,24 @@ def OPT2(network, d=1,rounds=1,long_outs=False):
                                 quicksum(P_edge[j,i,l] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list()) 
                                 >= EL[i,k,j] for k in range(Nnodes) for j in range(d) for i in range(inst))
         except IndexError as e:
-            #print(f"IndexError occurred at i={i}, j={j}, k={k}")
-            #print(f"ES shape: {ES.shape}")
-            #print(f"EW shape: {EW.shape}")
-            #print(f"HtE shape: {HtE.shape}")
-            #print(f"EtH shape: {EtH.shape}")
-            #print(f"P_edge shape: {P_edge.shape}")
-            #print(f"network.n indices: {network.n.index.to_list()}")
-            #print(f"network.edgesP start_node indices: {network.edgesP['start_node'].index.to_list()}")
-            #print(f"network.edgesP end_node indices: {network.edgesP['end_node'].index.to_list()}")
+            print(f"IndexError occurred at i={i}, j={j}, k={k}")
+            print(f"ES shape: {ES.shape}")
+            print(f"EW shape: {EW.shape}")
+            print(f"HtE shape: {HtE.shape}")
+            print(f"EtH shape: {EtH.shape}")
+            print(f"P_edge shape: {P_edge.shape}")
+            print(f"network.n indices: {network.n.index.to_list()}")
+            print(f"network.edgesP start_node indices: {network.edgesP['start_node'].index.to_list()}")
+            print(f"network.edgesP end_node indices: {network.edgesP['end_node'].index.to_list()}")
             raise e  # Re-raise the exception after logging the details
         
         model.optimize()
         if model.Status!=2:
-            #print("Status = {}".format(model.Status))
+            print("Status = {}".format(model.Status))
         else:
             VARS=[np.ceil([ns[k].X for k in range(Nnodes)]),np.ceil([nw[k].X for k in range(Nnodes)]),np.array([nh[k].X for k in range(Nnodes)]),np.array([mhte[k].X for k in range(Nnodes)]),np.array([meth[k].X for k in range(Nnodes)])]       
             outputs=outputs + [VARS+[model.ObjVal]] 
-            #print("Round {} of {} - opt time: {}s.".format(group+1,rounds, np.round(time.time()-gr_start_time,3)))
+            print("Round {} of {} - opt time: {}s.".format(group+1,rounds, np.round(time.time()-gr_start_time,3)))
             
         if long_outs==True:
             for i in range(inst):
@@ -217,7 +217,7 @@ def OPT3(network):
     if network.costs.shape[0] == 1: #if the costs are the same:
         cs, cw, ch, ch_t, chte, ceth, cNTC, cMH, cH_edge, cP_edge = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0], network.costs['cH_edge'][0], network.costs['cP_edge'][0]
     else:
-        #print("add else") #actually we can define the costs appropriately using the network class directly
+        print("add else") #actually we can define the costs appropriately using the network class directly
 
     if "node" in network.n.columns:
         network.n.set_index("node", inplace=True)   
@@ -313,7 +313,7 @@ def OPT3(network):
     model.optimize()
 
     if model.Status!=2:
-        #print("Status = {}".format(model.Status))
+        print("Status = {}".format(model.Status))
     else:
         node_dims = ["scenario","time","node"]
         node_coords = [ range(d), range(inst),  network.n.index.to_list()]
@@ -363,7 +363,7 @@ def OPT_agg(network):
     if network.costs.shape[0] == 1: #if the costs are the same:
        cs, cw, ch, ch_t, chte, ceth, cNTC, cMH, cH_edge, cP_edge = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0], network.costs['cH_edge'][0], network.costs['cP_edge'][0]
     else:
-        #print("add else") #actually we can define the costs appropriately using the network class directly
+        print("add else") #actually we can define the costs appropriately using the network class directly
 
 
     start_time=time.time()
@@ -467,7 +467,7 @@ def OPT_agg(network):
     #print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
     model.optimize()
     if model.Status!=2:
-        #print("Status = {}".format(model.Status))
+        print("Status = {}".format(model.Status))
     else:
         node_dims = ["scenario","time","node"]
         if 'node' in network.n.columns:
@@ -520,7 +520,7 @@ def OPT_agg_correct(network):
     if network.costs.shape[0] == 1: #if the costs are the same:
        cs, cw, ch, ch_t, chte, ceth, cNTC, cMH, cH_edge, cP_edge = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0], network.costs['cH_edge'][0], network.costs['cP_edge'][0]
     else:
-        #print("add else") #actually we can define the costs appropriately using the network class directly
+        print("add else") #actually we can define the costs appropriately using the network class directly
 
 
     start_time=time.time()
@@ -598,7 +598,7 @@ def OPT_agg_correct(network):
     #print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
     model.optimize()
     if model.Status!=2:
-        #print("Status = {}".format(model.Status))
+        print("Status = {}".format(model.Status))
     else:
         node_dims = ["scenario","time","node"]
         if 'node' in network.n.columns:
@@ -628,7 +628,7 @@ def OPT_agg_correct(network):
 
                                                    
 
-        #print("opt time: {}s.".format(np.round(time.time()-start_time,3)))
+        print("opt time: {}s.".format(np.round(time.time()-start_time,3)))
 
     return [VARS]#HH,ETH,HTE
 
@@ -790,7 +790,7 @@ def OPT_time_partition(network, N_iter = 10, N_refining = 4):
     if network.costs.shape[0] == 1: #if the costs are the same:
         cs, cw, ch, ch_t, chte, ceth, cNTC, cMH = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0]
     else:
-        #print("add else") #actually we can define the costs appropriately using the network class directly
+        print("add else") #actually we can define the costs appropriately using the network class directly
 
     if "node" in network.n.columns:
         network.n.set_index("node", inplace=True)
@@ -904,11 +904,11 @@ def OPT_time_partition(network, N_iter = 10, N_refining = 4):
         for c in constrs:  
             if c.IISConstr:
                 IIS.append(c)
-        #print(IIS)
+        print(IIS)
     else:
         VARS =[[np.ceil([ns[k].X for k in range(Nnodes)]),np.ceil([nw[k].X for k in range(Nnodes)]),np.array([nh[k].X for k in range(Nnodes)]),np.array([mhte[k].X for k in range(Nnodes)]),np.array([meth[k].X for k in range(Nnodes)])]]
         outputs= outputs + [VARS+[model.ObjVal]]
-        #print("opt time: {}s.".format(np.round(time.time()-start_time,3)))
+        print("opt time: {}s.".format(np.round(time.time()-start_time,3)))
 
 
     #now we try to refine partition and add variables and constraints appropriately.abs
@@ -916,7 +916,7 @@ def OPT_time_partition(network, N_iter = 10, N_refining = 4):
         generation_start_time = time.time()
         #iter over partition_generation
         network.iter_partition(N_refining)
-        #print("iter_partition in {}s".format(np.round(time.time()-generation_start_time,3)))
+        print("iter_partition in {}s".format(np.round(time.time()-generation_start_time,3)))
         family_tree = network.time_partition.family_tree
         splitted_intervals = order_intervals(family_tree[-1])
         ##print(splitted_intervals)
@@ -1154,7 +1154,7 @@ def OPT_time_partition_old(network, N_iter = 5, N_refining = 1):
     if network.costs.shape[0] == 1: #if the costs are the same:
         cs, cw, ch, chte, ceth, cNTC, cMH = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0]
     else:
-        #print("add else") #actually we can define the costs appropriately using the network class directly
+        print("add else") #actually we can define the costs appropriately using the network class directly
 
 
     start_time=time.time()
@@ -1241,11 +1241,11 @@ def OPT_time_partition_old(network, N_iter = 5, N_refining = 1):
 
     model.optimize()
     if model.Status!=2:
-        #print("Status = {}".format(model.Status))
+        print("Status = {}".format(model.Status))
     else:
         VARS+=[[np.ceil([ns[k].X for k in range(Nnodes)]),np.ceil([nw[k].X for k in range(Nnodes)]),np.array([nh[k].X for k in range(Nnodes)]),np.array([mhte[k].X for k in range(Nnodes)]),np.array([meth[k].X for k in range(Nnodes)])]]
         outputs=outputs + [VARS+[model.ObjVal]]
-        #print("opt time: {}s.".format(np.round(time.time()-start_time,3)))
+        print("opt time: {}s.".format(np.round(time.time()-start_time,3)))
 
     #now we try to refine partition and add variables and constraints appropriately.abs
     for partition_generation in range(N_iter):
@@ -1378,7 +1378,7 @@ def OPT_time_partition_old(network, N_iter = 5, N_refining = 1):
         model.optimize()
           
         if model.Status!=2:
-            #print("Unfesasible or Unbounded Status = {}".format(model.Status))
+            print("Unfesasible or Unbounded Status = {}".format(model.Status))
             model.computeIIS()
             constrs = model.getConstrs()
             IIS = []
@@ -1386,8 +1386,8 @@ def OPT_time_partition_old(network, N_iter = 5, N_refining = 1):
                 if c.IISConstr:
                     IIS.append(c)
                     
-            #print(IIS)
-            #print("returning iis")
+            print(IIS)
+            print("returning iis")
             return IIS
             # IIS
             # if model.status == GRB.INFEASIBLE:
@@ -1452,7 +1452,7 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
     if network.costs.shape[0] == 1: #if the costs are the same:
          cs, cw, ch, ch_t, chte, ceth, cNTC, cMH, cH_edge, cP_edge = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0], network.costs['cH_edge'][0], network.costs['cP_edge'][0]
     else:
-        #print("add else") #actually we can define the costs appropriately using the network class directly
+        print("add else") #actually we can define the costs appropriately using the network class directly
 
 
     start_time=time.time()
@@ -1536,7 +1536,7 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
                             quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                             quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
                             >=  EL[i,k,0] for k in range(Nnodes) for j in range(d) for i in range(Ntp)))
-    #print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
+    print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
     opt_start_time = time.time()
     model.optimize()
     iter_sol = []
@@ -1577,10 +1577,10 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
 
         VARS = iter_sol[-1]
         if iter_method == "random":
-            #print("random iteration")
+            print("random iteration")
             network.iter_partition(k=k)
         elif iter_method == "rho":
-            #print("rho iteration")
+            print("rho iteration")
             network.rho_iter_partition(VARS, k=k)
         else:
             raise ValueError("Invalid iteration method.")
