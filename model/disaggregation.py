@@ -36,7 +36,11 @@ eu=EU()
 n = eu
 
 #%%
-res = OPT_agg2(n, 3, iter_method = "rho")
+resrho = OPT_agg2(n, 10, iter_method = "rho")
 
+resrandom = []
 
+for i in range(10):
+    res = OPT_agg2(n, 10, iter_method = "random")
+    resrandom.append(res)
 # %%

@@ -239,10 +239,20 @@ approach considering time interdependence of wind and solar power.}
 \maketitle
 
 \begin{abstract}
-  In recent years, the integration of renewable energy sources into electrical grids has become a critical area of research due to the increasing need for sustainable and resilient energy systems. In this article we present a comprehensive model for an electrical grid powered by wind and photovoltaic (PV) systems, supported by hydrogen storage. 
-Firstly, we describe a scenario generation (SG) process for wind and photovoltaic (PV) power output, acknowledging the inherent dependencies between these variables over time. These dependencies are captured using marginal distributions coupled with a Gaussian copula, ensuring that the generated scenarios realistically reflect the temporal correlations observed in historical data. 
-Further, we model the structure of a hypothetical electrical grid and develop an optimization process using a stochastic optimization approach to ensure robustness of the grid to the aforementioned variability.
-The third section validates the results from the second, checking feasibility over new scenarios. Some considerations follow on the computation of actual costs and the trade off between cost and robustness of the solution.
+  In recent years, the integration of renewable energy sources into electrical grids has become a
+   critical area of research due to the increasing need for sustainable
+  and resilient energy systems.  To adress the
+   variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
+   This significanlty increases the size of the resulting Linear Problem (LP), making them computationally challenging for large scale grids.
+  To tackle this, we propose an approach that aggregates time steps to reduce the problem size, 
+  followed by an iterative refinement of the aggregation. We provide sufficient conditions under which
+   the aggregated problem is equivalent to the original, unaggregated one, and refine the time intervals
+    that do not meet these conditions. \textcolor{violet}{write better:Additionally, we introduce a validation function to assess the accuracy
+     of the aggregated solutions.}
+Our method is tested on a fully renewable energy grid with hydrogen storage.
+ We generate scenarios for wind and photovoltaic (PV) power output using scenario generation techniques that capture temporal dependencies. 
+ These dependencies are modeled with marginal distributions coupled with a Gaussian copula, ensuring that the generated scenarios reflect realistic 
+ temporal correlations observed in historical data.
 %Insert your abstract here. Include keywords, PACS and mathematical
 %subject classification numbers as needed.
 \keywords{First keyword \and Second keyword \and More}

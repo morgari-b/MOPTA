@@ -1642,6 +1642,7 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
         
 
     print(f"Total opt time: {np.round(time.time()-start_time,3)}s.")
+    iter_sol[-1]["opt_time"]=np.round(time.time()-start_time,3)
     return iter_sol
         
 #%%
