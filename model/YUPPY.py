@@ -279,13 +279,13 @@ class time_partition:
     def __init__(self,T, init_method='day_aggregation'):
         self.T=T
         self.time_steps = list(range(T))
-        print(init_method)
+        #print(init_method)
         #define initial_aggregation with the chosen method.
         method = getattr(self, init_method)
         if method is not None and callable(method):
             self.agg = method()
         else:
-            print(f"Method {init_method} not found or not callable")
+            #print(f"Method {init_method} not found or not callable")
         
         self.old_agg = []
         self.family_tree = [] #list of lists of intervals splitted in some way (todo? become a dictionary mapping which interval in splitted into which intervals)
@@ -318,7 +318,7 @@ class time_partition:
             family_list += [new_int]
             self.family_tree += [time_partition.order_intervals(family_list)]
         else:
-            print(f"{new_int} is a singleton")
+            #print(f"{new_int} is a singleton")
     
     def iter_partition_intervals(tp_obj, intervals):
         "completly disaggregates intervals in intervals"
@@ -331,12 +331,12 @@ class time_partition:
                 tp_obj.agg = tp_obj.disaggregate(tp_obj.agg,t)
                 family_list += [new_int]
             else:
-                print(f"{new_int} is a singleton")
+                #print(f"{new_int} is a singleton")
         if len(family_list) > 0:
-            print("appending new intervals to family tree")
+            #print("appending new intervals to family tree")
             tp_obj.family_tree += [tp_obj.order_intervals(family_list)]
         else:
-            print("No intervals where splitted, iteration left partion identical")
+            #print("No intervals where splitted, iteration left partion identical")
 
     def to_dict(self):
         """
@@ -504,6 +504,7 @@ class Network:
    
     #network, df0, df, splitted_intervals, son_indeces_lists
     def update_time_partition(self):
+        #print("updating time partition")
         tp_obj = self.time_partition
         tp = tp_obj.agg
         splitted_intervals = tp_obj.family_tree[-1]
@@ -516,22 +517,34 @@ class Network:
         self.genS_t_agg =df_aggregator2(self,self.genS_t, self.genS_t_agg, splitted_intervals, son_indeces_lists)
         self.loadH_t_agg = df_aggregator2(self,self.loadH_t, self.loadH_t_agg, splitted_intervals, son_indeces_lists)
         self.loadP_t_agg = df_aggregator2(self,self.loadP_t, self.loadP_t_agg, splitted_intervals, son_indeces_lists)
+        #print(f"new dataframe shape: {self.genW_t_agg.shape}, len tp {len(tp)}")
 
     def iter_partition(self,k=1):
-        self.time_partition.iter_partition(k)
+        """
+        Iteratively partitions the time intervals in the network.
+
+        Parameters:
+            k (int): Number of iterations.
+
+        Returns:
+            None
+        """
+        #print("iterating")
+        self.time_partition.random_iter_partition(k)
         self.update_time_partition()
 
     def rho_iter_partition(self,VARS, k=1):
-        "a posteriori iteration method"
+        #"a posteriori iteration method"
+        #print("iterating")
         rhoP, rhoH, varho = get_rho(self, VARS)
         tp = self.time_partition.agg
         varho_grpd =varho.groupby('interval').sum()#drop singletons intervals
         varho_grpd = varho_grpd.where(varho_grpd['interval'].isin([k for k in range(len(tp)) if type(tp[k]) is list]), drop = True) 
         top_n_intervals = xr_top_n(varho_grpd, k, dim='interval')['interval']
-        #print(top_n_intervals)
+        ##print(top_n_intervals)
         self.time_partition.iter_partition_intervals(top_n_intervals)
        #TODO: uncomment 
-       #self.update_time_partition()
+        self.update_time_partition()
 
     def plot(self):
         """
@@ -541,7 +554,7 @@ class Network:
             self.n.set_index('node', inplace=True)
         # Filter out rows with NaN values in 'lat' or 'long'
         valid_nodes = self.n.dropna(subset=['lat', 'long'])
-        print("valid nodes",valid_nodes.index)
+        #print("valid nodes",valid_nodes.index)
         loc = [valid_nodes['lat'].mean(), valid_nodes["long"].mean()]
         m = folium.Map(location=loc, zoom_start=5, tiles='CartoDB positron')
         
@@ -558,8 +571,8 @@ class Network:
                 end_loc = (valid_nodes.loc[end_node, 'lat'], valid_nodes.loc[end_node, 'long'])
                 folium.PolyLine([start_loc, end_loc], weight=5, color='blue', opacity=.2).add_to(m)
             else:
-                print("node not valid edge",start_node,end_node)
-                print(self.n)
+                #print("node not valid edge",start_node,end_node)
+                #print(self.n)
         
         self.n.reset_index(inplace=True)
         return m._repr_html_()
@@ -643,18 +656,18 @@ class Network:
                 if len(value) == 0:
                     setattr(n, attr, pd.DataFrame(value))
                 elif attr in ["n","edgesP","edgesH","costs"]:
-                    #print(f"it should become a dataframe but let's see, {attr}")
+                    ##print(f"it should become a dataframe but let's see, {attr}")
                     max_len = max([len(val) for key, val in value.items()])
                     for key, val in value.items():
                         if len(val) < max_len:
                             value[key] = np.concatenate((val, np.full((max_len - len(val)),np.nan)))
                     setattr(n, attr, pd.DataFrame(value))     
                 else:
-                    #print(f"it should become a dataarray but let's see, {attr}")
+                    ##print(f"it should become a dataarray but let's see, {attr}")
                     da = xr.DataArray.from_dict(value)
                     setattr(n, attr, da)
             else:
-                print(f"Some attribute is not supported: {attr} has value of type: {type(value)}")
+                #print(f"Some attribute is not supported: {attr} has value of type: {type(value)}")
         
         #n.n = n.n.set_index('node')
         if type(n.edgesP.index[0]) == str:
