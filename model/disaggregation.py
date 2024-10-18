@@ -31,16 +31,19 @@ import plotly.graph_objects as go
 
 #%% confront with rho with random
 eu = EU()
-n = copy.deepcopy(eu)
-resrho = OPT_agg2(n, 10, iter_method = "rho")
+nrho = copy.deepcopy(eu)
+resrho = OPT_agg2(nrho, 10, iter_method = "rho")
 
 resrandom = []
+#%%
 
-for i in range(1):
-    print("iteration number ", i)
+networks = []
+for i in range(3):
+    print("iteration number ", i+1)
     n = copy.deepcopy(eu)
     res = OPT_agg2(n, 10, iter_method = "random")
     resrandom.append(res)
+    networks.append(n)
 # %%
 import copy
 import numpy as np
