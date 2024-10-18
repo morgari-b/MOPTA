@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex articolo"] 1729272711.26535 "articolo.aux" "articolo.bbl" "articolo" 1729272712.35637 0
+["bibtex articolo"] 1729273010.32942 "articolo.aux" "articolo.bbl" "articolo" 1729273011.46025 0
   "./sample.bib" 1729272700.79903 14349 f37cc40b8ce038d47fa168be0c47c606 ""
   "./spmpsci.bst" 1729272700.79903 30130 0182c69465c28ddbb1f8698b9c5c1559 ""
-  "articolo.aux" 1729272712.10903 4785 ddff3c7f35328a39545a9df8dc522691 "pdflatex"
+  "articolo.aux" 1729273011.19693 4785 ddff3c7f35328a39545a9df8dc522691 "pdflatex"
   (generated)
   "articolo.bbl"
   "articolo.blg"
   (rewritten before read)
-["pdflatex"] 1729272711.36287 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1729272712.35652 0
+["pdflatex"] 1729273010.42353 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1729273011.46037 0
   "/etc/texmf/web2c/texmf.cnf" 1727021346.58952 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1729272708.89403 58493 a26ddce88877a8bb4482ca510abb7aef ""
+  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1729273007.99995 58553 ef7313e99b6d491e8ff76f4c8b7de6a4 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -254,10 +254,10 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1727021369.8525 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1727021390 8213608 7518f4bf06237f22cded744c906015fd ""
-  "articolo.aux" 1729272712.10903 4785 ddff3c7f35328a39545a9df8dc522691 "pdflatex"
-  "articolo.bbl" 1729272711.35803 1741 e84b2650a08dfcf35aeecee3d25035f3 "bibtex articolo"
-  "articolo.out" 1729272712.11003 892 16021587ff1b5a58e34137c71e6b75b8 "pdflatex"
-  "articolo.tex" 1729272708.89403 58493 a26ddce88877a8bb4482ca510abb7aef ""
+  "articolo.aux" 1729273011.19693 4785 ddff3c7f35328a39545a9df8dc522691 "pdflatex"
+  "articolo.bbl" 1729273010.41993 1741 e84b2650a08dfcf35aeecee3d25035f3 "bibtex articolo"
+  "articolo.out" 1729273011.19793 892 16021587ff1b5a58e34137c71e6b75b8 "pdflatex"
+  "articolo.tex" 1729273007.99995 58553 ef7313e99b6d491e8ff76f4c8b7de6a4 ""
   "example.eps" 1727685245.40255 286 240e01e547b56ebd62e19ba1e85adf80 ""
   "svglov3.clo" 1261135514 3809 f8e29af71acd1bd1b2a58b6166058c66 ""
   "svjour3.cls" 1622198420 47679 580d73513215963b6ad3ff0c4282b766 ""

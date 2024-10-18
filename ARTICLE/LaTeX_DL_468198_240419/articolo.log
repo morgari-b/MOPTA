@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  18 OCT 2024 19:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  18 OCT 2024 19:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -826,135 +826,139 @@ Package hyperref Info: Link coloring OFF on input line 219.
 Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 219.
 
 
-Package mathptmx Warning: There are no bold math fonts on input line 254.
+Package mathptmx Warning: There are no bold math fonts on input line 253.
 
-LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line 254.
+LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line 253.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line 254.
+LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line 253.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line 254.
+LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line 253.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line 254.
+LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line 253.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 253.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 253.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 253.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 253.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
- [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}]
-Overfull \hbox (6.0568pt too wide) in paragraph at lines 281--282
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 253.
+
+
+SVJour3 Warning: Title too long for running head.
+Please supply a shorter form with \titlerunning prior to \maketitle
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+Overfull \hbox (6.0568pt too wide) in paragraph at lines 280--281
 \OT1/ptm/b/n/10 Context; lit-er-a-ture overview. Small in-tro-duc-tion on LP/MIP. Def-i-ni-tion of stochas-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 281--282
+Underfull \hbox (badness 10000) in paragraph at lines 280--281
 
  []
 
 
-Overfull \hbox (7.62643pt too wide) in paragraph at lines 285--286
+Overfull \hbox (7.62643pt too wide) in paragraph at lines 284--285
 []\OT1/ptm/m/n/10 100 pa-role con-testo so-ciale ([]e im-por-tante perch[]e...): cita: qualche re-port/programma
  []
 
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 289.
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 288.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 289.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 288.
 
 
-LaTeX Warning: Citation `EU_context' on page 2 undefined on input line 299.
+LaTeX Warning: Citation `EU_context' on page 2 undefined on input line 298.
 
 
-LaTeX Warning: Reference `section: model' on page 2 undefined on input line 319.
+LaTeX Warning: Reference `section: model' on page 2 undefined on input line 318.
 
 
-Overfull \hbox (17.37491pt too wide) in paragraph at lines 305--320
+Overfull \hbox (17.37491pt too wide) in paragraph at lines 304--319
 \OT1/ptm/m/n/10 hrefhttps://www.entsoe.eu/data/power-stats/ENTSO-E Sta-tis-ti-cal Re-ports. We nor-malised
  []
 
 [2]
-Overfull \hbox (6.99667pt too wide) in paragraph at lines 329--330
+Overfull \hbox (6.99667pt too wide) in paragraph at lines 328--329
 \OT1/ptm/b/n/10 To es-ti-mate the op-ti-mal ca-pac-i-ties through a stochas-tic ap-proach, re-al-is-tic weather
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 329--330
+Underfull \hbox (badness 10000) in paragraph at lines 328--329
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 334--335
+Underfull \hbox (badness 10000) in paragraph at lines 333--334
 
  []
 
 [4]
-Overfull \hbox (4.40552pt too wide) in paragraph at lines 387--389
+Overfull \hbox (4.40552pt too wide) in paragraph at lines 386--388
 \OT1/ptm/m/n/10 Where $\OML/ztmcm/m/it/10 ^^H;  ^^H[]$ \OT1/ptm/m/n/10 are the cdf Gaus-sian vari-ables hav-ing dis-tri-bu-tion $\OMS/ztmcm/m/n/10 N\OT1/ztmcm/m/n/10 (0\OML/ztmcm/m/it/10 ; \OT1/ztmcm/m/n/10 1)$ \OT1/ptm/m/n/10 and $\OMS/ztmcm/m/n/10 N\OT1/ztmcm/m/n/10 (0\OML/ztmcm/m/it/10 ; ^^F\OT1/ztmcm/m/n/10 )$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 387--389
+Underfull \hbox (badness 10000) in paragraph at lines 386--388
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--396
+Underfull \hbox (badness 10000) in paragraph at lines 393--395
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 398--399
+Underfull \hbox (badness 10000) in paragraph at lines 397--398
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 419--420
+Underfull \hbox (badness 10000) in paragraph at lines 418--419
 
  []
 
 [6]
-Overfull \hbox (24.71144pt too wide) in paragraph at lines 436--437
+Overfull \hbox (24.71144pt too wide) in paragraph at lines 435--436
 \OT1/ptm/m/n/10 lem $\OML/ztmcm/m/it/10 CEP[]$\OT1/ptm/m/n/10 , as given a fea-si-ble so-lu-tion $\OT1/ztmcm/m/n/10 (\OML/ztmcm/m/it/10 ns; nw; nh; mhte; meth; H; HtE; EtH; Pedge; Hedge\OT1/ztmcm/m/n/10 )$
  []
 
 [7]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 468.
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 467.
  [8] [9]
-Overfull \hbox (96.71457pt too wide) detected at line 582
+Overfull \hbox (96.71457pt too wide) detected at line 581
 \OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] []\OML/ztmcm/m/it/10 ^^Z[][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
  []
 
 [10]
 
-LaTeX Warning: Reference `eq:LPunaggr' on page 11 undefined on input line 591.
+LaTeX Warning: Reference `eq:LPunaggr' on page 11 undefined on input line 590.
 
 
-Overfull \hbox (56.7941pt too wide) detected at line 614
+Overfull \hbox (56.7941pt too wide) detected at line 613
 [][] \OT1/ztmcm/m/n/10 = [] [][] + [] [][] = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 cx
  []
 
 [11]
-Overfull \hbox (95.884pt too wide) detected at line 639
+Overfull \hbox (95.884pt too wide) detected at line 638
 [][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 658--658
+Underfull \hbox (badness 10000) in paragraph at lines 657--657
 
  []
 
@@ -971,15 +975,15 @@ Package rerunfilecheck Info: File `articolo.out' has not changed.
 (rerunfilecheck)             Checksum: 16021587FF1B5A58E34137C71E6B75B8;892.
  ) 
 Here is how much of TeX's memory you used:
- 34398 strings out of 474222
- 793370 string characters out of 5748733
+ 34395 strings out of 474222
+ 793330 string characters out of 5748733
  1943975 words of memory out of 5000000
- 55955 multiletter control sequences out of 15000+600000
- 595651 words of font info for 115 fonts, out of 8000000 for 9000
+ 55953 multiletter control sequences out of 15000+600000
+ 593518 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,11n,107p,1863b,862s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (14 pages, 177764 bytes).
+Output written on articolo.pdf (14 pages, 177662 bytes).
 PDF statistics:
  262 PDF objects out of 1000 (max. 8388607)
  213 compressed objects within 3 object streams
