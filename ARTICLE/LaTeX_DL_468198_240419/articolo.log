@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  17 OCT 2024 18:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  18 OCT 2024 18:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -941,29 +941,29 @@ Package hyperref Info: bookmark level for unknown todo defaults to 0 on input li
 [8]
 
 [9]
-Overfull \hbox (96.71457pt too wide) detected at line 559
+Overfull \hbox (96.71457pt too wide) detected at line 561
 \OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] []\OML/ztmcm/m/it/10 ^^Z[][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
  []
 
 
-LaTeX Warning: Reference `eq:LPunaggr' on page 10 undefined on input line 568.
+LaTeX Warning: Reference `eq:LPunaggr' on page 10 undefined on input line 570.
 
 
 
 [10]
-Overfull \hbox (56.7941pt too wide) detected at line 591
+Overfull \hbox (56.7941pt too wide) detected at line 593
 [][] \OT1/ztmcm/m/n/10 = [] [][] + [] [][] = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 cx
  []
 
 
-Overfull \hbox (95.884pt too wide) detected at line 616
+Overfull \hbox (95.884pt too wide) detected at line 618
 [][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
  []
 
 
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 635--635
+Underfull \hbox (badness 10000) in paragraph at lines 637--637
 
  []
 
@@ -984,18 +984,18 @@ Package rerunfilecheck Info: File `articolo.out' has not changed.
 (rerunfilecheck)             Checksum: 16021587FF1B5A58E34137C71E6B75B8;892.
  ) 
 Here is how much of TeX's memory you used:
- 34091 strings out of 473584
- 781324 string characters out of 5732363
+ 34098 strings out of 473584
+ 781439 string characters out of 5732363
  1946908 words of memory out of 5000000
- 56314 multiletter control sequences out of 15000+600000
+ 56318 multiletter control sequences out of 15000+600000
  595651 words of font info for 115 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 103i,11n,107p,1842b,844s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 103i,11n,107p,1842b,862s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (13 pages, 174815 bytes).
+Output written on articolo.pdf (13 pages, 175537 bytes).
 PDF statistics:
- 247 PDF objects out of 1000 (max. 8388607)
- 200 compressed objects within 2 object streams
- 61 named destinations out of 1000 (max. 500000)
+ 251 PDF objects out of 1000 (max. 8388607)
+ 203 compressed objects within 3 object streams
+ 64 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

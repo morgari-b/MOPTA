@@ -1,18 +1,18 @@
 # Fdb version 4
-["bibtex articolo"] 1729181606.6795 "articolo.aux" "articolo.bbl" "articolo" 1729181675.33334 0
+["bibtex articolo"] 1729265069.03697 "articolo.aux" "articolo.bbl" "articolo" 1729267992.17495 0
   "./sample.bib" 1729160409 14349 f37cc40b8ce038d47fa168be0c47c606 ""
   "./spmpsci.bst" 1728292151 31642 0182c69465c28ddbb1f8698b9c5c1559 ""
-  "articolo.aux" 1729181673 4069 aef8bf67bb05f42c7267348a057bd986 "pdflatex"
+  "articolo.aux" 1729267991 4763 ce52e34477beb36e88e68ed704ea50c9 "pdflatex"
   (generated)
   "articolo.bbl"
   "articolo.blg"
   (rewritten before read)
-["pdflatex"] 1729181671.08202 "c:/Users/ghjub/codes/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1729181675.33389 0
-  "articolo.aux" 1729181673 4069 aef8bf67bb05f42c7267348a057bd986 "pdflatex"
-  "articolo.bbl" 1729181607 1741 e84b2650a08dfcf35aeecee3d25035f3 "bibtex articolo"
-  "articolo.out" 1729181673 892 16021587ff1b5a58e34137c71e6b75b8 "pdflatex"
-  "articolo.tex" 1729181670 57767 31c72b5a8b5d0fa9c853915c1e05a774 ""
-  "c:/Users/ghjub/codes/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1729181670 57767 31c72b5a8b5d0fa9c853915c1e05a774 ""
+["pdflatex"] 1729267989.93363 "c:/Users/ghjub/codes/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1729267992.17531 0
+  "articolo.aux" 1729267991 4763 ce52e34477beb36e88e68ed704ea50c9 "pdflatex"
+  "articolo.bbl" 1729265069 1741 e84b2650a08dfcf35aeecee3d25035f3 "bibtex articolo"
+  "articolo.out" 1729267991 892 16021587ff1b5a58e34137c71e6b75b8 "pdflatex"
+  "articolo.tex" 1729267989 57786 4364f5ecf24b62d46851abbaae2098c0 ""
+  "c:/Users/ghjub/codes/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1729267989 57786 4364f5ecf24b62d46851abbaae2098c0 ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc" 1722436357 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "c:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1722436724 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1722438922 1408 5937f58aa508ea2cea4901c07d10f5fe ""

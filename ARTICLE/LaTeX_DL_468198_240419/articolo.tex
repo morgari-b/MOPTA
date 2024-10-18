@@ -476,14 +476,17 @@ meaning that had we formulated the model directly with the aggregated time steps
  We refer to this as a \emph{structure-preserving aggregation}, which is defined as follows:
 
  \begin{definition}
-  Given an LP problem \eqref{eq:LP}, we say that a weighted aggregation with respect to partitions \(\rowP, \colP\) is \emph{structure-preserving} if for each \(R \in \rowP\) and each \(r \in R\), there exists a bijection \(f^r: \supp(\tilde{A}_R)_{>1} \to \supp(A_r)_{>1}\) such that \(\tilde{A}_{R,S} = A_{r,f(S)}\). And the following conditions hold:
+  Given an LP problem \eqref{eq:LP}, we say that a weighted aggregation with respect to partitions \(\rowP, \colP\) is \emph{structure-preserving} if for each \(R \in \rowP\) and each \(r \in R\), there exists \(f^r: [\tilde{n}] \to [n]\)  such that:
   \begin{enumerate}
-    \item \(f^{r'}(C') = f^r(C) \implies C=C'\)
+    \item \(f^r|_{\supp(\tilde{A}_{R,S})}: \supp(\tilde{A}_{R,S}) \to \supp(A_{r,f(S)})\) is a bijection such that
+    \[\tilde{A}_{R,C} = A_{r,f^r(C)} \text{ for all } C \in \supp(\tilde{A}_{R,S})_{>1}\]
+    \item \(f^r|_{\colP_{=1}} = Id_{\colP_{=1}}\)
+    \item \(f^{r'}(C') = f^r(C)\) then \( C=C'\)
     \item \(\{f^r(C)\}_{r\in R \in \rowP_{>1}, C \in \colP_{>1}} = \cup_{C \in \colP_{>1}}C\)
   \end{enumerate}
   \end{definition}
 
-\textcolor{violet}{
+\gr[inline]{
 Per alcune oss le seguendi condizioni si possono togliere: \(f^{r'}(C') = f^r(C) \implies C=C'\) e \(\{f^r(C)\}_{r\in R \in \rowP_{>1}} = \cup_{C \in \colP_{>1}}C\).
 Usiamo entrambe le ipotesi aggiuntive più avanti, la prima ci dice che se mandiamo du variabili \(C,C'\) del problema agregato nella stessa variabile, allora le due variabili iniziali sono la stessa. La seconda che a ogni variabili non agregata corrisponde una variabile aggregata.
 }
@@ -543,9 +546,8 @@ A_r x = b_r
 A structure-preserving aggregation does not inherently guarantee feasibility for all constraints in the original problem. However, Observation \ref{ob:aggrconstr} illustrates how to partially reconstruct a solution \(x\) for a specific constraint \(r\) by appropriately scaling the aggregated variables within the support of \(A_r\). 
 
 \begin{definition}
-  For a structure-preserving, row and column aggregation \((\rowP,\colP)\), such that \(f^{r'}(C') = f^r(C) \implies C=C'\) and \\ \(\{f^r(C)\}_{r\in R \in \rowP_{>1}, C \in \colP_{>1}} = \cup_{C \in \colP_{>1}}C\).
-  A constraint \(r \in \rowP_{=1}\) is \(\rho\)-agnostic if for all \(C \in \colP_{>1}\) such that \(C \cap \supp(A_{r,c}) \neq \emptyset\), 
-  \[A_{r,f^{r'}(C)} = \rho_{r'}\tilde{A}_{r,C} \text{ for all } r' \in R^{(C)} \]
+  For a structure-preserving, row and column aggregation \((\rowP,\colP)\). A constraint \(r \in \rowP_{=1}\) is \(\rho\)-agnostic if for all \(C \in \colP_{>1}\) such that \(C \cap \supp(A_{r,c}) \neq \emptyset\), 
+  \[A_{r,f^{r'}(C)} = \tilde{\rho}_{r'}\tilde{A}_{R^(C),C} \text{ for all } r' \in R^{(C)} \]
    with \(R^{(C)} \in \rowP_{>1}\) such that \(C \in \supp(A_{R^(C)})\).
 \end{definition}
 \begin{observation}
@@ -570,7 +572,7 @@ Then if \(\rho_r\) can be defined consistently, by applying observation \ref{ob:
 \label{prop:xaggfeasible}
 If \((\rowP, \colP)\) is a structure-preserving aggregation. Let \(\tilde{x}\) be a solution 
 to the aggregated problem \eqref{eq:LPaggr}. If for all \(r \in R \in \rowP_{>1}\) such that  \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} = 0\) we have \(A_{r,\colP_{=1}} = 0\) and \(b_r=0\).
-Define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_R - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}}\) for all \(r \in R \in \rowP_{>1}\) such that   \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\). If \(rho_r \geq 0\) and is constant over the connected components of the hypergraph associated to \((\rowP, \colP)\). 
+Define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_R - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}}\) for all \(r \in R \in \rowP_{>1}\) such that   \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\). If \(\rho_r \geq 0\) and is constant over the connected components of the hypergraph associated to \((\rowP, \colP)\). 
 Then \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\) is well defined and is feasible solution for the unaggregated problem \eqref{eq:LP}.
 \end{proposition}
 
