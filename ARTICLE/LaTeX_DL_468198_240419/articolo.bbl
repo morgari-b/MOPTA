@@ -1,15 +1,36 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \providecommand{\url}[1]{{#1}}
 \providecommand{\urlprefix}{URL }
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
   \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup \urlstyle{rm}\Url}\fi
 
+\bibitem{EU_context}
+Commission, E.: Communication from the commission: Guidance on article 20a on sector integration of renewable electricity of directive (eu) 2018/2001 on the promotion of energy from renewable sources, as amended by directive (eu) 2023/2413 (2024).
+\newblock \urlprefix\url{https://energy.ec.europa.eu/document/download/efcd200c-b9ae-4a9c-98ab-73b2fd281fcc_en?filename=C_2024_5041_1_EN_ACT_part1_v10.pdf}
+
+\bibitem{INTRO_karlsruhe}
+Hasan U.~Yilmaz Kai~Mainzer, D.K.: Improving the performance of solving large scale mixed-integer energy system models by applying the fix-and-relax method
+
+\bibitem{INTRO_isolated_MIP}
+Hugo~Morais Pedro~Faria, P.K.Z.V.H.K.: Optimal scheduling of a renewable micro-grid in an isolated load area using mixed-integer linear programming.
+\newblock Renewable Energy  (2010)
+
+\bibitem{INTRO_short-term}
+Ilkka~Keppo, M.S.: Short term decisions for long term problems - the effect of foreshight on model based energy system analysis.
+\newblock Energy
+
 \bibitem{weibullwind}
 Khahro, S.F., Tabbassum, K., Soomro, A.M., Dong, L., Liao, X.: Evaluation of wind power production prospective and weibull parameter estimation methods for babaurband, sindh pakistan.
 \newblock Energy Conversion and Management \textbf{78}, 956--967 (2014).
 \newblock \doi{https://doi.org/10.1016/j.enconman.2013.06.062}.
 \newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S019689041300589X}
+
+\bibitem{INTRO_Glomb}
+Lukas~Glomb Frauke~Liers, F.R.: A rolling-horizon approach for multi-period optimization
+
+\bibitem{review_math_opt}
+Michal~Jasinski Arsalan~Najafi, e.a.: Operation and planning of energy hubs under uncertainty - a review of mathematical optimization approaches  (2022)
 
 \bibitem{GaussCopula}
 Papaefthymiou, G., Kurowicka, D.: Using copulas for modeling stochastic dependence in power system uncertainty analysis.
@@ -21,6 +42,10 @@ Pfenninger, S., Staffell, I.: Long-term patterns of european pv output using 30 
 \newblock Energy \textbf{114}, 1251--1265 (2016).
 \newblock \doi{https://doi.org/10.1016/j.energy.2016.08.060}.
 \newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360544216311744}
+
+\bibitem{INTRO_Palma-Behnke}
+Rodrigo Palma-Behnke Carlos~Benavides, F.L.B.S.L.R.J.L.D.S.: A microgrid energy management system based on the rolling horizon strategy.
+\newblock IEEE transactions on smart grid  (2013)
 
 \bibitem{betaPV}
 Yuan, X., Chen, C., Jiang, M., Yuan, Y.: Prediction interval of wind power using parameter optimized beta distribution based lstm model.

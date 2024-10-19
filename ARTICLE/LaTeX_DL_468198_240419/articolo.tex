@@ -294,16 +294,20 @@ definition of CEP, ED problems.}\\
 \end{enumerate}
 
 
-\begin{enumerate}
-\item The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \cite{EU_context}.
-One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
-\item 
-\end{enumerate}
+The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \cite{EU_context}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
+Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \cite{review_math_opt}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.
+
+\textcolor{pink}{
+In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP), regarding infrastructure investments ... with a nested Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. Can be solved through mixed integer linear programming (MILP) ((examples: isolated case study MILP \cite{INTRO_isolated_MIP}))
+The computational costs are high because -- requires to look at long time horizons modeled in short time frames. -- especially demanding for SP since multiple scenarios.
+To reduce these costs, one possible approach is to use a Rolling Horizon (RH) [explain better]. The basic technique is described in \cite{INTRO_Glomb}, along with some results regarding quality guarantees for the optimality of the solution. In \cite{INTRO_Palma-Behnke}, a rolling horizon approach is used within a RO model to --Chile. is it relevant?-- A similar idea is applied in \cite{INTRO_karlsruhe}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.
+Problem: it is not optimal. In fact, \cite{INTRO_short-term}. But better reflects actual decision making based on info that is only available progressively, vs perfect foresigh approach.}
+
 
 
 \textbf{OLD:}
 \textcolor{gray}{
-The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience of the grids. The model presented in this report explores the possibility of an electrical grid powered entirely through wind and photovoltaic (PV) systems, and supported by hydrogen storage.
+The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience of the grids \cite{EU_context}. The model presented in this report explores the possibility of an electrical grid powered entirely through wind and photovoltaic (PV) systems, and supported by hydrogen storage.
 It is of interest to estimate the power generation capacity for both wind and solar, as well as the hydrogen storage and conversion capacities, that would be necessary in order to power a reliable grid supplying residential electricity load and industrial base load of both electricity and hydrogen for a given area, while minimizing the cost of implementing such infrastructure.
 The main difficulties arising when designing such a system lie in the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
 A first step for estimating the optimal capacities is thus to have realistic scenarios on which to evaluate our model.}

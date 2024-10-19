@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  18 OCT 2024 19:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  18 OCT 2024 22:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -817,10 +817,8 @@ Package pgfplots Warning: running in backwards compatibility mode (unsuitable ti
  on input line 219.
 
 Package hyperref Info: Link coloring OFF on input line 219.
-(./articolo.out) (./articolo.out)
 \@outlinefile=\write4
 \openout4 = `articolo.out'.
-
 
 
 Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 219.
@@ -881,88 +879,200 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 288.
 
 
-LaTeX Warning: Citation `EU_context' on page 2 undefined on input line 298.
+LaTeX Warning: Citation `EU_context' on page 2 undefined on input line 297.
 
 
-LaTeX Warning: Reference `section: model' on page 2 undefined on input line 318.
+LaTeX Warning: Citation `review_math_opt' on page 2 undefined on input line 298.
 
 
-Overfull \hbox (17.37491pt too wide) in paragraph at lines 304--319
-\OT1/ptm/m/n/10 hrefhttps://www.entsoe.eu/data/power-stats/ENTSO-E Sta-tis-ti-cal Re-ports. We nor-malised
+LaTeX Warning: Citation `INTRO_isolated_MIP' on page 2 undefined on input line 304.
+
+
+LaTeX Warning: Citation `INTRO_Glomb' on page 2 undefined on input line 304.
+
+
+LaTeX Warning: Citation `INTRO_Palma-Behnke' on page 2 undefined on input line 304.
+
+
+LaTeX Warning: Citation `INTRO_karlsruhe' on page 2 undefined on input line 304.
+
+
+LaTeX Warning: Citation `INTRO_short-term' on page 2 undefined on input line 304.
+
+
+Overfull \hbox (1.2969pt too wide) in paragraph at lines 304--305
+\OT1/ptm/m/n/10 prob-lem con-cern-ing the op-er-a-tional costs of said in-fras-truc-ture. Can be solved through
  []
 
 [2]
-Overfull \hbox (6.99667pt too wide) in paragraph at lines 328--329
+
+LaTeX Warning: Citation `EU_context' on page 3 undefined on input line 313.
+
+
+LaTeX Warning: Reference `subsection: weib estim' on page 3 undefined on input line 322.
+
+
+LaTeX Warning: Reference `subsection: beta estim' on page 3 undefined on input line 322.
+
+
+LaTeX Warning: Reference `section: model' on page 3 undefined on input line 322.
+
+
+Overfull \hbox (17.37491pt too wide) in paragraph at lines 308--323
+\OT1/ptm/m/n/10 hrefhttps://www.entsoe.eu/data/power-stats/ENTSO-E Sta-tis-ti-cal Re-ports. We nor-malised
+ []
+
+
+Overfull \hbox (6.99667pt too wide) in paragraph at lines 332--333
 \OT1/ptm/b/n/10 To es-ti-mate the op-ti-mal ca-pac-i-ties through a stochas-tic ap-proach, re-al-is-tic weather
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 328--329
+Underfull \hbox (badness 10000) in paragraph at lines 332--333
 
  []
 
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 333--334
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
+
+LaTeX Warning: Citation `weibullwind' on page 4 undefined on input line 337.
+
+
+LaTeX Warning: Citation `betaPV' on page 4 undefined on input line 337.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 337--338
 
  []
 
-[4]
-Overfull \hbox (4.40552pt too wide) in paragraph at lines 386--388
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [4] [5]
+
+LaTeX Warning: Citation `GaussCopula' on page 6 undefined on input line 391.
+
+
+Overfull \hbox (4.40552pt too wide) in paragraph at lines 390--392
 \OT1/ptm/m/n/10 Where $\OML/ztmcm/m/it/10 ^^H;  ^^H[]$ \OT1/ptm/m/n/10 are the cdf Gaus-sian vari-ables hav-ing dis-tri-bu-tion $\OMS/ztmcm/m/n/10 N\OT1/ztmcm/m/n/10 (0\OML/ztmcm/m/it/10 ; \OT1/ztmcm/m/n/10 1)$ \OT1/ptm/m/n/10 and $\OMS/ztmcm/m/n/10 N\OT1/ztmcm/m/n/10 (0\OML/ztmcm/m/it/10 ; ^^F\OT1/ztmcm/m/n/10 )$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 386--388
+Underfull \hbox (badness 10000) in paragraph at lines 390--392
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 393--395
+LaTeX Warning: Reference `subsection: weib estim' on page 6 undefined on input line 398.
+
+
+LaTeX Warning: Reference `subsection: beta estim' on page 6 undefined on input line 398.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 397--399
 
  []
 
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 397--398
+
+Underfull \hbox (badness 10000) in paragraph at lines 401--402
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 418--419
-
- []
+LaTeX Warning: Citation `PVDataSet' on page 6 undefined on input line 404.
 
 [6]
-Overfull \hbox (24.71144pt too wide) in paragraph at lines 435--436
-\OT1/ptm/m/n/10 lem $\OML/ztmcm/m/it/10 CEP[]$\OT1/ptm/m/n/10 , as given a fea-si-ble so-lu-tion $\OT1/ztmcm/m/n/10 (\OML/ztmcm/m/it/10 ns; nw; nh; mhte; meth; H; HtE; EtH; Pedge; Hedge\OT1/ztmcm/m/n/10 )$
+Underfull \hbox (badness 10000) in paragraph at lines 422--423
+
  []
 
 [7]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 467.
- [8] [9]
-Overfull \hbox (96.71457pt too wide) detected at line 581
-\OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] []\OML/ztmcm/m/it/10 ^^Z[][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
+Overfull \hbox (24.71144pt too wide) in paragraph at lines 439--440
+\OT1/ptm/m/n/10 lem $\OML/ztmcm/m/it/10 CEP[]$\OT1/ptm/m/n/10 , as given a fea-si-ble so-lu-tion $\OT1/ztmcm/m/n/10 (\OML/ztmcm/m/it/10 ns; nw; nh; mhte; meth; H; HtE; EtH; Pedge; Hedge\OT1/ztmcm/m/n/10 )$
  []
+
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 471.
+[8]
+
+LaTeX Warning: Reference `eq:LP' on page 9 undefined on input line 503.
+
+[9]
+
+LaTeX Warning: Reference `eq:LP' on page 10 undefined on input line 520.
+
+
+LaTeX Warning: Reference `eq:LPaggr' on page 10 undefined on input line 520.
+
+
+LaTeX Warning: Reference `eq:LPaggr' on page 10 undefined on input line 524.
 
 [10]
 
-LaTeX Warning: Reference `eq:LPunaggr' on page 11 undefined on input line 590.
+LaTeX Warning: Reference `ob:aggrconstr' on page 11 undefined on input line 558.
 
 
-Overfull \hbox (56.7941pt too wide) detected at line 613
+LaTeX Warning: Reference `ob:aggrconstr' on page 11 undefined on input line 570.
+
+
+LaTeX Warning: Reference `ob:rhoconvex' on page 11 undefined on input line 578.
+
+
+Overfull \hbox (96.71457pt too wide) detected at line 585
+\OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] []\OML/ztmcm/m/it/10 ^^Z[][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
+ []
+
+
+LaTeX Warning: Reference `ob:aggrconstr' on page 11 undefined on input line 594.
+
+
+LaTeX Warning: Reference `eq:LPunaggr' on page 11 undefined on input line 594.
+
+
+LaTeX Warning: Reference `eq:LPaggr' on page 11 undefined on input line 598.
+
+
+LaTeX Warning: Reference `eq:LP' on page 11 undefined on input line 600.
+
+[11]
+
+LaTeX Warning: Reference `prop:xaggfeasible' on page 12 undefined on input line 606.
+
+
+LaTeX Warning: Reference `eq:LPaggr' on page 12 undefined on input line 610.
+
+
+LaTeX Warning: Reference `ob:rhoconvex' on page 12 undefined on input line 610.
+
+
+Overfull \hbox (56.7941pt too wide) detected at line 617
 [][] \OT1/ztmcm/m/n/10 = [] [][] + [] [][] = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 cx
  []
 
-[11]
-Overfull \hbox (95.884pt too wide) detected at line 638
+
+LaTeX Warning: Reference `prop:xaggfeasible' on page 12 undefined on input line 632.
+
+
+LaTeX Warning: Reference `eq:LPaggr' on page 12 undefined on input line 632.
+
+
+LaTeX Warning: Reference `ob:costpreserving' on page 12 undefined on input line 636.
+
+
+LaTeX Warning: Reference `eq:LP' on page 12 undefined on input line 637.
+
+
+Overfull \hbox (95.884pt too wide) detected at line 642
 [][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 657--657
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 661--661
 
  []
 
-[12] (./articolo.bbl [13]) [14] (./articolo.aux)
+[13] (./articolo.bbl) [14] (./articolo.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -971,22 +1081,31 @@ L3 programming layer <2024-01-22>
 
 LaTeX Warning: There were undefined references.
 
-Package rerunfilecheck Info: File `articolo.out' has not changed.
-(rerunfilecheck)             Checksum: 16021587FF1B5A58E34137C71E6B75B8;892.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `articolo.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `articolo.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  16021587FF1B5A58E34137C71E6B75B8;892.
  ) 
 Here is how much of TeX's memory you used:
- 34395 strings out of 474222
- 793330 string characters out of 5748733
+ 34365 strings out of 474222
+ 792949 string characters out of 5748733
  1943975 words of memory out of 5000000
- 55953 multiletter control sequences out of 15000+600000
- 593518 words of font info for 112 fonts, out of 8000000 for 9000
+ 55936 multiletter control sequences out of 15000+600000
+ 592243 words of font info for 110 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,11n,107p,1863b,862s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (14 pages, 177662 bytes).
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on articolo.pdf (14 pages, 167556 bytes).
 PDF statistics:
- 262 PDF objects out of 1000 (max. 8388607)
- 213 compressed objects within 3 object streams
- 71 named destinations out of 1000 (max. 500000)
- 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 195 PDF objects out of 1000 (max. 8388607)
+ 153 compressed objects within 2 object streams
+ 64 named destinations out of 1000 (max. 500000)
+ 13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

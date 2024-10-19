@@ -106,8 +106,8 @@ def Validate(network,VARS,scenarios):
     model.addConstrs( H_edge_pos[j,i,k]-H_edge_neg[j,i,k] >= -(network.edgesH['MH'].iloc[k] + addMH[k]) for i in range(inst) for j in range(d) for k in range(NHedges))
     
     # new variables for loss function
-    loss = 0
-    delta_H = model.addVars(product(range(d),range(inst),range(Nnodes)),obj = loss,lb=-GRB.INFINITY)
+    loss = 0.1
+    delta_H = model.addVars(product(range(d),range(inst),range(Nnodes)),obj = loss)#,lb=-GRB.INFINITY)
     
     # starting hydrogen levels
     values = np.zeros([d,1,len(network.n.index.to_list())])
@@ -129,10 +129,12 @@ def Validate(network,VARS,scenarios):
     hydrogen_demand_scenario = scenarios['hydrogen_demand_scenario']
     elec_load_scenario = scenarios['elec_load_scenario']
     
+   
+    day_num = 0
     # start iterating
     for day in pd.date_range('Jan 01 2023','Dec 31 2023',freq='d'):
         
-        day_num = 0
+
         #EW = wind_scenario.sel(time=[ str(each) for each in pd.date_range('2024'+str(day)[4:],periods=24,freq='h').to_list()])
         EW = wind_scenario[24*day_num:24*(day_num+1),:,:]
         #ES = pv_scenario.sel(time=[ str(each) for each in pd.date_range(day,periods=24,freq='h').to_list()])
@@ -186,7 +188,8 @@ def Validate(network,VARS,scenarios):
         
         # constraints for loss:
         #c4 = model.addConstrs( H[j,i,k] - delta_H[j,i,k] <=  goalH.loc[pd.date_range(day,freq='h',periods=inst)].iloc[i,k] for j in range(d) for i in range(inst) for k in range(Nnodes))
-        c4 = model.addConstrs( H[j,i,k] + delta_H[j,i,k] ==  goalH.loc[pd.date_range(day,freq='h',periods=inst)].iloc[i,k] for j in range(d) for i in range(inst) for k in range(Nnodes))
+        #c4 = model.addConstrs( H[j,i,k] + delta_H[j,i,k] ==  goalH.loc[pd.date_range(day,freq='h',periods=inst)].iloc[i,k] for j in range(d) for i in range(inst) for k in range(Nnodes))
+        c4 = model.addConstrs( delta_H[j,i,k] >= - H[j,i,k] + goalH.loc[pd.date_range(day,freq='h',periods=inst)].iloc[i,k] for j in range(d) for i in range(inst) for k in range(Nnodes))
         
         
         
@@ -220,7 +223,7 @@ eu=EU()
 VARS=OPT_agg_correct(eu)
 
 #%%
-scenarios = import_scenario_val(5,5)
+scenarios = import_scenario_val(0,0)
 #%%
 Validate(eu,VARS,scenarios)
 
