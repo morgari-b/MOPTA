@@ -42,13 +42,13 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
                     columns=['node','location','lat','long'])
                 
     #ho spostato qui così è un parametro di input
-    EU['Mhte']=10**6  # maximum hydrogen transport cost
-    EU['Meth']=10**5  # maximum electricity transport cost
+    EU['Mhte']=10**10  # maximum hydrogen to electricuty hourly
+    EU['Meth']=10**7  # maximum electricity to hydrogen hourly
     EU['feth']=0.8  # efficiency of electricity in hydrogen
     EU['fhte']=0.8  # effficiency of electricity in hydrogen
-    EU['Mns'] = 100000000
-    EU['Mnw'] = 100000000
-    EU['Mnh'] = 1000000000
+    EU['Mns'] = 10**12
+    EU['Mnw'] = 10**8
+    EU['Mnh'] = 10**12
     EU['MP_wind'] = max_wind
     EU['MP_solar'] = max_solar
     EU['meanP_load'] = 1
@@ -73,7 +73,7 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     EU_h['MH']=500  # maximum transportation for hydrogen
 
     #costs
-    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0,0,1000,10000,0.5,4]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH","cH_edge","cP_edge"])
+    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0.01,0.01,100,10000,0.5,4]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH","cH_edge","cP_edge"])
     eu = Network(init_method = init_method )
     eu.n = EU
     eu.edgesP = EU_e
@@ -101,8 +101,8 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     wind_scenario = import_scenario(path + 'small-eu-wind-scenarios3.csv')
     pv_scenario = import_scenario(path + 'small-eu-PV-scenarios.csv')
     hydro = import_generated_scenario(path+'hydrogen_demandg.csv',5, scenario, node_names=['Italy', 'Spain', 'Austria', 'France','Germany'])
-    hydro_mean = hydro.mean(dim = ["time","scenario"])
-    hydrogen_demand_scenario = hydro / hydro_mean
+    #hydro_mean = hydro.mean(dim = ["time","scenario"])
+    hydrogen_demand_scenario = hydro * (a/500)
     
     
     eu.n_scenarios = n_scenarios
