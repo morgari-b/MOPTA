@@ -38,7 +38,7 @@ from model.OPT_methods import OPT_agg_correct, OPT3
 #TODO: capire perchè è feasible anche se non usa stoccaggio di idrogeno
 #TODO: sistemare relazione cona ggregazione temporale (così) i timestep della domanda sono sfasati con lo stoccaggio di idrogeno
 
-#%%
+
 def Validate(network,VARS,scenarios):
          
     ns = VARS[0]["ns"]
@@ -101,9 +101,9 @@ def Validate(network,VARS,scenarios):
     model.addConstrs( EtH[j,i,k] <= meth[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
     model.addConstrs( HtE[j,i,k] <= mhte[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
     model.addConstrs( P_edge_pos[j,i,k] - P_edge_neg[j,i,k] <= (network.edgesP['NTC'].iloc[k] + addNTC[k]) for i in range(inst) for j in range(d) for k in range(NEedges))
-    model.addConstrs( H_edge_pos[j,i,k] - H_edge_neg[j,i,k] <= (network.edgesH['MH'].iloc[k] + addMH[k]) for i in range(inst) for j in range(d) for k in range(NHedges))
+    model.addConstrs( H_edge_pos[j,i,k]-H_edge_neg[j,i,k] <= (network.edgesH['MH'].iloc[k] + addMH[k]) for i in range(inst) for j in range(d) for k in range(NHedges))
     model.addConstrs( P_edge_pos[j,i,k] - P_edge_neg[j,i,k] >= -(network.edgesP['NTC'].iloc[k] + addNTC[k]) for i in range(inst) for j in range(d) for k in range(NEedges))
-    model.addConstrs( H_edge_pos[j,i,k] - H_edge_neg[j,i,k] >= -(network.edgesH['MH'].iloc[k] + addMH[k]) for i in range(inst) for j in range(d) for k in range(NHedges))
+    model.addConstrs( H_edge_pos[j,i,k]-H_edge_neg[j,i,k] >= -(network.edgesH['MH'].iloc[k] + addMH[k]) for i in range(inst) for j in range(d) for k in range(NHedges))
     
     # new variables for loss function
     loss = 0
@@ -128,17 +128,17 @@ def Validate(network,VARS,scenarios):
     pv_scenario = scenarios['pv_scenario']
     hydrogen_demand_scenario = scenarios['hydrogen_demand_scenario']
     elec_load_scenario = scenarios['elec_load_scenario']
-    day_num = 0
+    
     # start iterating
     for day in pd.date_range('Jan 01 2023','Dec 31 2023',freq='d'):
         
-        
+        day_num = 0
         #EW = wind_scenario.sel(time=[ str(each) for each in pd.date_range('2024'+str(day)[4:],periods=24,freq='h').to_list()])
         EW = wind_scenario[24*day_num:24*(day_num+1),:,:]
         #ES = pv_scenario.sel(time=[ str(each) for each in pd.date_range(day,periods=24,freq='h').to_list()])
         ES = pv_scenario[24*day_num:24*(day_num+1),:,:]
         HL = hydrogen_demand_scenario[24*day_num:24*(day_num+1),:,:]
-        EL = elec_load_scenario[24*day_num:24*(day_num+1),:,:]
+        EL = elec_load_scenario[:,24*day_num:24*(day_num+1),:]
         
         #MAKE THE INDICES MAKE SENSE
         day_num=day_num+1
@@ -220,17 +220,9 @@ eu=EU()
 VARS=OPT_agg_correct(eu)
 
 #%%
-#%%scenarios = import_scenario_val(5,5)
-
+scenarios = import_scenario_val(5,5)
 #%%
-print("fetching scenarios from network")
-scenarios = {}
-scenarios['wind_scenario'] = eu.genW_t
-scenarios['pv_scenario'] = eu.genS_t
-scenarios['hydrogen_demand_scenario'] = eu.loadH_t
-scenarios['elec_load_scenario'] = eu.loadP_t
-#%%
-Hs =Validate(eu,VARS,scenarios)
+Validate(eu,VARS,scenarios)
 
 #%%
 eu1 = EU(n_scenarios=1)
