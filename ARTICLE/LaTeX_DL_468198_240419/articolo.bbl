@@ -1,56 +1,358 @@
-\begin{thebibliography}{10}
-\providecommand{\url}[1]{{#1}}
-\providecommand{\urlprefix}{URL }
-\expandafter\ifx\csname urlstyle\endcsname\relax
-  \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
-  \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup \urlstyle{rm}\Url}\fi
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
 
-\bibitem{EU_context}
-Commission, E.: Communication from the commission: Guidance on article 20a on sector integration of renewable electricity of directive (eu) 2018/2001 on the promotion of energy from renewable sources, as amended by directive (eu) 2023/2413 (2024).
-\newblock \urlprefix\url{https://energy.ec.europa.eu/document/download/efcd200c-b9ae-4a9c-98ab-73b2fd281fcc_en?filename=C_2024_5041_1_EN_ACT_part1_v10.pdf}
+\datalist[entry]{anyt/global//global/global/global}
+  \entry{EU_context}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=CE}{%
+         family={Commission},
+         familyi={C\bibinitperiod},
+         given={European},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CE1}
+    \strng{fullhash}{CE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Com24}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Communication from the Commission: Guidance on Article 20a on sector integration of renewable electricity of Directive (EU) 2018/2001 on the promotion of energy from renewable sources, as amended by Directive (EU) 2023/2413}
+    \verb{url}
+    \verb https://energy.ec.europa.eu/document/download/efcd200c-b9ae-4a9c-98ab
+    \verb -73b2fd281fcc_en?filename=C_2024_5041_1_EN_ACT_part1_v10.pdf
+    \endverb
+    \field{year}{2024}
+  \endentry
 
-\bibitem{INTRO_karlsruhe}
-Hasan U.~Yilmaz Kai~Mainzer, D.K.: Improving the performance of solving large scale mixed-integer energy system models by applying the fix-and-relax method
+  \entry{INTRO_isolated_MIP}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=HMPKZVHKPF}{%
+         family={Hugo\bibnamedelima Morais},
+         familyi={H\bibinitperiod\bibinitdelim M\bibinitperiod},
+         suffix={Pedro\bibnamedelima Faria},
+         suffixi={P\bibinitperiod\bibinitdelim F\bibinitperiod},
+         given={Peter Kadar Zita Vale H.M.\bibnamedelima Khodr},
+         giveni={P\bibinitperiod\bibinitdelim K\bibinitperiod\bibinitdelim Z\bibinitperiod\bibinitdelim V\bibinitperiod\bibinitdelim H\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HMPFPKZVHK1}
+    \strng{fullhash}{HMPFPKZVHK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{HM10}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Optimal scheduling of a renewable micro-grid in an isolated load area using mixed-integer linear programming}
+    \field{journaltitle}{Renewable Energy}
+    \field{year}{2010}
+  \endentry
 
-\bibitem{INTRO_isolated_MIP}
-Hugo~Morais Pedro~Faria, P.K.Z.V.H.K.: Optimal scheduling of a renewable micro-grid in an isolated load area using mixed-integer linear programming.
-\newblock Renewable Energy  (2010)
+  \entry{INTRO_karlsruhe}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=HUYDKKM}{%
+         family={Hasan U.\bibnamedelima Yilmaz},
+         familyi={H\bibinitperiod\bibinitdelim U\bibinitperiod\bibinitdelim Y\bibinitperiod},
+         suffix={Kai\bibnamedelima Mainzer},
+         suffixi={K\bibinitperiod\bibinitdelim M\bibinitperiod},
+         given={Dogan\bibnamedelima Keles},
+         giveni={D\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HUYKMDK1}
+    \strng{fullhash}{HUYKMDK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{HUY}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Improving the performance of solving large scale mixed-integer energy system models by applying the fix-and-relax method}
+  \endentry
 
-\bibitem{INTRO_short-term}
-Ilkka~Keppo, M.S.: Short term decisions for long term problems - the effect of foreshight on model based energy system analysis.
-\newblock Energy
+  \entry{INTRO_short-term}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=IKMS}{%
+         family={Ilkka\bibnamedelima Keppo},
+         familyi={I\bibinitperiod\bibinitdelim K\bibinitperiod},
+         given={MAnfred\bibnamedelima Strubegger},
+         giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{IKMS1}
+    \strng{fullhash}{IKMS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{IK}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{Short term decisions for long term problems - The effect of foreshight on model based energy system analysis}
+    \field{journaltitle}{Energy}
+  \endentry
 
-\bibitem{weibullwind}
-Khahro, S.F., Tabbassum, K., Soomro, A.M., Dong, L., Liao, X.: Evaluation of wind power production prospective and weibull parameter estimation methods for babaurband, sindh pakistan.
-\newblock Energy Conversion and Management \textbf{78}, 956--967 (2014).
-\newblock \doi{https://doi.org/10.1016/j.enconman.2013.06.062}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S019689041300589X}
+  \entry{weibullwind}{article}{}{}
+    \name{author}{5}{}{%
+      {{hash=KSF}{%
+         family={Khahro},
+         familyi={K\bibinitperiod},
+         given={Shahnawaz\bibnamedelima Farhan},
+         giveni={S\bibinitperiod\bibinitdelim F\bibinitperiod},
+      }}%
+      {{hash=TK}{%
+         family={Tabbassum},
+         familyi={T\bibinitperiod},
+         given={Kavita},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=SAM}{%
+         family={Soomro},
+         familyi={S\bibinitperiod},
+         given={Amir\bibnamedelima Mahmood},
+         giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=DL}{%
+         family={Dong},
+         familyi={D\bibinitperiod},
+         given={Lei},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=LX}{%
+         family={Liao},
+         familyi={L\bibinitperiod},
+         given={Xiaozhong},
+         giveni={X\bibinitperiod},
+      }}%
+    }
+    \keyw{Wind energy, Power density function, Weibull distribution, Frequency distribution, Wind rose}
+    \strng{namehash}{KSF+1}
+    \strng{fullhash}{KSFTKSAMDLLX1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Kha+14}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{abstract}{%
+    Pakistan is currently experiencing an acute shortage of energy and urgently needs new sources of affordable energy that could alleviate the misery of the energy starved masses. At present the government is increasing not only the conventional energy sources like hydel and thermal but also focusing on the immense potential of renewable energy sources like; solar, wind, biogas, waste-to-energy etc. The recent economic crisis worldwide, global warming and climate change have also emphasized the need for utilizing economic feasible energy sources having lowest carbon emissions. Wind energy, with its sustainability and low environmental impact, is highly prominent. The aim of this paper is to explore the wind power production prospective of one of the sites in south region of Pakistan. It is worth mentioning here that this type of detailed analysis is hardly done for any location in Pakistan. Wind power densities and frequency distributions of wind speed at four different altitudes along with estimated wind power expected to be generated through commercial wind turbines is calculated. Analysis and comparison of 5 numerical methods is presented in this paper to determine the Weibull scale and shape parameters for the available wind data. The yearly mean wind speed of the considered site is 6.712m/s and has power density of 310W/m2 at 80m height with high power density during April to August (highest in May with wind speed 9.595m/s and power density 732W/m2). Economic evaluation, to exemplify feasibility of installing wind turbines, is also done. The estimated cost of per kWh of electricity from wind is calculated as 0.0263US$/kWh. Thus the candidate site is recommended for some small stand-alone systems as well as for wind farm.%
+    }
+    \verb{doi}
+    \verb https://doi.org/10.1016/j.enconman.2013.06.062
+    \endverb
+    \field{issn}{0196-8904}
+    \field{pages}{956\bibrangedash 967}
+    \field{title}{Evaluation of wind power production prospective and Weibull parameter estimation methods for Babaurband, Sindh Pakistan}
+    \verb{url}
+    \verb https://www.sciencedirect.com/science/article/pii/S019689041300589X
+    \endverb
+    \field{volume}{78}
+    \field{journaltitle}{Energy Conversion and Management}
+    \field{year}{2014}
+  \endentry
 
-\bibitem{INTRO_Glomb}
-Lukas~Glomb Frauke~Liers, F.R.: A rolling-horizon approach for multi-period optimization
+  \entry{INTRO_Glomb}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=LGFRFL}{%
+         family={Lukas\bibnamedelima Glomb},
+         familyi={L\bibinitperiod\bibinitdelim G\bibinitperiod},
+         suffix={Frauke\bibnamedelima Liers},
+         suffixi={F\bibinitperiod\bibinitdelim L\bibinitperiod},
+         given={Florian\bibnamedelima Roesel},
+         giveni={F\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LGFLFR1}
+    \strng{fullhash}{LGFLFR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{LG}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{title}{A rolling-horizon approach for multi-period optimization}
+  \endentry
 
-\bibitem{review_math_opt}
-Michal~Jasinski Arsalan~Najafi, e.a.: Operation and planning of energy hubs under uncertainty - a review of mathematical optimization approaches  (2022)
+  \entry{review_math_opt}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=MJeaAN}{%
+         family={Michal\bibnamedelima Jasinski},
+         familyi={M\bibinitperiod\bibinitdelim J\bibinitperiod},
+         suffix={Arsalan\bibnamedelima Najafi},
+         suffixi={A\bibinitperiod\bibinitdelim N\bibinitperiod},
+         given={et\bibnamedelima al},
+         giveni={e\bibinitperiod\bibinitdelim a\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MJANea1}
+    \strng{fullhash}{MJANea1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{MJ22}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Operation and Planning of Energy Hubs Under Uncertainty - A Review of Mathematical Optimization Approaches}
+    \field{year}{2022}
+  \endentry
 
-\bibitem{GaussCopula}
-Papaefthymiou, G., Kurowicka, D.: Using copulas for modeling stochastic dependence in power system uncertainty analysis.
-\newblock IEEE Transactions on Power Systems \textbf{24}(1), 40--49 (2009).
-\newblock \doi{10.1109/TPWRS.2008.2004728}
+  \entry{GaussCopula}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=PG}{%
+         family={Papaefthymiou},
+         familyi={P\bibinitperiod},
+         given={George},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=KD}{%
+         family={Kurowicka},
+         familyi={K\bibinitperiod},
+         given={Dorota},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \keyw{Power system modeling;Stochastic systems;Power system analysis computing;Uncertainty;Random variables;Power system planning;Stochastic processes;Power generation;Context modeling;Aggregates;Copula;correlation;Monte Carlo simulation;stochastic dependence;stochastic generation;uncertainty analysis;wind power}
+    \strng{namehash}{PGKD1}
+    \strng{fullhash}{PGKD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{PK09}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \verb{doi}
+    \verb 10.1109/TPWRS.2008.2004728
+    \endverb
+    \field{number}{1}
+    \field{pages}{40\bibrangedash 49}
+    \field{title}{Using Copulas for Modeling Stochastic Dependence in Power System Uncertainty Analysis}
+    \field{volume}{24}
+    \field{journaltitle}{IEEE Transactions on Power Systems}
+    \field{year}{2009}
+  \endentry
 
-\bibitem{PVDataSet}
-Pfenninger, S., Staffell, I.: Long-term patterns of european pv output using 30 years of validated hourly reanalysis and satellite data.
-\newblock Energy \textbf{114}, 1251--1265 (2016).
-\newblock \doi{https://doi.org/10.1016/j.energy.2016.08.060}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360544216311744}
+  \entry{PVDataSet}{article}{}{}
+    \name{author}{2}{}{%
+      {{hash=PS}{%
+         family={Pfenninger},
+         familyi={P\bibinitperiod},
+         given={Stefan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SI}{%
+         family={Staffell},
+         familyi={S\bibinitperiod},
+         given={Iain},
+         giveni={I\bibinitperiod},
+      }}%
+    }
+    \keyw{Solar energy, Meteorological reanalysis, Satellite irradiance estimation, Renewables, Grid integration of renewables}
+    \strng{namehash}{PSSI1}
+    \strng{fullhash}{PSSI1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{PS16}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{abstract}{%
+    Solar PV is rapidly growing globally, creating difficult questions around how to efficiently integrate it into national electricity grids. Its time-varying power output is difficult to model credibly because it depends on complex and variable weather systems, leading to difficulty in understanding its potential and limitations. We demonstrate how the MERRA and MERRA-2 global meteorological reanalyses as well as the Meteosat-based CM-SAF SARAH satellite dataset can be used to produce hourly PV simulations across Europe. To validate these simulations, we gather metered time series from more than 1000 PV systems as well as national aggregate output reported by transmission network operators. We find slightly better accuracy from satellite data, but greater stability from reanalysis data. We correct for systematic bias by matching our simulations to the mean bias in modeling individual sites, then examine the long-term patterns, variability and correlation with power demand across Europe, using thirty years of simulated outputs. The results quantify how the increasing deployment of PV substantially changes net power demand and affects system adequacy and ramping requirements, with heterogeneous impacts across different European countries. The simulation code and the hourly simulations for all European countries are available freely via an interactive web platform, www.renewables.ninja.%
+    }
+    \verb{doi}
+    \verb https://doi.org/10.1016/j.energy.2016.08.060
+    \endverb
+    \field{issn}{0360-5442}
+    \field{pages}{1251\bibrangedash 1265}
+    \field{title}{Long-term patterns of European PV output using 30 years of validated hourly reanalysis and satellite data}
+    \verb{url}
+    \verb https://www.sciencedirect.com/science/article/pii/S0360544216311744
+    \endverb
+    \field{volume}{114}
+    \field{journaltitle}{Energy}
+    \field{year}{2016}
+  \endentry
 
-\bibitem{INTRO_Palma-Behnke}
-Rodrigo Palma-Behnke Carlos~Benavides, F.L.B.S.L.R.J.L.D.S.: A microgrid energy management system based on the rolling horizon strategy.
-\newblock IEEE transactions on smart grid  (2013)
+  \entry{INTRO_Palma-Behnke}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=RPBFLBSLRJLDSCB}{%
+         family={Rodrigo Palma-Behnke},
+         familyi={R\bibinitperiod\bibinitdelim P\bibinithyphendelim B\bibinitperiod},
+         suffix={Carlos\bibnamedelima Benavides},
+         suffixi={C\bibinitperiod\bibinitdelim B\bibinitperiod},
+         given={Fernando Lanas Bernardo Severino Lorenzo Reyes Jaqueline Llanos Doris\bibnamedelima Saez},
+         giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim B\bibinitperiod\bibinitdelim S\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim R\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RPBCBFLBSLRJLDS1}
+    \strng{fullhash}{RPBCBFLBSLRJLDS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{RPB13}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{A microgrid energy management system based on the rolling horizon Strategy}
+    \field{journaltitle}{IEEE transactions on smart grid}
+    \field{year}{2013}
+  \endentry
 
-\bibitem{betaPV}
-Yuan, X., Chen, C., Jiang, M., Yuan, Y.: Prediction interval of wind power using parameter optimized beta distribution based lstm model.
-\newblock Applied Soft Computing \textbf{82}, 105550 (2019).
-\newblock \doi{https://doi.org/10.1016/j.asoc.2019.105550}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1568494619303308}
-
-\end{thebibliography}
+  \entry{betaPV}{article}{}{}
+    \name{author}{4}{}{%
+      {{hash=YX}{%
+         family={Yuan},
+         familyi={Y\bibinitperiod},
+         given={Xiaohui},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=CC}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Chen},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=JM}{%
+         family={Jiang},
+         familyi={J\bibinitperiod},
+         given={Min},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=YY}{%
+         family={Yuan},
+         familyi={Y\bibinitperiod},
+         given={Yanbin},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \keyw{Wind power, Prediction interval, Long short-term memory neural network, Beta distribution, Particle swarm optimization}
+    \strng{namehash}{YX+1}
+    \strng{fullhash}{YXCCJMYY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Yua+19}
+    \field{sortinit}{Y}
+    \field{sortinithash}{Y}
+    \field{abstract}{%
+    Prediction interval of wind power (PIWP) is crucial to assessing the economic and safe operation of the wind turbine and providing support for analysis of the stability of power systems. The hybrid model (Beta-PSO-LSTM) of long short-term memory (LSTM) neural network and Beta distribution function based particle swarm optimization (PSO) is put forward for prediction interval of wind power. In order to enhance the performance of the Beta-PSO-LSTM for PIWP in training process, wind power series are divided into different power intervals, and then the Beta-PSO-LSTM is used to estimate each power interval of the original wind power series. Furthermore, based on the analysis of the interval forecasting error information in wind power training data set, Beta distribution model is proposed to get better PIWP, and PSO is used to optimize the parameters of the model. Finally, the proposed Beta-PSO-LSTM model is compared with the Beta distribution optimized by PSO based the BP neural network (Beta-PSO-BP), the normal distribution based LSTM neural network (Norm-LSTM), Beta distribution based LSTM neural network (Beta-LSTM), and Beta distribution optimized by iterative method based LSTM neural network (Beta-IM-LSTM) for PIWP. The simulation results show that the PIWP obtained by the Beta-PSO-LSTM model has higher reliability and narrower interval bandwidth, which can provide decision support for the safe and stable operation of power systems.%
+    }
+    \verb{doi}
+    \verb https://doi.org/10.1016/j.asoc.2019.105550
+    \endverb
+    \field{issn}{1568-4946}
+    \field{pages}{105550}
+    \field{title}{Prediction interval of wind power using parameter optimized Beta distribution based LSTM model}
+    \verb{url}
+    \verb https://www.sciencedirect.com/science/article/pii/S1568494619303308
+    \endverb
+    \field{volume}{82}
+    \field{journaltitle}{Applied Soft Computing}
+    \field{year}{2019}
+  \endentry
+\enddatalist
+\endinput
