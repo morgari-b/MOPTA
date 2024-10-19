@@ -43,7 +43,7 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
                 
     #ho spostato qui così è un parametro di input
     EU['Mhte']=10**10  # maximum hydrogen to electricuty hourly
-    EU['Meth']=10**7  # maximum electricity to hydrogen hourly
+    EU['Meth']=10**10  # maximum electricity to hydrogen hourly
     EU['feth']=0.8  # efficiency of electricity in hydrogen
     EU['fhte']=0.8  # effficiency of electricity in hydrogen
     EU['Mns'] = 10**12
@@ -73,7 +73,7 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     EU_h['MH']=500  # maximum transportation for hydrogen
 
     #costs
-    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0.01,0.01,100,10000,0.5,4]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH","cH_edge","cP_edge"])
+    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0.001,0.001,100,10000,0.5,4]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH","cH_edge","cP_edge"])
     eu = Network(init_method = init_method )
     eu.n = EU
     eu.edgesP = EU_e

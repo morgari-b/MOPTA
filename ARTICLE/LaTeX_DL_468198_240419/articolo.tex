@@ -252,25 +252,21 @@ grestore
 \maketitle
 
 \begin{abstract}
-\textcolor{violet}{
-  In recent years, the integration of renewable energy sources into electrical grids has become a
-   critical area of research due to the increasing need for sustainable
-  and resilient energy systems.  To adress the
-   variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
-   This significanlty increases the size of the resulting Linear Problem (LP), making them computationally challenging for large scale grids.
-  To tackle this, we propose an approach that aggregates time steps to reduce the problem size, 
-  followed by an iterative refinement of the aggregation. We provide sufficient conditions under which
-   the aggregated problem is equivalent to the original, unaggregated one, and refine the time intervals
-    that do not meet these conditions.\textbf{write better:Additionally, we introduce a validation function to assess the feasibility of the aggregated solutions.
-Our method is tested on a fully renewable energy grid with hydrogen storage.}
+In recent years, the integration of renewable energy sources into electrical grids has become a
+critical area of research due to the increasing need for sustainable
+and resilient energy systems.  To adress the variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
+This significanlty increases the size of the resulting Linear Problem (LP), making them computationally challenging for large scale grids.
+To tackle this, we propose an approach that aggregates time steps to reduce the problem size, followed by an iterative refinement of the aggregation. 
+\textcolor{violet}{We provide sufficient conditions under which the aggregated problem is equivalent to the original, unaggregated one, and refine the time intervals that do not meet these conditions.
+\textbf{write better:Additionally, we introduce a validation function to assess the feasibility of the aggregated solutions. Our method is tested on a fully renewable energy grid with hydrogen storage.}
  We generate scenarios for wind and photovoltaic (PV) power output using scenario generation techniques that capture temporal dependencies. 
  These dependencies are modeled with marginal distributions coupled with a Gaussian copula, ensuring that the generated scenarios reflect realistic 
  temporal correlations observed in historical data.}
 %Insert your abstract here. Include keywords, PACS and mathematical
 %subject classification numbers as needed.
-\keywords{First keyword \and Second keyword \and More}
+\keywords{\textcolor{red}{First keyword \and Second keyword \and More}}
 % \PACS{PACS code1 \and PACS code2 \and more}
-\subclass{MSC code1 \and MSC code2 \and more}
+\subclass{90-10 \and 90B15 }
 \end{abstract}
 
 \newpage
@@ -280,61 +276,46 @@ Our method is tested on a fully renewable energy grid with hydrogen storage.}
 definition of CEP, ED problems.}\\
 
 
-\begin{enumerate}
-  \item 100 parole contesto sociale (è importante perché...): cita: qualche report/programma dell'UE.
-  \item literature review: $\sim$ 10 articoli
-  \begin{itemize}
-    \item robust vs stochastic optimization, cite something
-    \item time aggregation: cite \{\textbf{???}\} for theory?
-    \item validation function is dealt with RH: cite\{Glomb\} for quality guarantees, cite \{Palma-Behnke\} for microgrid ED planning, maybe someone else
-    \item scenario generation: cite sources down
-  \end{itemize} 
-  \item cosa facciamo noi di speciale? 150 parole: We want to solve CEP to build grid that can be operated as smart with rolling horizon. Often used robust approach because computationally easier, we want to use stochastic.
-  \item how is this paper organized?
-\end{enumerate}
+The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
+Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \textcolor{green}{\cite{review_math_opt}}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.\\
+\indent In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP) regarding infrastructure investments: solar and wind farms, fuel cells, hydrolizers, grid upgrades to augment Net Transfer Capacity (NTC) and so on. Nested within the CEP is an Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. 
+The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in \textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{red}{other examples?}))\\
+\indent The CEP for investment planning requires to look at long time horizons, and on the other hand intra-day variability in generation \textcolor{pink}{is the main complexity driver} for the ED problem, so the time horizon must be modelled by a large quantity of fairly tight time steps. Furthermore, \textcolor{pink}{spacial structure big, even though we ignore it here and just slam everything into country nodes}. 
+Thus the temporal and spacial characteristics of the model bring the MILP size to increase rapidly. This is especially demanding in the case of SP, since all the variables from the inner ED problem must be reproduced over all scenarios.\\
+\indent To reduce these costs, one possible approach is to use a Rolling Horizon (RH) \textcolor{red}{[explain better]}. The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of \textcolor{pink}{check} serving an isolated area in Chile. \textcolor{red}{other examples of RH used for the ED} A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.\\
+\indent A big drawback of the RH approach is that \textcolor{pink}{Problem: it is not optimal. In fact, \cite{INTRO_short-term}. But better reflects actual decision making based on info that is only available progressively, vs perfect foresigh approach.}\\
+\indent Our work aims to build a hybrid model, exploring the use of the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a stand-alone technique.  \textcolor{red}{Explain better}. 
+Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", \textcolor{red}{through a control system that optimizes on day ahead forecasts}.\\
+\indent The model we optimize on in \textcolor{red}{introduce model: components, aim, use Gurobi...}\\
+\indent Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. This has been previously done \textcolor{red}{here and here and it's now new right?}.\\
+
+This paper is organized as follows: \textcolor{red}{HOW?}\\
+
+%\textbf{OLD:}
+%\textcolor{gray}{
+%The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience of the grids \cite{EU_context}. The model presented in this report explores the possibility of an electrical grid powered entirely through wind and photovoltaic (PV) systems, and supported by hydrogen storage.
+%It is of interest to estimate the power generation capacity for both wind and solar, as well as the hydrogen storage and conversion capacities, that would be necessary in order to power a reliable grid supplying residential electricity load and industrial base load of both electricity and hydrogen for a given area, while minimizing the cost of implementing such infrastructure.
+%The main difficulties arising when designing such a system lie in the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
+%The scenario generation step is followed by an optimization process. The model, as described in section \ref{section: model}, takes in input the generation and load scenarios of the selected countries along with various parameters indicating costs and efficiency of the current state of technology and possible upper bounds for the decision variables, and returns the optimized capacity that is necessary to meet demand throughout a one year span, with minimal cost. The optimization problem is solved using the Gurobi solver.
+%When optimizing over multiple scenarios jointly, the solver returns the minimal amount of infrastructure and capacities that is needed to have feasibility (that is, demand met at all time - no blackouts) over all scenarios in input, with minimal average cost over the scenarios.
+%When considering a network with more than a single node, computational costs increase rapidly. Thus a small analysis is carried out to determine acceptable time steps on which time dependent data can be aggregated (the gathered data is usually on hourly steps) while maintaining the quality of the solution. 
+%Results are then evaluated for a single node network and for more complex networks based in the European Union, for which the necessary data was publicly available. Appropriate validation functions are discussed to check feasibility over new scenarios, along with cost functions that give more realistic cost estimates compared to the optimal value given by the solver.
+%}
 
 
-The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \cite{EU_context}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
-Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \cite{review_math_opt}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.
-
-\textcolor{pink}{
-In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP), regarding infrastructure investments ... with a nested Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. Can be solved through mixed integer linear programming (MILP) ((examples: isolated case study MILP \cite{INTRO_isolated_MIP}))
-The computational costs are high because -- requires to look at long time horizons modeled in short time frames. -- especially demanding for SP since multiple scenarios.
-To reduce these costs, one possible approach is to use a Rolling Horizon (RH) [explain better]. The basic technique is described in \cite{INTRO_Glomb}, along with some results regarding quality guarantees for the optimality of the solution. In \cite{INTRO_Palma-Behnke}, a rolling horizon approach is used within a RO model to --Chile. is it relevant?-- A similar idea is applied in \cite{INTRO_karlsruhe}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.
-Problem: it is not optimal. In fact, \cite{INTRO_short-term}. But better reflects actual decision making based on info that is only available progressively, vs perfect foresigh approach.}
 
 
-
-\textbf{OLD:}
-\textcolor{gray}{
-The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience of the grids \cite{EU_context}. The model presented in this report explores the possibility of an electrical grid powered entirely through wind and photovoltaic (PV) systems, and supported by hydrogen storage.
-It is of interest to estimate the power generation capacity for both wind and solar, as well as the hydrogen storage and conversion capacities, that would be necessary in order to power a reliable grid supplying residential electricity load and industrial base load of both electricity and hydrogen for a given area, while minimizing the cost of implementing such infrastructure.
-The main difficulties arising when designing such a system lie in the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
-A first step for estimating the optimal capacities is thus to have realistic scenarios on which to evaluate our model.}
-\textcolor{gray}{
-To generate the scenarios for wind and solar power generation we sampled from a joint probability density function (PDF) that was fit on historical data. The construction of the PDF for wind and solar is explained in detail in subsections \ref{subsection: weib estim} and \ref{subsection: beta estim} respectively. 
-  In this simple model, while fitting on historical data we did not account for possible changes in future climate.\\
-On the other hand, electricity load is taken from the \\href{https://www.entsoe.eu/data/power-stats/}{ENTSO-E Statistical Reports}. We normalised the 2023 data by country to indicate the trend of load throughout the year, dividing by mean hourly load: \textcolor{green}{this is then to be multiplied by the mean load of the area the policy maker is interested in serving with the modeled grid.}
-The scenario generation step is followed by an optimization process. The model, as described in section \ref{section: model}, takes in input the generation and load scenarios of the selected countries along with various parameters indicating costs and efficiency of the current state of technology and possible upper bounds for the decision variables, and returns the optimized capacity that is necessary to meet demand throughout a one year span, with minimal cost. The optimization problem is solved using the Gurobi solver.
-When optimizing over multiple scenarios jointly, the solver returns the minimal amount of infrastructure and capacities that is needed to have feasibility (that is, demand met at all time - no blackouts) over all scenarios in input, with minimal average cost over the scenarios.
-When considering a network with more than a single node, computational costs increase rapidly. Thus a small analysis is carried out to determine acceptable time steps on which time dependent data can be aggregated (the gathered data is usually on hourly steps) while maintaining the quality of the solution. 
-Results are then evaluated for a single node network and for more complex networks based in the European Union, for which the necessary data was publicly available. Appropriate validation functions are discussed to check feasibility over new scenarios, along with cost functions that give more realistic cost estimates compared to the optimal value given by the solver.
-}
 \section{MODEL}
 
 \subsection{SCENARIO GENERATION}
-\textbf{To estimate the optimal capacities through a stochastic approach, realistic weather scenarios (and thus
-generation scenarios) are needed. To generate the scenarios for wind and solar power generation, samples
-are extracted from a joint probability density function (PDF) that was fit on historical data. The
-construction of the joint PDF for wind and solar is done through a Gaussian Copula approach.
-A first section will explain the theory behind this approach, and a second section will show the
-application in the case of weather conditions in European countries. Weibull distributions are used as
-marginals to model wind, and beta distributions for solar power.}\\
 
+To estimate the optimal capacities for the CEP through a stochastic approach, realistic and diverse weather scenarios are needed, so to capture the variability and uncertainty of power generation through renewable sources over extended periods. 
+In order to generate such scenarios, samples are extracted from a joint probability density function (PDF) fit on historical data.
+To model the marginal probability distributions corresponding to the power output of wind turbines for each hour of the year, a Weibull distribution was used, justified by its proven effectiveness in capturing the variability and skewness of wind power distributions \textcolor{green}{\cite{weibullwind}}. 
+For solar power, Beta distributions were employed, as in \textcolor{green}{\cite{betaPV}}. 
+To account for interdependence between temporally near time steps, we coupled these distributions using a Gaussian Copula approach, which captures the dependencies between hourly power outputs effectively. \textcolor{pink}{This approach accurately mimics common weather phenomena}. \\
 
-Wind and solar power are inherently intermittent and uncertain, posing a challenge to their successful integration into the energy system. Hydrogen storage and other forms of energy storage offer potential solutions to mitigate these issues. However, the amount of long-term storage required in a fully renewable grid is heavily influenced by the stochastic behavior of wind and solar power. Moreover, historical data typically covers only a limited number of climate years, which restricts the ability to test the grid over long time horizons encompassing various climatic conditions. To address this limitation, we adopted a scenario generation (SG) method based on historical data of each of the European countries considered, allowing us to create realistic and diverse scenarios that better capture the variability and uncertainty of renewable energy sources over extended periods. 
-
-To model the probability distribution corresponding to the power output of wind turbines for each hour of the year, we utilized a Weibull distribution, justified by its proven effectiveness in capturing the variability and skewness of wind power distributions [\cite{weibullwind}]. For solar power, a Beta distribution was employed in [\cite{betaPV}]. \textcolor{yellow}{controllare che siamo coerenti con tutte le cose che citiamo} To account for interdependence between temporally near time steps, we coupled these distributions using a Gaussian Copula approach, which captures the dependencies between hourly power outputs effectively. This approach accurately mimics common weather phenomena. \\
+In this simple model, while fitting on historical data we did not account for possible changes in future climate.\\
 
 \subsubsection{Stochastic Processes description}
 The stochastic processes of power observations will be denoted as \(Y_t\). Where \(t \in T\), is the set indexing all the random variables which want to be considered jointly.
@@ -401,6 +382,8 @@ In particular, given the realization \(\{y_{t,j}\}_{t \in t, j \in J}\) of the v
 Finally, we can generate samples from a Multivariate Gaussian random variable \((Z_{t}, t \in T)\) having distribution \(\mathcal{N}(0, \hat \Sigma)\).  Then the power output scenarios are obtained from these samples by following the previous steps backwards, that is, for each sample, computing \(\hat F_{t}^{-1}(\Phi(Z_{t}))\) for all \(t\in T\). \\
 
 \subsubsection{Generation}
+On the other hand, electricity load is taken from the \textcolor{green}{\href{https://www.entsoe.eu/data/power-stats/}{ENTSO-E Statistical Reports}}. We normalised the 2023 data by country to indicate the trend of load throughout the year, dividing by mean hourly load: \textcolor{pink}{this is then to be multiplied by the mean load of the area the policy maker is interested in serving with the modeled grid.}
+
 In our project, we used an hourly time step (T=\{1...8760\}) and fit the wind and solar distributions \st{separately (thus limiting the computational costs)}jointly (\textcolor{red}{TO DO}). To fit our model, we used a dataset containing 30 years of data for various European countries, which was collected by [\cite{PVDataSet}]. 
 For more complex versions of the model, where we considered multiple nodes at the same time, we fit (\textcolor{red}{TO DO}) a joint distribution considering the involved countries, capturing typical correlations of the \textcolor{red}{Northern Atlantic Oscillation... TO DO (image)} 
 
@@ -717,6 +700,11 @@ deal with the complexity arising from the introduction of the network structure 
 % \bibitem{RefB}
 % Author, Book title, page numbers. Publisher, place (year)
 % % etc
+
+\bibitem{review_math_opt}
+Michal Jasinski, Arsalan Najafi, et al,
+Operation and Planning of Energy Hubs Under Uncertainty - A Review of Mathematical Optimization Approaches,
+2022
 
 
 \bibitem{European_H2_Market_landscape}
