@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  20 OCT 2024 00:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  20 OCT 2024 14:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -897,21 +897,124 @@ Underfull \hbox (badness 10000) in paragraph at lines 292--293
  []
 
 
-LaTeX Warning: Citation `weibullwind' on page 3 undefined on input line 314.
-
-
-LaTeX Warning: Citation `betaPV' on page 3 undefined on input line 315.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 312--317
+Underfull \hbox (badness 10000) in paragraph at lines 319--320
 
  []
 
-/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex:319: Argument of \hyper@n@rmalise has an extra }.
-<inserted text> 
-                \par 
-l.319 ... is taken from the \textcolor{green}\href
-                                                  {https://www.entsoe.eu/dat...
-I've run across a `}' that doesn't seem to match anything.
-For example, `\def\a#1{...}' and `\a}' would produce
-this error. If you simply proceed now, the `\par' that
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 361--363
+
+ []
+
+
+Overfull \hbox (2.27766pt too wide) detected at line 370
+[]
+ []
+
+[4]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 397.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+
+LaTeX Warning: Citation `DAWOOD' on page 5 undefined on input line 420.
+
+[5]
+Overfull \hbox (44.92212pt too wide) detected at line 440
+[]
+ []
+
+[6]
+Overfull \hbox (39.77385pt too wide) detected at line 476
+[]
+ []
+
+[7]
+Overfull \hbox (24.71144pt too wide) in paragraph at lines 511--512
+\OT1/ptm/m/n/10 lem $\OML/ztmcm/m/it/10 CEP[]$\OT1/ptm/m/n/10 , as given a fea-si-ble so-lu-tion $\OT1/ztmcm/m/n/10 (\OML/ztmcm/m/it/10 ns; nw; nh; mhte; meth; H; HtE; EtH; Pedge; Hedge\OT1/ztmcm/m/n/10 )$
+ []
+
+[8]
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 543.
+ [9] [10] [11]
+Overfull \hbox (96.71457pt too wide) detected at line 657
+\OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] []\OML/ztmcm/m/it/10 ^^Z[][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
+ []
+
+
+LaTeX Warning: Reference `eq:LPunaggr' on page 12 undefined on input line 666.
+
+[12]
+Overfull \hbox (56.7941pt too wide) detected at line 689
+[][] \OT1/ztmcm/m/n/10 = [] [][] + [] [][] = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 cx
+ []
+
+
+Overfull \hbox (95.884pt too wide) detected at line 714
+[][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 733--733
+
+ []
+
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 747.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 747.
+
+
+LaTeX Warning: Citation `weibullwind' on page 14 undefined on input line 748.
+
+
+LaTeX Warning: Citation `betaPV' on page 14 undefined on input line 749.
+
+
+LaTeX Warning: Citation `GaussCopula' on page 14 undefined on input line 753.
+
+[14] [15]
+Underfull \hbox (badness 10000) in paragraph at lines 817--820
+
+ []
+
+[16]
+Underfull \hbox (badness 10000) in paragraph at lines 825--827
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 829--830
+
+ []
+
+[17] [18] (./articolo.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+Package rerunfilecheck Info: File `articolo.out' has not changed.
+(rerunfilecheck)             Checksum: 16021587FF1B5A58E34137C71E6B75B8;892.
+ ) 
+Here is how much of TeX's memory you used:
+ 34431 strings out of 474222
+ 794057 string characters out of 5748733
+ 1943975 words of memory out of 5000000
+ 55990 multiletter control sequences out of 15000+600000
+ 599144 words of font info for 130 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 103i,13n,107p,1863b,862s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on articolo.pdf (18 pages, 189815 bytes).
+PDF statistics:
+ 266 PDF objects out of 1000 (max. 8388607)
+ 214 compressed objects within 3 object streams
+ 70 named destinations out of 1000 (max. 500000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+
