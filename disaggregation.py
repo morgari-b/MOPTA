@@ -18,54 +18,31 @@ import matplotlib.pyplot as plt
 from itertools import product
 from matplotlib.dates import DayLocator, MonthLocator, DateFormatter, AutoDateLocator, ConciseDateFormatter #, mdates
 import os
+import copy
 from model.YUPPY import Network, time_partition, df_aggregator, solution_to_xarray, import_scenario_val
 from model.EU_net import EU
 #import plotly.graph_objs as go
 #from plotly.subplots import make_subplots
 #import plotly.express as px
-from model.OPT_methods import OPT_agg_correct, OPT3
+from model.OPT_methods import OPT_agg_correct, OPT3, OPT_agg2
 
 #%%
 
 
 eu=EU()
-VARS=OPT_agg_correct(eu)
-VARS = VARS[0]
-# %%
-
-n = eu
-
-#rho for a constraint
-tp = n.time_partition.agg
-I = tp[0]
-
-P_net = []
-H_net = []
-HL = n.loadH_t
-PL = n.loadP_t
-ES = n.genS_t
-EW = n.genW_t
-ES = ES.assign_coords(time=PL.coords['time'])
-EW = EW.assign_coords(time=PL.coords['time'])
-
-nw = xr.DataArray(VARS["nw"], dims='node', coords={'node': HL.coords['node']})
-ns = xr.DataArray(VARS["ns"], dims='node', coords={'node': HL.coords['node']})
+n = copy.deepcopy(eu)
 #%%
-#for t in I:
-Pnett = PL - nw*EW - ns*ES 
-Hnett = HL
-interval_coords = [k for k_list in [[k]*len(tp[k]) for k in np.arange(len(tp))] for k in k_list]
-Pnett = Pnett.assign_coords(interval = ('time', interval_coords))
-Hnett = Hnett.assign_coords(interval = ('time', interval_coords))
+vars_rho=OPT_agg2(n, N_iter = 10, iter_method = 'rho')
+costs_rho = [vars_rho[i]['obj'] for i in range(len(vars_rho))]
+# %%
+vars_random_list = []
+costs_random_list = []
+#%%
+for i in range(10):
+    n = copy.deepcopy(eu)
+    vars_random = OPT_agg2(n, N_iter = 10, iter_method = 'random')
+    vars_random_list.append(vars_random)
+    costs_random = [vars_random[i]['obj'] for i in range(len(vars_random))]
+    costs_random_list.append(costs_random)
 
-# %%
-Pnettsum = Pnett.groupby('interval').sum()
-# %%
-rho = Pnett.groupby('interval') / Pnettsum
-# %%
-rhosum = rho.groupby('interval').sum()
-# %%
-rho0 = rho.where(rho['interval'] == 0, drop=True)
-# %%
-rhovar = rho.var(dim="node").groupby("interval").mean()
 # %%
