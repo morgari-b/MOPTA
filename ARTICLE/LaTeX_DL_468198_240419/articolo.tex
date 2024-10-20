@@ -567,7 +567,7 @@ where \(\tilde{A}\) is a \(\tilde{m}\times \tilde{n}\) matrix.
 
 In the problem under consideration, we have various types of constraints: Electricity Balance, Hydrogen Balance, Hydrogen Storage, and bounds on the variables. Given a time partition \(P\), we define \(\rowP\) and \(\colP\) such that each set \(S \in \rowP\) corresponds to all constraints of the same type, scenario, and time index \(t\) that falls within the same time interval in \(T\) as \(P\). Similarly, the variables (such as Power generation, Hydrogen generation, etc.) are partitioned in \(\colP\) based on the same criteria.
 
-Rows and columns are combined via equal-weight aggregation. This aggregation maintains the structure of the original problem, 
+\textcolor{red}{Correggere: Rows and columns are combined via equal-weight aggregation}. This aggregation maintains the structure of the original problem, 
 meaning that had we formulated the model directly with the aggregated time steps, we would have arrived at the same model.
  We refer to this as a \emph{structure-preserving aggregation}, which is defined as follows:
 
@@ -716,7 +716,7 @@ if the hypothesis of proposition \ref{prop:xaggfeasible} holds then the aggregat
 \end{proof}
 }
 
-\section{APPLICATION TO CAPACITY EXPANSION PROBLEM}
+\subsection{Application to Capacity Expansion Problem}
 {\color{violet}
 We now apply the results of the previous section to the Capacity Expansion Problem. 
 \textcolor{violet}{
@@ -732,13 +732,33 @@ TODO:
 \end{itemize}
 }
 
+{\color{violet}
+By reformulating the problem in \textcolor{red}{ref}, we introduce a new set of variables \(h_{t,j,n} \coloneqq H_{t+1,j,n} - H_{t,j,n}\), replacing the original variables \(H_{t,j,n}\), and add the following constraints:
 
+\begin{align}
+  \sum_{t=1}^{\bar{t}} h_{t,j,n} = H_{\bar{t},j,n}, & \quad \text{for all } \bar{t} \leq T, \label{eq:delta_hydrogen_constraints}
+\end{align}
 
+It can be easily checked that:
 
+\begin{observation}
+  The aggregation of the Capacity Expansion Problem (CEP) is a structure-preserving aggregation with constant coefficients. Furthermore, the constraints \eqref{eq:delta_hydrogen_constraints} are \(\rho\)-agnostic.
+\end{observation}
+
+Since the only constraints linking variables across different time steps are those in \eqref{eq:delta_hydrogen_constraints}, the connected components of the hypergraph representing the aggregation correspond to the hypergraphs of the Energy Dispatch (ED) at each time step. Specifically, there is one connected component per time step, with nodes representing the variables at that step. To construct a feasible solution from the aggregated problem, it is sufficient for \(\rho_r\) to be constant across constraints within the same time step.
+
+Using the definition of \(\rho_r\), it can be shown that for each time step \(t \in T \in \cT\), this corresponds to the ratio between the net energy production at time \(t\) and the net energy production over the interval \(T\). Hence, the conditions of Proposition \ref{prop:xaggfeasible} are met if, for a fixed time step \(t\), this ratio is the same for all nodes in the network, and if, during the interval \(T\), the net production at each node is consistently positive or consistently negative. Thus, we state:
+
+\begin{observation}
+  \label{obs:cep_agg_feasible}
+  If for each time step \(t \in T \in \cT\), the ratio of the net energy production at time \(t\) to the net energy production over the interval \(T\) is the same for all nodes in the network, and if, throughout the interval \(T\), the net production at each node is either always positive or always negative, then the aggregated problem is exact.
+\end{observation}
+
+Although this is not generally the case, it suggests an iterative procedure for refining the solution of the aggregated problem. At each iteration, we refine the time partition of the aggregated problem, selecting the time interval to be refined based on the extent to which it violates the conditions of Observation \ref{obs:cep_agg_feasible}. Specifically, we split intervals where the net production changes sign, and those intervals \(T\) in which, for a fixed time step \(t \in T\), the ratio between the net energy production at time \(t\) and the net energy production over the interval \(T\) exhibits the largest variance.
+
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\color{black}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{SCENARIO GENERATION}
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  20 OCT 2024 14:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  20 OCT 2024 17:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -980,46 +980,47 @@ Underfull \hbox (badness 10000) in paragraph at lines 733--733
 
  []
 
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 747.
-(c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
-File: omsptm.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 747.
-
-
-LaTeX Warning: Citation `weibullwind' on page 14 undefined on input line 748.
-
-
-LaTeX Warning: Citation `betaPV' on page 14 undefined on input line 749.
-
-
-LaTeX Warning: Citation `GaussCopula' on page 14 undefined on input line 753.
-
 
 
 [14]
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 767.
+ (c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 767.
+
+
+LaTeX Warning: Citation `weibullwind' on page 15 undefined on input line 768.
+
+
+LaTeX Warning: Citation `betaPV' on page 15 undefined on input line 769.
+
+
+LaTeX Warning: Citation `GaussCopula' on page 15 undefined on input line 773.
+
+
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 817--820
-
- []
-
-
 
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 825--827
+Underfull \hbox (badness 10000) in paragraph at lines 837--840
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 829--830
+Underfull \hbox (badness 10000) in paragraph at lines 845--847
 
  []
 
 
 
 [17]
+Underfull \hbox (badness 10000) in paragraph at lines 849--850
+
+ []
+
+
 
 [18] (./articolo.aux)
  ***********
@@ -1031,21 +1032,21 @@ L3 programming layer <2024-05-27>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `articolo.out' has not changed.
-(rerunfilecheck)             Checksum: 16021587FF1B5A58E34137C71E6B75B8;892.
+(rerunfilecheck)             Checksum: C734CDBA71A8DE589B33608A7D54E917;632.
  ) 
 Here is how much of TeX's memory you used:
- 34139 strings out of 473584
- 782172 string characters out of 5732363
+ 34143 strings out of 473584
+ 782256 string characters out of 5732363
  1946908 words of memory out of 5000000
- 56354 multiletter control sequences out of 15000+600000
+ 56355 multiletter control sequences out of 15000+600000
  599144 words of font info for 130 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,13n,107p,1842b,862s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (18 pages, 189831 bytes).
+Output written on articolo.pdf (18 pages, 192136 bytes).
 PDF statistics:
- 266 PDF objects out of 1000 (max. 8388607)
- 214 compressed objects within 3 object streams
- 70 named destinations out of 1000 (max. 500000)
- 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 272 PDF objects out of 1000 (max. 8388607)
+ 220 compressed objects within 3 object streams
+ 73 named destinations out of 1000 (max. 500000)
+ 53 words of extra memory for PDF output out of 10000 (max. 10000000)
 
