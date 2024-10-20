@@ -74,6 +74,7 @@ grestore
 \usepackage{wrapfig}
 \usepackage{dsfont}
 \usepackage{soul}
+\usepackage[dvipsnames]{xcolor}
 % \usepackage[backend=bibtex,style=alphabetic]{biblatex}
 % \addbibresource{sample.bib}
 
@@ -278,18 +279,18 @@ To tackle this, we propose an approach that aggregates time steps to reduce the 
 definition of CEP, ED problems.}\\
 
 
-The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, \textcolor{red}{curtailment = inefficient, need hydrogen, cite source for hydrogen (eg: EU super investing in it). The stochastic nature of the problem....} making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
+The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, \textcolor{red}{curtailment = inefficient, need hydrogen}, \textcolor{Green}{cite source for hydrogen (eg: EU super investing in it)}. \textcolor{pink}{The stochastic nature of the problem....} making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
 Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \textcolor{green}{\cite{review_math_opt}}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.\\
 \indent In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP) regarding infrastructure investments: solar and wind farms, fuel cells, hydrolizers, grid upgrades to augment Net Transfer Capacity (NTC) and so on. Nested within the CEP is an Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. 
-The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in \textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{red}{other examples?}))\\
+The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in \textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{Green}{other examples?}))\\
 \indent The CEP for investment planning requires to look at long time horizons, and on the other hand intra-day variability in generation \textcolor{pink}{is the main complexity driver} for the ED problem, so the time horizon must be modelled by a large quantity of fairly tight time steps. Furthermore, \textcolor{pink}{spacial structure big, even though we ignore it here and just slam everything into country nodes}. 
 Thus the temporal and spacial characteristics of the model bring the MILP size to increase rapidly. This is especially demanding in the case of SP, since all the variables from the inner ED problem must be reproduced over all scenarios.\\
-\indent To reduce these costs, one possible approach is to use a Rolling Horizon (RH) \textcolor{red}{[explain better]}. The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of \textcolor{pink}{check} serving an isolated area in Chile. \textcolor{red}{other examples of RH used for the ED} A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.\\
+\indent To reduce these costs, one possible approach is to use a Rolling Horizon (RH) \textcolor{red}{[explain better]}. The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of \textcolor{pink}{check} serving an isolated area in Chile. \textcolor{Green}{other examples of RH used for the ED} A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.\\
 \indent A big drawback of the RH approach is that \textcolor{pink}{Problem: it is not optimal. In fact, \cite{INTRO_short-term}. But better reflects actual decision making based on info that is only available progressively, vs perfect foresigh approach.}\\
 \indent Our work aims to build a hybrid model, exploring the use of the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a stand-alone technique.  \textcolor{red}{Explain better}. 
-Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", \textcolor{red}{through a control system that optimizes on day ahead forecasts}.\\
+Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", \textcolor{pink}{through a control system that optimizes on day ahead forecasts}.\\
 \indent The model we optimize on in \textcolor{red}{introduce model: components, aim, use Gurobi...}\\
-\indent Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. This has been previously done \textcolor{red}{here and here and it's not new right?}.\\
+\indent Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. This has been previously done \textcolor{Green}{here and here and it's not new right?}.\\
 
 This paper is organized as follows: \textcolor{red}{HOW?}\\
 
@@ -325,14 +326,14 @@ Each node has its generators, hydrogen storage, fuel cells and hydrolyzers, for 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  VARIABLES  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Decision Variables}
+
+The main variables that are of interest to the policy maker are, for each location $n$, the number of wind turbines and PV panels to install, as well as hydrogen storage capacity.
+Stored hydrogen is considered to be the total of liquid and gas hydrogen to be stored. Our model does not assume a distinction between the two forms, and considers hydrogen to be immediately ready for long-term storage as soon as it is converted from electricity, as well as instantaneously convertible to electricity in fuel cells at need. \textcolor{Green}{For more detailed models of the management of hydrogen see SOURCES}.\\
+\indent Important values to consider when planning the grid are the power capacity and conversion speed of fuel cells and electrolyzers: variables $mhte_n$ and  $meth_n$ indicate for each location the maximum amount of energy that can be converted at a single time step respectively from hydrogen to electricity and vice versa. These values are essential to estimate in order to design a grid that can effectively accommodate peak production and supply during low production periods.\\
+\indent \textcolor{Green}{explain NTC? quote paper} Existing NTC is estimated by \textcolor{Green}{as did the guy in his master thesis, paper on my old computer}. Improvements on the existing capacity for power lines or hydrogen transport infrastructure are considered through variables $addNTC_l$ and $addMH_l$. \textcolor{Green}{cite EU policy to upgrade grid}.\\
+\indent Variables linked to the inner ED problem are indexed by scenario \(j\), time step \(t\), and either node \(n \in \cN\)  or edge $l\in\cE_H$ or $l \in \cE_P$. For the variables pertaining to transmission on an edge, two distinct variables are considered, one for each direction. This way, all variables are set to be non-negative. \textcolor{pink}{This will be relevant for the formulation of the time-aggregated relaxation of the LP problem.}
+
 See Table \ref{table_vars} for the summary of all decision variables.
-\textcolor{gray}{The main variables that are of interest to the policy maker and are explicitly returned in output are the following:
-Stored hydrogen is considered to be the total of liquid and gas hydrogen to be stored. Our model does not assume a distinction between the two forms, and considers hydrogen to be immediately ready for long-term storage as soon as it is converted from electricity, as well as instantaneously convertible to electricity in fuel cells at need.
-To give an indication of how much hydrogen should be kept in gas form at fuel cells, ready to be converted, and how much storage for gas hydrogen should be availlable at electrolyzers to accomodate abundant generation moments, we consider the following decision variables as well (N.B.: they are values \textit{per hour}, to be compared to the time necessary for gas to liquid hydrogen transformation and vice versa):
-To accommodate for possible improvements on capacity of existing power lines or hydrogen transport infrastructure, the following variables are added:
-And parameters for the cost of such new infrastructure have to be given, indexed by edge of the respective graph: $cNTC_l$ and $cMH_l$.\\
-The second stage variables, indexed by scenario \(j\), time step \(t\), and node \(n \in \cN\) are:
-Note: all variables are set to be non-negative.}
 
 
 % For tables use
@@ -348,16 +349,18 @@ Note: all variables are set to be non-negative.}
   $\text{ns}_n$ & - & Number of solar units at node $n \in \cN$ \\
   $\text{nw}_n$ & - & Number of wind units at node $n \in \cN$ \\
   $\text{nh}_n$ & kg & Storage capacity at node $n \in \cN$\\
-  $\text{mhte}_n$ & kg & \parbox[t]{0.70\textwidth}{Maximum hydrogen to electricity capacity, \textcolor{pink}{i.e. the maximum amount of hydrogen that needs to be converted within a 1h time frame into electricity} at node $n \in \cN$} \\
+  $\text{mhte}_n$ & kg & \parbox[t]{0.70\textwidth}{Maximum hydrogen to electricity capacity,  at node $n \in \cN$} \\
   $\text{meth}_n$ & MWh & Maximum electricity to hydrogen capacity at node $n \in \cN$\\
   $\text{addNTC}_l$ & MWh & Additional net transfer capacity on line $l$;\\
   $\text{addMH}_l$ & kg & Additional hydrogen transfer capacity on pipe $l$\\
   \noalign{\smallskip}\hline\noalign{\smallskip}
   $\text{H}_{j,t,n}$ & kg& Stored hydrogen at node $n$, time \(t\), scenario \(j\)\\
   $\text{HtE}_{j,t,n}$ & kg& Hydrogen converted to electricity at time \(t\),scenario \(j\) \\
-  $\text{EtH}_{j,t,n}$ & kg& Electricity converted to hydrogen at time \(t\), scenario \(j\)\\
-  P\_edge$_{j,t,l}$&MWh& Power passing through line $l$ at time $t$, scenario $j$ \\
-  H\_edge$_{j,t,l}$&kg& Hydrogen transported through line $l$ at time $t$, scenario $j$\\
+  $\text{EtH}_{j,t,n}$ & MWh& Electricity converted to hydrogen at time \(t\), scenario \(j\)\\
+  P\_edge$^+_{j,t,l}$&MWh& Power passing through line $l$ at time $t$, scenario $j$ \\
+  P\_edge$^-_{j,t,l}$&MWh& Power passing through line $l$ at time $t$, scenario $j$ \\
+  H\_edge$^+_{j,t,l}$&kg& Hydrogen transported through line $l$ at time $t$, scenario $j$\\
+  H\_edge$^-_{j,t,l}$&kg& Hydrogen transported through line $l$ at time $t$, scenario $j$\\
   \noalign{\smallskip}\hline
   \end{tabularx}
   \end{table}
@@ -410,7 +413,7 @@ Lastly the following parameters are indexed by edge of the respective graph:
 \begin{table}
   % table caption is above the table
 \caption{Model parameters}
-  \label{table_vars}       % Give a unique label
+  \label{table_param}       % Give a unique label
   % For LaTeX tables use
 \begin{tabularx}{\textwidth}{ccl}
   \hline\noalign{\smallskip}
@@ -504,13 +507,13 @@ Finally, edge capacities on the respective graphs are considered for all scenari
 The time horizon generated by the scenarios has a time resolution where each time step has a length of one hour. Each value represents the total power (hydrogen) production or demand in the corresponding hour at the node. The smaller the length of each time step, the more accurate the results. However, the number of variables and constraints grows linearly with the number of time steps, making the model intractable (especially in the context of an application) with just a few scenarios.
 
 Moreover, considering every hour in each day of the year is partly redundant, as each day will be similar to neighboring days. Yet, simply considering a sample of days for each season might undermine long-term storage capacity representation. 
-
+\textbf{
 Given an initial time horizon \(\cT = \{1, \ldots, T\}\), we can consider partitions of \(\cT\) as a family of disjoint subsets whose union is \(\cT\). We only consider those partitions where every subset is an interval of \(\cT\). We refer to these as time partitions. Given a time partition \(P\), we can consider the corresponding model obtained by considering each interval in \(P\) as a single time step. For every \(I\) in \(P\), we define:
 \[
 ES_{j,I,n} \coloneqq \sum_{i \in I} ES_{j,i,n}, \quad EW_{j,I,n} \coloneqq \sum_{i \in I} EW_{j,i,n}
 \]
 and similarly for \(HL_{j,I,n}\) and \(HR_{j,I,n}\). We denote the model obtained by the time partition \(P\) as \(CEP_P\).
-
+}
 It is evident that the optimal value of \(CEP_P\) is a lower bound for the original problem \(CEP_{\cT}\), as given a feasible solution \((ns, nw, nh, mhte, meth, H, HtE, EtH, Pedge, Hedge)\) of the latter, we can obtain a solution of the former by taking \((ns, nw, nh, mhte, meth)\) the same as in \(CEP_{\cT}\) and:
 \[
 Pedge_{j,I,e} = \sum_{i \in I} Pedge_{j,i,e}, \quad Hedge_{j,I,e} = \sum_{i \in I} Hedge_{j,i,e}
@@ -593,8 +596,11 @@ Usiamo entrambe le ipotesi aggiuntive più avanti, la prima ci dice che se mandi
 Where if \(F\) is a family of sets we denote as \(F_{=k}, F_{>k}\) respectively the sets of \(F\) with size equal to \(k\) and greater than \(k\).
 In particular \(\supp(\tilde{A}_R)_{>1} \subset \colP\) is the set of indices corresponding to sets \(R \in \colP\) of size greater than 1. And \(\supp(A_r)_{>1}\) is the set of indices such that \(r \in R \in \colP\) with \(R\) of size greater than 1.
 This implies that the coefficients of the aggregated variables in the aggregated problem match those in the original problem for the corresponding unaggregated variables, \(f^r\) can be seen as a function mapping the aggregated variables to variables of the same "type" in the unaggregated constraint.
- While obtaining a feasible solution to \eqref{eq:LP} from \eqref{eq:LPaggr} is not always guaranteed, it is possible under certain assumptions.
-Here, if \(B\) is a matrix having \(I,J\) as set of indexes for the rows and columns respctively, then, for all \(I' \subset I\) and \(J' \subset J\), we denote with \(B_{I',J'}\) the submatrix of \(B\) havins rows in \(I'\) and columns in \(J'\).
+ 
+
+
+\textbf{While obtaining a feasible solution to \eqref{eq:LP} from \eqref{eq:LPaggr} is not always guaranteed, it is possible under certain assumptions.}
+\textcolor{red}{when can we warm start?} Here, if \(B\) is a matrix having \(I,J\) as set of indexes for the rows and columns respctively, then, for all \(I' \subset I\) and \(J' \subset J\), we denote with \(B_{I',J'}\) the submatrix of \(B\) havins rows in \(I'\) and columns in \(J'\).
 \begin{observation}
 \label{ob:aggrconstr}
 If \((\rowP, \colP)\) is a structure-preserving aggregation, let \(R \in \rowP\) and \(r \in R\). Let \(\tilde{x}\) be a solution to the aggregated problem \eqref{eq:LPaggr}. If \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\), define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_r
@@ -762,8 +768,33 @@ Although this is not generally the case, it suggests an iterative procedure for 
 
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+\section{COMPUTATIONAL RESULTS}
+\subsection{SINGLE NODE NETWORK}
+First, an electrical grid with a single node is considered (corresponding ideally to an area with uniform
+weather conditions, highly connected at low cost). A first section will consider realistic parameter
+combinations and describe the results given by the solver, conducting a parameter sensitivity analysis. A
+second section will describe a validation function that checks the results of the capacity expansion
+problem for feasibility on new scenarios. Concurrently, a cost function is designed to give more realistic
+cost estimates compared to the optimal value given by the solver.
+\subsection{MULTIPLE NODE NETWORK}
+Results are computed for a multiple node network, with additional edge variables and parameters. When
+considering a network with more than a single node, computational costs increase rapidly. Thus in the
+first section, a small analysis is carried out to determine acceptable time steps on which time dependent
+data can be aggregated (the gathered data is usually on hourly steps) while maintaining the quality of the
+solution. Some examples are then considered, and the network dynamics that arise with the introduction
+of edge variables are described. A mixed approach is then used to design a validation function that can
+deal with the complexity arising from the introduction of the network structure in the model.
+\section{CONCLUSIONS}
+
+
+
+
+
+\color{black}
+
+\section{APPENDIX}
 \subsection{SCENARIO GENERATION}
 
 To estimate the optimal capacities for the CEP through a stochastic approach, realistic and diverse weather scenarios are needed, so to capture the variability and uncertainty of power generation through renewable sources over extended periods. 
@@ -854,29 +885,6 @@ Finally, we can generate samples from a Multivariate Gaussian random variable \(
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
-
-
-}
-\section{COMPUTATIONAL RESULTS}
-\subsection{SINGLE NODE NETWORK}
-First, an electrical grid with a single node is considered (corresponding ideally to an area with uniform
-weather conditions, highly connected at low cost). A first section will consider realistic parameter
-combinations and describe the results given by the solver, conducting a parameter sensitivity analysis. A
-second section will describe a validation function that checks the results of the capacity expansion
-problem for feasibility on new scenarios. Concurrently, a cost function is designed to give more realistic
-cost estimates compared to the optimal value given by the solver.
-\subsection{MULTIPLE NODE NETWORK}
-Results are computed for a multiple node network, with additional edge variables and parameters. When
-considering a network with more than a single node, computational costs increase rapidly. Thus in the
-first section, a small analysis is carried out to determine acceptable time steps on which time dependent
-data can be aggregated (the gathered data is usually on hourly steps) while maintaining the quality of the
-solution. Some examples are then considered, and the network dynamics that arise with the introduction
-of edge variables are described. A mixed approach is then used to design a validation function that can
-deal with the complexity arising from the introduction of the network structure in the model.
-\section{CONCLUSIONS}
 
 %\begin{acknowledgements}
 %If you'd like to thank anyone, place your comments here

@@ -108,7 +108,7 @@ def Validate(network,VARS,scenarios):
     
     # new variables for loss function
     loss = 0.1
-    delta_H = model.addVars(product(range(d),range(inst),range(Nnodes)),obj = loss,lb=-GRB.INFINITY)
+    delta_H = model.addVars(product(range(d),range(inst),range(Nnodes)),obj = loss)#,lb=-GRB.INFINITY)
     
     # starting hydrogen levels
     values = np.zeros([d,1,len(network.n.index.to_list())])
@@ -258,8 +258,8 @@ def Validate_mhte(network,VARS,scenarios,free_mhte=True):
     
     #todo: add starting capacity for generators (the same as for liners)
     model.addConstrs( H[j,i,k] <= nh[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
-    model.addConstrs( EtH[j,i,k] <= meth[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
-    model.addConstrs( HtE[j,i,k] <= mhte[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
+    # model.addConstrs( EtH[j,i,k] <= meth[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
+    # model.addConstrs( HtE[j,i,k] <= mhte[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
     model.addConstrs( P_edge_pos[j,i,k] - P_edge_neg[j,i,k] <= (network.edgesP['NTC'].iloc[k] + addNTC[k]) for i in range(inst) for j in range(d) for k in range(NEedges))
     model.addConstrs( H_edge_pos[j,i,k] - H_edge_neg[j,i,k] <= (network.edgesH['MH'].iloc[k] + addMH[k]) for i in range(inst) for j in range(d) for k in range(NHedges))
     model.addConstrs( P_edge_pos[j,i,k] - P_edge_neg[j,i,k] >= -(network.edgesP['NTC'].iloc[k] + addNTC[k]) for i in range(inst) for j in range(d) for k in range(NEedges))
@@ -292,6 +292,7 @@ def Validate_mhte(network,VARS,scenarios,free_mhte=True):
    
     day_num = 0
     MHTE=mhte
+    METH=meth
     # start iterating
     for day in pd.date_range('Jan 01 2023','Dec 31 2023',freq='d'):
         
@@ -362,9 +363,11 @@ def Validate_mhte(network,VARS,scenarios,free_mhte=True):
         else:
             
             max_mhte=max([max([max([HtE[j,i,k].X for i in range(inst)]) for j in range(d)]) for k in range(Nnodes)])
+            max_meth=max([max([max([EtH[j,i,k].X for i in range(inst)]) for j in range(d)]) for k in range(Nnodes)])
             if MHTE<max_mhte:
                 MHTE=max_mhte
-            
+            if METH<max_meth:
+                METH=max_meth
             values = np.zeros([d,inst,len(network.n.index.to_list())])
             for key in H:
                 values[key]=H[key].X
@@ -374,13 +377,7 @@ def Validate_mhte(network,VARS,scenarios,free_mhte=True):
                                  coords = dict(zip(["scenario","time","node"],[range(d),pd.date_range(day,freq='h',periods=inst),network.n.index.to_list()])))
             Hs = xr.concat([Hs,Hss],dim='time')
             print('opt time: ',np.round(time.time()-start_time,4),'s. Day: ',str(day))
-    return Hs, MHTE
-    
-    
-    
-            
-        
-    
+    return Hs, MHTE,METH
 
 
 # %% trials
@@ -389,6 +386,8 @@ eu=EU()
 VARS=OPT_agg_correct(eu)
 
 #%%
+scen = import_scenario_val(1,10)
+
 #%%
 scenarios = import_scenario_val(6,20)
 
