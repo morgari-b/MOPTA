@@ -252,25 +252,21 @@ grestore
 \maketitle
 
 \begin{abstract}
-\textcolor{violet}{
-  In recent years, the integration of renewable energy sources into electrical grids has become a
-   critical area of research due to the increasing need for sustainable
-  and resilient energy systems.  To adress the
-   variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
-   This significanlty increases the size of the resulting Linear Problem (LP), making them computationally challenging for large scale grids.
-  To tackle this, we propose an approach that aggregates time steps to reduce the problem size, 
-  followed by an iterative refinement of the aggregation. We provide sufficient conditions under which
-   the aggregated problem is equivalent to the original, unaggregated one, and refine the time intervals
-    that do not meet these conditions.\textbf{write better:Additionally, we introduce a validation function to assess the feasibility of the aggregated solutions.
-Our method is tested on a fully renewable energy grid with hydrogen storage.}
+In recent years, the integration of renewable energy sources into electrical grids has become a
+critical area of research due to the increasing need for sustainable
+and resilient energy systems.  To adress the variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
+This significanlty increases the size of the resulting Linear Problem (LP), making them computationally challenging for large scale grids.
+To tackle this, we propose an approach that aggregates time steps to reduce the problem size, followed by an iterative refinement of the aggregation. 
+\textcolor{violet}{We provide sufficient conditions under which the aggregated problem is equivalent to the original, unaggregated one, and refine the time intervals that do not meet these conditions.
+\textbf{write better:Additionally, we introduce a validation function to assess the feasibility of the aggregated solutions. Our method is tested on a fully renewable energy grid with hydrogen storage.}
  We generate scenarios for wind and photovoltaic (PV) power output using scenario generation techniques that capture temporal dependencies. 
  These dependencies are modeled with marginal distributions coupled with a Gaussian copula, ensuring that the generated scenarios reflect realistic 
  temporal correlations observed in historical data.}
 %Insert your abstract here. Include keywords, PACS and mathematical
 %subject classification numbers as needed.
-\keywords{First keyword \and Second keyword \and More}
+\keywords{\textcolor{red}{First keyword \and Second keyword \and need 4-6}}
 % \PACS{PACS code1 \and PACS code2 \and more}
-\subclass{MSC code1 \and MSC code2 \and more}
+\subclass{90-10 \and 90B15 }
 \end{abstract}
 
 \newpage
@@ -280,137 +276,38 @@ Our method is tested on a fully renewable energy grid with hydrogen storage.}
 definition of CEP, ED problems.}\\
 
 
-\begin{enumerate}
-  \item 100 parole contesto sociale (è importante perché...): cita: qualche report/programma dell'UE.
-  \item literature review: $\sim$ 10 articoli
-  \begin{itemize}
-    \item robust vs stochastic optimization, cite something
-    \item time aggregation: cite \{\textbf{???}\} for theory?
-    \item validation function is dealt with RH: cite\{Glomb\} for quality guarantees, cite \{Palma-Behnke\} for microgrid ED planning, maybe someone else
-    \item scenario generation: cite sources down
-  \end{itemize} 
-  \item cosa facciamo noi di speciale? 150 parole: We want to solve CEP to build grid that can be operated as smart with rolling horizon. Often used robust approach because computationally easier, we want to use stochastic.
-  \item how is this paper organized?
-\end{enumerate}
+The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, \textcolor{red}{curtailment = inefficient, need hydrogen, cite source for hydrogen (eg: EU super investing in it). The stochastic nature of the problem....} making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
+Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \textcolor{green}{\cite{review_math_opt}}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.\\
+\indent In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP) regarding infrastructure investments: solar and wind farms, fuel cells, hydrolizers, grid upgrades to augment Net Transfer Capacity (NTC) and so on. Nested within the CEP is an Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. 
+The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in \textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{red}{other examples?}))\\
+\indent The CEP for investment planning requires to look at long time horizons, and on the other hand intra-day variability in generation \textcolor{pink}{is the main complexity driver} for the ED problem, so the time horizon must be modelled by a large quantity of fairly tight time steps. Furthermore, \textcolor{pink}{spacial structure big, even though we ignore it here and just slam everything into country nodes}. 
+Thus the temporal and spacial characteristics of the model bring the MILP size to increase rapidly. This is especially demanding in the case of SP, since all the variables from the inner ED problem must be reproduced over all scenarios.\\
+\indent To reduce these costs, one possible approach is to use a Rolling Horizon (RH) \textcolor{red}{[explain better]}. The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of \textcolor{pink}{check} serving an isolated area in Chile. \textcolor{red}{other examples of RH used for the ED} A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.\\
+\indent A big drawback of the RH approach is that \textcolor{pink}{Problem: it is not optimal. In fact, \cite{INTRO_short-term}. But better reflects actual decision making based on info that is only available progressively, vs perfect foresigh approach.}\\
+\indent Our work aims to build a hybrid model, exploring the use of the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a stand-alone technique.  \textcolor{red}{Explain better}. 
+Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", \textcolor{red}{through a control system that optimizes on day ahead forecasts}.\\
+\indent The model we optimize on in \textcolor{red}{introduce model: components, aim, use Gurobi...}\\
+\indent Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. This has been previously done \textcolor{red}{here and here and it's not new right?}.\\
+
+This paper is organized as follows: \textcolor{red}{HOW?}\\
+
+%\textbf{OLD:}
+%\textcolor{gray}{
+%The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience of the grids \cite{EU_context}. The model presented in this report explores the possibility of an electrical grid powered entirely through wind and photovoltaic (PV) systems, and supported by hydrogen storage.
+%It is of interest to estimate the power generation capacity for both wind and solar, as well as the hydrogen storage and conversion capacities, that would be necessary in order to power a reliable grid supplying residential electricity load and industrial base load of both electricity and hydrogen for a given area, while minimizing the cost of implementing such infrastructure.
+%The main difficulties arising when designing such a system lie in the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
+%The scenario generation step is followed by an optimization process. The model, as described in section \ref{section: model}, takes in input the generation and load scenarios of the selected countries along with various parameters indicating costs and efficiency of the current state of technology and possible upper bounds for the decision variables, and returns the optimized capacity that is necessary to meet demand throughout a one year span, with minimal cost. The optimization problem is solved using the Gurobi solver.
+%When optimizing over multiple scenarios jointly, the solver returns the minimal amount of infrastructure and capacities that is needed to have feasibility (that is, demand met at all time - no blackouts) over all scenarios in input, with minimal average cost over the scenarios.
+%When considering a network with more than a single node, computational costs increase rapidly. Thus a small analysis is carried out to determine acceptable time steps on which time dependent data can be aggregated (the gathered data is usually on hourly steps) while maintaining the quality of the solution. 
+%Results are then evaluated for a single node network and for more complex networks based in the European Union, for which the necessary data was publicly available. Appropriate validation functions are discussed to check feasibility over new scenarios, along with cost functions that give more realistic cost estimates compared to the optimal value given by the solver.
+%}
 
 
-The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \cite{EU_context}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
-Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \cite{review_math_opt}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.
-
-\textcolor{pink}{
-In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP), regarding infrastructure investments ... with a nested Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. Can be solved through mixed integer linear programming (MILP) ((examples: isolated case study MILP \cite{INTRO_isolated_MIP}))
-The computational costs are high because -- requires to look at long time horizons modeled in short time frames. -- especially demanding for SP since multiple scenarios.
-To reduce these costs, one possible approach is to use a Rolling Horizon (RH) [explain better]. The basic technique is described in \cite{INTRO_Glomb}, along with some results regarding quality guarantees for the optimality of the solution. In \cite{INTRO_Palma-Behnke}, a rolling horizon approach is used within a RO model to --Chile. is it relevant?-- A similar idea is applied in \cite{INTRO_karlsruhe}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.
-Problem: it is not optimal. In fact, \cite{INTRO_short-term}. But better reflects actual decision making based on info that is only available progressively, vs perfect foresigh approach.}
 
 
-
-\textbf{OLD:}
-\textcolor{gray}{
-The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience of the grids \cite{EU_context}. The model presented in this report explores the possibility of an electrical grid powered entirely through wind and photovoltaic (PV) systems, and supported by hydrogen storage.
-It is of interest to estimate the power generation capacity for both wind and solar, as well as the hydrogen storage and conversion capacities, that would be necessary in order to power a reliable grid supplying residential electricity load and industrial base load of both electricity and hydrogen for a given area, while minimizing the cost of implementing such infrastructure.
-The main difficulties arising when designing such a system lie in the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
-A first step for estimating the optimal capacities is thus to have realistic scenarios on which to evaluate our model.}
-\textcolor{gray}{
-To generate the scenarios for wind and solar power generation we sampled from a joint probability density function (PDF) that was fit on historical data. The construction of the PDF for wind and solar is explained in detail in subsections \ref{subsection: weib estim} and \ref{subsection: beta estim} respectively. 
-  In this simple model, while fitting on historical data we did not account for possible changes in future climate.\\
-On the other hand, electricity load is taken from the \\href{https://www.entsoe.eu/data/power-stats/}{ENTSO-E Statistical Reports}. We normalised the 2023 data by country to indicate the trend of load throughout the year, dividing by mean hourly load: \textcolor{green}{this is then to be multiplied by the mean load of the area the policy maker is interested in serving with the modeled grid.}
-The scenario generation step is followed by an optimization process. The model, as described in section \ref{section: model}, takes in input the generation and load scenarios of the selected countries along with various parameters indicating costs and efficiency of the current state of technology and possible upper bounds for the decision variables, and returns the optimized capacity that is necessary to meet demand throughout a one year span, with minimal cost. The optimization problem is solved using the Gurobi solver.
-When optimizing over multiple scenarios jointly, the solver returns the minimal amount of infrastructure and capacities that is needed to have feasibility (that is, demand met at all time - no blackouts) over all scenarios in input, with minimal average cost over the scenarios.
-When considering a network with more than a single node, computational costs increase rapidly. Thus a small analysis is carried out to determine acceptable time steps on which time dependent data can be aggregated (the gathered data is usually on hourly steps) while maintaining the quality of the solution. 
-Results are then evaluated for a single node network and for more complex networks based in the European Union, for which the necessary data was publicly available. Appropriate validation functions are discussed to check feasibility over new scenarios, along with cost functions that give more realistic cost estimates compared to the optimal value given by the solver.
-}
 \section{MODEL}
 
-\subsection{SCENARIO GENERATION}
-\textbf{To estimate the optimal capacities through a stochastic approach, realistic weather scenarios (and thus
-generation scenarios) are needed. To generate the scenarios for wind and solar power generation, samples
-are extracted from a joint probability density function (PDF) that was fit on historical data. The
-construction of the joint PDF for wind and solar is done through a Gaussian Copula approach.
-A first section will explain the theory behind this approach, and a second section will show the
-application in the case of weather conditions in European countries. Weibull distributions are used as
-marginals to model wind, and beta distributions for solar power.}\\
-
-
-Wind and solar power are inherently intermittent and uncertain, posing a challenge to their successful integration into the energy system. Hydrogen storage and other forms of energy storage offer potential solutions to mitigate these issues. However, the amount of long-term storage required in a fully renewable grid is heavily influenced by the stochastic behavior of wind and solar power. Moreover, historical data typically covers only a limited number of climate years, which restricts the ability to test the grid over long time horizons encompassing various climatic conditions. To address this limitation, we adopted a scenario generation (SG) method based on historical data of each of the European countries considered, allowing us to create realistic and diverse scenarios that better capture the variability and uncertainty of renewable energy sources over extended periods. 
-
-To model the probability distribution corresponding to the power output of wind turbines for each hour of the year, we utilized a Weibull distribution, justified by its proven effectiveness in capturing the variability and skewness of wind power distributions [\cite{weibullwind}]. For solar power, a Beta distribution was employed in [\cite{betaPV}]. \textcolor{yellow}{controllare che siamo coerenti con tutte le cose che citiamo} To account for interdependence between temporally near time steps, we coupled these distributions using a Gaussian Copula approach, which captures the dependencies between hourly power outputs effectively. This approach accurately mimics common weather phenomena. \\
-
-\subsubsection{Stochastic Processes description}
-The stochastic processes of power observations will be denoted as \(Y_t\). Where \(t \in T\), is the set indexing all the random variables which want to be considered jointly.
-We assume that the random variable \(Y_t\) has either a Weibull distribution, in the case of Wind Power, or a Beta distribution in the case of Solar Power. 
-
-\subsubsection{Parametric Estimation of Wind Power distribution}
-\label{subsection: weib estim}
-The parameters defining the Weibull Distribution are estimated using the Maximum Likelyhood Estimation. The Weibull density function is given by:
-\[
-f(x; \theta, \gamma) = \left(\frac{\gamma}{\theta}\right)x^{\gamma-1}\exp\left(-\left(\frac{x}{\theta}\right)^\gamma\right)
-\]
-
-where \(\theta, \gamma > 0\) are the scale and shape parameters, respectively. Given observations \(X_1, \ldots, X_n\), the log-likelihood function is:
-
-\[
-\log L(\theta, \gamma) = \sum_{i=1}^n \log f(X_i \mid \theta, \gamma)
-\]
-
-The optimum solution is found by searching for the parameters for which the gradient is zero :
-
-\begin{equation}
-\frac{\partial \log L}{\partial \theta} = -\frac{n \gamma}{\theta} + \frac{\gamma}{\theta^2} \sum_{i=1}^{n} x_i^\gamma = 0
-\end{equation}
-
-Eliminating $\theta$, we get:
-
-\begin{equation}
-\left[ \frac{\sum_{i=1}^{n} x_i^\gamma \log x_i}{\sum_{i=1}^{n} x_i^\gamma} - \frac{1}{\gamma} \right] = \frac{1}{n} \sum_{i=1}^{n} \log x_i
-\end{equation}
-
-This can be solved to get the MLE estimate $\hat{\gamma}$. This can be accomplished with the aid of standard iterative procedures such as the Newton-Raphson method or other numerical procedures. This is done with the aid of the package \emph{scipy}. Once $\hat{\gamma}$ is found, $\hat{\theta}$ can be determined in terms of $\hat{\gamma}$ as:
-
-\begin{equation}
-\hat{\theta} = \left( \frac{1}{n} \sum_{i=1}^{n} x_i^{\hat{\gamma}} \right)^{\frac{1}{\hat{\gamma}}}
-\end{equation}
-
-\subsubsection{Parametric Estimation of Solar Power distribution}
-\label{subsection: beta estim}
-To estimate the \(\alpha\) and \(\beta\) parameters defining the Beta distribution \(Y\), we use the \emph{Method of Moments}.
-The mean of the random variable \(Y\) can be expressed as \(\E\left[ Y\right] = \frac{\alpha}{\alpha + \beta} \) and the variance as \(\var [Y]= \frac{\alpha + \beta}{(\alpha + \beta)(\alpha + \beta + 1)}\). In particular by explicating \(\beta\) in the first equation and substituting it in the second equation we obtain that:
-\begin{equation}
-\begin{cases}
-\alpha = \mathbb{E}[X] \left( \frac{\mathbb{E}[X](1 - \mathbb{E}[X])}{\mathrm{Var}[X]} - 1 \right) \\
-\beta = (1 - \mathbb{E}[X]) \left( \frac{\mathbb{E}[X](1 - \mathbb{E}[X])}{\mathrm{Var}[X]} - 1 \right)
-\end{cases}
-\end{equation}
-By substituting the mean and the variance with their empirical approximation we obtain the method of moments estimator for \(\alpha\) and \(\beta\).
-
-\subsubsection{Parametric Copula Estimation}
-The cumulative density function of both the Weibull and Beta distributions are continuous and invertible. Therefore, the random variables \( U_t \coloneqq F_{Y_t}(Y_t) \) have a uniform distribution over \([0,1]\). The copula of the random variables \(\{Y_t\}_{t \in T}\) is defined as the function \(C: [0,1]^T \to [0,1]\) such that 
-\begin{equation}
-C(F_{Y_1}(y_1), \ldots, F_{Y_T}(y_{|T|})) = P(Y_1 \leq y_1, \ldots, Y_{|T|} \leq y_{|T|}).
-\end{equation}
-This function always exists because of Sklar's Theorem. The Gaussian Copula represents well the coupled behavior in renewable stochastic systems [\cite{GaussCopula}] and is the one used in this project. For a given correlation matrix \(\Sigma\), the Gaussian Copula with parameter matrix \(\Sigma\) is defined as \(\CG(u_1,\ldots,u_{T}) \coloneqq \Phi_{\Sigma}(\Phi^{-1}(u_1),\ldots, \Phi^{-1}(u_T))\). Where \(\Phi,\; \Phi_{\Sigma}\) are the cdf Gaussian variables having distribution \(\mathcal{N}(0,1)\) and \( \mathcal{N}(0,\Sigma)\) respectively. In particular if \(\CG\) is the copula associated the random variables \(\{Y_t\}_{t \in T}\) then we have that the random variables \(Z_t = \Phi^{-1}(F_{Y_t}(Y_t) = \Phi^{-1}(U_t)\) have joint distribution equal to \(\mathcal{N}(0, \Sigma)\). This follows from: \\
-\begin{align*}
-P(Z_1 \leq z_1, \ldots, Z_T \leq z_t) &= P(\Phi^{-1}(U_1) \leq z_1, \ldots, \Phi^{-1}(U_T) \leq z_T) \\
-&= P(U_1 \leq \Phi(z_1), \ldots, U_T \leq \Phi(z_T)) \\
-&= \CG(\Phi(z_1), \ldots, \Phi(z_t)) \\
-&= \Phi_{\Sigma}(z_1, \ldots, z_T)
-\end{align*}
-In particular, given the realization \(\{y_{t,j}\}_{t \in t, j \in J}\) of the variables \(\{Y_t\}_{t \in T}\), an unbiased estimation of the parameter matrix \(\Sigma\) is the empirical covariance matrix \(\hat \Sigma\) of the samples \(\{\Phi^{-1}(\hat{F}_{Y_t}(y_{t,j})\}_{t\in T, j \in J}\), where \(\hat{F}_{Y_t}\) is the estimated marginal distribution of the variable \(Y_t\) as seen in subsection \ref{subsection: weib estim} and subsection \ref{subsection: beta estim}.\\
-
-
-Finally, we can generate samples from a Multivariate Gaussian random variable \((Z_{t}, t \in T)\) having distribution \(\mathcal{N}(0, \hat \Sigma)\).  Then the power output scenarios are obtained from these samples by following the previous steps backwards, that is, for each sample, computing \(\hat F_{t}^{-1}(\Phi(Z_{t}))\) for all \(t\in T\). \\
-
-\subsubsection{Generation}
-In our project, we used an hourly time step (T=\{1...8760\}) and fit the wind and solar distributions \st{separately (thus limiting the computational costs)}jointly (\textcolor{red}{TO DO}). To fit our model, we used a dataset containing 30 years of data for various European countries, which was collected by [\cite{PVDataSet}]. 
-For more complex versions of the model, where we considered multiple nodes at the same time, we fit (\textcolor{red}{TO DO}) a joint distribution considering the involved countries, capturing typical correlations of the \textcolor{red}{Northern Atlantic Oscillation... TO DO (image)} 
-
-We observed that the bottleneck of the Scenario Generation algorithm is the Singular Value Decomposition (SVD) of the covariance matrix \(\hat{\Sigma}\). Consequently, the computation time changes marginally with the number of generated scenarios \(d\). Thus, in the GUI, we stored the pre-computed SVD matrices for the European countries we worked with (individually), giving the option to rapidly generate a desired amount of scenarios for those countries. \textcolor{green}{We also give the option to fit new distributions for other areas by inputting one's own historical data, but we would advise doing so on larger time steps to limit the computational time. }
-% To reproduce the results simply start the GUI as explained in README.md, insert the number of scenarios to be generated and click on the \emph{generate scenarios} button. 
-% Furthermore, the functions found in \emph{scenario_generation.py} can be used to model your own power production distribution on a saved dataset.
-
-A possible extension could be to also include load scenarios jointly with the generation scenarios through the same approach. This would consider dependence between Energy Demand and weather conditions, but it would necessitate of the historical dataset provided for the corresponding grid, and would also further increase computational costs.
-%\textcolor{black}
-\subsection{LP OPTIMIZATION}
+\subsection{LP FORMULATION}
 
 \textbf{The scenario generation step is followed by an optimization process. The model takes in input the
 generation and load scenarios of a given area along with various parameters indicating costs and
@@ -420,6 +317,181 @@ cost. The optimization problem is solved using the Gurobi solver. When optimizin
 scenarios jointly, the solver returns the minimal amount of infrastructure and capacities that is needed to
 have feasibility (that is, demand met at all time - no blackouts) over all scenarios in input, with minimal
 average cost over the scenarios.}\\
+
+
+Our model describes a network in Europe that is to be powered and supplied of hydrogen trough power generated 
+by photovoltaic panels and wind turbines, converted to hydrogen through electrolysis and potentially 
+reconverted in fuel cells. It describes the handling of hydrogen throughout a one year time span, with
+ one hour time steps, in order to meet demand.
+
+The network is represented by an undirected multigraph \(\cG = (\cN, \cE)\), where \(\cN\) corresponds to the
+ nodes in the network, and \(\cE = \cE_H \cup \cE_P\) represents transmission lines (\(e \in \cE_P\)) and
+  hydrogen lines (\(e \in \cE_H\)). Each of these nodes can be in different countries in Europe, and the power
+   generated by wind and solar power depends on the node location. In particular, if node \(n \in \cN\) is in
+    France, the scenarios for power generation at \(n\) will be generated using parameters fitted to France's 
+    data.
+
+The operation of the Electric Grid is modeled as a two-stage stochastic program. In the first stage,
+the capacity expansion of each generator, hydrogen storage, transmission line, and hydrogen pipe is
+decided. In the second stage, the economic dispatch is solved for each scenario.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  VARIABLES  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Decision Variables}
+The main variables that are of interest to the policy maker and are explicitly returned in output are the following:
+\begin{align*}
+    \text{ns}_n & : \text{Number of solar units (integer) at node } n \in \cN; \\
+    \text{nw}_n & : \text{Number of wind units (integer) at node } n \in \cN; \\
+    \text{nh}_n & : \text{Storage capacity (kg) (continuous) at node } n \in \cN;
+\end{align*}
+Stored hydrogen is considered to be the total of liquid and gas hydrogen to be stored. Our model does not assume a distinction between the two forms, and considers hydrogen to be immediately ready for long-term storage as soon as it is converted from electricity, as well as instantaneously convertible to electricity in fuel cells at need.
+
+To give an indication of how much hydrogen should be kept in gas form at fuel cells, ready to be converted, and how much storage for gas hydrogen should be availlable at electrolyzers to accomodate abundant generation moments, we consider the following decision variables as well (N.B.: they are values \textit{per hour}, to be compared to the time necessary for gas to liquid hydrogen transformation and vice versa):
+\begin{align*}
+    \text{mhte}_n & : \parbox[t]{0.70\textwidth}{
+    Maximum hydrogen to electricity capacity (Kg) (continuous), i.e. the maximum amount of hydrogen that needs to be converted within a 1h time frame into electricity at node} n \in \cN; \\
+    \text{meth}_n & : \parbox[t]{0.70\textwidth}{Maximum electricity to hydrogen capacity (MWh) (continuous) at node} n \in \cN;
+\end{align*}
+
+To accommodate for possible improvements on capacity of existing power lines or hydrogen transport infrastructure, the following variables are added:
+\begin{align*}
+    \text{addNTC}_l & : \text{additional net transfer capacity on line $l$;}\\
+    \text{addMH}_l & : \text{additional hydrogen transfer capacity on pipe $l$}.
+\end{align*}
+And parameters for the cost of such new infrastructure have to be given, indexed by edge of the respective graph: $cNTC_l$ and $cMH_l$.\\
+
+
+The second stage variables, indexed by scenario \(j\), time step \(t\), and node \(n \in \cN\) are:
+\begin{align*}
+    \text{H}_{j,t,n} & : \text{Stored hydrogen at time \(t\), scenario \(j\) and node \(n\) (kg) (continuous)};\\
+    \text{HtE}_{j,t,n} & : \text{Hydrogen converted to electricity at time \(t\),scenario \(j\) (kg) (continuous);} \\
+    \text{EtH}_{j,t,n} & : \text{Electricity converted to hydrogen at time \(t\), scenario \(j\) (MWh) (continuous);}
+\end{align*}
+Note: all variables are set to be non-negative.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  PARAMETERS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Parameters} \label{subsection: Parameters}
+
+There are a series of parameters that characterize the model and can be modified by the policy maker through the GUI. The main ones are related to capital costs of the infrastructure to be built:
+\begin{align*}
+    \text{cs}_n & : \text{Cost of one Solar Panel (\euro);} \\
+    \text{cw}_n & : \text{Cost of one Wind Turbine (\euro)}; 
+\end{align*} % Ciao Bia <3
+If not specified through the GUI, the following values are assumed for panels and turbines: cs = 400\euro, cw = 3 000 000\euro. In this model we assume no marginal costs for PV and wind power production: the operating costs of the farms throughout their life-cycle can be factored into the capital costs, and there is no additional cost linked to the production itself. 
+We assume the flow of electricity has no marginal cost nor power loss (the modelling of that problem is beyond the scope of this project). Conversely, we do set a cost for the use of hydrogen pipes (or other means of transfer):
+\[
+\text{cH\_edge}_l\ :\ \text{Cost of transferring 1kg of hydrogen through edge $l$}.
+\]
+
+
+Conversely, the marginal costs of conversion within electrolyzers and power cells are relevant. Thus one can set the following parameters:
+\begin{align*}
+    \text{chte} & : \text{Conversion cost of 1 kg of hydrogen to electricity (\euro/kg);} \\
+    \text{ceth} & : \text{Conversion cost of 1 MWh of electricity to hydrogen (\euro/MWh).}
+\end{align*}
+According to the European Hydrogen Market Landcape November 2023 Report  \cite{European_H2_Market_landscape},
+ ``Hydrogen production costs via electrolysis with a direct connection to a 
+ renewable energy source in Europe vary from 4.18 to 9.60 €/kg H2 of hydrogen, with the average
+  for all countries being 6.86 €/kg H2''. For electrolyzers, we consider the Levelised cost of hydrogen (LCOH)
+   to account for both marginal costs and capital costs. Such cost is dependent on the country's specific market
+    condition and can be calculated through the \href{https://observatory.clean-hydrogen.europa.eu/tools-reports/levelised-cost-hydrogen-calculator}{European Hydrogen Observator tool}. Unless specified through the GUI, $ceth$ = 20kg/MWh*10\euro/kg=200\euro/MWh is assumed (see the discussion on conversion efficiency below), and $chte$ is assumed to be 2\euro/kg. 
+Furthermore, the storage of the hydrogen itself has a cost that depends on various factors: capital cost of the technology used for storage, operating costs, length of time that the hydrogen is kept in storage. Thus the following parameters can be set:
+\begin{align*}
+    \text{ch} & : \text{Cost of hydrogen storage capacity per unit of hydrogen (\euro/kg);} \\
+    \text{ch\_t} & : \text{Cost of storing hydrogen for 1h, per unit of hydrogen (\euro/(kg$\cdot$h)).}
+\end{align*}
+Thus $ch$ will be simply multiplied by the maximum storage needed ($nh$), representing capital
+ cost of storage infrastructure, whereas $ch\_t$ represents the marginal cost of keeping the
+  hydrogen stored.  Unless specified, it is assumed to be $ch=10$\euro/kg and $ch_t=0$\euro/(kg$\cdot$h)
+
+Within the electrolyzers and fuel cells, the conversion itself can be more or less efficient:
+\begin{align*}
+    \text{fhte} & : \text{efficiency of hydrogen to electricity conversion (scalar between 0 and 1);} \\ 
+    \text{feth} & : \text{efficiency of electricity to hydrogen conversion (scalar between 0 and 1).}
+\end{align*}
+It is assumed that 1kg of hydrogen has an energy value of 33kWh. Thus if we consider an electrolyzer operating at maximum efficiency ($feth=1$), one MWh of electricity yields 1000/33$\simeq$30kg of hydrogen. If not specified through the GUI, a value of $feth=0.66$ is considered, thus 1MWh yields 20kg of hydrogen.
+Conversely, in a fuel cell operating at maximum efficiency ($fhte=1$) 1kg of hydrogen yields 
+33kWh. If not specified through the GUI, a value of $fhte=0.75$ is considered, yielding 24.75kWh 
+per kg of hydrogen. Actual efficiencies vary a lot depending on the technology used. Furthermore, chemical
+ and physical constraints make it so that efficiencies higher than 0.80-0.85 are currently considered 
+ unachievable \cite{DAWOOD}.
+
+Finally, the GUI gives the option to place upper bounds to the variables, based on either technological and physical constraints (dimension of the facilities) or because of political choices (local population unfavourable to wind turbines): 
+\begin{align*}
+    \text{Mns} & : \text{Maximum number of solar panels that can be installed (integer);} \\ 
+    \text{Mnw} & : \text{Maximum number of wind turbines that can be installed (integer);} \\ 
+    \text{Mnh} & : \text{Maximum hydrogen storage capacity (kg);}\\
+    \text{Mhte} & : \text{Upper bound for \(mhte\) (kg)}; \\ 
+    \text{Meth} & : \text{Upper bound for \(meth\) (MWh)}.
+\end{align*}
+If no bound is given through the GUI, these values will be set to $Mns=10^6, Mnw=500, Mnh=10^9, Mhte=10^6, Meth=10^5)$. Note: computation time increases significanly when increasing the upper bound for $Mnw$.
+
+A scenario consists in a different realizations of the following variables, given as input in the model and  indexed by scenario \(j\), time step \(t\), and node \(n \in \cN\):
+\begin{align*}
+    \text{ES}_{j,t,n} & : \text{Power output of a single solar panel (MWh)}\\
+    \text{EW}_{j,t,n} & : \text{Power output of a single wind turbine (MWh)}\\
+    \text{EL}_{j,t,n} & : \text{Electricity load (MWh)}\\
+    \text{HL}_{j,t,n} & : \text{Hydrogen load (kg)} \\
+    \text{P\_edge}_{j,t,l} & : \text{Power passing through line $l$ during time step $t$ in scenario $j$ (MWh) (continuous)};\\
+    \text{H\_edge}_{j,t,l} & : \text{Hydrogen flowing through pipe $l$ during time step $t$ in scenario $j$ (kg) (continuous)}.
+\end{align*}
+
+Lastly the following parameters are indexed by edge of the respective graph:
+\begin{align*}
+    \text{NTC}_l : & \ \parbox[t]{0.65\textwidth}{Net Transfer Capacity, that is, maximum amount of electricity that can pass on line \text{$l$} of the electric grid in the span of 1h;}\\
+    \text{MH}_l : & \text{ Maximum amount of hydrogen that can flow on edge $l$ in 1h}.
+\end{align*}
+\subsubsection{Objective Function}
+The cost function is given by the sum of all capital costs of installing infrastructure, all marginal costs of the hour-by-hour hydrogen to electricity and electricity to hydrogen conversions, and minimal costs associated to the variables $mhte$ and $meth$ so that they are minimized through the model.
+% \begin{align*}
+%     \min \quad & \text{cs} \cdot \text{ns} + \text{cw} \cdot \text{nw} + \text{ch} \cdot \text{nh} + \\
+%     & + \frac{1}{d}\sum_{j=1}^{d} \sum_{i=1}^{\text{inst}} (\text{ch\_t} \cdot \text{H}_{j,t} + \text{chte} \cdot \text{HtE}_{j,t} + \text{ceth} \cdot \text{EtH}_{j,t}) +\\
+%     & + 0.01*(mhte + meth).
+% \end{align*}
+Let $Nnodes$, $NEedges$ and $NHedges$ be the number of nodes, edges on the electric grid graph and edges of the hydrogen transfer graph respectively. The objective function is modified as follows:
+\begin{align*}
+    \min \quad 
+    &&\sum_{k=1}^{\text{Nnodes}}&\text{cs}_k \cdot \text{ns}\hspace{-3.5em}&&_k+\text{cw}_k \cdot \text{nw}_k + \text{ch}_k \cdot \text{nh}_k + \\
+    &+& \sum_{l=1}^{\text{NEedges}}& \text{cNTC}_l \hspace{-3em}&&\cdot\text{addNTC}_l 
+    + \sum_{l=1}^{\text{NHedges}} \text{cMH}_l\cdot \text{addMH}_l + \\   
+    &+&\frac{1}{d}\sum_{j=1}^{d}&\sum_{i=1}^{\text{inst}} \Bigg( \hspace{-5em}&&
+    \sum_{k=1}^{\text{Nnodes}} (\text{ch\_t}_k \cdot \text{H}_{j,t,k} + \text{chte}_k \cdot \text{HtE}_{j,t,k} + \text{ceth}_k \cdot \text{EtH}_{j,t,k}) + \\
+    &&&\hspace{-2em}&&+\sum_{l=1}^{\text{NHedhes}} (\text{cH\_edge}_l\cdot\text{H\_edge}_{j,t,l}) \Bigg) + \\
+    &+&\sum_{k=1}^{\text{Nnodes}}& 0.01\cdot(\hspace{-2.8em}&&mhte_k+meth_k)
+\end{align*}
+
+The $1/d$ factor in front of the marginal costs allows to average over the scenarios, whereas the capital costs are the same for all scenarios. Thus, ignoring the costs of $mhte$ and $meth$, the objective function value gives an estimate of the actual costs (in \euro) for the set up and maintenance of the system throughout the length of the scenario (one year). 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONSTRAINTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Constraints}
+The following constraints are to ensure that for all time steps $t$ and all scenarios $j$, the electricity load and the hydrogen load are met. The measure units are MWh and kg respectively, conversion factors are considered for $HtE$ and $EtH$ respecively.
+Let $Out(n)$ and $In(n)$ indicate the outgoing and incoming edges from node $n$ on the respective graph. Then for each node $n$, the we have the following flow balance constraints:
+\begin{align*}
+    \text{Electricity Balance:} \quad & \text{ns}_n \cdot \text{ES}\hspace{-1em}&_{j,t,n}&+ \text{nw}_k \cdot \text{EW}_{j,t,n} + 0.033 \cdot fhte_k \cdot \text{HtE}_{j,t,n} - \text{EL}_{j,t,n} - \text{EtH}_{j,t,n} + \\
+    & \sum_{l\in Out(n)}\hspace{-1em}& \text{P\_e}&\text{dge}_{j,t,l} + \sum_{l\in In(n)} \text{P\_edge}_{j,t,l} \ge 0;\\
+    \text{Hydrogen Storage:} \quad & \text{H}_{j,t+1,n} \hspace{-1em}&=\ & \text{ H}_{j,t,n} + 30 \cdot feth_k \cdot \text{EtH}_{j,t,n} - \text{HtE}_{j,t,n} - \text{HL}_{j,t,n} -\\ &&& - \sum_{l\in Out(n)}\text{H\_edge}_{j,t,l} + \sum_{l\in In(n)}\text{H\_edge}_{j,t,l}
+\end{align*}
+
+We ask that the consumed electricity be less or equal than the produced electricity at all times. On the grid itself, the two sides should be equal, but we observe that $ns\cdot ES_{j,t} + nw\cdot EW_{j,t}$ indicate the maximum power that can be generated with set weather conditions, whereas actual production will be regulated to meet demand through curtailment.
+
+The stored hydrogen at time $t+1$ is the result of what was stored at time $t$ adjusted by what was converted and what was sent to the industrial load. For $t=24*365$ we set the same constraint on hydrogen by considering $t+1$ to be index $1$: this way we avoid placing a ``start time'' at an arbitrary place within the year (time is rendered modulo the year) and we avoid the model asking for conveniently high initial storage values of hydrogen appearing out of thin air.
+
+The total storage and conversion capacities are calculated by minimizing the maximum over time and scenarios of the variables $H_{j,t}, EtH_{j,t}$ and $HtE_{j,t}$, for all scenarios \(j\), time steps \(t\) and nodes \(n\):
+
+\begin{align*}
+    \text{Storage Capacity Limit:} \quad & \text{H}_{j,t,n} \leq \text{nh}_n ;\\
+    \text{EtH Conversion Limit:} \quad & \text{EtH}_{j,t,n} \leq \text{meth}_n;\\
+    \text{HtE Conversion Limit:} \quad & \text{HtE}_{j,t,n} \leq \text{mhte}_n .
+\end{align*}
+Finally, edge capacities on the respective graphs are considered for all scenarios \(j\), time steps \(t\) and nodes \(n\):
+\begin{align*}
+    \text{Net Transfer Capacity:} \quad & |\text{P\_edge}_{j,t,l}|\le\text{NTC}_l + \text{addNTC}_l ;\\
+    \text{Hydrogen Transfer Capacity:} \quad & |\text{H\_edge}_{j,t,l}|\le\text{MH}_l + \text{addMH}_l.
+\end{align*}
+
 
 
 
@@ -660,6 +732,109 @@ TODO:
 \end{itemize}
 }
 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\color{black}
+
+\subsection{SCENARIO GENERATION}
+
+To estimate the optimal capacities for the CEP through a stochastic approach, realistic and diverse weather scenarios are needed, so to capture the variability and uncertainty of power generation through renewable sources over extended periods. 
+In order to generate such scenarios, samples are extracted from a joint probability density function (PDF) fit on historical data. \textcolor{pink}{In the following subsection,} we use \(Y_t\) to denote the stochastic process of generated power observations for either solar or wind in a single country.
+In our project, we used an hourly time step (T=\{1...8760\}) and fit the wind and solar distributions separately for each country considered.
+To model the marginal probability distributions corresponding to the power output of wind turbines for each hour of the year, a Weibull distribution was used, justified by its proven effectiveness in capturing the variability and skewness of wind power distributions \textcolor{green}{\cite{weibullwind}}. 
+For solar power, Beta distributions were employed, as in \textcolor{green}{\cite{betaPV}}. \\
+\indent  To fit our model, we used a dataset containing 30 years of data for various European countries, which was collected by \textcolor{green}{\cite{30y_gen}}. 
+On the other hand, electricity load is taken from the \textcolor{green}{\href{https://www.entsoe.eu/data/power-stats/}{ENTSO-E Statistical Reports}}. 
+\textcolor{pink}{In this simple model, while fitting on historical data we did not account for possible changes in future climate, since the focus lies mostly in the computational aspect.}\\
+To account for interdependence between temporally near time steps, we coupled these distributions using a Gaussian Copula approach, which captures the dependencies between hourly power outputs effectively. \textcolor{pink}{This approach accurately mimics common weather phenomena: The Gaussian Copula represents well the coupled behavior in renewable stochastic systems} \textcolor{green}{\cite{GaussCopula}}. \\
+\indent A possible improvement of the generation process could be to fit wind and PV data jointly in the copula step, potentially also including load scenarios with the generation scenarios through the same approach. This would consider dependence between Energy Demand and weather conditions, but it would necessitate of the historical dataset provided for the corresponding grid, and would also further increase computational costs.
+
+
+%\subsubsection{Stochastic Processes description}
+%The stochastic processes of power observations will be denoted as \(Y_t\). Where \(t \in T\), is the set indexing all the random variables which want to be considered jointly.
+%We assume that the random variable \(Y_t\) has either a Weibull distribution, in the case of Wind Power, or a Beta distribution in the case of Solar Power. 
+
+\subsubsection{Parametric Estimation of Wind Power distribution}\label{subsection: weib estim}
+
+The parameters defining the Weibull Distribution are estimated using the Maximum Likelyhood Estimation (MLE). The Weibull density function is given by:
+\[
+f(x; \theta, \gamma) = \left(\frac{\gamma}{\theta}\right)x^{\gamma-1}\exp\left(-\left(\frac{x}{\theta}\right)^\gamma\right)
+\]
+
+where \(\theta, \gamma > 0\) are the scale and shape parameters, respectively. Given observations \(X_1, \ldots, X_n\), the log-likelihood function is:
+
+\[
+\log L(\theta, \gamma) = \sum_{i=1}^n \log f(X_i \mid \theta, \gamma)
+\]
+
+The optimum solution is found by searching for the parameters for which the gradient is zero :
+
+\begin{equation}
+\frac{\partial \log L}{\partial \theta} = -\frac{n \gamma}{\theta} + \frac{\gamma}{\theta^2} \sum_{i=1}^{n} x_i^\gamma = 0
+\end{equation}
+
+Eliminating $\theta$, we get:
+
+\begin{equation}
+\left[ \frac{\sum_{i=1}^{n} x_i^\gamma \log x_i}{\sum_{i=1}^{n} x_i^\gamma} - \frac{1}{\gamma} \right] = \frac{1}{n} \sum_{i=1}^{n} \log x_i
+\end{equation}
+
+This can be solved to get the MLE estimate $\hat{\gamma}$. \textcolor{pink}{This can be accomplished with the aid of standard iterative procedures such as the Newton-Raphson method or other numerical procedures. This is done with the aid of the package \emph{scipy}.} Once $\hat{\gamma}$ is found, $\hat{\theta}$ can be determined in terms of $\hat{\gamma}$ as:
+
+\begin{equation}
+\hat{\theta} = \left( \frac{1}{n} \sum_{i=1}^{n} x_i^{\hat{\gamma}} \right)^{\frac{1}{\hat{\gamma}}}
+\end{equation}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Parametric Estimation of Solar Power distribution}
+\label{subsection: beta estim}
+
+To estimate the \(\alpha\) and \(\beta\) parameters defining the Beta distribution \(Y\), we use the Method of Moments.
+The mean of the random variable \(Y\) can be expressed as \(\E\left[ Y\right] = \frac{\alpha}{\alpha + \beta} \) and the variance as \(\var [Y]= \frac{\alpha + \beta}{(\alpha + \beta)(\alpha + \beta + 1)}\). In particular by explicating \(\beta\) in the first equation and substituting it in the second equation we obtain that:
+\begin{equation}
+\begin{cases}
+\alpha = \mathbb{E}[X] \left( \frac{\mathbb{E}[X](1 - \mathbb{E}[X])}{\mathrm{Var}[X]} - 1 \right) \\
+\beta = (1 - \mathbb{E}[X]) \left( \frac{\mathbb{E}[X](1 - \mathbb{E}[X])}{\mathrm{Var}[X]} - 1 \right)
+\end{cases}
+\end{equation}
+By substituting the mean and the variance with their empirical approximation we obtain the Method of Moments estimator for \(\alpha\) and \(\beta\).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Parametric Copula Estimation}
+The cumulative density function of both the Weibull and Beta distributions are continuous and invertible. Therefore, the random variables \( U_t \coloneqq F_{Y_t}(Y_t) \) have a uniform distribution over \([0,1]\). The copula of the random variables \(\{Y_t\}_{t \in T}\) is defined as the function \(C: [0,1]^T \to [0,1]\) such that 
+\begin{equation}
+C(F_{Y_1}(y_1), \ldots, F_{Y_T}(y_{|T|})) = P(Y_1 \leq y_1, \ldots, Y_{|T|} \leq y_{|T|}).
+\end{equation}
+This function always exists because of Sklar's Theorem \textcolor{green}{cite Sklar?}. For a given correlation matrix \(\Sigma\), the Gaussian Copula with parameter matrix \(\Sigma\) is defined as 
+\[\CG(u_1,\ldots,u_{T}) \coloneqq \Phi_{\Sigma}(\Phi^{-1}(u_1),\ldots, \Phi^{-1}(u_T)),\] 
+where \(\Phi,\; \Phi_{\Sigma}\) are the cumulative distribution functions of Gaussian variables having distribution \(\mathcal{N}(0,1)\) and \( \mathcal{N}(\mathbf{0},\Sigma)\) respectively. 
+In particular if \(\CG\) is the copula associated with the random variables \(\{Y_t\}_{t \in T}\) then we have that the random variables \(Z_t = \Phi^{-1}(F_{Y_t}(Y_t)) = \Phi^{-1}(U_t)\) have joint distribution equal to \(\mathcal{N}(0, \Sigma)\). This follows from: \\
+\begin{align*}
+P(Z_1 \leq z_1, \ldots, Z_T \leq z_t) &= P(\Phi^{-1}(U_1) \leq z_1, \ldots, \Phi^{-1}(U_T) \leq z_T) = \\
+&= P(U_1 \leq \Phi(z_1), \ldots, U_T \leq \Phi(z_T)) = \\
+&= \CG(\Phi(z_1), \ldots, \Phi(z_t)) =  \\
+&= \Phi_{\Sigma}(z_1, \ldots, z_T)
+\end{align*}
+In particular, given the realization \(\{y_{t,j}\}_{t \in t, j \in J}\) of the variables \(\{Y_t\}_{t \in T}\), an unbiased estimation of the parameter matrix \(\Sigma\) is the empirical covariance matrix \(\hat \Sigma\) of the samples \(\{\Phi^{-1}(\hat{F}_{Y_t}(y_{t,j}))\}_{t\in T, j \in J}\), where \(\hat{F}_{Y_t}\) is the estimated marginal distribution of the variable \(Y_t\) \textcolor{green}{as seen in subsection \ref{subsection: weib estim} and subsection \ref{subsection: beta estim}}.\\
+
+
+Finally, we can generate samples from a Multivariate Gaussian random variable \((Z_{t}, t \in T)\) having distribution \(\mathcal{N}(0, \hat \Sigma)\).  Then the power output scenarios are obtained from these samples by following the previous steps backwards, that is, for each sample, computing \(\hat F_{t}^{-1}(\Phi(Z_{t}))\) for all \(t\in T\). \\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
 }
 \section{COMPUTATIONAL RESULTS}
 \subsection{SINGLE NODE NETWORK}
@@ -718,9 +893,21 @@ deal with the complexity arising from the introduction of the network structure 
 % Author, Book title, page numbers. Publisher, place (year)
 % % etc
 
+\bibitem{review_math_opt}
+Michal Jasinski, Arsalan Najafi, et al,
+Operation and Planning of Energy Hubs Under Uncertainty - A Review of Mathematical Optimization Approaches,
+2022
+
 
 \bibitem{European_H2_Market_landscape}
 Author, European Hydrogen Market Landscape - November 2023 Report, page numbers. Publisher, place (year)
+
+
+\bibitem{30y_gen}
+Stefan Pfenninger and Iain Staffell. “Long-term patterns of European PV output us-
+ing 30 years of validated hourly reanalysis and satellite data”. In: Energy 114 (2016),
+pp. 1251–1265. issn: 0360-5442. doi: https://doi.org/10.1016/j.energy.2016.08.
+060.
 
 % %@article{European_H2_Market_landscape,
 % %title = {European Hydrogen Market Landscape - November 2023 Report},
