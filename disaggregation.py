@@ -38,11 +38,38 @@ costs_rho = [vars_rho[i]['obj'] for i in range(len(vars_rho))]
 vars_random_list = []
 costs_random_list = []
 #%%
-for i in range(10):
+for i in range(5):
     n = copy.deepcopy(eu)
     vars_random = OPT_agg2(n, N_iter = 10, iter_method = 'random')
     vars_random_list.append(vars_random)
     costs_random = [vars_random[i]['obj'] for i in range(len(vars_random))]
     costs_random_list.append(costs_random)
 
+# %%
+import plotly.graph_objects as go
+
+fig = go.Figure(data=[go.Scatter(x = np.arange(len(costs_rho)), y = costs_rho, name = 'rho'),
+                     go.Scatter(x = np.arange(len(costs_random_list[0])), y = [np.mean([costs_random_list[i][j] for i in range(5)]) for j in range(len(costs_random_list[0]))], name = 'average_random')
+                     ])
+fig.update_layout(title='rho vs random', xaxis_title='iteration', yaxis_title='cost')
+fig.show()
+
+# %%
+times_rho = [vars_rho[i]['opt_time'] for i in range(len(vars_rho))]
+times_random_list = []
+for i in range(5):
+    times_random = [vars_random_list[i][j]['opt_time'] for j in range(len(vars_random_list[i]))]
+    times_random_list.append(times_random)
+
+# %%
+fig = go.Figure(data=[go.Scatter(x = np.arange(len(times_rho)), y = times_rho, name = 'rho'),
+                     go.Scatter(x = np.arange(len(times_random_list[0])), y = [np.mean([times_random_list[i][j] for i in range(5)]) for j in range(len(times_random_list[0]))], name = 'average_random')
+                     ])
+fig.update_layout(title='rho vs random', xaxis_title='iteration', yaxis_title='time')
+fig.show()
+# %%
+times_random_list = []
+
+times_random = [vars_random_list[i][-1]['opt_time'] for i in range(len(vars_random_list))]
+    
 # %%

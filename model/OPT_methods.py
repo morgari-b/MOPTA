@@ -1654,13 +1654,14 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
                 "HtE":solution_to_xarray(HtE, node_dims, node_coords),
                 "obj":model.ObjVal,
                 "interval_to_var":dict(zip(time_partition.tuplize(tp),range(T))),
-                "var_to_interval":dict(zip(range(T),time_partition.tuplize(tp)))  
+                "var_to_interval":dict(zip(range(T),time_partition.tuplize(tp))),
+                "opt_time":np.round(time.time()-start_time,3) 
             }
             iter_sol.append(VARS)
         
 
     print(f"Total opt time: {np.round(time.time()-start_time,3)}s.")
-    iter_sol[-1]["opt_time"]=np.round(time.time()-start_time,3)
+   
     return iter_sol
         
 #%%
