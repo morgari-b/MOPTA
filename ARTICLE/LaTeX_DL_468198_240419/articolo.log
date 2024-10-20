@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  20 OCT 2024 17:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  20 OCT 2024 17:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -767,7 +767,11 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count352
 \l__pdf_internal_box=\box77
-) (./articolo.aux)
+) (./articolo.aux
+
+LaTeX Warning: Label `table_vars' multiply defined.
+
+)
 \openout1 = `articolo.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 219.
@@ -896,57 +900,50 @@ Underfull \hbox (badness 10000) in paragraph at lines 292--293
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--320
-
- []
-
-
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 361--363
-
- []
-
-
-Overfull \hbox (2.27766pt too wide) detected at line 370
-[]
- []
-
-
 
 [4]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 397.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 378.
  (c:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 
-LaTeX Warning: Citation `DAWOOD' on page 5 undefined on input line 420.
+LaTeX Warning: Citation `DAWOOD' on page 5 undefined on input line 395.
 
 
-
-[5]
-Overfull \hbox (44.92212pt too wide) detected at line 440
-[]
+Overfull \hbox (3.72824pt too wide) in paragraph at lines 399--400
+[]\OT1/ptm/m/n/10 If no bound is given through the GUI, these val-ues will be set to $\OML/ztmcm/m/it/10 Mns \OT1/ztmcm/m/n/10 = 10[]\OML/ztmcm/m/it/10 ; Mnw \OT1/ztmcm/m/n/10 =
  []
 
 
 
+[5]
+Overfull \hbox (96.4577pt too wide) in alignment at lines 440--440
+[][][] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
 [6]
-Overfull \hbox (39.77385pt too wide) detected at line 476
+Overfull \hbox (39.77385pt too wide) detected at line 477
 []
  []
 
 
 
 [7]
-Overfull \hbox (24.71144pt too wide) in paragraph at lines 511--512
+Overfull \hbox (24.71144pt too wide) in paragraph at lines 512--513
 \OT1/ptm/m/n/10 lem $\OML/ztmcm/m/it/10 CEP[]$\OT1/ptm/m/n/10 , as given a fea-si-ble so-lu-tion $\OT1/ztmcm/m/n/10 (\OML/ztmcm/m/it/10 ns; nw; nh; mhte; meth; H; HtE; EtH; Pedge; Hedge\OT1/ztmcm/m/n/10 )$
  []
 
 
 
 [8]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 543.
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 544.
 
 
 [9]
@@ -954,73 +951,73 @@ Package hyperref Info: bookmark level for unknown todo defaults to 0 on input li
 [10]
 
 [11]
-Overfull \hbox (96.71457pt too wide) detected at line 657
+Overfull \hbox (96.71457pt too wide) detected at line 658
 \OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] []\OML/ztmcm/m/it/10 ^^Z[][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
  []
 
 
-LaTeX Warning: Reference `eq:LPunaggr' on page 12 undefined on input line 666.
+LaTeX Warning: Reference `eq:LPunaggr' on page 12 undefined on input line 667.
 
 
 
 [12]
-Overfull \hbox (56.7941pt too wide) detected at line 689
+Overfull \hbox (56.7941pt too wide) detected at line 690
 [][] \OT1/ztmcm/m/n/10 = [] [][] + [] [][] = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 cx
  []
 
 
-Overfull \hbox (95.884pt too wide) detected at line 714
+Overfull \hbox (95.884pt too wide) detected at line 715
 [][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
  []
 
 
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 733--733
+Underfull \hbox (badness 10000) in paragraph at lines 734--734
 
  []
 
 
 
 [14]
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 767.
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 768.
  (c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 767.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 768.
 
 
-LaTeX Warning: Citation `weibullwind' on page 15 undefined on input line 768.
+LaTeX Warning: Citation `weibullwind' on page 15 undefined on input line 769.
 
 
-LaTeX Warning: Citation `betaPV' on page 15 undefined on input line 769.
+LaTeX Warning: Citation `betaPV' on page 15 undefined on input line 770.
 
 
-LaTeX Warning: Citation `GaussCopula' on page 15 undefined on input line 773.
+LaTeX Warning: Citation `GaussCopula' on page 15 undefined on input line 774.
 
 
 
 [15]
 
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 837--840
+Underfull \hbox (badness 10000) in paragraph at lines 838--841
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 845--847
+Underfull \hbox (badness 10000) in paragraph at lines 846--848
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 850--851
 
  []
 
 
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 849--850
-
- []
-
-
 
 [18] (./articolo.aux)
  ***********
@@ -1031,22 +1028,25 @@ L3 programming layer <2024-05-27>
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `articolo.out' has not changed.
 (rerunfilecheck)             Checksum: C734CDBA71A8DE589B33608A7D54E917;632.
  ) 
 Here is how much of TeX's memory you used:
- 34143 strings out of 473584
- 782256 string characters out of 5732363
+ 34132 strings out of 473584
+ 782030 string characters out of 5732363
  1946908 words of memory out of 5000000
- 56355 multiletter control sequences out of 15000+600000
- 599144 words of font info for 130 fonts, out of 8000000 for 9000
+ 56340 multiletter control sequences out of 15000+600000
+ 593781 words of font info for 113 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,13n,107p,1842b,862s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (18 pages, 192136 bytes).
+Output written on articolo.pdf (18 pages, 192167 bytes).
 PDF statistics:
- 272 PDF objects out of 1000 (max. 8388607)
- 220 compressed objects within 3 object streams
- 73 named destinations out of 1000 (max. 500000)
+ 278 PDF objects out of 1000 (max. 8388607)
+ 225 compressed objects within 3 object streams
+ 76 named destinations out of 1000 (max. 500000)
  53 words of extra memory for PDF output out of 10000 (max. 10000000)
 
