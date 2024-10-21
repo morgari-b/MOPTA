@@ -279,16 +279,18 @@ To generate scenarios for wind and photovoltaic (PV) power output, we use scenar
 definition of CEP, ED problems.}\\
 
 
-The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions, \textcolor{red}{curtailment = inefficient, need hydrogen}, \textcolor{Green}{cite source for hydrogen (eg: EU super investing in it)}. \textcolor{pink}{The stochastic nature of the problem....} making it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
+The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions. 
+To deal with this variability, a possible solution gaining a lot of traction in recent years is the introduction of an energy storage system relying on hydrogen, converting energy from hydrogen to electricity and vice versa in fuel cells and elecrolyzers. \textcolor{Green}{cite source for hydrogen (eg: EU super investing in it)}. 
+It is of interest to evaluate the optimal solution, in terms of investment plan, to supply the grid along with industrial hydrogen demand in a dependable way. The stochastic nature of the problem though makes it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
 Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \textcolor{green}{\cite{review_math_opt}}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.\\
 \indent In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP) regarding infrastructure investments: solar and wind farms, fuel cells, hydrolizers, grid upgrades to augment Net Transfer Capacity (NTC) and so on. Nested within the CEP is an Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. 
 The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in \textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{Green}{other examples?}))\\
 \indent The CEP for investment planning requires to look at long time horizons, and on the other hand intra-day variability in generation \textcolor{pink}{is the main complexity driver} for the ED problem, so the time horizon must be modelled by a large quantity of fairly tight time steps. Furthermore, \textcolor{pink}{spacial structure big, even though we ignore it here and just slam everything into country nodes}. 
 Thus the temporal and spacial characteristics of the model bring the MILP size to increase rapidly. This is especially demanding in the case of SP, since all the variables from the inner ED problem must be reproduced over all scenarios.\\
-\indent To reduce these costs, one possible approach is to use a Rolling Horizon (RH) \textcolor{red}{[explain better]}. The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of \textcolor{pink}{check} serving an isolated area in Chile. \textcolor{Green}{other examples of RH used for the ED} A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.\\
+\indent To reduce these costs, one possible approach is to use a Rolling Horizon (RH). The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of \textcolor{pink}{check} serving an isolated area in Chile. \textcolor{Green}{other examples of RH used for the ED} A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.\\
 \indent A big drawback of the RH approach is that \textcolor{pink}{Problem: it is not optimal. In fact, \cite{INTRO_short-term}. But better reflects actual decision making based on info that is only available progressively, vs perfect foresigh approach.}\\
 \indent Our work aims to build a hybrid model, exploring the use of the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a stand-alone technique.  \textcolor{red}{Explain better}. 
-Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", \textcolor{pink}{through a control system that optimizes on day ahead forecasts}.\\
+Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", through a control system that optimizes on day ahead forecasts.\\
 \indent The model we optimize on in \textcolor{red}{introduce model: components, aim, use Gurobi...}\\
 \indent Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. This has been previously done \textcolor{Green}{here and here and it's not new right?}.\\
 
@@ -351,8 +353,8 @@ See Table \ref{table_vars} for the summary of all decision variables.
   $\text{nh}_n$ & kg & Storage capacity at node $n \in \cN$\\
   $\text{mhte}_n$ & kg & \parbox[t]{0.70\textwidth}{Maximum hydrogen to electricity capacity,  at node $n \in \cN$} \\
   $\text{meth}_n$ & MWh & Maximum electricity to hydrogen capacity at node $n \in \cN$\\
-  $\text{addNTC}_l$ & MWh & Additional net transfer capacity on line $l$;\\
-  $\text{addMH}_l$ & kg & Additional hydrogen transfer capacity on pipe $l$\\
+  $\text{addNTC}_l$ & MWh & Additional net transfer capacity on line $l\in\cE_P$\\
+  $\text{addMH}_l$ & kg & Additional hydrogen transfer capacity on pipe $l\in\cE_H$\\
   \noalign{\smallskip}\hline\noalign{\smallskip}
   $\text{H}_{j,t,n}$ & kg& Stored hydrogen at node $n$, time \(t\), scenario \(j\)\\
   $\text{HtE}_{j,t,n}$ & kg& Hydrogen converted to electricity at time \(t\),scenario \(j\) \\
@@ -372,7 +374,7 @@ See Table \ref{table_vars} for the summary of all decision variables.
 \subsubsection{Parameters}
 
 \indent There are a series of parameters that describe the grid and are passed to the model. The main ones are related to capital costs of the infrastructure to be built and the following values are assumed for panels and turbines: $cs = 400$\euro, $cw = 3 000 000$\euro. 
-We also set capital costs for fuel cells and electrolyzers. tjese can be set to minimal "symbolic" costs just to ask the solver to estimate needed capacity, so that they are minimized through the model, or they can be set to actual investment for the facilities. Since hydrogen infrastructure is usually obtained by reconverting existing infrastructure from other purposes, the estimation of investment costs is very location dependent and beyond the scope of this work. Thus for our purposes, a symbolic minimal cost was used. \textcolor{Green}{cite article}.\\
+We also set capital costs for fuel cells and electrolyzers: since hydrogen infrastructure is usually obtained by reconverting existing infrastructure from other purposes, the estimation of investment costs is very location dependent and beyond the scope of this work \textcolor{Green}{cite article}. Thus for our purposes, instead of representing the actual investment for the facilities, a minimal "symbolic" cost is assigned per unit of capacity, so that in minimizing the model estimates needed conversion capacities $mhte_n$ and $meth_n$. \\
 \indent The storage of the hydrogen has a cost that depends on various factors: capital cost of the technology used for storage, operating costs, length of time that the hydrogen is kept in storage. For our model we only set the parameters $ch$, to be multiplied by the maximum storage needed ($nh$), representing capital cost of storage infrastructure. We ignore marginal costs of keeping the hydrogen stored. \\
 
 \indent In this model we assume no marginal costs for PV and wind power production: the operating costs of the farms throughout their life-cycle can be factored into the capital costs, and there is no additional cost linked to the production itself. \\
@@ -400,16 +402,16 @@ We also set capital costs for fuel cells and electrolyzers. tjese can be set to 
     chte$_n$ & \euro/kg & Conversion cost of \textcolor{Cerulean}{$H_2$} to electricity \\
     ceth$_n$ & \euro/MWh & Conversion cost of electricity to hydrogen \\
     ch$_n$ & \euro/kg & Cost of hydrogen storage capacity\\
-    cH\_edge$_l$ & \euro & Cost of transferring 1kg of hydrogen through edge $l$\\
+    cH\_edge$_l$ & \euro & Cost of transferring 1kg of hydrogen through edge $l\in\cE_H$\\
     cNTC$_l$ & \euro/MWh & Cost of adding NTC to line $l\in\cE_P$\\
     cMH$_l$ &\euro/kg& Cost of adding $H_2$ transfer capacity to line $l\in\cE_H$\\
-    \textcolor{pink}{cmhte} &&\\
-    cmeth &&\\
+    cmhte & \euro/kg & Cost of needed $HtE$ capacity per unit\\
+    cmeth & \euro/MWh&Cost of needed $EtH$ capacity per unit\\
   \noalign{\smallskip}\hline\noalign{\smallskip}
     fhte$_n$ & - & Efficiency of hydrogen to electricity conversion \\ 
     feth$_n$ & - & Efficiency of electricity to hydrogen conversion \\
     NTC$_l$ & MWh & Net Transfer Capacity on line $l\in\cE_P$\\
-    MH$_l$ & kg &  Hydrogen transfer capacity on edge \textcolor{Cerulean}{$l\in\cE_H$}.\\
+    MH$_l$ & kg &  Hydrogen transfer capacity on edge $l\in\cE_H$\\
   \noalign{\smallskip}\hline\noalign{\smallskip}
     Mns$_n$ & - & Maximum number of solar panels installable at node $n$\\ 
     Mnw$_n$ & - & Maximum number of wind turbines that can be installed \\ 
@@ -472,13 +474,13 @@ The total storage and conversion capacities are calculated by minimizing the max
 
 \begin{align*}
     \text{Storage Capacity Limit:} \quad & \text{H}_{j,t,n} \leq \text{nh}_n ;\stepcounter{equation}\tag{\theequation}\label{constr_nh}\\
-    \text{EtH Conversion Limit:} \quad & \text{EtH}_{j,t,n} \leq \text{meth}_n; \stepcounter{equation}\tag{\theequation}\label{myeq1}\\
-    \text{HtE Conversion Limit:} \quad & \text{HtE}_{j,t,n} \leq \text{mhte}_n .\stepcounter{equation}\tag{\theequation}\label{myeq1}
+    \text{EtH Conversion Limit:} \quad & \text{EtH}_{j,t,n} \leq \text{meth}_n; \stepcounter{equation}\tag{\theequation}\label{constr_meth}\\
+    \text{HtE Conversion Limit:} \quad & \text{HtE}_{j,t,n} \leq \text{mhte}_n .\stepcounter{equation}\tag{\theequation}\label{constr_mhte}
 \end{align*}
 Finally, edge capacities on the respective graphs are considered for all scenarios \(j\), time steps \(t\) and nodes \(n\):
 \begin{align*}
-    \text{Net Transfer Capacity:} \quad & \text{P\_edge}^\pm_{j,t,l}\le\text{NTC}_l + \text{addNTC}_l ;\stepcounter{equation}\tag{\theequation}\label{myeq1}\\
-    \text{Hydrogen Transfer Capacity:} \quad & \text{H\_edge}^\pm_{j,t,l}\le\text{MH}_l + \text{addMH}_l.\stepcounter{equation}\tag{\theequation}\label{myeq1}
+    \text{Net Transfer Capacity:} \quad & \text{P\_edge}^\pm_{j,t,l}\le\text{NTC}_l + \text{addNTC}_l ;\stepcounter{equation}\tag{\theequation}\label{constr_NTC}\\
+    \text{Hydrogen Transfer Capacity:} \quad & \text{H\_edge}^\pm_{j,t,l}\le\text{MH}_l + \text{addMH}_l.\stepcounter{equation}\tag{\theequation}\label{constr_MH}
 \end{align*}
 
 
