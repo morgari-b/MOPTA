@@ -727,7 +727,7 @@ if the hypothesis of proposition \ref{prop:xaggfeasible} holds then the aggregat
 }
 
 \subsection{Application to Capacity Expansion Problem}
-{\color{violet}
+
 We now apply the results of the previous section to the Capacity Expansion Problem. 
 \textcolor{violet}{
 TODO:
@@ -742,7 +742,8 @@ TODO:
 \end{itemize}
 }
 
-{\color{violet}
+{
+  \color{violet}
 By reformulating the problem in \textcolor{red}{ref}, we introduce a new set of variables \(h_{t,j,n} \coloneqq H_{t+1,j,n} - H_{t,j,n}\), replacing the original variables \(H_{t,j,n}\), and add the following constraints:
 
 \begin{align}
@@ -771,21 +772,29 @@ Although this is not generally the case, it suggests an iterative procedure for 
 
 
 \section{COMPUTATIONAL RESULTS}
-\subsection{SINGLE NODE NETWORK}
-First, an electrical grid with a single node is considered (corresponding ideally to an area with uniform
-weather conditions, highly connected at low cost). A first section will consider realistic parameter
-combinations and describe the results given by the solver, conducting a parameter sensitivity analysis. A
-second section will describe a validation function that checks the results of the capacity expansion
-problem for feasibility on new scenarios. Concurrently, a cost function is designed to give more realistic
-cost estimates compared to the optimal value given by the solver.
-\subsection{MULTIPLE NODE NETWORK}
-Results are computed for a multiple node network, with additional edge variables and parameters. When
-considering a network with more than a single node, computational costs increase rapidly. Thus in the
-first section, a small analysis is carried out to determine acceptable time steps on which time dependent
-data can be aggregated (the gathered data is usually on hourly steps) while maintaining the quality of the
-solution. Some examples are then considered, and the network dynamics that arise with the introduction
-of edge variables are described. A mixed approach is then used to design a validation function that can
-deal with the complexity arising from the introduction of the network structure in the model.
+
+To test the methods described in this paper, we consider a simple 5-node network over a one-year period with timesteps of 1 hour. In this section, we compare the following methods for iterating on the aggregated problem: (1) randomly selecting the interval to refine, (2) selecting the interval with the highest \(\rho\)-variance as defined in Section \ref{}, or (3) selecting the interval where the validation function \ref{} fails.
+The scenarios are generated as described in Section \ref{subsec:scenarios} in the Appendix. The computational tests were carried out on an Intel(R) Core(TM) i7-13700H CPU @ 2.40GHz with 16 GB RAM.
+
+INSERT PLOT COMPARING RHO-Random
+INSERT PLOT COMPARING RHO-FUNCTION
+
+CONCLUSION
+% \subsection{SINGLE NODE NETWORK}
+% First, an electrical grid with a single node is considered (corresponding ideally to an area with uniform
+% weather conditions, highly connected at low cost). A first section will consider realistic parameter
+% combinations and describe the results given by the solver, conducting a parameter sensitivity analysis. A
+% second section will describe a validation function that checks the results of the capacity expansion
+% problem for feasibility on new scenarios. Concurrently, a cost function is designed to give more realistic
+% cost estimates compared to the optimal value given by the solver.
+
+% Results are computed for a multiple node network, with additional edge variables and parameters. When
+% considering a network with more than a single node, computational costs increase rapidly. Thus in the
+% first section, a small analysis is carried out to determine acceptable time steps on which time dependent
+% data can be aggregated (the gathered data is usually on hourly steps) while maintaining the quality of the
+% solution. Some examples are then considered, and the network dynamics that arise with the introduction
+% of edge variables are described. A mixed approach is then used to design a validation function that can
+% deal with the complexity arising from the introduction of the network structure in the model.
 \section{CONCLUSIONS}
 
 
@@ -796,7 +805,7 @@ deal with the complexity arising from the introduction of the network structure 
 
 \section{APPENDIX}
 \subsection{SCENARIO GENERATION}
-
+\label{subsec:scenarios}
 To estimate the optimal capacities for the CEP through a stochastic approach, realistic and diverse weather scenarios are needed, so to capture the variability and uncertainty of power generation through renewable sources over extended periods. 
 In order to generate such scenarios, samples are extracted from a joint probability density function (PDF) fit on historical data. \textcolor{pink}{In the following subsection,} we use \(Y_t\) to denote the stochastic process of generated power observations for either solar or wind in a single country.
 In our project, we used an hourly time step (T=\{1...8760\}) and fit the wind and solar distributions separately for each country considered.

@@ -1582,6 +1582,13 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
         elif iter_method == "rho":
             print("rho iteration")
             network.rho_iter_partition(VARS, k=k)
+        elif iter_method == "validation":
+            print("validation iteration")
+            optimal = network.validationfun_iter_partition(VARS, k=k)
+
+            if optimal:
+                print("optimal solution for unaggregated problem found")
+                return iter_sol
         else:
             raise ValueError("Invalid iteration method.")
 
