@@ -637,36 +637,47 @@ Given a time partition \(P\), we define \textcolor{red}{EXPLAIN constraints in m
 \end{bmatrix}
 \end{equation}
 
-\[
+\begin{equation}
 \begin{tikzpicture}
   [block/.style={draw,rectangle,minimum height=1.5em,minimum width=3em,fill = red!20, draw= red!50}]
     % Block matrix on the left
     % A block
     \nc{\ytop}{5}
-    \nc{\ya}{2}
-    \nc{\yb}{0}
+    
+    
     \nc{\blockheight}{0.55}
     \nc{\blockwidth}{1.05}
-    
-
-
+    \nc{\ya}{\ytop - 5*\blockheight}
+    \nc{\yb}{0}
+    \nc{\yc}{\yb - 3}
+    \nc{\xzero}{0}
     \nc{\xone}{2}
     \nc{\xtwo}{3}
-    \nc{\xthree}{9}
-    \draw[thick] (0,\ytop) rectangle (\xone,\ya);
+    \nc{\xthree}{\xtwo + \blockwidth*5}
+
+    % FIRST COLUMN
+    \draw[thick] (\xzero,\ytop) rectangle (\xone,\ya);
     \node at (1,4) {$A^{CEP}$};
     \node at (1,3.5) {\small $(ES, EW, \dots)$};
     
-    % Other zero blocks
-    \draw[thick] (\xone,\ytop) rectangle (3,\ya); 
-    \node at (2.5,4) {\Large $0$};
-    
-    \draw[thick] (0,2) rectangle (\xone,0);
+  
+    \draw[thick] (\xzero,\ya) rectangle (\xone,\yb);
     \node at (1,1) {\Large $0$};
     
+    \draw[thick] (\xzero,\yb) rectangle (\xtwo,\yc);
+    \node at (\xzero + 1.4,\yb - 1.4 ) {\Large $-Id$};
+    
+    % SECOND COLUMN
+    \draw[thick] (\xone,\ytop) rectangle (3,\ya); 
+    \node at (2.5,4) {\Large $0$};
+
+    \draw[thick] (\xtwo,\yb) rectangle (\xthree,\yc);
+    \node at (\xtwo +2,\yb - 1.4) {\Large $0$};
+
+    
     % Identity block
-    \draw[thick] (\xone,2) rectangle (\xtwo,0);
-    \node at (2.5,1) {
+    \draw[thick] (\xone,\ya) rectangle (\xtwo,0);
+    \node at (\xone + 0.5, \ya -1.2 ) {
       $\begin{matrix}
       1 \\ 
       1 \\
@@ -675,27 +686,56 @@ Given a time partition \(P\), we define \textcolor{red}{EXPLAIN constraints in m
       \end{matrix}$
       };
     
-    % row of -one
+    % THIRD COLUMN
     \draw[thick] (\xtwo,\ytop) rectangle (\xthree,\ya); 
     \node at (\xtwo + \blockwidth/2  , \ytop - \blockheight/2) [block] {};
     \node at (\xtwo + \blockwidth*3/2  , \ytop - \blockheight*3/2) [block] {};
     \node at (\xtwo + \blockwidth*5/2  , \ytop - \blockheight*5/2) [block] {};
     \node at (\xtwo + \blockwidth*7/2  , \ytop - \blockheight*7/2) {$\ddots$};
     \node at (\xtwo + \blockwidth*9/2  , \ytop - \blockheight*9/2) [block] {};
+
     \draw[thick] (\xtwo,\ya) rectangle (\xthree,\yb); 
-    \node at (\xtwo+2,\ya-1) {$
+    \node at (\xtwo+2.7,\ya-1.2) {$
     \begin{matrix}
-      -1 & 0  & 0 & 0 &  0 & \ldots & 0\\
-      -1 & -1  & 0 & 0 & 0 & \ldots & 0\\
-      \vdots & \vdots  & \ \vdots & \vdots & \vdots & \ddots & \vdots\\
-      -1 & -1  & -1 & -1 & -1 & \ldots & -1
-    \end{matrix}
-    $};
-    
+      -1 & 0  & 0 & 0 &  0& 0 &  0 & \ldots & 0\\
+      -1 & -1  & 0 & 0 & 0 &  0& 0 & \ldots & 0\\
+      \vdots & \vdots  & \ \vdots & \vdots& \ \vdots & \vdots & \vdots & \ddots & \vdots\\
+      -1 & -1  & -1 & -1 & -1& -1 & -1 & \ldots & -1
+    \end{matrix}$};
+     % FORTH COLUMN
+     \nc{\ytopp}{\ytop + 1/2}
+     \draw[thick] (\xthree + 1/6, \ytopp) rectangle (\xthree + 1/2 + 1/6,\yc -1/2);
+    %  \node at (\xthree + 1/2  , \ya - \blockheight) {
+    %   $
+    %   \begin{bmatrix}
+    %     ns \\ nw  \\ nh 
+    %   \end{bmatrix}$
+    %  };
+    \nc{\xfourr}{\xthree + 1/6 + 0.25}
+    \nc{\spacefour}{0.3}
+    \node at (\xfourr  , \ytopp - \spacefour) { $ns$};
+    \node at (\xfourr  , \ytopp - 2*\spacefour) { $nw$};
+    \node at (\xfourr  , \ytopp - 3*\spacefour) {$nh$};
+    \node at (\xfourr  , \ytopp - 8*\spacefour) {\Large $\vdots$};
+    \node at (\xfourr  , \ytopp - 13*\spacefour) {\Large $\vdots$};
+    \node at (\xfourr  , \ytopp - 18*\spacefour) {\Large $\vdots$};
+     % FIFTH COLUMN
+     \node at (\xthree + 1  , \ya - \blockheight) {\Large $\geq$};
+
+    % SIXTH COLUMN
+    \nc{\xsix}{\xfourr + 0.8};
+    \draw[thick] (\xsix, \ytop) rectangle (\xsix + 1/2,\yc -1/2);
+    \node at (\xsix + 1/4 , \ytop - \spacefour) { \small $HL$};
+    \node at (\xsix + 1/4 , \ytop - 2*\spacefour) {\small $EL$};
+    \node at (\xsix + 1/4  , \ytop - 8*\spacefour) {\Large $\vdots$};
+    \node at (\xsix + 1/4  , \ytop - 13*\spacefour) {\Large $0$};
+    \node[rotate=-90] at (\xsix + 1/4 , \ytop - 22*\spacefour) {max CEP};
+
+
     
   
 \end{tikzpicture}
-\]
+\end{equation}
 
 
 % For one-column wide figures use
