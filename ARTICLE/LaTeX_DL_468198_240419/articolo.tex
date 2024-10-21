@@ -610,6 +610,91 @@ Fistly, we can reformulate the model described in \ref{section: LP} by introduci
 In the problem under consideration, we have various types of constraints: Electricity Balance, Hydrogen Balance, Hydrogen Storage, and bounds on the variables. 
 Given a time partition \(P\), we define \textcolor{red}{EXPLAIN constraints in matrix form, then row aggregation}%\(\rowP\) and \(\colP\) such that each set \(S \in \rowP\) corresponds to all constraints of the same type, scenario, and time index \(t\) that falls within the same time interval in \(T\) as \(P\). Similarly, the variables (such as Power generation, Hydrogen generation, etc.) are partitioned in \(\colP\) based on the same criteria.
 
+\begin{equation}
+\begin{bmatrix}
+  ES_{j,t,n} & EW_{j,t,n} & \ldots& 1 & 0 & 1 & -1 & 0 \\
+  0 & 0   & \ldots& 0 & 1 & -1 & 1 & -1
+\end{bmatrix}
+\begin{bmatrix}
+  \text{ns}  \\
+  \text{nw} \\
+  \vdots \\
+  P_l \\
+  H_l \\
+  HtE_{j,t,n} \\
+  EtH_{j,t,n} \\
+  h_{j,t,n}
+\end{bmatrix}
+\begin{matrix}
+\geq \\
+=
+\end{matrix}
+\begin{bmatrix}
+  EL_{j,t,n} \\
+  HL_{j,t,n}
+\end{bmatrix}
+\end{equation}
+
+\[
+\begin{tikzpicture}
+  [block/.style={draw,rectangle,minimum height=1.5em,minimum width=3em,fill = red!20, draw= red!50}]
+    % Block matrix on the left
+    % A block
+    \nc{\ytop}{5}
+    \nc{\ya}{2}
+    \nc{\yb}{0}
+    \nc{\blockheight}{0.55}
+    \nc{\blockwidth}{1.05}
+    
+
+
+    \nc{\xone}{2}
+    \nc{\xtwo}{3}
+    \nc{\xthree}{9}
+    \draw[thick] (0,\ytop) rectangle (\xone,\ya);
+    \node at (1,4) {$A^{CEP}$};
+    \node at (1,3.5) {\small $(ES, EW, \dots)$};
+    
+    % Other zero blocks
+    \draw[thick] (\xone,\ytop) rectangle (3,\ya); 
+    \node at (2.5,4) {\Large $0$};
+    
+    \draw[thick] (0,2) rectangle (\xone,0);
+    \node at (1,1) {\Large $0$};
+    
+    % Identity block
+    \draw[thick] (\xone,2) rectangle (\xtwo,0);
+    \node at (2.5,1) {
+      $\begin{matrix}
+      1 \\ 
+      1 \\
+      \vdots \\
+      1
+      \end{matrix}$
+      };
+    
+    % row of -one
+    \draw[thick] (\xtwo,\ytop) rectangle (\xthree,\ya); 
+    \node at (\xtwo + \blockwidth/2  , \ytop - \blockheight/2) [block] {};
+    \node at (\xtwo + \blockwidth*3/2  , \ytop - \blockheight*3/2) [block] {};
+    \node at (\xtwo + \blockwidth*5/2  , \ytop - \blockheight*5/2) [block] {};
+    \node at (\xtwo + \blockwidth*7/2  , \ytop - \blockheight*7/2) {$\ddots$};
+    \node at (\xtwo + \blockwidth*9/2  , \ytop - \blockheight*9/2) [block] {};
+    \draw[thick] (\xtwo,\ya) rectangle (\xthree,\yb); 
+    \node at (\xtwo+2,\ya-1) {$
+    \begin{matrix}
+      -1 & 0  & 0 & 0 &  0 & \ldots & 0\\
+      -1 & -1  & 0 & 0 & 0 & \ldots & 0\\
+      \vdots & \vdots  & \ \vdots & \vdots & \vdots & \ddots & \vdots\\
+      -1 & -1  & -1 & -1 & -1 & \ldots & -1
+    \end{matrix}
+    $};
+    
+    
+  
+\end{tikzpicture}
+\]
+
 
 % For one-column wide figures use
 \begin{figure}
