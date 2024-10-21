@@ -255,17 +255,10 @@ grestore
 \maketitle
 
 \begin{abstract}
-In recent years, the integration of renewable energy sources into electrical grids has become a
-critical area of research due to the increasing need for sustainable
-and resilient energy systems.  To adress the variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
-This significanlty increases the size of the resulting Linear Problem (LP), making them computationally challenging for large scale grids.
-To tackle this, we propose an approach that aggregates time steps to reduce the problem size, followed by an iterative refinement of the aggregation. 
-\textcolor{violet}{Using the previous iteration's solution as a warm start, we introduce methods to select which time intervals to refine at each iteration.
- The first method employs a validation function, which evaluates with a rolling horizon method the feasibility of the aggregated solutions and selects the time interval on which the validation fail. 
- The second method uses the proportion of net power production in each timestep relative to the aggregated time interval.
-  These selection methods are compared against a random interval selection approach. Lastly, we introduce a class of aggregation methods called structure-preserving aggregations, for which we establish sufficient conditions that ensure the aggregated problem is equivalent to the original within a general framework. This shows the versatility of our approach across different problems.
-To generate scenarios for wind and photovoltaic (PV) power output, we use scenario generation techniques that account for temporal dependencies. These dependencies are captured using marginal distributions combined with a Gaussian copula, ensuring the generated scenarios accurately reflect the realistic temporal correlations observed in historical data.}
-%Insert your abstract here. Include keywords, PACS and mathematical
+  In recent years, the integration of renewable energy sources into electrical grids has become a critical area of research due to the increasing need for sustainable and resilient energy systems.  To address the variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
+  This significantly increases the size of the resulting Linear Problem (LP), making it computationally challenging for large scale grids. To tackle this, we propose an approach that aggregates time steps to reduce the problem size, followed by an iterative refinement of the aggregation, in order to converge to the optimal solution.
+  Using the previous iteration's solution as a warm start, we introduce and compare methods to select which time intervals to refine at each iteration.
+  The first method employs a validation function, which evaluates with a Rolling Horizon method the feasibility of the aggregated solutions and selects the time interval on which the validation fails. The second method uses the proportion of net power production in each time step relative to the aggregated time interval. These selection methods are then compared against a random interval selection approach. %Insert your abstract here. Include keywords, PACS and mathematical
 %subject classification numbers as needed.
 \keywords{\textcolor{red}{First keyword \and Second keyword \and need 4-6}}
 % \PACS{PACS code1 \and PACS code2 \and more}
@@ -281,20 +274,26 @@ definition of CEP, ED problems.}\\
 
 The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions. 
 To deal with this variability, a possible solution gaining a lot of traction in recent years is the introduction of an energy storage system relying on hydrogen, converting energy from hydrogen to electricity and vice versa in fuel cells and elecrolyzers. \textcolor{Green}{cite source for hydrogen (eg: EU super investing in it)}. 
-It is of interest to evaluate the optimal solution, in terms of investment plan, to supply the grid along with industrial hydrogen demand in a dependable way. The stochastic nature of the problem though makes it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
-Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \textcolor{green}{\cite{review_math_opt}}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.\\
+It is of interest to evaluate the optimal solution, in terms of investment plan, to supply the grid along with industrial hydrogen demand in a dependable way. The stochastic nature of the problem though makes it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.\\
+
+\indent Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint \textcolor{green}{\cite{review_math_opt}}. While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.\\
 \indent In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP) regarding infrastructure investments: solar and wind farms, fuel cells, hydrolizers, grid upgrades to augment Net Transfer Capacity (NTC) and so on. Nested within the CEP is an Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. 
 The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in \textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{Green}{other examples?}))\\
-\indent The CEP for investment planning requires to look at long time horizons, and on the other hand intra-day variability in generation \textcolor{pink}{is the main complexity driver} for the ED problem, so the time horizon must be modelled by a large quantity of fairly tight time steps. Furthermore, \textcolor{pink}{spacial structure big, even though we ignore it here and just slam everything into country nodes}. 
+\indent The CEP for investment planning requires to look at long time horizons, and on the other hand intra-day variability in generation is the main complexity driver for the ED problem, so the time horizon must be modelled by a large quantity of fairly tight time steps. 
+Furthermore, Large scale grids can be modelled with various degrees of spacial aggregation, as is explored in \textcolor{green}{\href{https://ieeexplore.ieee.org/document/7982024}{source}}, and problem size increases more than linearly with the number of nodes.
 Thus the temporal and spacial characteristics of the model bring the MILP size to increase rapidly. This is especially demanding in the case of SP, since all the variables from the inner ED problem must be reproduced over all scenarios.\\
 \indent To reduce these costs, one possible approach is to use a Rolling Horizon (RH). The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of \textcolor{pink}{check} serving an isolated area in Chile. \textcolor{Green}{other examples of RH used for the ED} A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.\\
-\indent A big drawback of the RH approach is that \textcolor{pink}{Problem: it is not optimal. In fact, \cite{INTRO_short-term}. But better reflects actual decision making based on info that is only available progressively, vs perfect foresigh approach.}\\
-\indent Our work aims to build a hybrid model, exploring the use of the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a stand-alone technique.  \textcolor{red}{Explain better}. 
-Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", through a control system that optimizes on day ahead forecasts.\\
-\indent The model we optimize on in \textcolor{red}{introduce model: components, aim, use Gurobi...}\\
-\indent Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. This has been previously done \textcolor{Green}{here and here and it's not new right?}.\\
+\indent A big drawback of the RH approach is that the solution it provides is not optimal on the whole time horizon. Indeed \textcolor{green}{\cite{INTRO_short-term}} explores the effect of short-term planning with limited foresight compared to perfect foresight optimizaion. On the other hand, the RH approach better reflects actual decision making based on information that is only available progressively, which is the case for the management of energy system planning relying on weather forecasts.\\
 
-This paper is organized as follows: \textcolor{red}{HOW?}\\
+\indent In our work, we build a LP model of a large scale electrical grid powered by wind and solar power generation and supported by hydrogen storage. The LP aims to solve the CEP for the design of the grid, stochastically on the scenarios for the inner ED problem. We present our attempt at dealing with the great computational requirement by building a hybrid model, exploring the use of the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a stand-alone technique.  \\
+\indent Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", through a control system that optimizes on day ahead forecasts.\\\indent Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. This has been previously done \textcolor{Green}{here and here}.\\
+
+This paper is organized as follows. \textcolor{pink}{Section} \ref{section: model} descibes the formulation of the LP problem: the first subsection details the perfect foresight model, and the second adapts the structure from the first to the RH approach. \\
+\indent Section \ref{section:time-resolution} deals with time aggregation: in subsection \ref{?} it is shown that the aggregated LP is a relaxation of the disaggregated one; in the following subsection, the structure of the constraint matrix is explored to derive conditions under which the aggregated solution is feasible for the disaggregated problem. Finally, a method is proposed to iterate through progressively finer time aggregations, exploiting three different methods to select the interval to disaggregate.\\
+\indent Section \ref{4} contains the computational results: some example outputs from the perfect foresight LP are explored, then the three aggregation-iteration methods are compared over time and number of iterations for convergence.\\
+\indent An appendix is given detailing the scenario generation method used to generate the input scenarios for the model. This was achieved using a Gaussian Copula method.
+
+
 
 %\textbf{OLD:}
 %\textcolor{gray}{
@@ -310,9 +309,9 @@ This paper is organized as follows: \textcolor{red}{HOW?}\\
 
 
 
-\section{MODEL}
+\section{MODEL}\label{section: model}
 
-\subsection{LP Formulation}\label{section: LP}
+\subsection{LP Formulation}\label{subsection: LP}
 Our model describes a network in Europe that is to be powered and supplied of hydrogen trough power generated by photovoltaic panels and wind turbines, converted to hydrogen through electrolysis and potentially reconverted in fuel cells.
 
 
@@ -330,7 +329,7 @@ Each node has its generators, hydrogen storage, fuel cells and hydrolyzers, for 
 \subsubsection{Decision Variables}
 
 The main variables that are of interest to the policy maker are, for each location $n$, the number of wind turbines and PV panels to install, as well as hydrogen storage capacity.
-Stored hydrogen is considered to be the total of liquid and gas hydrogen to be stored. Our model does not assume a distinction between the two forms, and considers hydrogen to be immediately ready for long-term storage as soon as it is converted from electricity, as well as instantaneously convertible to electricity in fuel cells at need. \textcolor{Green}{For more detailed models of the management of hydrogen see SOURCES}.\\
+Stored hydrogen is considered to be the total of liquid and gas hydrogen to be stored. Our model does not assume a distinction between the two forms, and considers hydrogen to be immediately ready for long-term storage as soon as it is converted from electricity, as well as instantaneously convertible to electricity in fuel cells at need. For more detailed models of the management of hydrogen see \textcolor{Green}{SOURCES}.\\
 \indent Important values to consider when planning the grid are the power capacity and conversion speed of fuel cells and electrolyzers: variables $mhte_n$ and  $meth_n$ indicate for each location the maximum amount of energy that can be converted at a single time step respectively from hydrogen to electricity and vice versa. These values are essential to estimate in order to design a grid that can effectively accommodate peak production and supply during low production periods.\\
 \indent \textcolor{Green}{explain what NTC is? quote paper.} Existing NTC is estimated through the procedure followed by \hyperlink{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf}{link} \textcolor{pink}{(page 30)}, by collecting data from \hyperlink{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)}{link}. Improvements on the existing capacity for power lines or hydrogen transport infrastructure are considered through variables $addNTC_l$ and $addMH_l$. \textcolor{Green}{cite EU policy to upgrade grid}.\\
 \indent Variables linked to the inner ED problem are indexed by scenario \(j\), time step \(t\), and either node \(n \in \cN\)  or edge $l\in\cE_H$ or $l \in \cE_P$. For the variables pertaining to transmission on an edge, two distinct variables are considered, one for each direction. This way, all variables are set to be non-negative. \textcolor{pink}{This will be relevant for the formulation of the time-aggregated relaxation of the LP problem.}\\
@@ -399,12 +398,12 @@ We also set capital costs for fuel cells and electrolyzers: since hydrogen infra
   \noalign{\smallskip}\hline\noalign{\smallskip}
     cs & \euro& Cost of one Solar Panel at node $n$\\
     cw & \euro & Cost of one Wind Turbine at node $n$\\
-    chte$_n$ & \euro/kg & Conversion cost of \textcolor{Cerulean}{$H_2$} to electricity \\
+    chte$_n$ & \euro/kg & Conversion cost of hydrogen to electricity \\
     ceth$_n$ & \euro/MWh & Conversion cost of electricity to hydrogen \\
     ch$_n$ & \euro/kg & Cost of hydrogen storage capacity\\
     cH\_edge$_l$ & \euro & Cost of transferring 1kg of hydrogen through edge $l\in\cE_H$\\
     cNTC$_l$ & \euro/MWh & Cost of adding NTC to line $l\in\cE_P$\\
-    cMH$_l$ &\euro/kg& Cost of adding $H_2$ transfer capacity to line $l\in\cE_H$\\
+    cMH$_l$ &\euro/kg& Cost of adding hydrogen transfer capacity to line $l\in\cE_H$\\
     cmhte & \euro/kg & Cost of needed $HtE$ capacity per unit\\
     cmeth & \euro/MWh&Cost of needed $EtH$ capacity per unit\\
   \noalign{\smallskip}\hline\noalign{\smallskip}
@@ -416,7 +415,7 @@ We also set capital costs for fuel cells and electrolyzers: since hydrogen infra
     Mns$_n$ & - & Maximum number of solar panels installable at node $n$\\ 
     Mnw$_n$ & - & Maximum number of wind turbines that can be installed \\ 
     Mnh$_n$ & kg & Maximum hydrogen storage capacity \\
-    Mhte$_n$ & kg & Upper bound for \textcolor{Cerulean}{\(mhte\)} \\ 
+    Mhte$_n$ & kg & Upper bound for \(mhte\) \\ 
     Meth$_n$ & MWh & Upper bound for \(meth\) \\
   \noalign{\smallskip}\hline\noalign{\smallskip}
     ES$_{j,t,n}$ & MWh & Power output of a single solar panel\\
@@ -502,14 +501,17 @@ This is not true anymore once the node is taken out of isolation: at each moment
 \indent In order to operate a multi-node grid, we propose to use the Rolling Horizon optimization technique. 
 The basic idea, as described in \textcolor{green}{source} is to divide the time horizon into smaller periods and to progressively optimize on each period, passing the variables of the solved periods as fixed to the next. In our case, we are interested in periods of length one day each, representing the knowledge of future that is given to the grid administrator by weather forecasts.  \\
 
-Recall that when optimizing with the LP model described in \textcolor{pink}{section \ref{section: LP}}, the solutions to the CEP and to the ED problem for all train scenarios $j\in J_{train}$ are given concurrently. Consider now a test scenario with generation and load time series $ES_{t,n}, EW_{t,n},$ $EL_{t,n}, HL_{t,n}$ (the test scenario can be in $J_{train}$ or not).
-\color{red}
-\begin{itemize}
-\item start with $H_{0,n} = \max_{j\in J_{train}} H_{j,0,n}$\\
-\item for each day in the time horizon, optimize the inner ED problem for that day
-\item set the hydrogen storage levels of the last time step of the day equal to the ones for the first time step of the next day.
+Recall that when optimizing with the LP model described in \textcolor{pink}{section \ref{section: LP}}, the solutions to the CEP and to the ED problem for all train scenarios $j\in J_{train}$ are given concurrently. Consider now a test scenario with generation and load time series $ES^{test}_{t,n}, EW^{test}_{t,n},$ $EL^{test}_{t,n}, HL^{test}_{t,n}$ (the test scenario can be in $J_{train}$ or not).
 
-\end{itemize}\color{black}
+The RH algorithm is as follows:
+\begin{itemize}
+\item[$\bullet$] Start with $H_{0,n}^{test} = \max_{j\in J_{train}} H_{j,0,n}$.
+\item[$\bullet$] For each day in the time horizon:
+\begin{itemize}
+\item Optimize the inner ED problem for that day. If the problem is infeasible, break.
+\item Set the hydrogen storage levels of the last time step of the day equal to the ones for the first time step of the next day.
+\end{itemize}
+\end{itemize}
 
 The daily ED problem is formulated in a similar way to the LP problem described in section \ref{section: LP}. The differences are that the CEP variables ($ns$, $nh$,...) are fixed, and the hydrogen storage level doesn't loop as it did in the year, but it connects to the following day. \\
 
@@ -528,7 +530,7 @@ Another option would be to assign a slight negative cost to $H^{test}_{t,n}$, to
 
 
 We observe that the overall solution to the ED problem throughout the full time horizon obtained by means of the RH method is not necessarily optimal, neither with nor without the added loss function. However, some results can be obtained regarding the distance of such solution from the optimal of the ED problem. Indeed:
-\textcolor{red}{The first step ensures that conditions 1-4 from \textcolor{green}{cite paper} are satisfied. Thus we have near optimality guarantee....}\\
+\textcolor{pink}{The first step ensures that conditions 1-4 from \textcolor{green}{cite paper} are satisfied. Thus we have near optimality guarantee....}\\
 %On the other hand, we observe that no information is given on whether the CEP solution is optimal on the test scenario: we can only evaluate feasibility. For  
 For a solution to the ED problem that is closer still to the perfect foresight optimal, more refined RH tecniques can be used. For example, optimizing on two-day forecasts with a daily refresh rate, as done in \textcolor{green}{source} can improve the quality of the solution. However, for our purposes, being able to check for feasibility with less than optimal management is sufficient.
 
@@ -543,7 +545,7 @@ For a solution to the ED problem that is closer still to the perfect foresight o
 \section{Time Resolution}\label{section:time-resolution}
 
 
-The scenarios generated from our gathered data have a time resolution of one hour. \textcolor{red}{where have I said this for the first time?}. Such resolution is enough to capture the daily variability of power generation and load. However, the number of variables and constraints grows linearly with the number of time steps, making the model intractable with just a few scenarios.
+The scenarios generated from our gathered data have a time resolution of one hour. Such resolution is enough to capture the daily variability of power generation and load. However, the number of variables and constraints grows linearly with the number of time steps, making the model intractable with just a few scenarios.
 Moreover, when optimizing over a full year, considering every hour of every day is partly redundant, as each day will be similar to neighboring days. Yet, simply considering a sample of days for each season might undermine long-term storage capacity representation. Thus we are interested in finding more efficient ways to deal with the time dimension in our problem. \\
 
 \subsection{Time aggregation as model relaxation}
@@ -569,15 +571,15 @@ Observe that all variables with non zero cost are defined as greater or equal to
 
 The above discussion holds in general in the case of any two partitions $P$ and $P'$ where $P'$ is finer than $P$.
 We can summarize the above in the following observation:
-\color{pink}
 \begin{observation}
 Let $P$ and $P'$ be two time partitions of $\cT=\{1...T\}$ such that $P'$ is finer than $P$. Let \(V_{P} \subset \bR^{N_{P}}\) and \(V_{P'} \subset \bR^{N_{P'}}\) be the spaces of feasible solutions of \(CEP_{P}\) and \(CEP_{P'}\), respectively. Then there exists a linear map \(L: \bR^{N_{P'}} \to \bR^{N_{P}}\) such that \(L(V_{P'}) \subset V_{P}\) and \(c_{P}(L(x)) = c_{P'}(x)\), where \(c_{P}\) is the cost function of \(CEP_{P}\) and \(c_{P'}\) is the cost function of \(CEP_{P'}\).
-Then the optimal solution to $CEP_{P}$ provides a lower bound for $CEP_{P'}$
 \end{observation}
-\color{black}
+From this observation follows that:
+\begin{proposition}
+  Let $P$ and $P'$ be two time partitions of $\cT=\{1...T\}$ such that $P'$ is finer than $P$. Then the optimal solution to $CEP_{P}$ provides a lower bound for $CEP_{P'}$.
+\end{proposition}
 
-
-\textcolor{red}{To clarify what time aggregation implies on the model constraints, we express the LP problem in matrix form, in order to highlight its inner structure.}
+To clarify what time aggregation implies on the model constraints, we express the LP problem in matrix form, in order to highlight its inner structure.
 %Varying time aggregation can be viewed as performing row and column aggregation on the original linear programming (LP) model. Consider the following general linear problem:
 The goal is to write our problem in standard form:
 \begin{align*}
@@ -794,7 +796,7 @@ To evaluate the methodologies presented in this paper, we examine a  5-node netw
  The computational tests were conducted on an Intel(R) Core(TM) i7-13700H CPU @ 2.40GHz with 16 GB of RAM.
 
 Plot \ref{fig:rho_vs_average} illustrates the cost variation at each iteration using the \(\rho\) selection method compared to random interval selection.
- The \(\rho\) selection method demonstrates a faster increase in cost increase than the random selection method, with comparable optimization times: 174 seconds for the \(\rho\) selection method 
+ The \(\rho\) selection method demonstrates a faster increase in cost than the random selection method, with comparable optimization times: 174 seconds for the \(\rho\) selection method 
  and 155 seconds for the random selection method over 10 iterations.
 \begin{figure}[htbp]
   \centering
@@ -803,8 +805,7 @@ Plot \ref{fig:rho_vs_average} illustrates the cost variation at each iteration u
   \label{fig:rho_vs_average}
 \end{figure}
 In plot \ref{fig:val_vs_average}, we compare the cost variation at each iteration using the validation function for interval refinement against the random interval selection method. 
-The results indicate that the former method yields a significantly faster increase, implying quicker convergence to the optimal solution. However, this approach incurs greater computational time: \textcolor{red}{many seconds s}. It is worth noting that while both the \(\rho\) and random iteration methods continue even upon encountering a feasible solut
-ion for the original problem, the validation function iteration may halt before reaching the maximum iteration limit if the current solution is feasible, thereby being optimal for the original problem.
+The results indicate that the former method yields a significantly faster increase, implying quicker convergence to the optimal solution. However, this approach incurs greater computational time: \textcolor{red}{many seconds s}. It is worth noting that while both the \(\rho\) and random iteration methods continue even upon encountering a feasible solution for the original problem, the validation function iteration may halt before reaching the maximum iteration limit if the current solution is feasible, thereby being optimal for the original problem.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/val_vs_average2.png}
