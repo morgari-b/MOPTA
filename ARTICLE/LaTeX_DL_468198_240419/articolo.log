@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  21 OCT 2024 14:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  21 OCT 2024 14:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1072,42 +1072,42 @@ Overfull \hbox (98.62402pt too wide) detected at line 740
 
 [14]
 
-LaTeX Warning: Reference `' on page 15 undefined on input line 788.
+LaTeX Warning: Reference `' on page 15 undefined on input line 789.
 
 
-LaTeX Warning: Reference `' on page 15 undefined on input line 788.
+LaTeX Warning: Reference `' on page 15 undefined on input line 789.
 
 
-LaTeX Warning: Reference `subsec:scenarios' on page 15 undefined on input line 788.
+LaTeX Warning: Reference `subsec:scenarios' on page 15 undefined on input line 790.
 
 <images/rho_vas_average2.png, id=175, 739.76375pt x 451.6875pt>
 File: images/rho_vas_average2.png Graphic file (type png)
 <use images/rho_vas_average2.png>
-Package pdftex.def Info: images/rho_vas_average2.png  used on input line 793.
+Package pdftex.def Info: images/rho_vas_average2.png  used on input line 798.
 (pdftex.def)             Requested size: 270.40103pt x 165.10234pt.
 <images/val_vs_average2.png, id=177, 832.10875pt x 451.6875pt>
 File: images/val_vs_average2.png Graphic file (type png)
 <use images/val_vs_average2.png>
-Package pdftex.def Info: images/val_vs_average2.png  used on input line 800.
+Package pdftex.def Info: images/val_vs_average2.png  used on input line 807.
 (pdftex.def)             Requested size: 338.0pt x 183.47691pt.
 
 
 [15]
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 837.
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 844.
  (c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 837.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 844.
 
 
-LaTeX Warning: Citation `weibullwind' on page 16 undefined on input line 838.
+LaTeX Warning: Citation `weibullwind' on page 16 undefined on input line 845.
 
 
-LaTeX Warning: Citation `betaPV' on page 16 undefined on input line 839.
+LaTeX Warning: Citation `betaPV' on page 16 undefined on input line 846.
 
 
-LaTeX Warning: Citation `GaussCopula' on page 16 undefined on input line 843.
+LaTeX Warning: Citation `GaussCopula' on page 16 undefined on input line 850.
 
 
 
@@ -1116,17 +1116,17 @@ LaTeX Warning: Citation `GaussCopula' on page 16 undefined on input line 843.
 [17 <./images/val_vs_average2.png>]
 
 [18]
-Underfull \hbox (badness 10000) in paragraph at lines 907--910
+Underfull \hbox (badness 10000) in paragraph at lines 914--917
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 915--917
+Underfull \hbox (badness 10000) in paragraph at lines 922--924
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 919--920
+Underfull \hbox (badness 10000) in paragraph at lines 926--927
 
  []
 
@@ -1162,7 +1162,7 @@ pdfTeX warning (dest): name{https://transparency.entsoe.eu/transmission-domain/p
 pdfTeX warning (dest): name{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf} has been referenced but does not exist, replaced by a fixed one
 
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (19 pages, 497117 bytes).
+Output written on articolo.pdf (19 pages, 497096 bytes).
 PDF statistics:
  292 PDF objects out of 1000 (max. 8388607)
  234 compressed objects within 3 object streams
