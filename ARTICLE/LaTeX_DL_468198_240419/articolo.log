@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  21 OCT 2024 18:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  21 OCT 2024 18:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -769,7 +769,8 @@ File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count352
 \l__pdf_internal_box=\box77
-) (./articolo.aux)
+)
+No file articolo.aux.
 \openout1 = `articolo.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 222.
@@ -790,7 +791,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 222.
 LaTeX Font Info:    ... okay on input line 222.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 222.
 LaTeX Font Info:    ... okay on input line 222.
- (c:/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+(c:/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count353
 \scratchdimen=\dimen335
@@ -814,10 +815,8 @@ Package pgfplots Warning: running in backwards compatibility mode (unsuitable ti
  on input line 222.
 
 Package hyperref Info: Link coloring OFF on input line 222.
-(./articolo.out) (./articolo.out)
 \@outlinefile=\write4
 \openout4 = `articolo.out'.
-
 
 
 Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 222.
@@ -858,280 +857,378 @@ Please supply a shorter form with \titlerunning prior to \maketitle
 
 
 [1{c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}]
-
-[2]
-Overfull \hbox (6.0568pt too wide) in paragraph at lines 279--280
+Overfull \hbox (6.0568pt too wide) in paragraph at lines 272--273
 \OT1/ptm/b/n/10 Context; lit-er-a-ture overview. Small in-tro-duc-tion on LP/MIP. Def-i-ni-tion of stochas-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 279--280
+Underfull \hbox (badness 10000) in paragraph at lines 272--273
 
  []
 
 
-LaTeX Warning: Citation `EU_context' on page 3 undefined on input line 282.
+LaTeX Warning: Citation `EU_context' on page 2 undefined on input line 275.
 
 
-LaTeX Warning: Citation `INTRO_isolated_MIP' on page 3 undefined on input line 287.
-
-
-LaTeX Warning: Citation `INTRO_Glomb' on page 3 undefined on input line 290.
-
-
-LaTeX Warning: Citation `INTRO_Palma-Behnke' on page 3 undefined on input line 290.
-
-
-LaTeX Warning: Citation `INTRO_karlsruhe' on page 3 undefined on input line 290.
-
-
-LaTeX Warning: Citation `INTRO_short-term' on page 3 undefined on input line 291.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 282--296
+Underfull \hbox (badness 10000) in paragraph at lines 275--278
 
  []
+
+
+LaTeX Warning: Citation `review_math_opt' on page 2 undefined on input line 279.
+
+
+LaTeX Warning: Citation `INTRO_isolated_MIP' on page 2 undefined on input line 281.
+
+
+LaTeX Warning: Citation `INTRO_Glomb' on page 2 undefined on input line 285.
+
+
+LaTeX Warning: Citation `INTRO_Palma-Behnke' on page 2 undefined on input line 285.
+
+
+LaTeX Warning: Citation `INTRO_karlsruhe' on page 2 undefined on input line 285.
+
+
+LaTeX Warning: Citation `INTRO_short-term' on page 2 undefined on input line 286.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 279--287
+
+ []
+
+
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 288--290
+
+ []
+
+
+LaTeX Warning: Reference `section: model' on page 3 undefined on input line 291.
+
+
+LaTeX Warning: Reference `section:time-resolution' on page 3 undefined on input line 292.
+
+
+LaTeX Warning: Reference `?' on page 3 undefined on input line 292.
+
+
+LaTeX Warning: Reference `4' on page 3 undefined on input line 293.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 297--298
+
+LaTeX Warning: Citation `Gurobi' on page 4 undefined on input line 323.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 331--336
 
  []
 
 
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 332--337
 
- []
+LaTeX Warning: Reference `table_vars' on page 5 undefined on input line 337.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 376--379
+Underfull \hbox (badness 10000) in paragraph at lines 375--378
 
  []
 
 
 
 [5]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 381.
- (c:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+
+LaTeX Warning: Citation `European_H2_Market_landscape' on page 6 undefined on input line 380.
+
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 380.
+(c:/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 
-LaTeX Warning: Citation `DAWOOD' on page 6 undefined on input line 382.
+LaTeX Warning: Citation `DAWOOD' on page 6 undefined on input line 381.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 380--385
-
- []
-
-
-
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 386--387
+Underfull \hbox (badness 10000) in paragraph at lines 379--384
 
  []
 
 
-Underfull \hbox (badness 10000) in alignment at lines 427--427
+LaTeX Warning: Reference `generation' on page 6 undefined on input line 385.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 385--386
+
+ []
+
+
+LaTeX Warning: Reference `table_param' on page 6 undefined on input line 387.
+
+
+Underfull \hbox (badness 10000) in alignment at lines 426--426
 [][][] 
  []
 
 
-
-[7]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
+[6]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[7]
+
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 496--498
+
+LaTeX Warning: Reference `section: LP' on page 9 undefined on input line 495.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 495--497
+
+ []
+
+
+LaTeX Warning: Citation `deterministic' on page 9 undefined on input line 498.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 498--500
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 501--503
 
  []
 
 
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 499--501
+
+LaTeX Warning: Reference `section: LP' on page 10 undefined on input line 504.
+
+
+LaTeX Warning: Reference `section: LP' on page 10 undefined on input line 516.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 516--517
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 502--504
+Underfull \hbox (badness 10000) in paragraph at lines 521--522
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 508--509
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 514--515
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 519--520
+Underfull \hbox (badness 10000) in paragraph at lines 528--530
 
  []
 
 
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 526--528
+Underfull \hbox (badness 10000) in paragraph at lines 548--550
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 546--548
+Underfull \hbox (badness 10000) in paragraph at lines 561--563
 
  []
 
 
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 559--561
+Underfull \hbox (badness 10000) in paragraph at lines 567--571
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 565--569
+LaTeX Warning: Reference `section: LP' on page 12 undefined on input line 591.
 
- []
+
+LaTeX Warning: Reference `constr_H' on page 12 undefined on input line 592.
+
+
+LaTeX Warning: Reference `constr_nh' on page 12 undefined on input line 592.
+
+
+LaTeX Warning: Reference `constr_nh' on page 12 undefined on input line 596.
+
+
+LaTeX Warning: Reference `constr_nh' on page 12 undefined on input line 596.
 
 
 
 [12]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 660.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 662.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 660.
-<constraint_matrix.jpeg, id=144, 2007.5pt x 1505.625pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 662.
+<constraint_matrix.jpeg, id=102, 2007.5pt x 1505.625pt>
 File: constraint_matrix.jpeg Graphic file (type jpg)
 <use constraint_matrix.jpeg>
-Package pdftex.def Info: constraint_matrix.jpeg  used on input line 703.
+Package pdftex.def Info: constraint_matrix.jpeg  used on input line 705.
 (pdftex.def)             Requested size: 253.5pt x 190.1095pt.
-<single_block.jpeg, id=145, 2007.5pt x 1137.24875pt>
+<single_block.jpeg, id=103, 2007.5pt x 1137.24875pt>
 File: single_block.jpeg Graphic file (type jpg)
 <use single_block.jpeg>
-Package pdftex.def Info: single_block.jpeg  used on input line 714.
+Package pdftex.def Info: single_block.jpeg  used on input line 716.
 (pdftex.def)             Requested size: 253.5pt x 143.59604pt.
 
 
-LaTeX Warning: Reference `eq:LP' on page 13 undefined on input line 738.
+[13 <./constraint_matrix.jpeg>]
+
+LaTeX Warning: Reference `eq:LP' on page 14 undefined on input line 740.
 
 
-LaTeX Warning: Reference `eq:LPaggr' on page 13 undefined on input line 738.
+LaTeX Warning: Reference `eq:LPaggr' on page 14 undefined on input line 740.
 
 
-LaTeX Warning: Reference `eq:LPaggr' on page 13 undefined on input line 742.
+LaTeX Warning: Reference `eq:LPaggr' on page 14 undefined on input line 744.
 
 
-
-[13]
-Overfull \hbox (0.70816pt too wide) in paragraph at lines 745--746
+Overfull \hbox (0.70816pt too wide) in paragraph at lines 747--748
 []\OT1/ptm/m/it/10 If $\OML/ztmcm/m/it/10 ^^Z[] \OMS/ztmcm/m/n/10 ^^U \OT1/ztmcm/m/n/10 0$ \OT1/ptm/m/it/10 and $\OML/ztmcm/m/it/10 x \OMS/ztmcm/m/n/10 2 \U/msb/m/n/10 R[]$ \OT1/ptm/m/it/10 sat-is-fies $\OML/ztmcm/m/it/10 x[] \OT1/ztmcm/m/n/10 = []$ \OT1/ptm/m/it/10 and $\OML/ztmcm/m/it/10 x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 ^^Z[][]$ \OT1/ptm/m/it/10 for all $\OML/ztmcm/m/it/10 C \OMS/ztmcm/m/n/10 2 []\OT1/ztmcm/m/n/10 ([])[]$\OT1/ptm/m/it/10 ,
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[14 <./single_block.jpeg>]
+
+LaTeX Warning: Reference `ob:aggrconstr' on page 15 undefined on input line 775.
 
 
-
-[14 <./constraint_matrix.jpeg> <./single_block.jpeg>]
-
-LaTeX Warning: Reference `eq:LPunaggr' on page 15 undefined on input line 781.
+LaTeX Warning: Reference `ob:aggrconstr' on page 15 undefined on input line 783.
 
 
-LaTeX Warning: Reference `eq:LPaggr' on page 15 undefined on input line 785.
+LaTeX Warning: Reference `eq:LPunaggr' on page 15 undefined on input line 783.
 
 
-LaTeX Warning: Reference `eq:LP' on page 15 undefined on input line 787.
+LaTeX Warning: Reference `eq:LPaggr' on page 15 undefined on input line 787.
+
+
+LaTeX Warning: Reference `eq:LP' on page 15 undefined on input line 789.
+
+
+LaTeX Warning: Reference `prop:xaggfeasible' on page 15 undefined on input line 820.
+
+
+LaTeX Warning: Reference `eq:LPaggr' on page 15 undefined on input line 820.
 
 
 
 [15]
 
-LaTeX Warning: Reference `eq:LPaggr' on page 16 undefined on input line 818.
+LaTeX Warning: Reference `ob:costpreserving' on page 16 undefined on input line 824.
 
 
-LaTeX Warning: Reference `ob:costpreserving' on page 16 undefined on input line 822.
+LaTeX Warning: Reference `eq:LP' on page 16 undefined on input line 825.
 
 
-LaTeX Warning: Reference `eq:LP' on page 16 undefined on input line 823.
-
-
-Overfull \hbox (98.62402pt too wide) detected at line 828
+Overfull \hbox (98.62402pt too wide) detected at line 830
 [][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
  []
+
+
+LaTeX Warning: Reference `eq:delta_hydrogen_constraints' on page 16 undefined on input line 857.
+
+
+LaTeX Warning: Reference `eq:delta_hydrogen_constraints' on page 16 undefined on input line 860.
+
+
+LaTeX Warning: Reference `prop:xaggfeasible' on page 16 undefined on input line 862.
+
+
+LaTeX Warning: Reference `obs:cep_agg_feasible' on page 16 undefined on input line 869.
 
 
 
 [16]
 
-LaTeX Warning: Reference `' on page 17 undefined on input line 877.
+LaTeX Warning: Reference `' on page 17 undefined on input line 879.
 
 
-LaTeX Warning: Reference `' on page 17 undefined on input line 877.
+LaTeX Warning: Reference `' on page 17 undefined on input line 879.
 
 
-LaTeX Warning: Reference `subsec:scenarios' on page 17 undefined on input line 878.
+LaTeX Warning: Reference `subsec:scenarios' on page 17 undefined on input line 880.
 
-<images/rho_vas_average2.png, id=186, 739.76375pt x 451.6875pt>
+
+LaTeX Warning: Reference `fig:rho_vs_average' on page 17 undefined on input line 883.
+
+<images/rho_vas_average2.png, id=133, 739.76375pt x 451.6875pt>
 File: images/rho_vas_average2.png Graphic file (type png)
 <use images/rho_vas_average2.png>
-Package pdftex.def Info: images/rho_vas_average2.png  used on input line 886.
+Package pdftex.def Info: images/rho_vas_average2.png  used on input line 888.
 (pdftex.def)             Requested size: 270.40103pt x 165.10234pt.
-<images/val_vs_average2.png, id=188, 832.10875pt x 451.6875pt>
+
+LaTeX Warning: Reference `fig:val_vs_average' on page 17 undefined on input line 892.
+
+<images/val_vs_average2.png, id=134, 832.10875pt x 451.6875pt>
 File: images/val_vs_average2.png Graphic file (type png)
 <use images/val_vs_average2.png>
-Package pdftex.def Info: images/val_vs_average2.png  used on input line 895.
+Package pdftex.def Info: images/val_vs_average2.png  used on input line 896.
 (pdftex.def)             Requested size: 338.0pt x 183.47691pt.
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 932.
-(c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
+
+
+[17 <./images/rho_vas_average2.png>]
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 933.
+ (c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 932.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 933.
 
 
-LaTeX Warning: Citation `weibullwind' on page 17 undefined on input line 933.
+LaTeX Warning: Citation `weibullwind' on page 18 undefined on input line 934.
 
 
-LaTeX Warning: Citation `betaPV' on page 17 undefined on input line 934.
+LaTeX Warning: Citation `betaPV' on page 18 undefined on input line 935.
 
 
-LaTeX Warning: Citation `GaussCopula' on page 17 undefined on input line 938.
+LaTeX Warning: Citation `30y_gen' on page 18 undefined on input line 936.
 
 
-Underfull \vbox (badness 4713) has occurred while \output is active []
+LaTeX Warning: Citation `GaussCopula' on page 18 undefined on input line 939.
 
 
 
-[17]
-
-[18 <./images/rho_vas_average2.png> <./images/val_vs_average2.png>]
+[18 <./images/val_vs_average2.png>]
 
 [19]
-Underfull \hbox (badness 10000) in paragraph at lines 1002--1005
+Underfull \hbox (badness 10000) in paragraph at lines 1003--1006
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1010--1012
+LaTeX Warning: Reference `subsection: weib estim' on page 20 undefined on input line 1012.
+
+
+LaTeX Warning: Reference `subsection: beta estim' on page 20 undefined on input line 1012.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1011--1013
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1015--1016
 
  []
 
 
 
 [20]
-Underfull \hbox (badness 10000) in paragraph at lines 1014--1015
-
- []
-
-
 
 [21] (./articolo.aux)
  ***********
@@ -1142,14 +1239,23 @@ L3 programming layer <2024-05-27>
 
 LaTeX Warning: There were undefined references.
 
-Package rerunfilecheck Info: File `articolo.out' has not changed.
-(rerunfilecheck)             Checksum: AF9DBC23ABA2F63E26CDCB5890C8ABD5;619.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `articolo.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `articolo.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  AF9DBC23ABA2F63E26CDCB5890C8ABD5;619.
  ) 
 Here is how much of TeX's memory you used:
- 34337 strings out of 473584
- 785946 string characters out of 5732363
- 1949908 words of memory out of 5000000
- 56529 multiletter control sequences out of 15000+600000
+ 34327 strings out of 473584
+ 785800 string characters out of 5732363
+ 1948908 words of memory out of 5000000
+ 56524 multiletter control sequences out of 15000+600000
  604421 words of font info for 137 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,13n,107p,1842b,649s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1160,10 +1266,10 @@ pdfTeX warning (dest): name{https://transparency.entsoe.eu/transmission-domain/p
 pdfTeX warning (dest): name{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf} has been referenced but does not exist, replaced by a fixed one
 
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (21 pages, 500818 bytes).
+Output written on articolo.pdf (21 pages, 500058 bytes).
 PDF statistics:
- 301 PDF objects out of 1000 (max. 8388607)
- 241 compressed objects within 3 object streams
- 82 named destinations out of 1000 (max. 500000)
- 81 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 249 PDF objects out of 1000 (max. 8388607)
+ 196 compressed objects within 2 object streams
+ 83 named destinations out of 1000 (max. 500000)
+ 33 words of extra memory for PDF output out of 10000 (max. 10000000)
 
