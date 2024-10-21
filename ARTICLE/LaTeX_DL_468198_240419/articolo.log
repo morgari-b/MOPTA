@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  21 OCT 2024 15:03
+=======
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  21 OCT 2024 14:59
+>>>>>>> 8b84003 (modifichine)
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -883,6 +887,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 279--280
 LaTeX Warning: Citation `EU_context' on page 3 undefined on input line 282.
 
 
+<<<<<<< HEAD
 LaTeX Warning: Citation `INTRO_isolated_MIP' on page 3 undefined on input line 285.
 
 
@@ -896,12 +901,28 @@ LaTeX Warning: Citation `INTRO_karlsruhe' on page 3 undefined on input line 288.
 
 
 LaTeX Warning: Citation `INTRO_short-term' on page 3 undefined on input line 289.
+=======
+LaTeX Warning: Citation `INTRO_isolated_MIP' on page 2 undefined on input line 287.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 282--294
+LaTeX Warning: Citation `INTRO_Glomb' on page 2 undefined on input line 290.
+
+
+LaTeX Warning: Citation `INTRO_Palma-Behnke' on page 2 undefined on input line 290.
+
+
+LaTeX Warning: Citation `INTRO_karlsruhe' on page 2 undefined on input line 290.
+
+
+LaTeX Warning: Citation `INTRO_short-term' on page 2 undefined on input line 291.
+>>>>>>> 8b84003 (modifichine)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 282--296
 
  []
 
+<<<<<<< HEAD
 
 
 [3]
@@ -913,14 +934,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 295--296
 
 [4]
 Underfull \hbox (badness 10000) in paragraph at lines 330--335
+=======
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 297--298
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 332--337
+>>>>>>> 8b84003 (modifichine)
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 374--377
+Underfull \hbox (badness 10000) in paragraph at lines 376--379
 
  []
 
+<<<<<<< HEAD
 
 
 [5]
@@ -930,12 +961,22 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 
 LaTeX Warning: Citation `DAWOOD' on page 6 undefined on input line 380.
+=======
+[4]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 381.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+
+LaTeX Warning: Citation `DAWOOD' on page 5 undefined on input line 382.
+>>>>>>> 8b84003 (modifichine)
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 378--383
+Underfull \hbox (badness 10000) in paragraph at lines 380--385
 
  []
 
+<<<<<<< HEAD
 
 
 [6]
@@ -1171,3 +1212,88 @@ PDF statistics:
  80 named destinations out of 1000 (max. 500000)
  81 words of extra memory for PDF output out of 10000 (max. 10000000)
 
+=======
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 386--387
+
+ []
+
+/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex:427: Undefined control sequence.
+\GenericError  ...                                
+                                                    #4  \errhelp \@err@     ...
+l.427 \end{tabularx}
+                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex:427: Undefined control sequence.
+\GenericError  ...                                
+                                                  \let \@err@               ...
+l.427 \end{tabularx}
+                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex:427: Undefined control sequence.
+\GenericError  ...                                
+                                                  \@empty \def \MessageBreak...
+l.427 \end{tabularx}
+                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex:427: Undefined control sequence.
+\GenericError  ...                                
+                                                     \endgroup 
+l.427 \end{tabularx}
+                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex:427: Package xcolor Error: Undefined color `Ceru\protect \relax $mhte\protect \relax \protect \begingroup \immediate \begingroup \def \let {\afterassignment \endgroup \toks@ }\afterassignment \let \count@ \@unused   \def \MessageBreak  
+ \let \protect \edef  Your command was ignored.\MessageBreak Type  I <command'.
+
+See the xcolor package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.427 \end{tabularx}
+                    
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex:427: Missing } inserted.
+<inserted text> 
+                }
+l.427 \end{tabularx}
+                    
+I've put in what seems to be necessary to fix
+the current column of the current alignment.
+Try to go on, since this might almost work.
+
+/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex:427: Misplaced alignment tab character &.
+<inserted text> ...or {Ceru\(mhte\)} \\ Meth$_n$ &
+                                                   MWh & Upper bound for \(m...
+l.427 \end{tabularx}
+                    
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_2
+>>>>>>> 8b84003 (modifichine)
