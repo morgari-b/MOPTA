@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  21 OCT 2024 08:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  21 OCT 2024 13:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -909,50 +909,58 @@ Underfull \hbox (badness 10000) in paragraph at lines 295--296
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 330--337
+Underfull \hbox (badness 10000) in paragraph at lines 330--335
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 374--377
+
+ []
+
+[4]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 379.
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 
-LaTeX Warning: Citation `DAWOOD' on page 4 undefined on input line 380.
+LaTeX Warning: Citation `DAWOOD' on page 5 undefined on input line 380.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 376--383
+Underfull \hbox (badness 10000) in paragraph at lines 378--383
 
  []
 
-[4] [5]
+[5]
 Underfull \hbox (badness 10000) in paragraph at lines 384--385
 
  []
 
 
-Underfull \hbox (badness 10000) in alignment at lines 426--426
+Underfull \hbox (badness 10000) in alignment at lines 425--425
 [][][] 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [6]
+[6]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
-Underfull \hbox (badness 10000) in paragraph at lines 495--499
+Underfull \hbox (badness 10000) in paragraph at lines 494--496
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 503--504
+Underfull \hbox (badness 10000) in paragraph at lines 497--499
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 509--510
+Underfull \hbox (badness 10000) in paragraph at lines 500--502
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 506--507
 
  []
 
@@ -962,123 +970,130 @@ Underfull \hbox (badness 10000) in paragraph at lines 512--513
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 514--517
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 530--532
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 543--545
+Underfull \hbox (badness 10000) in paragraph at lines 524--526
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 549--553
+Underfull \hbox (badness 10000) in paragraph at lines 544--546
 
  []
 
 [10]
-<constraint_matrix.jpeg, id=130, 2007.5pt x 1505.625pt>
+Underfull \hbox (badness 10000) in paragraph at lines 557--559
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 563--567
+
+ []
+
+[11]
+<constraint_matrix.jpeg, id=140, 2007.5pt x 1505.625pt>
 File: constraint_matrix.jpeg Graphic file (type jpg)
 <use constraint_matrix.jpeg>
-Package pdftex.def Info: constraint_matrix.jpeg  used on input line 601.
+Package pdftex.def Info: constraint_matrix.jpeg  used on input line 615.
 (pdftex.def)             Requested size: 253.5pt x 190.1095pt.
-<single_block.jpeg, id=131, 2007.5pt x 1137.24875pt>
+<single_block.jpeg, id=141, 2007.5pt x 1137.24875pt>
 File: single_block.jpeg Graphic file (type jpg)
 <use single_block.jpeg>
-Package pdftex.def Info: single_block.jpeg  used on input line 612.
+Package pdftex.def Info: single_block.jpeg  used on input line 626.
 (pdftex.def)             Requested size: 253.5pt x 143.59604pt.
- [11 <./constraint_matrix.jpeg>]
 
-LaTeX Warning: Reference `eq:LP' on page 12 undefined on input line 636.
+Underfull \vbox (badness 3579) has occurred while \output is active []
 
+ [12 <./constraint_matrix.jpeg> <./single_block.jpeg>]
 
-LaTeX Warning: Reference `eq:LPaggr' on page 12 undefined on input line 636.
-
-
-LaTeX Warning: Reference `eq:LPaggr' on page 12 undefined on input line 640.
+LaTeX Warning: Reference `eq:LP' on page 13 undefined on input line 650.
 
 
-Overfull \hbox (0.70816pt too wide) in paragraph at lines 643--644
+LaTeX Warning: Reference `eq:LPaggr' on page 13 undefined on input line 650.
+
+
+LaTeX Warning: Reference `eq:LPaggr' on page 13 undefined on input line 654.
+
+
+Overfull \hbox (0.70816pt too wide) in paragraph at lines 657--658
 []\OT1/ptm/m/it/10 If $\OML/ztmcm/m/it/10 ^^Z[] \OMS/ztmcm/m/n/10 ^^U \OT1/ztmcm/m/n/10 0$ \OT1/ptm/m/it/10 and $\OML/ztmcm/m/it/10 x \OMS/ztmcm/m/n/10 2 \U/msb/m/n/10 R[]$ \OT1/ptm/m/it/10 sat-is-fies $\OML/ztmcm/m/it/10 x[] \OT1/ztmcm/m/n/10 = []$ \OT1/ptm/m/it/10 and $\OML/ztmcm/m/it/10 x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 ^^Z[][]$ \OT1/ptm/m/it/10 for all $\OML/ztmcm/m/it/10 C \OMS/ztmcm/m/n/10 2 []\OT1/ztmcm/m/n/10 ([])[]$\OT1/ptm/m/it/10 ,
  []
 
-[12 <./single_block.jpeg>]
-
-LaTeX Warning: Reference `eq:LPunaggr' on page 13 undefined on input line 679.
-
-
-LaTeX Warning: Reference `eq:LPaggr' on page 13 undefined on input line 683.
-
-
-LaTeX Warning: Reference `eq:LP' on page 13 undefined on input line 685.
-
-
-LaTeX Warning: Reference `eq:LPaggr' on page 13 undefined on input line 716.
-
 [13]
 
-LaTeX Warning: Reference `ob:costpreserving' on page 14 undefined on input line 720.
+LaTeX Warning: Reference `eq:LPunaggr' on page 14 undefined on input line 693.
 
 
-LaTeX Warning: Reference `eq:LP' on page 14 undefined on input line 721.
+LaTeX Warning: Reference `eq:LPaggr' on page 14 undefined on input line 697.
 
 
-Overfull \hbox (98.62402pt too wide) detected at line 726
+LaTeX Warning: Reference `eq:LP' on page 14 undefined on input line 699.
+
+
+LaTeX Warning: Reference `eq:LPaggr' on page 14 undefined on input line 730.
+
+
+LaTeX Warning: Reference `ob:costpreserving' on page 14 undefined on input line 734.
+
+
+LaTeX Warning: Reference `eq:LP' on page 14 undefined on input line 735.
+
+
+Overfull \hbox (98.62402pt too wide) detected at line 740
 [][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
  []
 
 [14]
 
-LaTeX Warning: Reference `' on page 15 undefined on input line 773.
+LaTeX Warning: Reference `' on page 15 undefined on input line 787.
 
 
-LaTeX Warning: Reference `' on page 15 undefined on input line 773.
+LaTeX Warning: Reference `' on page 15 undefined on input line 787.
 
 
-LaTeX Warning: Reference `subsec:scenarios' on page 15 undefined on input line 774.
+LaTeX Warning: Reference `subsec:scenarios' on page 15 undefined on input line 788.
 
 
-Overfull \hbox (9.2246pt too wide) in paragraph at lines 776--778
+Overfull \hbox (9.2246pt too wide) in paragraph at lines 790--792
 []\OT1/ptm/m/n/10 INSERT PLOT COM-PAR-ING RHO-Random IN-SERT PLOT COM-PAR-ING RHO-
  []
 
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 811.
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 825.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 811.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 825.
 
 
-LaTeX Warning: Citation `weibullwind' on page 15 undefined on input line 812.
+LaTeX Warning: Citation `weibullwind' on page 15 undefined on input line 826.
 
 
-LaTeX Warning: Citation `betaPV' on page 15 undefined on input line 813.
+LaTeX Warning: Citation `betaPV' on page 15 undefined on input line 827.
 
 
-LaTeX Warning: Citation `GaussCopula' on page 15 undefined on input line 817.
+LaTeX Warning: Citation `GaussCopula' on page 15 undefined on input line 831.
 
 [15] [16]
-Underfull \hbox (badness 10000) in paragraph at lines 881--884
+Underfull \hbox (badness 10000) in paragraph at lines 895--898
+
+ []
+
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 903--905
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 889--891
+Underfull \hbox (badness 10000) in paragraph at lines 907--908
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 893--894
-
- []
-
-[17] [18] (./articolo.aux)
+[18] (./articolo.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1095,12 +1110,12 @@ Package rerunfilecheck Info: File `articolo.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  34447 strings out of 474222
- 794037 string characters out of 5748733
- 1943975 words of memory out of 5000000
- 55999 multiletter control sequences out of 15000+600000
+ 794044 string characters out of 5748733
+ 1941975 words of memory out of 5000000
+ 55997 multiletter control sequences out of 15000+600000
  593476 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 103i,13n,107p,1863b,648s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 103i,13n,107p,1863b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+\(UTC+1\)+/+CEST+\(UTC+2\)} has been referenced but does not exist, replaced by a fixed one
 
@@ -1108,10 +1123,10 @@ pdfTeX warning (dest): name{https://transparency.entsoe.eu/transmission-domain/p
 pdfTeX warning (dest): name{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf} has been referenced but does not exist, replaced by a fixed one
 
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (18 pages, 439484 bytes).
+Output written on articolo.pdf (18 pages, 441050 bytes).
 PDF statistics:
- 277 PDF objects out of 1000 (max. 8388607)
- 222 compressed objects within 3 object streams
- 74 named destinations out of 1000 (max. 500000)
+ 280 PDF objects out of 1000 (max. 8388607)
+ 225 compressed objects within 3 object streams
+ 76 named destinations out of 1000 (max. 500000)
  71 words of extra memory for PDF output out of 10000 (max. 10000000)
 

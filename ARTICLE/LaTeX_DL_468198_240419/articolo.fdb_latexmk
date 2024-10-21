@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1729491750.14587 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1729491750.99171 0
+["pdflatex"] 1729511210.6717 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1729511211.52304 0
   "/etc/texmf/web2c/texmf.cnf" 1727021346.58952 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1729491749.9679 82923 72a95d312e5f9dc3e729bc4f270bc1d4 ""
+  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1729511210.49921 84887 c3abe91de938d978bf8d440479689992 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -248,9 +248,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1727021369.8525 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1727021390 8213608 7518f4bf06237f22cded744c906015fd ""
-  "articolo.aux" 1729491750.91989 5150 ee65e141b2ced5dcca40c40ec3ad5e18 "pdflatex"
-  "articolo.out" 1729491750.91989 619 af9dbc23aba2f63e26cdcb5890c8abd5 "pdflatex"
-  "articolo.tex" 1729491749.9679 82923 72a95d312e5f9dc3e729bc4f270bc1d4 ""
+  "articolo.aux" 1729511211.45018 5151 3e62e2a71dcf77929e3aea8f4d7183e0 "pdflatex"
+  "articolo.out" 1729511211.45118 619 af9dbc23aba2f63e26cdcb5890c8abd5 "pdflatex"
+  "articolo.tex" 1729511210.49921 84887 c3abe91de938d978bf8d440479689992 ""
   "constraint_matrix.jpeg" 1729484339.40996 156887 0651fbe1a7b38e4798aa6d1ef714446a ""
   "example.eps" 1727685245.40255 286 240e01e547b56ebd62e19ba1e85adf80 ""
   "single_block.jpeg" 1729484344.27687 103986 f7281ba58b7f6d0f3fd269957a27006e ""
