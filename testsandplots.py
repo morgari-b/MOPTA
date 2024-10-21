@@ -37,7 +37,7 @@ np.random.seed(42)
 N_scenarios = 2
 eu=EU(N_scenarios)
 
-N_iter = 10 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
+N_iter = 40 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
 N_random = 10 #numeri di ottimizzazione da effettuare utilizando metodo random di selezione di intervallo da disgregare
 #%%
 n = copy.deepcopy(eu)
@@ -56,7 +56,7 @@ costs_random_list = []
 for i in range(N_random):
     print(f"iteration {i+1}")
     n = copy.deepcopy(eu)
-    vars_random = OPT_agg2(n, N_iter = 10, iter_method = 'random')
+    vars_random = OPT_agg2(n, N_iter = N_iter, iter_method = 'random')
     vars_random_list.append(vars_random)
     costs_random = [vars_random[i]['obj'] for i in range(len(vars_random))]
     costs_random_list.append(costs_random)
@@ -91,15 +91,19 @@ fig.show()
 
 
 # %%save
-np.save('costs_val.npy', costs_val)
-np.save('vars_val.npy', vars_val)
+file_path = "../saved_opt/"
+name = "40iter"
+ext = '.npy'
+#%%
+np.save(file_path+'costs_val'+name+ext, costs_val)
+np.save(file_path+'vars_val.npy'+name+ext, vars_val)
 # %%
-np.save('vars_random.npy', vars_random_list)
-np.save('costs_random.npy', costs_random_list)
+np.save(file_path+'vars_random'+name+ext, vars_random_list)
+np.save(file_path+'costs_random'+name+ext, costs_random_list)
 
 #%%
-np.save('vars_rho.npy', vars_rho)
-np.save('costs_rho.npy', costs_rho)
+np.save(file_path+'vars_rho'+name+ext, vars_rho)
+np.save(file_path+'costs_rho'+name+ext, costs_rho)
 # %%reload
 file_path = "../saved_opt/"
 
