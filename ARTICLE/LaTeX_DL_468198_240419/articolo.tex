@@ -769,12 +769,24 @@ Although this is not generally the case, it suggests an iterative procedure for 
 
 
 \section{COMPUTATIONAL RESULTS}
-\color{gray}
-To test the methods described in this paper, we consider a simple 5-node network over a one-year period with timesteps of 1 hour. In this section, we compare the following methods for iterating on the aggregated problem: (1) randomly selecting the interval to refine, (2) selecting the interval with the highest \(\rho\)-variance as defined in Section \ref{}, or (3) selecting the interval where the validation function \ref{} fails.
-The scenarios are generated as described in Section \ref{subsec:scenarios} in the Appendix. The computational tests were carried out on an Intel(R) Core(TM) i7-13700H CPU @ 2.40GHz with 16 GB RAM.
 
-INSERT PLOT COMPARING RHO-Random
-INSERT PLOT COMPARING RHO-FUNCTION
+To evaluate the methodologies presented in this paper, we examine a  5-node network over a one-year span, utilizing timesteps of 1 hour across two distinct scenarios.
+ In this section, we compare three approaches for iterating on the aggregated problem: (1) randomly selecting the interval for refinement, (2) selecting the interval with the highest \(\rho\)-variance as defined in Section \ref{}, and (3) selecting the interval where the validation function \ref{} fails. The scenarios are generated as outlined in Section \ref{subsec:scenarios} in the Appendix. The computational tests were conducted on an Intel(R) Core(TM) i7-13700H CPU @ 2.40GHz with 16 GB of RAM.
+
+Plot \ref{fig:rho_vs_average} illustrates the cost variation at each iteration using the \(\rho\) selection method compared to random interval selection. The \(\rho\) selection method demonstrates a faster increase in cost increase than the random selection method, with comparable optimization times: 174 seconds for the \(\rho\) selection method and 155 seconds for the random selection method over 10 iterations.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/rho_vas_average2.png}
+  \caption{Cost variation at each iteration using the \(\rho\) selection method compared to random interval selection.}
+  \label{fig:rho_vs_average}
+\end{figure}
+In plot \ref{fig:val_vs_average}, we compare the cost variation at each iteration using the validation function for interval refinement against the random interval selection method. The results indicate that the former method yields a significantly faster increase, implying quicker convergence to the optimal solution. However, this approach incurs greater computational time, indicated as \textcolor{red}{many seconds s}. It is worth noting that while both the \(\rho\) and random iteration methods continue even upon encountering a feasible solution for the original problem, the validation function iteration may halt before reaching the maximum iteration limit if the current solution is feasible, thereby being optimal for the original problem.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{images/val_vs_average2.png}
+  \caption{Cost variation at each iteration using the validation function for interval refinement against the random interval selection method.}
+  \label{fig:val_vs_average}
+\end{figure}
 
 
 % \subsection{SINGLE NODE NETWORK}

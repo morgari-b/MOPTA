@@ -1515,27 +1515,27 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
     HL = network.loadH_t_agg
 
 
-    if network.loadP_t_agg.shape[2] > 1:
+    if len(network.loadP_t_agg.scenario) > 1:
         cons2=model.addConstrs((- H[j,tp[(i+1)%Ntp][0],k] + H[j,tp[i][0],k] + 30*network.n['feth'].iloc[k]*quicksum(EtH[j,t,k] for t in tp[i]) - quicksum(HtE[j,t,k] for t in tp[i]) -
                         quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                         quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
-                        == HL[i,k,j] for j in range(d) for i in range(Ntp) for k in range(Nnodes)))
+                        == HL.isel(scenario=j, time=i, node=k) for j in range(d) for i in range(Ntp) for k in range(Nnodes)))
         
         cons1=model.addConstrs((ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j] + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
                             quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                             quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
-                            >=  EL[i,k,j] for k in range(Nnodes) for j in range(d) for i in range(Ntp)))
+                            >=  EL.isel(scenario=j, time=i, node=k) for k in range(Nnodes) for j in range(d) for i in range(Ntp)))
 
     else:
         cons2=model.addConstrs((- H[j,tp[(i+1)%Ntp][0],k] + H[j,tp[i][0],k] + 30*network.n['feth'].iloc[k]*quicksum(EtH[j,t,k] for t in tp[i]) - quicksum(HtE[j,t,k] for t in tp[i]) -
                         quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                         quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
-                        == HL[i,k,0] for j in range(d) for i in range(Ntp) for k in range(Nnodes)))
+                        == HL.isel(scenario=0, time=i, node=k) for j in range(d) for i in range(Ntp) for k in range(Nnodes)))
 
         cons1=model.addConstrs((ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j]  + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
                             quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                             quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
-                            >=  EL[i,k,0] for k in range(Nnodes) for j in range(d) for i in range(Ntp)))
+                            >=  EL.isel(scenario=0, time=i, node=k)for k in range(Nnodes) for j in range(d) for i in range(Ntp)))
     print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
     opt_start_time = time.time()
     model.optimize()
@@ -1617,23 +1617,23 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
                 cons2=model.addConstrs((- H[j,tp[(i+1)%Ntp][0],k] + H[j,tp[i][0],k] + 30*network.n['feth'].iloc[k]*quicksum(EtH[j,t,k] for t in tp[i]) - quicksum(HtE[j,t,k] for t in tp[i]) -
                                 quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                                 quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
-                                == HL[i,k,j] for j in range(d) for i in split_indeces for k in range(Nnodes)))
+                                == HL.isel(scenario=j, time=i, node=k) for j in range(d) for i in split_indeces for k in range(Nnodes)))
                 
-                cons1=model.addConstrs((ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j] + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
+                cons1=model.addConstrs((ns[k]*ES.isel(scenario=j, time=i, node=k) + nw[k]*EW.isel(scenario=j, time=i, node=k) + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
                                     quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                                     quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
-                                    >= EL[i,k,j] for k in range(Nnodes) for j in range(d) for i in split_indeces))
+                                    >= EL.isel(scenario=j, time=i, node=k) for k in range(Nnodes) for j in range(d) for i in split_indeces))
 
             else:
                 cons2=model.addConstrs((- H[j,tp[(i+1)%Ntp][0],k] + H[j,tp[i][0],k] + 30*network.n['feth'].iloc[k]*quicksum(EtH[j,t,k] for t in tp[i]) - quicksum(HtE[j,t,k] for t in tp[i]) -
                                 quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                                 quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
-                                == HL[i,k,0] for j in range(d) for i in split_indeces for k in range(Nnodes)))
+                                == HL.isel(scenario=0, time=i, node=k) for j in range(d) for i in split_indeces for k in range(Nnodes)))
 
-                cons1=model.addConstrs((ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j]  + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
+                cons1=model.addConstrs((ns[k]*ES.isel(scenario=j, time=i, node=k) + nw[k]*EW.isel(scenario=j, time=i, node=k)  + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
                                     quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
                                     quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
-                                    >= EL[i,k,0] for j in range(d) for i in split_indeces for k in range(Nnodes)))
+                                    >= EL.isel(scenario=0, time=i, node=k) for j in range(d) for i in split_indeces for k in range(Nnodes)))
         print(f"Iter model time: {np.round(time.time()-iter_start_time,3)}s.")
         model.optimize()
         print(f"Iter opt time: {np.round(time.time()-iter_start_time,3)}s.")
