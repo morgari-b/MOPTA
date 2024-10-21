@@ -331,7 +331,7 @@ The main variables that are of interest to the policy maker are, for each locati
 Stored hydrogen is considered to be the total of liquid and gas hydrogen to be stored. Our model does not assume a distinction between the two forms, and considers hydrogen to be immediately ready for long-term storage as soon as it is converted from electricity, as well as instantaneously convertible to electricity in fuel cells at need. \textcolor{Green}{For more detailed models of the management of hydrogen see SOURCES}.\\
 \indent Important values to consider when planning the grid are the power capacity and conversion speed of fuel cells and electrolyzers: variables $mhte_n$ and  $meth_n$ indicate for each location the maximum amount of energy that can be converted at a single time step respectively from hydrogen to electricity and vice versa. These values are essential to estimate in order to design a grid that can effectively accommodate peak production and supply during low production periods.\\
 \indent \textcolor{Green}{explain NTC? quote paper} Existing NTC is estimated by \textcolor{Green}{as did the guy in his master thesis, paper on my old computer}. Improvements on the existing capacity for power lines or hydrogen transport infrastructure are considered through variables $addNTC_l$ and $addMH_l$. \textcolor{Green}{cite EU policy to upgrade grid}.\\
-\indent Variables linked to the inner ED problem are indexed by scenario \(j\), time step \(t\), and either node \(n \in \cN\)  or edge $l\in\cE_H$ or $l \in \cE_P$. For the variables pertaining to transmission on an edge, two distinct variables are considered, one for each direction. This way, all variables are set to be non-negative. \textcolor{pink}{This will be relevant for the formulation of the time-aggregated relaxation of the LP problem.}
+\indent Variables linked to the inner ED problem are indexed by scenario \(j\), time step \(t\), and either node \(n \in \cN\)  or edge $l\in\cE_H$ or $l \in \cE_P$. For the variables pertaining to transmission on an edge, two distinct variables are considered, one for each direction. This way, all variables are set to be non-negative. \textcolor{pink}{This will be relevant for the formulation of the time-aggregated relaxation of the LP problem.}\\
 
 See Table \ref{table_vars} for the summary of all decision variables.
 
@@ -370,44 +370,17 @@ See Table \ref{table_vars} for the summary of all decision variables.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  PARAMETERS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Parameters}
-\color{gray}
-There are a series of parameters that characterize the model and can be modified by the policy maker through the GUI. The main ones are related to capital costs of the infrastructure to be built:
+There are a series of parameters that describe the grid and are passed to the model. The main ones are related to capital costs of the infrastructure to be built and the following values are assumed for panels and turbines: $cs = 400\euro$, $cw = 3 000 000\euro$. We also set \textcolor{pink}{cmhte and cmeth capital costs for fuel cells and electrolyzers. Can be set to symbolic cost just to estimate needed capacity, so that they are minimized through the model, or can set to investment for transforming existing infrastructure \textcolor{Green}{cite article}. MAybe want to separate capital and marginal costs? reorder in table}. \\
+\indent The storage of the hydrogen has a cost that depends on various factors: capital cost of the technology used for storage, operating costs, length of time that the hydrogen is kept in storage. Thus we set the parameters $ch$, to be multiplied by the maximum storage needed ($nh$), representing capital cost of storage infrastructure, and $ch\_t$, representing the marginal cost of keeping the hydrogen stored. \\
+\indent In this model we assume no marginal costs for PV and wind power production: the operating costs of the farms throughout their life-cycle can be factored into the capital costs, and there is no additional cost linked to the production itself. \\
+\indent Conversely, the marginal costs of conversion within electrolyzers and power cells are relevant. According to the European Hydrogen Market Landcape November 2023 Report  \textcolor{green}{\cite{European_H2_Market_landscape}}, ``Hydrogen production costs via electrolysis with a direct connection to a renewable energy source in Europe vary from 4.18 to 9.60 €/kg H2 of hydrogen, with the average for all countries being 6.86 €/kg H2''. For electrolyzers, we consider the Levelised cost of hydrogen (LCOH)  to account for both marginal costs and capital costs. Such cost is dependent on the country's specific market condition and can be calculated through the \textcolor{green}{\href{https://observatory.clean-hydrogen.europa.eu/tools-reports/levelised-cost-hydrogen-calculator}{European Hydrogen Observator tool}}.\\
+\indent Parameters $fhte_n$ and $feth_n$ are set as scalars between $0$ and $1$ to indicate efficiency of the conversion from hydrogen to electricity and vice versa. It is assumed that 1kg of hydrogen has an energy value of 33kWh \textcolor{green}{cite}. Thus if we consider an electrolyzer operating at maximum efficiency ($feth=1$), one MWh of electricity yields 1000/33$\simeq$30kg of hydrogen. For our purposes, a standard value of $feth=0.66$ is considered, thus 1MWh yields 20kg of hydrogen. Conversely, in a fuel cell operating at maximum efficiency ($fhte=1$) 1kg of hydrogen yields 33kWh. We consider a value of $fhte=0.75$, yielding 24.75kWh per kg of hydrogen. Actual efficiencies vary a lot depending on the technology used. Furthermore, chemical and physical constraints make it so that efficiencies higher than 0.80-0.85 are currently considered unachievable \cite{DAWOOD}.\\
+\indent Additionally, we assume the flow of electricity has no marginal cost nor power loss (the modelling of that problem is beyond the scope of this project), whereas we do set a cost for the use of hydrogen pipes (or other means of transfer). The existing capacity of transmission lines and hydrogen pipes is also set. \textcolor{green}{mention again the same as before?}\\
+\indent Finally, the model allows for upper bounds to be placed on the variables, based on either technological and physical constraints (dimension of the facilities) or because of political choices (e.g. local population unfavourable to wind turbines).\\
 
-If not specified through the GUI, the following values are assumed for panels and turbines: cs = 400\euro, cw = 3 000 000\euro. In this model we assume no marginal costs for PV and wind power production: the operating costs of the farms throughout their life-cycle can be factored into the capital costs, and there is no additional cost linked to the production itself. 
-We assume the flow of electricity has no marginal cost nor power loss (the modelling of that problem is beyond the scope of this project). Conversely, we do set a cost for the use of hydrogen pipes (or other means of transfer):
+The parameters $ES, EW, EL, HL$, indexed by scenario, time step and node represent the time series of power generation and load values for different scenarios in every node of the grid. They are generated through the method described in \textcolor{pink}{the appendix \ref{generation}}\\
 
-Conversely, the marginal costs of conversion within electrolyzers and power cells are relevant. Thus one can set the following parameters:
-
-According to the European Hydrogen Market Landcape November 2023 Report  \cite{European_H2_Market_landscape},
- ``Hydrogen production costs via electrolysis with a direct connection to a 
- renewable energy source in Europe vary from 4.18 to 9.60 €/kg H2 of hydrogen, with the average
-  for all countries being 6.86 €/kg H2''. For electrolyzers, we consider the Levelised cost of hydrogen (LCOH)
-   to account for both marginal costs and capital costs. Such cost is dependent on the country's specific market
-    condition and can be calculated through the \href{https://observatory.clean-hydrogen.europa.eu/tools-reports/levelised-cost-hydrogen-calculator}{European Hydrogen Observator tool}. Unless specified through the GUI, $ceth$ = 20kg/MWh*10\euro/kg=200\euro/MWh is assumed (see the discussion on conversion efficiency below), and $chte$ is assumed to be 2\euro/kg. 
-Furthermore, the storage of the hydrogen itself has a cost that depends on various factors: capital cost of the technology used for storage, operating costs, length of time that the hydrogen is kept in storage. Thus the following parameters can be set:
-
-Thus $ch$ will be simply multiplied by the maximum storage needed ($nh$), representing capital
- cost of storage infrastructure, whereas $ch\_t$ represents the marginal cost of keeping the
-  hydrogen stored.  Unless specified, it is assumed to be $ch=10$\euro/kg and $ch_t=0$\euro/(kg$\cdot$h)
-
-Within the electrolyzers and fuel cells, the conversion itself can be more or less efficient:
-
-It is assumed that 1kg of hydrogen has an energy value of 33kWh. Thus if we consider an electrolyzer operating at maximum efficiency ($feth=1$), one MWh of electricity yields 1000/33$\simeq$30kg of hydrogen. If not specified through the GUI, a value of $feth=0.66$ is considered, thus 1MWh yields 20kg of hydrogen.
-Conversely, in a fuel cell operating at maximum efficiency ($fhte=1$) 1kg of hydrogen yields 
-33kWh. If not specified through the GUI, a value of $fhte=0.75$ is considered, yielding 24.75kWh 
-per kg of hydrogen. Actual efficiencies vary a lot depending on the technology used. Furthermore, chemical
- and physical constraints make it so that efficiencies higher than 0.80-0.85 are currently considered 
- unachievable \cite{DAWOOD}.
-
-Finally, the GUI gives the option to place upper bounds to the variables, based on either technological and physical constraints (dimension of the facilities) or because of political choices (local population unfavourable to wind turbines): 
-
-If no bound is given through the GUI, these values will be set to $Mns=10^6, Mnw=500, Mnh=10^9, Mhte=10^6, Meth=10^5)$. Note: computation time increases significanly when increasing the upper bound for $Mnw$.
-
-A scenario consists in a different realizations of the following variables, given as input in the model and  indexed by scenario \(j\), time step \(t\), and node \(n \in \cN\):
-
-Lastly the following parameters are indexed by edge of the respective graph:
-
-\color{black}
+\indent See Table \ref{table_param} for the summary of all parameters. 
 
 % For tables use
 \begin{table}
@@ -419,28 +392,33 @@ Lastly the following parameters are indexed by edge of the respective graph:
   \hline\noalign{\smallskip}
     \textbf{Name} & \textbf{Unit} & \textbf{Description}  \\
   \noalign{\smallskip}\hline\noalign{\smallskip}
-    cs$_n$ & \euro& Cost of one Solar Panel at node $n$\\
-    cw$_n$ & \euro & Cost of one Wind Turbine at node $n$\\
+    cs & \euro& Cost of one Solar Panel at node $n$\\
+    cw & \euro & Cost of one Wind Turbine at node $n$\\
+    chte$_n$ & \euro/kg & Conversion cost of \textcolor{Cerulean}{$H_2$} to electricity \\
+    ceth$_n$ & \euro/MWh & Conversion cost of electricity to hydrogen \\
+    ch$_n$ & \euro/kg & Cost of hydrogen storage capacity\\
+    ch\_t$_n$ & \euro/(kg$\cdot$\textcolor{pink}{h}) & Cost of storing hydrogen for one time step \\
     cH\_edge$_l$ & \euro & Cost of transferring 1kg of hydrogen through edge $l$\\
-    chte & \euro/kg & Conversion cost of \textcolor{pink}{$H_2$} to electricity \\
-    ceth & \euro/MWh & Conversion cost of electricity to hydrogen \\
-    \textcolor{pink}{ch$_n$} & \euro/kg & Cost of hydrogen storage capacity\\
-    ch\_t & \euro/(kg$\cdot$h) & Cost of storing hydrogen for 1h, per unit of hydrogen \\
-    fhte & (scalar between 0 and 1) & efficiency of hydrogen to electricity conversion \\ 
-    feth & (scalar between 0 and 1) & efficiency of electricity to hydrogen conversion \\
-    Mns & (integer) & Maximum number of solar panels that can be installed \\ 
-    Mnw & (integer) & Maximum number of wind turbines that can be installed \\ 
-    Mnh & kg & Maximum hydrogen storage capacity \\
-    Mhte & kg & Upper bound for \textcolor{pink}{\(mhte\)} \\ 
-    Meth & MWh & Upper bound for \(meth\) \\
+    cNTC$_l$ & \euro/MWh & Cost of adding NTC to line $l\in\cE_P$\\
+    cMH$_l$ &\euro/kg& Cost of adding $H_2$ transfer capacity to line $l\in\cE_H$\\
+    \textcolor{pink}{cmhte} &&\\
+    cmeth &&\\
+  \noalign{\smallskip}\hline\noalign{\smallskip}
+    fhte$_n$ & - & Efficiency of hydrogen to electricity conversion \\ 
+    feth$_n$ & - & Efficiency of electricity to hydrogen conversion \\
+    NTC$_l$ & MWh & Net Transfer Capacity on line $l\in\cE_P$\\
+    MH$_l$ & kg &  Hydrogen transfer capacity on edge \textcolor{Cerulean}{$l\in\cE_H$}.\\
+  \noalign{\smallskip}\hline\noalign{\smallskip}
+    Mns$_n$ & - & Maximum number of solar panels installable at node $n$\\ 
+    Mnw$_n$ & - & Maximum number of wind turbines that can be installed \\ 
+    Mnh$_n$ & kg & Maximum hydrogen storage capacity \\
+    Mhte$_n$ & kg & Upper bound for \textcolor{Cerulean}{\(mhte\)} \\ 
+    Meth$_n$ & MWh & Upper bound for \(meth\) \\
+  \noalign{\smallskip}\hline\noalign{\smallskip}
     ES$_{j,t,n}$ & MWh & Power output of a single solar panel\\
     EW$_{j,t,n}$ & MWh & Power output of a single wind turbine \\
     EL$_{j,t,n}$ & MWh & Electricity load \\
     HL$_{j,t,n}$ & kg & Hydrogen load\\
-    \textcolor{pink}{P\_edge$_{j,t,l}$} & MWh & Power passing through line $l$ during time step $t$ in scenario $j$ \\
-    H\_edge$_{j,t,l}$ & kg & Hydrogen flowing through pipe $l$ during time step $t$ in scenario $j$ \\
-    NTC$_l$ & MWh & \ \parbox[t]{0.65\textwidth}{Net Transfer Capacity, that is, maximum amount of electricity that can pass on line \text{$l$} of the electric grid in the span of 1h;}\\
-    MH$_l$ & kg &  \text{ Maximum amount of hydrogen that can flow on edge $l$ in 1h}.\\
     \noalign{\smallskip}\hline
 \end{tabularx}
 \end{table}
@@ -449,41 +427,44 @@ Lastly the following parameters are indexed by edge of the respective graph:
 %%%%%%%%%%%%%%%%%%%%%%%%%%  OBJECTIVE FUNCTION  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Objective Function}
-The cost function is given by the sum of all capital costs of installing infrastructure, all marginal costs of the hour-by-hour hydrogen to electricity and electricity to hydrogen conversions, and minimal costs associated to the variables $mhte$ and $meth$ so that they are minimized through the model.
+The cost function is given by the sum of all capital costs of installing infrastructure, plus all marginal costs of the hydrogen to electricity and electricity to hydrogen conversions and hydrogen transfer on the edges at each time step
 % \begin{align*}
 %     \min \quad & \text{cs} \cdot \text{ns} + \text{cw} \cdot \text{nw} + \text{ch} \cdot \text{nh} + \\
 %     & + \frac{1}{d}\sum_{j=1}^{d} \sum_{i=1}^{\text{inst}} (\text{ch\_t} \cdot \text{H}_{j,t} + \text{chte} \cdot \text{HtE}_{j,t} + \text{ceth} \cdot \text{EtH}_{j,t}) +\\
 %     & + 0.01*(mhte + meth).
 % \end{align*}
-Let $Nnodes$, $NEedges$ and $NHedges$ be the number of nodes, edges on the electric grid graph and edges of the hydrogen transfer graph respectively. The objective function is modified as follows:
+Let $Nnodes$, $NPedges$ and $NHedges$ be the number of nodes, edges on the electric grid graph and edges of the hydrogen transfer graph respectively. Let $d$ be the number of scenarios, and $T$ the number of time steps. The objective function is as follows:
 \begin{align*}
     \min \quad 
-    &&\sum_{k=1}^{\text{Nnodes}}&\text{cs}_k \cdot \text{ns}\hspace{-3.5em}&&_k+\text{cw}_k \cdot \text{nw}_k + \text{ch}_k \cdot \text{nh}_k + \\
-    &+& \sum_{l=1}^{\text{NEedges}}& \text{cNTC}_l \hspace{-3em}&&\cdot\text{addNTC}_l 
-    + \sum_{l=1}^{\text{NHedges}} \text{cMH}_l\cdot \text{addMH}_l + \\   
-    &+&\frac{1}{d}\sum_{j=1}^{d}&\sum_{i=1}^{\text{inst}} \Bigg( \hspace{-5em}&&
-    \sum_{k=1}^{\text{Nnodes}} (\text{ch\_t}_k \cdot \text{H}_{j,t,k} + \text{chte}_k \cdot \text{HtE}_{j,t,k} + \text{ceth}_k \cdot \text{EtH}_{j,t,k}) + \\
-    &&&\hspace{-2em}&&+\sum_{l=1}^{\text{NHedhes}} (\text{cH\_edge}_l\cdot\text{H\_edge}_{j,t,l}) \Bigg) + \\
-    &+&\sum_{k=1}^{\text{Nnodes}}& 0.01\cdot(\hspace{-2.8em}&&mhte_k+meth_k)
+    &&\sum_{k\in\cN}&(\text{cs}_k \cdot \text{ns}_k+\hspace{-1em}&&\text{cw}_k \cdot \text{nw}_k + \text{ch}_k \cdot \text{nh}_k )\ + \\
+    &+& \sum_{k\in\cN}&(\text{cmhte}_k\cdot\text{m} \hspace{-2em}&& \text{hte}_k + \text{cmeth}_k\cdot \text{meth}_k) \ + \\
+    &+& \sum_{l\in\cE_P}& (\text{cNTC}_l\cdot \text{ad}\hspace{-2em}&&\text{dNTC}_l) 
+    + \sum_{l\in\cE_H} (\text{cMH}_l\cdot \text{addMH}_l) \ + \\   
+    &+&\frac{1}{d}\sum_{j=1}^{d}&\sum_{t=1}^{T} \Bigg(\sum_{k\in\cN} \hspace{-5em}&&
+    (\text{ch\_t}_k \cdot \text{H}_{j,t,k} + \text{chte}_k \cdot \text{HtE}_{j,t,k} + \text{ceth}_k \cdot \text{EtH}_{j,t,k})\ + \\
+    &&&\hspace{-2em}&&+\sum_{l\in\cE_H} (\text{cH\_edge}_l\cdot\text{H\_edge}_{j,t,l}) \Bigg)
 \end{align*}
 
-The $1/d$ factor in front of the marginal costs allows to average over the scenarios, whereas the capital costs are the same for all scenarios. Thus, ignoring the costs of $mhte$ and $meth$, the objective function value gives an estimate of the actual costs (in \euro) for the set up and maintenance of the system throughout the length of the scenario (one year). 
+The $1/d$ factor in front of the marginal costs allows to average over the scenarios, whereas the capital costs are the same for all scenarios. Thus, ignoring the costs of $mhte_k$ and $meth_k$, the objective function value gives an estimate of the actual costs (in \euro) for the set up and maintenance of the system throughout the length of the time horizon. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONSTRAINTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Constraints}
-The following constraints are to ensure that for all time steps $t$ and all scenarios $j$, the electricity load and the hydrogen load are met. The measure units are MWh and kg respectively, conversion factors are considered for $HtE$ and $EtH$ respecively.
-Let $Out(n)$ and $In(n)$ indicate the outgoing and incoming edges from node $n$ on the respective graph. Then for each node $n$, the we have the following flow balance constraints:
+The following constraints are to ensure that for all time steps $t$ and all scenarios $j$, the electricity load and the hydrogen load are met. The measure units are MWh and kg respectively, and conversion factors are considered for $HtE$ and $EtH$ respecively.
+Let $Out(n)$ and $In(n)$ indicate the outgoing and incoming edges from node $n$ on the respective graph. For simplicity, we indicate with $P\_edge_{j,t,l}$ the difference of the corresponding variables $P\_edge^+_{j,t,l}-P\_edge^-_{j,t,l}$, and analogously for $H\_edge$. When solving, it is sufficient to assign a symbolic cost to them to ensure that only one of them is non zero at each time step. Then for each node $n$, the following flow balance constraints are imposed:
 \begin{align*}
-    \text{Electricity Balance:} \quad & \text{ns}_n \cdot \text{ES}\hspace{-1em}&_{j,t,n}&+ \text{nw}_k \cdot \text{EW}_{j,t,n} + 0.033 \cdot fhte_k \cdot \text{HtE}_{j,t,n} - \text{EL}_{j,t,n} - \text{EtH}_{j,t,n} + \\
-    & \sum_{l\in Out(n)}\hspace{-1em}& \text{P\_e}&\text{dge}_{j,t,l} + \sum_{l\in In(n)} \text{P\_edge}_{j,t,l} \ge 0;\\
-    \text{Hydrogen Storage:} \quad & \text{H}_{j,t+1,n} \hspace{-1em}&=\ & \text{ H}_{j,t,n} + 30 \cdot feth_k \cdot \text{EtH}_{j,t,n} - \text{HtE}_{j,t,n} - \text{HL}_{j,t,n} -\\ &&& - \sum_{l\in Out(n)}\text{H\_edge}_{j,t,l} + \sum_{l\in In(n)}\text{H\_edge}_{j,t,l}
+    \text{Electricity Balance:} \quad & \text{ns}_n \cdot \text{ES}\hspace{-1.2em}&_{j,t,n}&+ \text{nw}_k \cdot \text{EW}_{j,t,n} - \text{EL}_{j,t,n} \ + \\
+    &  + 0.033\hspace{-2em}& \cdot f&hte_k \cdot \text{HtE}_{j,t,n} - \text{EtH}_{j,t,n}\ + \\
+    & + \sum_{l\in Out(n)}\hspace{-1.9em}&\text{P\_}&\text{edge}_{j,t,l} + \sum_{l\in In(n)} \text{P\_edge}_{j,t,l} \ge 0;\\
+    \text{Hydrogen Storage:} \quad & \text{H}_{j,t+1,n} \hspace{-5em}&=& \text{H}_{j,t,n} - \text{HL}_{j,t,n}\ +\\ 
+    &&& + 30 \cdot feth_k \cdot \text{EtH}_{j,t,n} - \text{HtE}_{j,t,n} \ + \\
+    &&& - \sum_{l\in Out(n)}\text{H\_edge}_{j,t,l} + \sum_{l\in In(n)}\text{H\_edge}_{j,t,l}
 \end{align*}
 
-We ask that the consumed electricity be less or equal than the produced electricity at all times. On the grid itself, the two sides should be equal, but we observe that $ns\cdot ES_{j,t} + nw\cdot EW_{j,t}$ indicate the maximum power that can be generated with set weather conditions, whereas actual production will be regulated to meet demand through curtailment.
+We ask that the consumed electricity be less or equal than the produced or received electricity at all times. On the grid itself, the two sides should be equal, but we observe that $ns\cdot ES_{j,t} + nw\cdot EW_{j,t}$ indicate the maximum power that can be generated with set weather conditions, whereas actual production will be regulated to meet demand through curtailment. \textcolor{pink}{if set to =, see paper??}
 
-The stored hydrogen at time $t+1$ is the result of what was stored at time $t$ adjusted by what was converted and what was sent to the industrial load. For $t=24*365$ we set the same constraint on hydrogen by considering $t+1$ to be index $1$: this way we avoid placing a ``start time'' at an arbitrary place within the year (time is rendered modulo the year) and we avoid the model asking for conveniently high initial storage values of hydrogen appearing out of thin air.
+The stored hydrogen at time $t+1$ is the result of what was stored at time $t$ adjusted by what was converted and what was sent to the industrial load. For $t=T$ (the last time step) we set the same constraint on hydrogen by considering $t+1$ to be index $1$: this way we avoid placing a ``start time'' at an arbitrary place within the year (time is rendered modulo the year) and we avoid the model asking for conveniently high initial storage values of hydrogen appearing out of thin air.
 
 The total storage and conversion capacities are calculated by minimizing the maximum over time and scenarios of the variables $H_{j,t}, EtH_{j,t}$ and $HtE_{j,t}$, for all scenarios \(j\), time steps \(t\) and nodes \(n\):
 
@@ -494,8 +475,8 @@ The total storage and conversion capacities are calculated by minimizing the max
 \end{align*}
 Finally, edge capacities on the respective graphs are considered for all scenarios \(j\), time steps \(t\) and nodes \(n\):
 \begin{align*}
-    \text{Net Transfer Capacity:} \quad & |\text{P\_edge}_{j,t,l}|\le\text{NTC}_l + \text{addNTC}_l ;\\
-    \text{Hydrogen Transfer Capacity:} \quad & |\text{H\_edge}_{j,t,l}|\le\text{MH}_l + \text{addMH}_l.
+    \text{Net Transfer Capacity:} \quad & \text{P\_edge}^\pm_{j,t,l}\le\text{NTC}_l + \text{addNTC}_l ;\\
+    \text{Hydrogen Transfer Capacity:} \quad & \text{H\_edge}^\pm_{j,t,l}\le\text{MH}_l + \text{addMH}_l.
 \end{align*}
 
 
@@ -804,15 +785,16 @@ CONCLUSION
 \color{black}
 
 \section{APPENDIX}
-\subsection{SCENARIO GENERATION}
-\label{subsec:scenarios}
+
+\subsection{SCENARIO GENERATION}\label{generation}
+
 To estimate the optimal capacities for the CEP through a stochastic approach, realistic and diverse weather scenarios are needed, so to capture the variability and uncertainty of power generation through renewable sources over extended periods. 
 In order to generate such scenarios, samples are extracted from a joint probability density function (PDF) fit on historical data. \textcolor{pink}{In the following subsection,} we use \(Y_t\) to denote the stochastic process of generated power observations for either solar or wind in a single country.
 In our project, we used an hourly time step (T=\{1...8760\}) and fit the wind and solar distributions separately for each country considered.
 To model the marginal probability distributions corresponding to the power output of wind turbines for each hour of the year, a Weibull distribution was used, justified by its proven effectiveness in capturing the variability and skewness of wind power distributions \textcolor{green}{\cite{weibullwind}}. 
 For solar power, Beta distributions were employed, as in \textcolor{green}{\cite{betaPV}}. \\
 \indent  To fit our model, we used a dataset containing 30 years of data for various European countries, which was collected by \textcolor{green}{\cite{30y_gen}}. 
-On the other hand, electricity load is taken from the \textcolor{green}{\href{https://www.entsoe.eu/data/power-stats/}{ENTSO-E Statistical Reports}}. 
+On the other hand, electricity load is taken from the \textcolor{green}{\href{https://www.entsoe.eu/data/power-stats/}{ENTSO-E Statistical Reports}}. \textcolor{red}{explain how is HL obtained}
 \textcolor{pink}{In this simple model, while fitting on historical data we did not account for possible changes in future climate, since the focus lies mostly in the computational aspect.}\\
 To account for interdependence between temporally near time steps, we coupled these distributions using a Gaussian Copula approach, which captures the dependencies between hourly power outputs effectively. \textcolor{pink}{This approach accurately mimics common weather phenomena: The Gaussian Copula represents well the coupled behavior in renewable stochastic systems} \textcolor{green}{\cite{GaussCopula}}. \\
 \indent A possible improvement of the generation process could be to fit wind and PV data jointly in the copula step, potentially also including load scenarios with the generation scenarios through the same approach. This would consider dependence between Energy Demand and weather conditions, but it would necessitate of the historical dataset provided for the corresponding grid, and would also further increase computational costs.
