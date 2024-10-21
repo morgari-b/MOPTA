@@ -260,11 +260,11 @@ critical area of research due to the increasing need for sustainable
 and resilient energy systems.  To adress the variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
 This significanlty increases the size of the resulting Linear Problem (LP), making them computationally challenging for large scale grids.
 To tackle this, we propose an approach that aggregates time steps to reduce the problem size, followed by an iterative refinement of the aggregation. 
-\textcolor{violet}{We provide sufficient conditions under which the aggregated problem is equivalent to the original, unaggregated one, and refine the time intervals that do not meet these conditions.
-\textbf{write better:Additionally, we introduce a validation function to assess the feasibility of the aggregated solutions. Our method is tested on a fully renewable energy grid with hydrogen storage.}
- We generate scenarios for wind and photovoltaic (PV) power output using scenario generation techniques that capture temporal dependencies. 
- These dependencies are modeled with marginal distributions coupled with a Gaussian copula, ensuring that the generated scenarios reflect realistic 
- temporal correlations observed in historical data.}
+\textcolor{violet}{Using the previous iteration's solution as a warm start, we introduce methods to select which time intervals to refine at each iteration.
+ The first method employs a validation function, which evaluates with a rolling horizon method the feasibility of the aggregated solutions and selects the time interval on which the validation fail. 
+ The second method uses the proportion of net power production in each timestep relative to the aggregated time interval.
+  These selection methods are compared against a random interval selection approach. Lastly, we introduce a class of aggregation methods called structure-preserving aggregations, for which we establish sufficient conditions that ensure the aggregated problem is equivalent to the original within a general framework. This shows the versatility of our approach across different problems.
+To generate scenarios for wind and photovoltaic (PV) power output, we use scenario generation techniques that account for temporal dependencies. These dependencies are captured using marginal distributions combined with a Gaussian copula, ensuring the generated scenarios accurately reflect the realistic temporal correlations observed in historical data.}
 %Insert your abstract here. Include keywords, PACS and mathematical
 %subject classification numbers as needed.
 \keywords{\textcolor{red}{First keyword \and Second keyword \and need 4-6}}
