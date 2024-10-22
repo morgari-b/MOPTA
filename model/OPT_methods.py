@@ -1463,6 +1463,7 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
     T = network.T 
     tp_obj = network.time_partition
     tp = []
+    day_initial, scenario_initial = 0, 0
     for t in tp_obj.agg:
         if type(t) is int:
             tp += [[t]]
@@ -1585,6 +1586,13 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
         elif iter_method == "validation":
             print("validation iteration")
             optimal = network.validationfun_iter_partition(VARS, k=k)
+
+            if optimal:
+                print("optimal solution for unaggregated problem found")
+                return iter_sol
+        elif iter_method == "validation2":
+            print("validation2 iteration")
+            optimal, day_initial, scenario_initial= network.validation2fun_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
 
             if optimal:
                 print("optimal solution for unaggregated problem found")
