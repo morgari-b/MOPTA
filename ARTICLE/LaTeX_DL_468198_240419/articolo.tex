@@ -556,15 +556,15 @@ Given an initial time horizon \(\cT = \{1, \ldots, T\}\), a time partition  \(P
 \end{definition}
 
 Given a time partition $P$, we can consider the problem \(CEP_P\) associated to the model obtained by considering each interval in \(P\) as a single time step. For every \(I\in P\), define:
-\[
+\begin{equation}\label{sums scenarios}
 ES_{j,I,n} \coloneqq \sum_{i \in I} ES_{j,i,n}, \quad\quad EW_{j,I,n} \coloneqq \sum_{i \in I} EW_{j,i,n}, 
-\]
+\end{equation}
 and analogously for $EL_{j,I,n}$ and $HL_{j,i,n}$. \\
 
 It is easy to show that the optimal value to the aggregated problem \(CEP_P\) is a lower bound for the original problem \(CEP_{\cT}\). Indeed, given a feasible solution of the latter, we can obtain a solution of the former by fixing the capital infrastructure variables to be the same as in \(CEP_{\cT}\) and letting all time dependent variables for the inner ED problems be defined as follows:
-\[
+\begin{equation}\label{sums var_t}
 EtH_{j,I,n} = \sum_{i \in I} EtH_{j,i,e}, \quad\quad HtE_{j,I,e} = \sum_{i \in I} HtE_{j,i,e},  \quad\quad \Delta H_{j,I,e} = \sum_{i \in I} \Delta H_{j,i,e};
-\]
+\end{equation}
 similarly, we sum over \(P\_edge^\pm_{j,I,e}\) and \(H\_edge^\pm_{j,I,e}\), separately on the two directions.
 By defining the aggregated variables this way, the aggregated constraints are not violated, thus we get a feasible solution to \(CEP_P\).
 Observe that all variables with non zero cost are defined as greater or equal to zero, so summing over them we define a cost-preserving linear map from the solution space of \(CEP_{\cT}\) to the solution space of \(CEP_P\).\\
@@ -588,11 +588,11 @@ The goal is to write our problem in standard form:
 &x \geq 0
 \end{align*}
 
-Fistly, we can reformulate the model described in \ref{section: LP} by introducing a new set of variables 
-\(h_{j,t,n} \coloneqq H_{j,t+1,n} - H_{j,t,n}\), replacing the original variables \(H_{j,t,n}\). Constraints (\ref{constr_H}) and (\ref{constr_nh}) shall be reformulated accordingly, with the latter becoming:
+Fistly, we can reformulate the model described in subsection \ref{subsection: LP} by introducing a new set of variables 
+\(\Delta H_{j,t,n} \coloneqq H_{j,t+1,n} - H_{j,t,n}\), replacing the original variables \(H_{j,t,n}\). Constraints (\ref{constr_H}) and (\ref{constr_nh}) shall be reformulated accordingly, with the latter becoming:
 
 \begin{align}
-  \sum_{i=1}^{t} h_{i,j,n} \le nh_{n}, & \quad \forall\  t =1...T, \tag{\ref{constr_nh}$'$}\label{eq:delta_hydrogen_constraints}
+  \sum_{i=1}^{t} \Delta H_{i,j,n} \le nh_{n}, & \quad \forall\  t =1...T, \tag{\ref{constr_nh}$'$}\label{constr nh reformulated}
 \end{align}
 
 %Here, \(A\) is an \(m \times n\) matrix. Now, let \(\rowP = \{\rows_1, \rows_2, \ldots, \rows_{\tilde{n}}\}\) be a partition of \([n]\) (the columns) and \(\colP = \{\cols_1, \cols_2, \ldots, \cols_{\tilde{m}}\}\) a partition of \([m]\) (the rows), corresponding to a partition of the rows and columns of \(A\).
@@ -609,161 +609,195 @@ Fistly, we can reformulate the model described in \ref{section: LP} by introduci
 %\end{align}
 %where \(\tilde{A}\) is a \(\tilde{m}\times \tilde{n}\) matrix.
 
-In the problem under consideration, we have various types of constraints: Electricity Balance, Hydrogen Balance, Hydrogen Storage, and bounds on the variables. 
-Given a time partition \(P\), we define \textcolor{red}{EXPLAIN constraints in matrix form, then row aggregation}%\(\rowP\) and \(\colP\) such that each set \(S \in \rowP\) corresponds to all constraints of the same type, scenario, and time index \(t\) that falls within the same time interval in \(T\) as \(P\). Similarly, the variables (such as Power generation, Hydrogen generation, etc.) are partitioned in \(\colP\) based on the same criteria.
 
-\begin{equation}
-\begin{bmatrix}
-  ES_{j,t,n} & EW_{j,t,n} & \ldots& 1 & 0 & 1 & -1 & 0 \\
-  0 & 0   & \ldots& 0 & 1 & -1 & 1 & -1
-\end{bmatrix}
-\begin{bmatrix}
-  \text{ns}  \\
-  \text{nw} \\
-  \vdots \\
-  P_l \\
-  H_l \\
-  HtE_{j,t,n} \\
-  EtH_{j,t,n} \\
-  h_{j,t,n}
-\end{bmatrix}
-\begin{matrix}
-\geq \\
-=
-\end{matrix}
-\begin{bmatrix}
-  EL_{j,t,n} \\
-  HL_{j,t,n}
-\end{bmatrix}
-\end{equation}
+In the problem under consideration, we have various types of constraints: Electricity Balance (\ref{constr_P}), Hydrogen Balance (\ref{constr_H}'), Hydrogen Storage (\ref{constr nh reformulated}), maximum capacity of the time dependent variables (\ref{constr_meth}),(\ref{constr_mhte}),(\ref{constr_NTC}),(\ref{constr_MH}), and bounds on the CEP variables.
+By splitting the variable vector $\mathbf{x}$ into $\mathbf{x}_{CEP}$ and $\mathbf{x}_{ED}$, we can view the constraint matrix $A$ as divided in the following sections:
 
-\begin{equation}
-\begin{tikzpicture}
-  [block/.style={draw,rectangle,minimum height=1.5em,minimum width=3em,fill = red!20, draw= red!50}]
+
+\begin{equation}\label{matrix}
+  \begin{tikzpicture}
+    \tikzset{
+    block/.style={draw,rectangle,minimum height=1.5em,minimum width=3em,fill = red!20, draw= red!50},
+    vblock/.style={draw,rectangle,minimum height=3em,minimum width=1.4em,fill = red!20, draw= red!50},
+    rblock/.style={draw,rectangle,minimum height=1.5em,minimum width=1.4em,fill = red!20, draw= red!50},
+    hblock/.style={draw,rectangle,minimum height=.5em,minimum width=3em,fill = pink!0, draw= red!40}
+    }
     % Block matrix on the left
-    % A block
-    \nc{\ytop}{5}
-    
-    
-    \nc{\blockheight}{0.55}
-    \nc{\blockwidth}{1.05}
-    \nc{\ya}{\ytop - 5*\blockheight}
-    \nc{\yb}{0}
-    \nc{\yc}{\yb - 3}
-    \nc{\xzero}{0}
-    \nc{\xone}{2}
-    \nc{\xtwo}{3}
-    \nc{\xthree}{\xtwo + \blockwidth*5}
-
-    % FIRST COLUMN
-    \draw[thick] (\xzero,\ytop) rectangle (\xone,\ya);
-    \node at (1,4) {$A^{CEP}$};
-    \node at (1,3.5) {\small $(ES, EW, \dots)$};
-    
+      % A block
+      \nc{\ytop}{5}
+      \nc{\blockheight}{0.55}
+      \nc{\blockwidth}{1.05}
+      \nc{\ya}{\ytop - 5*\blockheight}
+      \nc{\yb}{1.3}
+      \nc{\yc}{\yb - 2.6}
+      \nc{\xzero}{0}
+      \nc{\xone}{2}
+      \nc{\xtwo}{2.6}
+      \nc{\xthree}{\xtwo + \blockwidth*5}
   
-    \draw[thick] (\xzero,\ya) rectangle (\xone,\yb);
-    \node at (1,1) {\Large $0$};
+      % FIRST COLUMN
+      \draw[thick] (\xzero,\ytop) rectangle (\xone,\ya);
+      \node at (1.1,3.8) {$A^{CEP}$};
+      \node at (1.02,3.3) {\small $(ES, EW, \dots)$};
+      
     
-    \draw[thick] (\xzero,\yb) rectangle (\xtwo,\yc);
-    \node at (\xzero + 1.4,\yb - 1.4 ) {\Large $-Id$};
-    
-    % SECOND COLUMN
-    \draw[thick] (\xone,\ytop) rectangle (3,\ya); 
-    \node at (2.5,4) {\Large $0$};
-
-    \draw[thick] (\xtwo,\yb) rectangle (\xthree,\yc);
-    \node at (\xtwo +2,\yb - 1.4) {\Large $0$};
-
-    
-    % Identity block
-    \draw[thick] (\xone,\ya) rectangle (\xtwo,0);
-    \node at (\xone + 0.5, \ya -1.2 ) {
-      $\begin{matrix}
-      1 \\ 
-      1 \\
-      \vdots \\
-      1
-      \end{matrix}$
-      };
-    
-    % THIRD COLUMN
-    \draw[thick] (\xtwo,\ytop) rectangle (\xthree,\ya); 
-    \node at (\xtwo + \blockwidth/2  , \ytop - \blockheight/2) [block] {};
-    \node at (\xtwo + \blockwidth*3/2  , \ytop - \blockheight*3/2) [block] {};
-    \node at (\xtwo + \blockwidth*5/2  , \ytop - \blockheight*5/2) [block] {};
-    \node at (\xtwo + \blockwidth*7/2  , \ytop - \blockheight*7/2) {$\ddots$};
-    \node at (\xtwo + \blockwidth*9/2  , \ytop - \blockheight*9/2) [block] {};
-
-    \draw[thick] (\xtwo,\ya) rectangle (\xthree,\yb); 
-    \node at (\xtwo+2.7,\ya-1.2) {$
-    \begin{matrix}
-      -1 & 0  & 0 & 0 &  0& 0 &  0 & \ldots & 0\\
-      -1 & -1  & 0 & 0 & 0 &  0& 0 & \ldots & 0\\
-      \vdots & \vdots  & \ \vdots & \vdots& \ \vdots & \vdots & \vdots & \ddots & \vdots\\
-      -1 & -1  & -1 & -1 & -1& -1 & -1 & \ldots & -1
-    \end{matrix}$};
-     % FORTH COLUMN
-     \nc{\ytopp}{\ytop + 1/2}
-     \draw[thick] (\xthree + 1/6, \ytopp) rectangle (\xthree + 1/2 + 1/6,\yc -1/2);
-    %  \node at (\xthree + 1/2  , \ya - \blockheight) {
-    %   $
-    %   \begin{bmatrix}
-    %     ns \\ nw  \\ nh 
-    %   \end{bmatrix}$
-    %  };
-    \nc{\xfourr}{\xthree + 1/6 + 0.25}
-    \nc{\spacefour}{0.3}
-    \node at (\xfourr  , \ytopp - \spacefour) { $ns$};
-    \node at (\xfourr  , \ytopp - 2*\spacefour) { $nw$};
-    \node at (\xfourr  , \ytopp - 3*\spacefour) {$nh$};
-    \node at (\xfourr  , \ytopp - 8*\spacefour) {\Large $\vdots$};
-    \node at (\xfourr  , \ytopp - 13*\spacefour) {\Large $\vdots$};
-    \node at (\xfourr  , \ytopp - 18*\spacefour) {\Large $\vdots$};
-     % FIFTH COLUMN
-     \node at (\xthree + 1  , \ya - \blockheight) {\Large $\geq$};
-
-    % SIXTH COLUMN
-    \nc{\xsix}{\xfourr + 0.8};
-    \draw[thick] (\xsix, \ytop) rectangle (\xsix + 1/2,\yc -1/2);
-    \node at (\xsix + 1/4 , \ytop - \spacefour) { \small $HL$};
-    \node at (\xsix + 1/4 , \ytop - 2*\spacefour) {\small $EL$};
-    \node at (\xsix + 1/4  , \ytop - 8*\spacefour) {\Large $\vdots$};
-    \node at (\xsix + 1/4  , \ytop - 13*\spacefour) {\Large $0$};
-    \node[rotate=-90] at (\xsix + 1/4 , \ytop - 22*\spacefour) {max CEP};
-
-
-    
+      \draw[thick] (\xzero,\ya) rectangle (\xone,\yb);
+      \node at (1.05,1.8) {\large $0$};
+      
+      %\draw[thick] (\xzero,\yb) rectangle (\xtwo,\yc);
+      %\node at (\xzero + 1.2,\yb - 1.3 ) {\Large $-Id$};
+      
+      % SECOND COLUMN
+      \draw[thick] (\xone,\ytop) rectangle (\xtwo,\ya); 
+      \node at (2.3,3.6) {\large $0$};
   
-\end{tikzpicture}
-\end{equation}
+      %\draw[thick] (\xtwo,\yb) rectangle (\xthree,\yc);
+      %\node at (\xtwo +2.6,\yb - 1.3) {\Large $0$};
+
+      \draw[thick] (\xone,\ya) rectangle (\xtwo,\yb); 
+      \node at (2.3 , 1.8) {\large $1$};
+        %\node at (\xone + \blockwidth/4  , \ya - \blockheight/6) {\tiny{1}};
+        %\node at (\xone + \blockwidth/4  , \ya - \blockheight*3/6){\tiny{1}};
+        %\node at (\xone + \blockwidth/4  , \ya - \blockheight*5/6){\tiny{1}};
+        %\node at (\xone + \blockwidth/4  , \ya - \blockheight*7/6) {\tiny{. . .}};
+        %\node at (\xone + \blockwidth/4  , \ya - \blockheight*9/6) {\tiny{1}};
+      
+      % THIRD COLUMN
+      
+      \node at (\xtwo + \blockwidth/2  , \ytop - \blockheight/2) [block] {};
+      \node at (\xtwo + \blockwidth*3/2  , \ytop - \blockheight*3/2) [block] {};
+      \node at (\xtwo + \blockwidth*5/2  , \ytop - \blockheight*5/2) [block] {};
+      \node at (\xtwo + \blockwidth*7/2  , \ytop - \blockheight*7/2) {$\ddots$};
+      \node at (\xtwo + \blockwidth*9/2  , \ytop - \blockheight*9/2) [block] {};
+      \draw[thick] (\xtwo,\ytop) rectangle (\xthree,\ya); 
+
+      % hydrogen storage 
+      \draw[thick] (\xtwo,\ya) rectangle (\xthree,\yb); 
+       
+      \node at (\xtwo + \blockwidth/2 , \ya -.01 - \blockheight/6) [hblock] {};
+      \node at (\xtwo + \blockwidth*3/2  , \ya -.01- \blockheight*3/6) [hblock] {};
+      \node at (\xtwo + \blockwidth*5/2  , \ya -.01- \blockheight*5/6) [hblock] {};
+      \node at (\xtwo + \blockwidth*9/2  , \ya - \blockheight*9/6) [hblock] {};
+      \node at (\xtwo + \blockwidth/2  , \ya-.01 - \blockheight*3/6) [hblock] {};
+      \node at (\xtwo + \blockwidth*1/2  , \ya -.01- \blockheight*5/6)[hblock] {};
+      \node at (\xtwo + \blockwidth*3/2  , \ya-.01 - \blockheight*5/6)[hblock] {};
+      \node at (\xtwo + \blockwidth/2  , \ya - \blockheight*9/6)[hblock] {};
+      \node at (\xtwo + \blockwidth*3/2  , \ya - \blockheight*9/6)[hblock] {};
+      \node at (\xtwo + \blockwidth*5/2  , \ya - \blockheight*9/6)[hblock] {};
+      \node at (\xtwo + \blockwidth*7/2  , \ya - \blockheight*9/6)[hblock] {};
+    
+      \draw[thick] (\xtwo,\ya) rectangle (\xthree,\yb); 
+
+      \node at (\xtwo + \blockwidth/2  , \ya - \blockheight/6) {\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth*3/2  , \ya - \blockheight*3/6){\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth*5/2  , \ya - \blockheight*5/6){\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth*9/2  , \ya - \blockheight*9/6) {\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth*7/2  , \ya - \blockheight*9/6) {$\hdots$};
+      \node at (\xtwo + \blockwidth/2  , \ya - \blockheight*3/6) {\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth*1/2  , \ya - \blockheight*5/6){\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth*3/2  , \ya - \blockheight*5/6){\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth/2  , \ya - \blockheight*9/6) {\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth*3/2  , \ya - \blockheight*9/6){\tiny{0     . . .     0\quad-1}};
+      \node at (\xtwo + \blockwidth*5/2  , \ya - \blockheight*9/6){\tiny{0     . . .     0\quad-1}};
+    
+      
+      % FOURTH COLUMN
+       \nc{\ytopp}{\ytop + 1.7}
+       \nc{\xfourr}{\xthree + 1/6 + 0.25}
+       \nc{\spacefour}{0.3}
+
+       \node at (\xfourr  , \ytopp - 2.6 - 9*\spacefour) [vblock] {};
+       \node at (\xfourr  , \ytopp - 2.6 - 10.4*\spacefour) {\tiny{$\Delta H$}};
+       \draw[thick] (\xthree + 1/6, \ytopp) rectangle (\xthree + 1/2 + 1/6,\ytopp -2.6-5*\blockwidth);
+
+      \node at (\xfourr  , \ytopp - \spacefour) {$ns$};
+      \node at (\xfourr  , \ytopp - 2*\spacefour) {$nw$};
+      \node at (\xfourr  , \ytopp - 4*\spacefour) {\Large $\vdots$};
+      \draw[thick] (\xthree + 1/6,\ytopp-2) -- (\xthree + 1/2+1/6,\ytopp-2);
+      \node at (\xfourr  , \ytopp - 2.27) {\normalsize $nh$};
+      \draw[thick] (\xthree + 1/6,\ytopp-2.6) -- (\xthree + 1/2+1/6,\ytopp-2.6);
+      \node at (\xfourr  , \ytopp - 2.6 - 3*\spacefour) {\Large $\vdots$};
+      \node at (\xfourr  , \ytopp - 2.6 - 15*\spacefour) {\Large $\vdots$};
+       % FIFTH COLUMN
+       \node at (\xthree + 1.1  , 3) {\Large $=$};
+  
+      % SIXTH COLUMN
+      \nc{\xsix}{\xfourr + 1};
+      \node at (\xsix + 1/4 , \ytop - 4.5*\spacefour) [rblock] {};
+      \draw[thick] (\xsix, \ytop) rectangle (\xsix + 1/2,\yb);
+      \node at (\xsix + 1/4  , \ytop - 1.3*\spacefour) {\Large $\vdots$};
+      \node at (\xsix + 1/4 , \ytop - 4.1*\spacefour) { \scriptsize $HL$};
+      \node at (\xsix + 1/4 , \ytop - 4.9*\spacefour) {\scriptsize $EL$};
+      \node at (\xsix + 1/4  , \ytop - 7*\spacefour) {\Large $\vdots$};
+      \draw[thick] (\xsix,\ya) -- (\xsix+1/2,\ya);
+      \node at (\xsix + 1/4  , 1.8) {\large $0$};
+      \draw[thick] (\xsix,\yb) -- (\xsix+1/2,\yb);
+      %\node[rotate=-90] at (\xsix + 1/4 , \ytop - 17*\spacefour) {- max CEP};
+  
+  
+      
+    
+  \end{tikzpicture}
+  \end{equation}
+  
 
 
-% For one-column wide figures use
-\begin{figure}
-  % Use the relevant command to insert your figure file.
-  % For example, with the graphicx package use
-    \includegraphics[width=0.75\textwidth]{constraint_matrix.jpeg}
-  % figure caption is below the figure
-  \caption{To be rendered in LaTeX}
-         % Give a unique label
-  \end{figure}
+Variable $nh$ is considered individually and not within $\mathbf{x}_{CEP}$.
+The upper rows contain the balance constraints regarding electricity and hydrogen, and bounds for the time dependent variables. 
+The bottom section of the matrix accounts for storage constraints (\ref{constr nh reformulated}): summing over $\Delta H_{j,i,n}$ returns the original variable $H_{j,i,n}$, bound by $nh_n$. All other variable bounds are not represented, since they pertain to one variable at the time and don't really influence the overall reasoning.
 
- 
-% For one-column wide figures use
-\begin{figure}
-  % Use the relevant command to insert your figure file.
-  % For example, with the graphicx package use
-    \includegraphics[width=0.75\textwidth]{single_block.jpeg}
-  % figure caption is below the figure
-  \caption{To be rendered in LaTeX (and correct with coeff 0.033)}
-         % Give a unique label
-  \end{figure} 
+For clarity, we represent now a simplified version of the rows corresponding to a single time step, ignoring edge variables and including only the upper bound for HtE as an example. 
+
+\begin{equation}
+\left[
+\begin{array}{ccc|ccccc}
+    ES_{j,t,n} & EW_{j,t,n} &0& & 0.033\cdot fhte_{n} & -1 & 0 & \\
+    0          & 0          &0&  & -1  & 30\cdot feth_n & -1 & \\
+    0          & 0          &1 &  & -1   & 0 & 0 &
+\end{array}
+\right]
+  \begin{bmatrix}
+    \text{ns}  \\
+    \text{nw} \\
+    \text{mhte} \\
+    \hline
+    \vdots \\
+    HtE_{j,t,n} \\
+    EtH_{j,t,n} \\
+    \Delta H_{j,t,n}\\
+    \vdots
+  \end{bmatrix}
+  \begin{matrix}
+  \geq \\
+  =\\
+  \geq
+  \end{matrix}
+  \begin{bmatrix}
+    EL_{j,t,n} \\
+    HL_{j,t,n} \\
+    0
+  \end{bmatrix}
+  \end{equation}  
 
 
 
+Inequalities can be transformed into equalities through slack variables.
 
 
 
+Consider the upper part of matrix \ref{matrix}. By appropriately summing over rows corresponding to the time steps within the same interval $I$ in a time partition $P$, we obtain the summations in \ref{sums scenarios}. Row operations such as this always yield LP relaxations. 
+In order to trace back to the model with aggregated variables as well, as defined in \ref{sums var_t}, a column operation is carried on the upper part of matrix \ref{matrix}. In general, column operations (especially when reducting the dimension of the variable space) don't yield problem relaxations. However, thanks to the block structure with costant coefficients in the blocks, the aggregated LP formulation is indeed a relaxation of the disaggregated one.  
+A formal proof of this fact, written for more general row and column operations, is given in Appendix B \ref{appendix B}.
+\color{red}
+
+Finish writing: 
+
+The idea is to iterate over progressively finer time partitions. 
+
+We use the model corresponding to  for our iterations.
+
+
+\color{black}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1056,6 +1090,18 @@ Finally, we can generate samples from a Multivariate Gaussian random variable \(
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{B - Formal proof of row and column operation .....}\label{appendix B}
+
+Questa parte è la teoria sviluppata da Gabor. Non la metto nella mia tesi, la riserviamo per l'articolo.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                     BIBLIOGRAPHY STARTS
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\begin{acknowledgements}
 %If you'd like to thank anyone, place your comments here
