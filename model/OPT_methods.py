@@ -1580,19 +1580,40 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
         if iter_method == "random":
             print("random iteration")
             network.iter_partition(k=k)
+
         elif iter_method == "rho":
             print("rho iteration")
             network.rho_iter_partition(VARS, k=k)
+
         elif iter_method == "validation":
+            "Uses Validate function to find interval on which to iterate"
             print("validation iteration")
             optimal = network.validationfun_iter_partition(VARS, k=k)
+            if optimal:
+                print("optimal solution for unaggregated problem found")
+                return iter_sol
+
+        elif iter_method == "validationold":
+            print("validation iteration old")
+            optimal = network.validationfun_iter_partition_old(VARS, k=k)
 
             if optimal:
                 print("optimal solution for unaggregated problem found")
                 return iter_sol
+
         elif iter_method == "validation2":
             print("validation2 iteration")
             optimal, day_initial, scenario_initial= network.validation2fun_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
+            if day_initial > 5: #we start a bit before just in case.
+                day_initial = day_initial - 5
+            if optimal:
+                print("optimal solution for unaggregated problem found")
+                return iter_sol
+                
+        elif iter_method == "validation3":
+            #each time starts at the beginning
+            print("validation3 iteration")
+            optimal, _, scenario_initial= network.validation2fun_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
 
             if optimal:
                 print("optimal solution for unaggregated problem found")
