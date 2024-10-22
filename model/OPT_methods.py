@@ -1603,12 +1603,13 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
 
         elif iter_method == "validation2":
             print("validation2 iteration")
-            optimal, day_initial, scenario_initial= network.validation2fun_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
+            end, day_initial, scenario_initial= network.validation2fun_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
             if day_initial > 5: #we start a bit before just in case.
                 day_initial = day_initial - 5
-            if optimal:
-                print("optimal solution for unaggregated problem found")
-                return iter_sol
+            if end:
+                day_initial = 0
+                scenario_initial = 0
+                print("reached end of validation, starting over (i hope this doesn't give problems i didnt have time to test this)")
                 
         elif iter_method == "validation3":
             #each time starts at the beginning
