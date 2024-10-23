@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  22 OCT 2024 23:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  23 OCT 2024 04:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -7,10 +7,6 @@ entering extended mode
 (/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
-
-LaTeX Info: File `example.eps' already exists on the system.
-            Not generating it from this source.
-
 (/usr/share/texlive/texmf-dist/tex/latex/base/fix-cm.sty
 Package: fix-cm 2020/11/24 v1.1t fixes to LaTeX
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.def
@@ -771,30 +767,30 @@ File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \c@assumption=\count346
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... none found.
-LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 222.
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 197.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 ) (./articolo.aux)
 \openout1 = `articolo.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 222.
-LaTeX Font Info:    ... okay on input line 222.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 197.
+LaTeX Font Info:    ... okay on input line 197.
  (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count347
@@ -816,216 +812,171 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable tick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into your preamble.
- on input line 222.
+ on input line 197.
 
-Package hyperref Info: Link coloring OFF on input line 222.
+Package hyperref Info: Link coloring OFF on input line 197.
 (./articolo.out) (./articolo.out)
 \@outlinefile=\write4
 \openout4 = `articolo.out'.
 
 
 
-Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 222.
+Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 197.
 
 
-Package mathptmx Warning: There are no bold math fonts on input line 254.
+Package mathptmx Warning: There are no bold math fonts on input line 229.
 
-LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line 254.
+LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line 229.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line 254.
+LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line 229.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line 254.
+LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line 229.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line 254.
+LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line 229.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 229.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 229.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 229.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 229.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 254.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 229.
  [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}]
 
-LaTeX Warning: Citation `EU_context' on page 2 undefined on input line 274.
+LaTeX Warning: Citation `EU_context' on page 2 undefined on input line 252.
 
 
-LaTeX Warning: Citation `INTRO_isolated_MIP' on page 2 undefined on input line 285.
+LaTeX Warning: Citation `INTRO_isolated_MIP' on page 2 undefined on input line 263.
 
 
-LaTeX Warning: Citation `INTRO_Glomb' on page 2 undefined on input line 293.
+LaTeX Warning: Citation `INTRO_Glomb' on page 2 undefined on input line 271.
 
 
-LaTeX Warning: Citation `INTRO_Palma-Behnke' on page 2 undefined on input line 294.
+LaTeX Warning: Citation `INTRO_Palma-Behnke' on page 2 undefined on input line 272.
 
 
-LaTeX Warning: Citation `INTRO_karlsruhe' on page 2 undefined on input line 296.
+LaTeX Warning: Citation `INTRO_karlsruhe' on page 2 undefined on input line 274.
 
 
 Underfull \vbox (badness 2564) has occurred while \output is active []
 
  [2]
 
-LaTeX Warning: Citation `INTRO_short-term' on page 3 undefined on input line 299.
+LaTeX Warning: Citation `INTRO_short-term' on page 3 undefined on input line 277.
 
 
-LaTeX Warning: Reference `subsection: matrix' on page 3 undefined on input line 317.
+LaTeX Warning: Reference `subsection: matrix' on page 3 undefined on input line 296.
 
 
-LaTeX Warning: Reference `subsection: iter rho' on page 3 undefined on input line 318.
+LaTeX Warning: Reference `subsection: iter rho' on page 3 undefined on input line 297.
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [3] [4] [5]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 447.
+[3] [4] [5]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 427.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 
-LaTeX Warning: Citation `DAWOOD' on page 6 undefined on input line 457.
+LaTeX Warning: Citation `DAWOOD' on page 6 undefined on input line 437.
 
 
-Underfull \hbox (badness 10000) in alignment at lines 503--503
+Underfull \hbox (badness 10000) in alignment at lines 483--483
 [][][] 
  []
 
-[6]
+
+Underfull \vbox (badness 4569) has occurred while \output is active []
+
+ [6]
 Underfull \vbox (badness 1622) has occurred while \output is active []
 
  [7] [8]
 
-LaTeX Warning: Reference `section: LP' on page 9 undefined on input line 595.
+LaTeX Warning: Reference `section: LP' on page 9 undefined on input line 575.
 
 
-LaTeX Warning: Reference `section: LP' on page 9 undefined on input line 610.
+LaTeX Warning: Reference `section: LP' on page 9 undefined on input line 590.
 
 [9]
 
-LaTeX Warning: Reference `section: LP' on page 10 undefined on input line 623.
+LaTeX Warning: Reference `section: LP' on page 10 undefined on input line 603.
 
 [10] [11]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 801.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 762.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 870.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 831.
 
 Missing character: There is no ; in font nullfont!
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 884.
-[12]
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 845.
+[12] [13]
 
-LaTeX Warning: Reference `eq:LP' on page 13 undefined on input line 971.
-
-
-LaTeX Warning: Reference `eq:LPaggr' on page 13 undefined on input line 971.
-
-[13]
-
-LaTeX Warning: Reference `eq:LPaggr' on page 14 undefined on input line 975.
+LaTeX Warning: Reference `eq:LP' on page 14 undefined on input line 964.
 
 
-Overfull \hbox (0.70816pt too wide) in paragraph at lines 978--979
-[]\OT1/ptm/m/it/10 If $\OML/ztmcm/m/it/10 ^^Z[] \OMS/ztmcm/m/n/10 ^^U \OT1/ztmcm/m/n/10 0$ \OT1/ptm/m/it/10 and $\OML/ztmcm/m/it/10 x \OMS/ztmcm/m/n/10 2 \U/msb/m/n/10 R[]$ \OT1/ptm/m/it/10 sat-is-fies $\OML/ztmcm/m/it/10 x[] \OT1/ztmcm/m/n/10 = []$ \OT1/ptm/m/it/10 and $\OML/ztmcm/m/it/10 x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 ^^Z[][]$ \OT1/ptm/m/it/10 for all $\OML/ztmcm/m/it/10 C \OMS/ztmcm/m/n/10 2 []\OT1/ztmcm/m/n/10 ([])[]$\OT1/ptm/m/it/10 ,
- []
+LaTeX Warning: Reference `eq:LPaggr' on page 14 undefined on input line 964.
 
 
-LaTeX Warning: Reference `eq:LPunaggr' on page 14 undefined on input line 1014.
-
-
-LaTeX Warning: Reference `eq:LPaggr' on page 14 undefined on input line 1018.
-
-
-LaTeX Warning: Reference `eq:LP' on page 14 undefined on input line 1020.
+LaTeX Warning: Reference `eq:LPaggr' on page 14 undefined on input line 968.
 
 [14]
 
-LaTeX Warning: Reference `eq:LPaggr' on page 15 undefined on input line 1051.
+LaTeX Warning: Reference `eq:LPunaggr' on page 15 undefined on input line 1006.
 
 
-LaTeX Warning: Reference `ob:costpreserving' on page 15 undefined on input line 1055.
+LaTeX Warning: Reference `eq:LPaggr' on page 15 undefined on input line 1010.
 
 
-LaTeX Warning: Reference `eq:LP' on page 15 undefined on input line 1056.
-
-
-Overfull \hbox (98.62402pt too wide) detected at line 1061
-[][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
- []
-
-
-LaTeX Warning: Reference `eq:delta_hydrogen_constraints' on page 15 undefined on input line 1088.
+LaTeX Warning: Reference `eq:LP' on page 15 undefined on input line 1012.
 
 [15]
 
-LaTeX Warning: Reference `eq:delta_hydrogen_constraints' on page 16 undefined on input line 1091.
+LaTeX Warning: Reference `eq:delta_hydrogen_constraints' on page 16 undefined on input line 1022.
 
 
-LaTeX Warning: Reference `' on page 16 undefined on input line 1110.
+LaTeX Warning: Reference `eq:delta_hydrogen_constraints' on page 16 undefined on input line 1025.
 
 
-LaTeX Warning: Reference `' on page 16 undefined on input line 1110.
+LaTeX Warning: Reference `' on page 16 undefined on input line 1080.
 
 
-LaTeX Warning: Reference `subsec:scenarios' on page 16 undefined on input line 1111.
+LaTeX Warning: Reference `' on page 16 undefined on input line 1080.
 
-<images/rho_vas_average2.png, id=195, 739.76375pt x 451.6875pt>
+
+LaTeX Warning: Reference `subsec:scenarios' on page 16 undefined on input line 1081.
+
+<images/rho_vas_average2.png, id=199, 739.76375pt x 451.6875pt>
 File: images/rho_vas_average2.png Graphic file (type png)
 <use images/rho_vas_average2.png>
-Package pdftex.def Info: images/rho_vas_average2.png  used on input line 1119.
+Package pdftex.def Info: images/rho_vas_average2.png  used on input line 1089.
 (pdftex.def)             Requested size: 270.40103pt x 165.10234pt.
-<images/val_vs_average2.png, id=197, 832.10875pt x 451.6875pt>
+<images/val_vs_average2.png, id=201, 832.10875pt x 451.6875pt>
 File: images/val_vs_average2.png Graphic file (type png)
 <use images/val_vs_average2.png>
-Package pdftex.def Info: images/val_vs_average2.png  used on input line 1127.
+Package pdftex.def Info: images/val_vs_average2.png  used on input line 1097.
 (pdftex.def)             Requested size: 338.0pt x 183.47691pt.
-[16]
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 1164.
- (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
-File: omsptm.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1164.
+[16] [17 <./images/rho_vas_average2.png>] [18 <./images/val_vs_average2.png>]
+
+LaTeX Warning: Citation `weibullwind' on page 19 undefined on input line 1403.
 
 
-LaTeX Warning: Citation `weibullwind' on page 17 undefined on input line 1165.
+LaTeX Warning: Citation `betaPV' on page 19 undefined on input line 1404.
 
 
-LaTeX Warning: Citation `betaPV' on page 17 undefined on input line 1166.
+LaTeX Warning: Citation `GaussCopula' on page 19 undefined on input line 1410.
 
-
-LaTeX Warning: Citation `GaussCopula' on page 17 undefined on input line 1170.
-
-
-Underfull \vbox (badness 3568) has occurred while \output is active []
-
- [17 <./images/rho_vas_average2.png> <./images/val_vs_average2.png>] [18]
-Underfull \hbox (badness 10000) in paragraph at lines 1234--1237
-
- []
-
-[19]
-Underfull \hbox (badness 10000) in paragraph at lines 1242--1244
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1246--1247
-
- []
-
-[20] (./articolo.aux)
+[19] [20] (./articolo.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1035,27 +986,27 @@ L3 programming layer <2024-01-22>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `articolo.out' has not changed.
-(rerunfilecheck)             Checksum: AF9DBC23ABA2F63E26CDCB5890C8ABD5;619.
+(rerunfilecheck)             Checksum: 8C3A04D53D519369AA414377B8F34854;956.
  ) 
 Here is how much of TeX's memory you used:
- 34746 strings out of 474222
- 799718 string characters out of 5748733
+ 34731 strings out of 474222
+ 799319 string characters out of 5748733
  1951975 words of memory out of 5000000
- 56270 multiletter control sequences out of 15000+600000
- 615574 words of font info for 158 fonts, out of 8000000 for 9000
+ 56251 multiletter control sequences out of 15000+600000
+ 617404 words of font info for 165 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 103i,13n,107p,1863b,704s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 103i,13n,107p,1865b,704s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+\(UTC+1\)+/+CEST+\(UTC+2\)} has been referenced but does not exist, replaced by a fixed one
 
 
 pdfTeX warning (dest): name{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf} has been referenced but does not exist, replaced by a fixed one
 
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (20 pages, 243451 bytes).
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on articolo.pdf (20 pages, 249564 bytes).
 PDF statistics:
- 311 PDF objects out of 1000 (max. 8388607)
- 254 compressed objects within 3 object streams
- 84 named destinations out of 1000 (max. 500000)
- 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 323 PDF objects out of 1000 (max. 8388607)
+ 264 compressed objects within 3 object streams
+ 86 named destinations out of 1000 (max. 500000)
+ 79 words of extra memory for PDF output out of 10000 (max. 10000000)
 
