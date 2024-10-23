@@ -1,0 +1,40 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem{EU_context}
+Commission, E.: Communication from the commission: Guidance on article 20a on sector integration of renewable electricity of directive (eu) 2018/2001 on the promotion of energy from renewable sources, as amended by directive (eu) 2023/2413 (2024).
+\newblock \urlprefix\url{https://energy.ec.europa.eu/document/download/efcd200c-b9ae-4a9c-98ab-73b2fd281fcc_en?filename=C_2024_5041_1_EN_ACT_part1_v10.pdf}
+
+\bibitem{DAWOOD}
+Dawood, F., Anda, M., Shafiullah, G.: Hydrogen production for energy: An overview.
+\newblock International Journal of Hydrogen Energy \textbf{45}(7), 3847--3869 (2020).
+\newblock \doi{https://doi.org/10.1016/j.ijhydene.2019.12.059}.
+\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360319919345926}
+
+\bibitem{weibullwind}
+Khahro, S.F., Tabbassum, K., Soomro, A.M., Dong, L., Liao, X.: Evaluation of wind power production prospective and weibull parameter estimation methods for babaurband, sindh pakistan.
+\newblock Energy Conversion and Management \textbf{78}, 956--967 (2014).
+\newblock \doi{https://doi.org/10.1016/j.enconman.2013.06.062}.
+\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S019689041300589X}
+
+\bibitem{European_H2_Market_landscape}
+Observatory, E.H.: European hydrogen market landscape - november 2023 report.
+\newblock European Journal of Operational Research (1) (2023).
+\newblock \urlprefix\url{https://observatory.clean-hydrogen.europa.eu/sites/default/files/2023-11/Report%2001%20-%20November%202023%20-%20The%20European%20hydrogen%20market%20landscape.pdf}
+
+\bibitem{GaussCopula}
+Papaefthymiou, G., Kurowicka, D.: Using copulas for modeling stochastic dependence in power system uncertainty analysis.
+\newblock IEEE Transactions on Power Systems \textbf{24}(1), 40--49 (2009).
+\newblock \doi{10.1109/TPWRS.2008.2004728}
+
+\bibitem{betaPV}
+Yuan, X., Chen, C., Jiang, M., Yuan, Y.: Prediction interval of wind power using parameter optimized beta distribution based lstm model.
+\newblock Applied Soft Computing \textbf{82}, 105550 (2019).
+\newblock \doi{https://doi.org/10.1016/j.asoc.2019.105550}.
+\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1568494619303308}
+
+\end{thebibliography}

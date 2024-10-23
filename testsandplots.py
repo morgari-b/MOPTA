@@ -76,7 +76,7 @@ times_val2 = [vars_val2[i]['opt_time'] for i in range(1,len(vars_val2))]
 n = copy.deepcopy(eu)
 vars_val3 = OPT_agg2(n, N_iter =  N_iter, iter_method = 'validation3')
 costs_val3 = [vars_val3[i]['obj'] for i in range(len(vars_val3))]
-times_val3 = [vars_val3[i]['opt_time'] for i in range(1,len(vars_va3))]
+times_val3 = [vars_val3[i]['opt_time'] for i in range(1,len(vars_val3))]
 
 
 #%% rho
@@ -124,7 +124,7 @@ file_path = "../saved_opt/"
 name = "40iter"
 ext = '.npy'
 
-
+#%%
 np.save(file_path+'costs_val'+name+ext, costs_val)
 np.save(file_path+'vars_val.npy'+name+ext, vars_val)
 #%%
@@ -153,7 +153,7 @@ times_val2 = [vars_val2[i]['opt_time'] for i in range(len(vars_val2))]
 vars_rho = np.load(file_path+'vars_rho.npy', allow_pickle=True)
 costs_rho = np.load(file_path+'costs_rho.npy', allow_pickle=True)
 times_rho = np.load(file_path+'times_rho.npy', allow_pickle=True)
-
+#%%
 vars_random_list = np.load(file_path+'vars_random.npy', allow_pickle=True)
 costs_random_list = []
 times_random_list = []

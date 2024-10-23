@@ -1,0 +1,62 @@
+This is BibTeX, Version 0.99d (TeX Live 2024)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: articolo.aux
+The style file: spmpsci.bst
+Database file #1: sample.bib
+Warning--I didn't find a database entry for "EU_context"
+Warning--I didn't find a database entry for "review_math_opt"
+Warning--I didn't find a database entry for "INTRO_isolated_MIP"
+Warning--I didn't find a database entry for "INTRO_Glomb"
+Warning--I didn't find a database entry for "INTRO_Palma-Behnke"
+Warning--I didn't find a database entry for "INTRO_karlsruhe"
+Warning--I didn't find a database entry for "INTRO_short-term"
+Warning--I didn't find a database entry for "Gurobi"
+Warning--I didn't find a database entry for "European_H2_Market_landscape"
+Warning--I didn't find a database entry for "DAWOOD"
+Warning--I didn't find a database entry for "deterministic"
+Warning--I didn't find a database entry for "weibullwind"
+Warning--I didn't find a database entry for "betaPV"
+Warning--I didn't find a database entry for "30y_gen"
+Warning--I didn't find a database entry for "GaussCopula"
+You've used 0 entries,
+            2945 wiz_defined-function locations,
+            625 strings with 4898 characters,
+and the built_in function-call counts, 28 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 2
+:= -- 7
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
+int.to.chr$ -- 0
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 8
+num.names$ -- 0
+pop$ -- 0
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 0
+write$ -- 7
+(There were 15 warnings)
