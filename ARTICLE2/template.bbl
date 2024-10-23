@@ -33,6 +33,10 @@ Glomb, L., Liers, F., Rösel, F.: A rolling-horizon approach for multi-period op
 \newblock \doi{https://doi.org/10.1016/j.ejor.2021.07.043}.
 \newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0377221721006536}
 
+\bibitem{INTRO_gurobi}
+{Gurobi Optimization, LLC}: {Gurobi Optimizer Reference Manual} (2024).
+\newblock \urlprefix\url{https://www.gurobi.com}
+
 \bibitem{INTRO_karlsruhe}
 Hasan U.~Yilmaz Kai~Mainzer, D.K.: Improving the performance of solving large scale mixed-integer energy system models by applying the fix-and-relax method pp. 1--5 (2020).
 \newblock \doi{10.1109/EEM49802.2020.9221934}

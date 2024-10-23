@@ -365,7 +365,7 @@ The CEP and the ED problems for all scenarios are solved concurrently.
 When optimizing over multiple scenarios jointly, the solver returns the minimal amount of infrastructure and capacities that is needed to have feasibility (that is, demand met at all time and no blackouts) over all scenarios in input, with minimal cost. 
 Cost is considered to be the sum of capital costs and average operational costs of the infrastructure over the scenarios.
 
-The optimization problem is solved using the Gurobi solver %\textcolor{green}{\cite{Gurobi}}.
+The optimization problem is solved using the Gurobi solver \textcolor{green}{\cite{INTRO_gurobi}}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  VARIABLES  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1090,7 +1090,7 @@ To evaluate the methodologies presented in this paper, we examine a  5-node netw
  In this section, we compare three approaches for iterating on the aggregated problem: (1) randomly selecting the interval for refinement, 
  (2) selecting the interval with the highest \(\rho\)-variance as defined in Section \ref{}, and (3) selecting the interval where the validation function \ref{} fails. 
  The scenarios are generated as outlined in Section \ref{subsec:scenarios} in the Appendix. 
- The computational tests were conducted on an Intel(R) Core(TM) i7-13700H CPU @ 2.40GHz with 16 GB of RAM.
+ The computational tests were conducted on an Intel(R) Core(TM) i7-13700H CPU @ 2.40GHz with 16 GB of RAM using Gurobi.
 
 Plot \ref{fig:rho_vs_average} illustrates the cost variation at each iteration using the \(\rho\) selection method compared to random interval selection.
  The \(\rho\) selection method demonstrates a faster increase in cost than the random selection method, with comparable optimization times: 174 seconds for the \(\rho\) selection method 
@@ -1114,6 +1114,9 @@ The results indicate that the former method yields a significantly faster increa
 ----- plot same but over real time ----- or just table with time stamps\\
 comment: the model takes a lot to set up, but iterations are quick: we are indeed using warm start successfully.
 
+
+
+-----plot at each iteration the optimization time trend-------
 }
 
 
@@ -1134,9 +1137,12 @@ comment: the model takes a lot to set up, but iterations are quick: we are indee
 
 
 
-\section{CONCLUSION}
+\section{Conclusion and Future Directions}
+
+{\color{violet}
 
 
+}
 
 
 

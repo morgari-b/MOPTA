@@ -121,15 +121,18 @@ fig.show()
 #%%
 print("Può esser comodo salvare i test per non rerunnare tutto ogni volta, crea una cartella saved_opt fuori da MOPTA (perchè altrimenti poi git fa casino con dimensioni file)")
 file_path = "../saved_opt/"
-name = "40iter"
+name = "40iter2"
 ext = '.npy'
 
 #%%
 np.save(file_path+'costs_val'+name+ext, costs_val)
 np.save(file_path+'vars_val.npy'+name+ext, vars_val)
 #%%
-np.save(file_path+'costs_val2'+name+ext, costs_val)
-np.save(file_path+'vars_val2'+name+ext, vars_val)
+np.save(file_path+'costs_val2'+name+ext, costs_val2)
+np.save(file_path+'vars_val2'+name+ext, vars_val2)
+#%%
+np.save(file_path+'costs_val3'+name+ext, costs_val2)
+np.save(file_path+'vars_val3'+name+ext, vars_val2)
 # %%
 np.save(file_path+'vars_random'+name+ext, vars_random_list)
 np.save(file_path+'costs_random'+name+ext, costs_random_list)

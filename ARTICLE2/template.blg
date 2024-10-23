@@ -9,45 +9,45 @@ Warning--I didn't find a database entry for "GaussCopula"
 Warning--empty journal in INTRO_karlsruhe
 Warning--empty journal in review_math_opt
 Warning--there's a number but no volume in European_H2_Market_landscape
-You've used 16 entries,
+You've used 17 entries,
             2945 wiz_defined-function locations,
-            734 strings with 9373 characters,
-and the built_in function-call counts, 7865 in all, are:
-= -- 635
-> -- 252
+            739 strings with 9480 characters,
+and the built_in function-call counts, 8152 in all, are:
+= -- 656
+> -- 259
 < -- 2
-+ -- 109
-- -- 88
-* -- 520
-:= -- 1084
-add.period$ -- 37
-call.type$ -- 16
-change.case$ -- 94
++ -- 112
+- -- 90
+* -- 532
+:= -- 1123
+add.period$ -- 38
+call.type$ -- 17
+change.case$ -- 98
 chr.to.int$ -- 0
-cite$ -- 19
-duplicate$ -- 689
-empty$ -- 703
-format.name$ -- 99
-if$ -- 1660
+cite$ -- 20
+duplicate$ -- 714
+empty$ -- 736
+format.name$ -- 101
+if$ -- 1723
 int.to.chr$ -- 0
-int.to.str$ -- 16
-missing$ -- 162
-newline$ -- 93
-num.names$ -- 32
-pop$ -- 248
+int.to.str$ -- 17
+missing$ -- 167
+newline$ -- 97
+num.names$ -- 34
+pop$ -- 264
 preamble$ -- 1
-purify$ -- 76
+purify$ -- 79
 quote$ -- 0
-skip$ -- 145
+skip$ -- 155
 stack$ -- 0
-substring$ -- 349
-swap$ -- 395
+substring$ -- 354
+swap$ -- 406
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 64
+type$ -- 68
 warning$ -- 3
-while$ -- 47
-width$ -- 18
-write$ -- 207
+while$ -- 49
+width$ -- 19
+write$ -- 216
 (There were 6 warnings)
