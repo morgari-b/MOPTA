@@ -45,8 +45,8 @@ grestore
 %
 \smartqed  % flush right qed marks, e.g. at end of proof
 %
-\usepackage{graphicx}
-%
+\usepackage[round, sort, numbers]{natbib}
+\usepackage{graphicx}   % omit 'round' option if you prefer square brackets
 % \usepackage{mathptmx}      % use Times fonts if available on your TeX system
 %
 % insert here the call for the packages your document requires
@@ -1173,7 +1173,7 @@ comment: the model takes a lot to set up, but iterations are quick: we are indee
 
 % BibTeX users please use one of
 %\bibliographystyle{spbasic}      % basic style, author-year citations
-\bibliographystyle{spmpsci}      % mathematics and physical sciences
+%% mathematics and physical sciences
 %\bibliographystyle{spphys}       % APS-like style for physics
 \bibliography{sample}   % name your BibTeX data base
 

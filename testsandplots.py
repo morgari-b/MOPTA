@@ -39,8 +39,8 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 np.random.seed(42)
 N_scenarios = 2
 eu=EU(N_scenarios)
-
-N_iter = 20 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
+#%%
+N_iter = 40 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
 N_random = 10 #numeri di ottimizzazione da effettuare utilizando metodo random di selezione di intervallo da disgregare
 
 #%% rerun random iterations
@@ -58,12 +58,20 @@ times_random_list = []
 for i in range(N_random):
     times_random = [vars_random_list[i][j]['opt_time'] for j in range(1,N_iter)]
     times_random_list.append(times_random)
+#%%
+print("Può esser comodo salvare i test per non rerunnare tutto ogni volta, crea una cartella saved_opt fuori da MOPTA (perchè altrimenti poi git fa casino con dimensioni file)")
+file_path = "../saved_opt/"
+name = "40iter3"
+ext = '.npy'
+# %%
+np.save(file_path+'vars_random'+name+ext, vars_random_list)
+np.save(file_path+'costs_random'+name+ext, costs_random_list)
 
 
 #%% normal validation
 n = copy.deepcopy(eu)
 print("validation normale lo faccio andare per 10 iter perchè è lento")
-vars_val = OPT_agg2(n, N_iter =  10, iter_method = 'validation')
+vars_val = OPT_agg2(n, N_iter =  20, iter_method = 'validation')
 costs_val = [vars_val[i]['obj'] for i in range(len(vars_val))]
 times_val = [vars_val[i]['opt_time'] for i in range(1,len(vars_val))]
 
@@ -88,7 +96,7 @@ times_rho = [vars_rho[i]['opt_time'] for i in range(1,len(vars_rho))]
 #%% oldval
 print("validation normale lo faccio andare per 10 iter perchè è lento")
 n = copy.deepcopy(eu)
-vars_val_old = OPT_agg2(n, N_iter =  8, iter_method = 'validationold')
+vars_val_old = OPT_agg2(n, N_iter =  15, iter_method = 'validationold')
 costs_val_old = [vars_val_old[i]['obj'] for i in range(len(vars_val_old))]
 times_val_old = [vars_val_old[i]['opt_time'] for i in range(1,len(vars_val_old ))]
 
@@ -118,11 +126,6 @@ fig.show()
 
 
 
-#%%
-print("Può esser comodo salvare i test per non rerunnare tutto ogni volta, crea una cartella saved_opt fuori da MOPTA (perchè altrimenti poi git fa casino con dimensioni file)")
-file_path = "../saved_opt/"
-name = "40iter2"
-ext = '.npy'
 
 #%%
 np.save(file_path+'costs_val'+name+ext, costs_val)
@@ -133,9 +136,6 @@ np.save(file_path+'vars_val2'+name+ext, vars_val2)
 #%%
 np.save(file_path+'costs_val3'+name+ext, costs_val2)
 np.save(file_path+'vars_val3'+name+ext, vars_val2)
-# %%
-np.save(file_path+'vars_random'+name+ext, vars_random_list)
-np.save(file_path+'costs_random'+name+ext, costs_random_list)
 
 #%%
 np.save(file_path+'vars_rho'+name+ext, vars_rho)
