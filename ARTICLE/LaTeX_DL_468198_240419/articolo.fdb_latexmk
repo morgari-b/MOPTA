@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1729651357.30381 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1729651360.47086 0
+["pdflatex"] 1729652022.16403 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" "articolo.pdf" "articolo" 1729652023.44682 0
   "/etc/texmf/web2c/texmf.cnf" 1727021346.58952 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1729651356.92442 98647 cf02d63eec190cc2797cfdde2bd3346a ""
+  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE/LaTeX_DL_468198_240419/articolo.tex" 1729652021.91838 98696 44169ebcf88336530da95cf004920901 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -248,9 +248,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1727021369.8525 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1727021390 8213608 7518f4bf06237f22cded744c906015fd ""
-  "articolo.aux" 1729651360.23337 6236 ff125853d99dff746e9dfe1552785707 "pdflatex"
-  "articolo.out" 1729651360.23437 956 8c3a04d53d519369aa414377b8f34854 "pdflatex"
-  "articolo.tex" 1729651356.92442 98647 cf02d63eec190cc2797cfdde2bd3346a ""
+  "articolo.aux" 1729652023.35537 6236 e9412c85be280154ad637e5727005fdd "pdflatex"
+  "articolo.out" 1729652023.35637 956 8c3a04d53d519369aa414377b8f34854 "pdflatex"
+  "articolo.tex" 1729652021.91838 98696 44169ebcf88336530da95cf004920901 ""
   "images/rho_vas_average2.png" 1729516607.95433 25589 c4bb28dd8c723bf32dfc15148bb26d63 ""
   "images/val_vs_average2.png" 1729516607.95433 28380 af8f8d6c4b6e6f04025fb87ffe0ee4cb ""
   "svglov3.clo" 1261135514 3809 f8e29af71acd1bd1b2a58b6166058c66 ""

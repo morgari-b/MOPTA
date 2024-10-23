@@ -572,7 +572,7 @@ Finally, edge capacities on the respective graphs are considered for all scenari
 
 \subsection{Validation: Rolling Horizon}\label{subsection: RH}
 
-While computing the optimal solution on a batch of scenarios by solving the LP model described in section \ref{section: LP}, the solver ``knows the future'' for those scenarios. 
+While computing the optimal solution on a batch of scenarios by solving the LP model described in section \ref{subsection: LP}, the solver ``knows the future'' for those scenarios. 
 That is, the criteria it uses to determine, at each time step, how much electricity or hydrogen should be converted or transmitted, and where, is a mathematical minimum that is informed by the knowledge of what is needed at any time during the one year scenario.
 In real life, accurate forecasts for weather, and consequently for power generation, are known on a day ahead basis, at most two days ahead. 
 We are thus interested in evaluating whether an optimal grid as given by the solution of the CEP problem on a batch of train scenarios can (1) be operated without knowledge of the future in order to satisfy demand on the same scenarios it was trained on, and (2) generalize to new test scenarios.
@@ -957,12 +957,14 @@ However, \textcolor{pink}{distance from the actual optimal solution can be bound
 
 A great disadvantage of using the RH validation within the iteration loop is that the computational costs it brings along is not insignificant, needing careful consideration on whether it is in effect preferable to directly optimizing on the full problem.
 
+We now discuss a third and final method we propose and test for the selection of the day to disaggregate in step 2. 
+The goal is to design a heuristic to measure ``how distant the solution to the aggregated LP is from being extended to a solution that is feasible to the disaggregated LP''.  
 
 
 
 \color{gray}
 \textbf{While obtaining a feasible solution to \eqref{eq:LP} from \eqref{eq:LPaggr} is not always guaranteed, it is possible under certain assumptions.}
-Here, if \(B\) is a matrix having \(I,J\) as set of indexes for the rows and columns respctively, then, for all \(I' \subset I\) and \(J' \subset J\), we denote with \(B_{I',J'}\) the submatrix of \(B\) havins rows in \(I'\) and columns in \(J'\).
+
 \begin{observation}
 \label{ob:aggrconstr}
 If \((\rowP, \colP)\) is a structure-preserving aggregation, let \(R \in \rowP\) and \(r \in R\). Let \(\tilde{x}\) be a solution to the aggregated problem \eqref{eq:LPaggr}. If \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\), define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_r
