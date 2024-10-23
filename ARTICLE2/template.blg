@@ -1,6 +1,7 @@
 This is BibTeX, Version 0.99d (TeX Live 2024)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: template.aux
+<<<<<<< HEAD
 The style file: spmpsci.bst
 Database file #1: sample.bib
 Warning--I didn't find a database entry for "deterministic"
@@ -23,6 +24,23 @@ and the built_in function-call counts, 8152 in all, are:
 add.period$ -- 38
 call.type$ -- 17
 change.case$ -- 98
+=======
+I found no \bibstyle command---while reading file template.aux
+You've used 20 entries,
+            0 wiz_defined-function locations,
+            120 strings with 968 characters,
+and the built_in function-call counts, 0 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 0
+:= -- 0
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
+>>>>>>> 29d8fc1a71fd6fce6456aa3ae07729f2cd687668
 chr.to.int$ -- 0
 cite$ -- 20
 duplicate$ -- 714
@@ -45,9 +63,18 @@ swap$ -- 406
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
+<<<<<<< HEAD
 type$ -- 68
 warning$ -- 3
 while$ -- 49
 width$ -- 19
 write$ -- 216
 (There were 6 warnings)
+=======
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 0
+write$ -- 0
+(There was 1 error message)
+>>>>>>> 29d8fc1a71fd6fce6456aa3ae07729f2cd687668
