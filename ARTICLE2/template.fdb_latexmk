@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex template"] 1729676735.39441 "template.aux" "template.bbl" "template" 1729677157.68596 0
-  "./sample.bib" 1729670872 31190 b79e320f873929dc0cbc4bc616e2a91a ""
+["bibtex template"] 1729680332.78445 "template.aux" "template.bbl" "template" 1729680338.29343 0
+  "./sample.bib" 1729680290 42997 840f22ad385604d6089d28ff0d71106b ""
   "./spmpsci.bst" 1729675108 30130 0182c69465c28ddbb1f8698b9c5c1559 ""
-  "template.aux" 1729677156 6106 1bd98aa8f2947526947ac9d99945c9a4 "pdflatex"
+  "template.aux" 1729680336 6684 30b8e85e3e549411dcd42cf7fe5f5103 "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1729677153.21589 "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1729677157.68649 0
-  "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" 1729677152 86604 cbb1e3deb145949d4e663575dfea8b2c ""
+["pdflatex"] 1729680333.49705 "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1729680338.29437 0
+  "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" 1729680321 86640 922a9c6abe424171b0596e4efa64c4b7 ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1722435943 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "c:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1722436724 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm" 1722436388 1536 06717a2b50de47d4087ac0e6cd759455 ""
@@ -276,10 +276,10 @@
   "images/val_vs_average2.png" 1729514406 28380 af8f8d6c4b6e6f04025fb87ffe0ee4cb ""
   "svglov3.clo" 1729675108 3809 b98636486931abc143bcf14934850e7b ""
   "svjour3.cls" 1729675108 47679 580d73513215963b6ad3ff0c4282b766 ""
-  "template.aux" 1729677156 6106 1bd98aa8f2947526947ac9d99945c9a4 "pdflatex"
-  "template.bbl" 1729676736 2519 3cf40eacbdd5c587d1885c87ed53f249 "bibtex template"
-  "template.out" 1729677156 956 8c3a04d53d519369aa414377b8f34854 "pdflatex"
-  "template.tex" 1729677152 86604 cbb1e3deb145949d4e663575dfea8b2c ""
+  "template.aux" 1729680336 6684 30b8e85e3e549411dcd42cf7fe5f5103 "pdflatex"
+  "template.bbl" 1729680333 5824 5b6821e66f32d75a6a103c15dfce91b0 "bibtex template"
+  "template.out" 1729680336 956 8c3a04d53d519369aa414377b8f34854 "pdflatex"
+  "template.tex" 1729680321 86640 922a9c6abe424171b0596e4efa64c4b7 ""
   (generated)
   "template.aux"
   "template.log"

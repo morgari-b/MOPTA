@@ -5,46 +5,49 @@ The style file: spmpsci.bst
 Database file #1: sample.bib
 Warning--I didn't find a database entry for "deterministic"
 Warning--I didn't find a database entry for "30y_gen"
+Warning--I didn't find a database entry for "GaussCopula"
+Warning--empty journal in INTRO_karlsruhe
+Warning--empty journal in review_math_opt
 Warning--there's a number but no volume in European_H2_Market_landscape
-You've used 6 entries,
+You've used 16 entries,
             2945 wiz_defined-function locations,
-            652 strings with 6513 characters,
-and the built_in function-call counts, 2812 in all, are:
-= -- 224
-> -- 92
-< -- 0
-+ -- 38
-- -- 32
-* -- 184
-:= -- 394
-add.period$ -- 14
-call.type$ -- 6
-change.case$ -- 34
+            734 strings with 9373 characters,
+and the built_in function-call counts, 7865 in all, are:
+= -- 635
+> -- 252
+< -- 2
++ -- 109
+- -- 88
+* -- 520
+:= -- 1084
+add.period$ -- 37
+call.type$ -- 16
+change.case$ -- 94
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 245
-empty$ -- 253
-format.name$ -- 36
-if$ -- 587
+cite$ -- 19
+duplicate$ -- 689
+empty$ -- 703
+format.name$ -- 99
+if$ -- 1660
 int.to.chr$ -- 0
-int.to.str$ -- 6
-missing$ -- 58
-newline$ -- 40
-num.names$ -- 12
-pop$ -- 90
+int.to.str$ -- 16
+missing$ -- 162
+newline$ -- 93
+num.names$ -- 32
+pop$ -- 248
 preamble$ -- 1
-purify$ -- 28
+purify$ -- 76
 quote$ -- 0
-skip$ -- 50
+skip$ -- 145
 stack$ -- 0
-substring$ -- 111
-swap$ -- 140
-text.length$ -- 0
+substring$ -- 349
+swap$ -- 395
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 24
-warning$ -- 1
-while$ -- 16
-width$ -- 7
-write$ -- 82
-(There were 3 warnings)
+type$ -- 64
+warning$ -- 3
+while$ -- 47
+width$ -- 18
+write$ -- 207
+(There were 6 warnings)

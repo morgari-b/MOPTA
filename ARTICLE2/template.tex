@@ -254,44 +254,65 @@ grestore
 \section{INTRODUCTION}
 
 
-The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. 
-One of the main difficulties arising when designing an electric power system relying on renewables is the great variability of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions. 
-To deal with this variability, a possible solution gaining a lot of traction in recent years is the introduction of an energy storage system relying on hydrogen, converting energy from hydrogen to electricity and vice versa in fuel cells and elecrolyzers \textcolor{green}{[?]}. 
-It is of interest to evaluate the optimal solution, in terms of investment plan, to supply the grid along with industrial hydrogen demand in a dependable way. 
-The stochastic nature of the problem though makes it impossible to plan long-term by optimizing on forecasts, and requiring a statistical approach to ensure a robust model.
+The threat of climate change is pushing policy-makers to pursue greater integration of renewable energy sources into
+ electrical grids, while at the same time ensuring reliability and resilience through digital optimization of electric 
+ power distribution and transmission in smart grids \textcolor{green}{\cite{EU_context}}. 
+One of the main difficulties arising when designing an electric power system relying on renewables is the great variability
+ of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions. 
+To deal with this variability, a possible solution gaining a lot of traction in recent years is the introduction of an energy
+ storage system relying on hydrogen, converting energy from hydrogen to electricity and vice versa in fuel cells and 
+ elecrolyzers \textcolor{violet}{\cite{INTRO_blanco}, \cite{INTRO_parra}}. 
+It is of interest to evaluate the optimal solution, in terms of investment plan, to supply the grid along with industrial
+ hydrogen demand in a dependable way. 
+The stochastic nature of the problem though makes it impossible to plan long-term by optimizing on forecasts, and requiring
+ a statistical approach to ensure a robust model.
 
-Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid models involving Information Gap Decision Theory or Chance Constraint %\textcolor{green}{\cite{review_math_opt}}. 
-While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.
+Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid
+ models involving Information Gap Decision Theory or Chance Constraint \textcolor{green}{\cite{review_math_opt}}. 
+While initially favored, the SP approach comes with high computational burden, so RO models have seen more popularity 
+in recent years, despite the drawback of being conservative methods with higher average cost of operation and planning of energy systems.
 
-In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP) regarding infrastructure investments: solar and wind farms, fuel cells, hydrolizers, grid upgrades to augment Net Transfer Capacity (NTC) and so on. 
+In the typical setting, the problem to solve is a Capacity Expansion Problem (CEP) regarding infrastructure investments:
+ solar and wind farms, fuel cells, hydrolizers, grid upgrades to augment Net Transfer Capacity (NTC) and so on. 
 Nested within the CEP is an Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. 
-The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in %\textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{Green}{other examples?}))
+The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in 
+\textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{Green}{other examples?}))
 
 The CEP for investment planning requires to look at long time horizons, and on the other hand intra-day variability in generation is the main complexity driver for the ED problem, so the time horizon must be modelled by a large quantity of fairly tight time steps. 
-Furthermore, Large scale grids can be modelled with various degrees of spacial aggregation, as is explored in \textcolor{green}{\href{https://ieeexplore.ieee.org/document/7982024}{[?]}}, and problem size increases more than linearly with the number of nodes.
+Furthermore, Large scale grids can be modelled with various degrees of spacial aggregation, as is explored in \cite{Horsch} and \cite{BIENER2020106349}, and problem size increases more than linearly with the number of nodes.
 Thus the temporal and spacial characteristics of the model bring the MILP size to increase rapidly. 
 This is especially demanding in the case of SP, since all the variables from the inner ED problem must be reproduced over all scenarios.
 
 To reduce these costs, one possible approach is to use a Rolling Horizon (RH). 
-The basic technique is described in %\textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. 
-In %\textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of two PV systems, a wind turbine, a diesel generator and a lead-acid battery for storage, serving an isolated area in Chile. 
-%\textcolor{Green}{other examples of RH used for the ED - see Dagdougui?}. 
-A similar idea is applied in %\textcolor{green}{\cite{INTRO_karlsruhe}}, where integer variables representing capital investments are initially relaxed and then progressively fixed in successive time steps, reducing the computational costs associated to the search for integer solutions.
+The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. 
+In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of two PV systems, a wind turbine, a diesel generator and a lead-acid battery for storage, serving an isolated area in Chile. 
+\textcolor{Green}{other examples of RH used for the ED - see Dagdougui?}. 
+A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, 
+where integer variables representing capital investments are initially relaxed 
+and then progressively fixed in successive time steps, reducing the computational
+ costs associated to the search for integer solutions.
 
 A big drawback of the RH approach is that the solution it provides is not optimal on the whole time horizon. 
-%Indeed \textcolor{green}{\cite{INTRO_short-term}} explores the effect of short-term planning with limited foresight compared to perfect foresight optimizaion. 
-On the other hand, the RH approach better reflects actual decision making based on information that is only available progressively, which is the case for the management of energy system planning relying on weather forecasts.
+Indeed \textcolor{green}{\cite{INTRO_short-term}} explores the effect of short-term planning with limited foresight
+ compared to perfect foresight optimizaion. 
+On the other hand, the RH approach better reflects actual decision making based on information that is only available
+ progressively, which is the case for the management of energy system planning relying on weather forecasts.
 
-In our work, we build a LP model of a large scale electrical grid powered by wind and solar power generation and supported by hydrogen storage. 
+In our work, we build a LP model of a large scale electrical grid powered by wind and solar power generation and supported
+ by hydrogen storage. 
 The LP aims to solve the CEP for the design of the grid, stochastically on the scenarios for the inner ED problem. 
-We present our attempt at dealing with the great computational requirement by building a hybrid model, exploring the use of the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a stand-alone technique. 
+We present our attempt at dealing with the great computational requirement by building a hybrid model, exploring the use of
+ the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a 
+ stand-alone technique. 
 
-Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. 
-The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", through a control system that optimizes on day ahead forecasts.
+Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization,
+ to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. 
+The idea is to solve the CEP as to build a grid that can be operated as a "smart grid", through a control system that
+ optimizes on day ahead forecasts.
 {
 \color{gray}
 Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. 
-This has been previously done by \textcolor{green}{[?]} and \textcolor{green}{[?]}.
+This has been previously done by \textcolor{violet}{\cite{INTRO_GaussCopula}}.
 }
 
 \color{black}
