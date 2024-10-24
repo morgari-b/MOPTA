@@ -6,6 +6,11 @@
   \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup \urlstyle{rm}\Url}\fi
 
 \bibitem{entsoe_NTC}
+Entso-e power statistics and transparency platform (2024).
+\newblock \urlprefix\url{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)}.
+\newblock Statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
+
+\bibitem{ENTSOE_PowerStats}
 Entso-e power statistics and transparency platform - cross-border physical flow (2024).
 \newblock \urlprefix\url{https://www.entsoe.eu/data/power-stats/}.
 \newblock Statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
