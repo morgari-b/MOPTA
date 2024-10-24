@@ -1665,8 +1665,10 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
                                     quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
                                     >= EL.isel(scenario=0, time=i, node=k) for j in range(d) for i in split_indeces for k in range(Nnodes)))
         print(f"Iter model time: {np.round(time.time()-iter_start_time,3)}s.")
+        opt_start_time = time.time()
         model.optimize()
-        print(f"Iter opt time: {np.round(time.time()-iter_start_time,3)}s.")
+        iter_opt_time = time.time()-opt_start_time
+        print(f"Iter opt time: {np.round(iter_opt_time,3)}s, total time: {np.round(time.time()-start_time,3)}s.")
         if model.Status!=2:
             print("Status = {}".format(model.Status))
         else:
@@ -1692,7 +1694,8 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
                 "obj":model.ObjVal,
                 "interval_to_var":dict(zip(time_partition.tuplize(tp),range(T))),
                 "var_to_interval":dict(zip(range(T),time_partition.tuplize(tp))),
-                "opt_time":np.round(time.time()-start_time,3) 
+                "opt_time":np.round(time.time()-start_time,3),
+                "iter_opt_time":np.round(iter_opt_time,3),
             }
             iter_sol.append(VARS)
         

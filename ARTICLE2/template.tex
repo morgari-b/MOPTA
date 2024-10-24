@@ -78,6 +78,7 @@ grestore
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{todonotes}
+\usepackage{float}
 
 
 %
@@ -1136,13 +1137,27 @@ The results indicate that the former method yields a significantly faster increa
 \end{figure}
 
 
------ plot same but over real time ----- or just table with time stamps\\
-comment: the model takes a lot to set up, but iterations are quick: we are indeed using warm start successfully.
+Figure \ref{fig:opt_time_over_iter} shows the optimization time across iterations.
+ We observe a generally constant, yet slightly decreasing trend in optimization time, indicating that the model is effectively utilizing the warm start. Furthermore, the reduction in optimization time suggests that the number of pivots needed to recover the optimal solution decreases as the optimization progresses, bringing the solution closer to optimality with each iteration.
+ While the optimization time remains similar across the different iteration methods, in figure \ref{fig:iter_time_over_iter} we observe significant variation in the total iteration time. This includes the time spent selecting the time interval to disaggregate, adding additional constraints, and reoptimizing. 
+ The validation method performs poorly in this regard due to the time consumed by the RH. However, it is important to note that since the RH method selects intervals one scenario at a time, the iteration time does not depend on the number of scenarios, suggesting that this method could perform well in cases with a large number of scenarios.
+ 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{example-image-a}%{images/iter_time_over_iter.png}
+  \caption{Optimization time over iterations.}
+  \label{fig:opt_time_over_iter}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{example-image-b}%{images/iter_time_over_iter.png}
+  \caption{Iteration time over iterations.}
+  \label{fig:iter_time_over_iter}
+\end{figure}
 
 
-
------plot at each iteration the optimization time trend-------
-}
 
 
 
@@ -1164,11 +1179,11 @@ comment: the model takes a lot to set up, but iterations are quick: we are indee
 
 \section{Conclusion and Future Directions}
 
-{\color{violet}
+The examples above demonstrate that aggregating time steps, combined with iterative refinement, can effectively solve the Capacity Expansion Problem (CEP). We explored two different approaches for selecting time intervals to refine at each iteration. The first approach employed a validation function based on the Rolling Horizon method, which offers the advantage of providing a feasibility certificate if it halts before reaching the maximum number of iterations and reflects a realistic setting where reliable forecasts for power production are available over a short time span.
 
+The second approach utilized \(\rho\), as defined in \ref{def rho}, representing the fraction of net power production in each time step relative to the total net power production within the corresponding interval. The variance of \(\rho\) across each node in the network served as a quality index for each time interval, guiding the disaggregation process by targeting intervals with the worst \(\rho\) values. We also provided a theoretical justification for using \(\rho\), explaining that time intervals with greater oscillations in net power production require a finer time partition to be accurately considered, and establishing sufficient conditions under which the aggregated solution remains feasible for the original problem.
 
-}
-
+In future work, we plan to relax the conditions in Proposition \ref{prop rho} for the feasibility of the aggregated solution for the original problem. Furthermore, the interval selection method can be refined by considering other indices based on \(\rho\), such as the frequency of sign changes over time within a time interval, or by using other measures instead of the variance across the nodes of the network.
 
 
 
