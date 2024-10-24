@@ -40,7 +40,7 @@ np.random.seed(42)
 N_scenarios = 2
 eu=EU(N_scenarios)
 #%%
-N_iter = 40 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
+N_iter = 200 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
 N_random = 10 #numeri di ottimizzazione da effettuare utilizando metodo random di selezione di intervallo da disgregare
 
 #%% rerun random iterations
@@ -61,7 +61,7 @@ for i in range(N_random):
 #%%
 print("Può esser comodo salvare i test per non rerunnare tutto ogni volta, crea una cartella saved_opt fuori da MOPTA (perchè altrimenti poi git fa casino con dimensioni file)")
 file_path = "../saved_opt/"
-name = "40iter3"
+name = "200iter"
 ext = '.npy'
 # %%
 np.save(file_path+'vars_random'+name+ext, vars_random_list)
@@ -106,10 +106,10 @@ times_val_old = [vars_val_old[i]['opt_time'] for i in range(1,len(vars_val_old )
 #plots
 print("comment out lines that are not needed")
 fig = go.Figure(data=[go.Scatter(x = np.arange(len(costs_rho)), y = costs_rho, name = 'rho'),
-                     go.Scatter(x = np.arange(len(costs_val)), y = costs_val, name = 'validation'),
+                     #go.Scatter(x = np.arange(len(costs_val)), y = costs_val, name = 'validation'),
                      go.Scatter(x = np.arange(len(costs_val2)), y = costs_val2, name = 'validation2'),
-                     go.Scatter(x = np.arange(len(costs_val3)), y = costs_val3, name = 'validation3'),
-                     go.Scatter(x = np.arange(len(costs_val_old)), y = costs_val_old, name = 'validation old'),
+                     #go.Scatter(x = np.arange(len(costs_val3)), y = costs_val3, name = 'validation3'),
+                     #go.Scatter(x = np.arange(len(costs_val_old)), y = costs_val_old, name = 'validation old'),
                      go.Scatter(x = np.arange(len(costs_random_list[0])), y = [np.mean([costs_random_list[i][j] for i in range(N_random)]) for j in range(len(costs_random_list[0]))], name = 'average_random')
                      ])
 fig.update_layout(title='rho vs random', xaxis_title='iteration', yaxis_title='cost (€) ')
