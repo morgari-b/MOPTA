@@ -5,6 +5,11 @@
   \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
   \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup \urlstyle{rm}\Url}\fi
 
+\bibitem{entsoe_NTC}
+Entso-e power statistics and transparency platform - cross-border physical flow (2024).
+\newblock \urlprefix\url{https://www.entsoe.eu/data/power-stats/}.
+\newblock Statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
+
 \bibitem{BIENER2020106349}
 Biener, W., {Garcia Rosas}, K.R.: Grid reduction for energy system analysis.
 \newblock Electric Power Systems Research \textbf{185}, 106349 (2020).
@@ -52,6 +57,11 @@ Ilkka~Keppo, M.S.: Short term decisions for long term problems – the effect of
 \newblock \doi{https://doi.org/10.1016/j.energy.2010.01.019}.
 \newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360544210000216}
 
+\bibitem{tesi_NTC}
+Jedrzejewki, P.: Modelling the european cross-border electricity transmission.
+\newblock Master's thesis, KTH School of Industrial Engineering and Management (2020).
+\newblock \urlprefix\url{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf}
+
 \bibitem{weibullwind}
 Khahro, S.F., Tabbassum, K., Soomro, A.M., Dong, L., Liao, X.: Evaluation of wind power production prospective and weibull parameter estimation methods for babaurband, sindh pakistan.
 \newblock Energy Conversion and Management \textbf{78}, 956--967 (2014).
@@ -76,11 +86,6 @@ Observatory, E.H.: European hydrogen market landscape - november 2023 report.
 Palma-Behnke, R., Benavides, C., Lanas, F., Severino, B., Reyes, L., Llanos, J., Sáez, D.: A microgrid energy management system based on the rolling horizon strategy.
 \newblock IEEE Transactions on Smart Grid \textbf{4}(2), 996--1006 (2013).
 \newblock \doi{10.1109/TSG.2012.2231440}
-
-\bibitem{INTRO_GaussCopula}
-Papaefthymiou, G., Kurowicka, D.: Using copulas for modeling stochastic dependence in power system uncertainty analysis.
-\newblock IEEE Transactions on Power Systems \textbf{24}(1), 40--49 (2009).
-\newblock \doi{10.1109/TPWRS.2008.2004728}
 
 \bibitem{INTRO_parra}
 Parra, D., Valverde, L., Pino, F.J., Patel, M.K.: A review on the role, cost and value of hydrogen energy systems for deep decarbonisation.

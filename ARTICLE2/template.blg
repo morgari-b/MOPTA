@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2024)
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: template.aux
 The style file: spmpsci.bst
@@ -6,48 +6,49 @@ Database file #1: sample.bib
 Warning--I didn't find a database entry for "deterministic"
 Warning--I didn't find a database entry for "30y_gen"
 Warning--I didn't find a database entry for "GaussCopula"
+Warning--to sort, need author or key in entsoe_NTC
 Warning--empty journal in INTRO_karlsruhe
 Warning--empty journal in review_math_opt
 Warning--there's a number but no volume in European_H2_Market_landscape
-You've used 17 entries,
+You've used 18 entries,
             2945 wiz_defined-function locations,
-            739 strings with 9480 characters,
-and the built_in function-call counts, 8152 in all, are:
-= -- 656
-> -- 259
+            741 strings with 9785 characters,
+and the built_in function-call counts, 8248 in all, are:
+= -- 665
+> -- 255
 < -- 2
-+ -- 112
-- -- 90
-* -- 532
-:= -- 1123
-add.period$ -- 38
-call.type$ -- 17
-change.case$ -- 98
++ -- 111
+- -- 88
+* -- 526
+:= -- 1130
+add.period$ -- 40
+call.type$ -- 18
+change.case$ -- 101
 chr.to.int$ -- 0
-cite$ -- 20
-duplicate$ -- 714
-empty$ -- 736
-format.name$ -- 101
-if$ -- 1723
+cite$ -- 22
+duplicate$ -- 725
+empty$ -- 752
+format.name$ -- 98
+if$ -- 1747
 int.to.chr$ -- 0
-int.to.str$ -- 17
-missing$ -- 167
-newline$ -- 97
+int.to.str$ -- 18
+missing$ -- 168
+newline$ -- 102
 num.names$ -- 34
-pop$ -- 264
+pop$ -- 280
 preamble$ -- 1
-purify$ -- 79
+purify$ -- 80
 quote$ -- 0
-skip$ -- 155
+skip$ -- 165
 stack$ -- 0
-substring$ -- 354
-swap$ -- 406
+substring$ -- 346
+swap$ -- 402
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 68
-warning$ -- 3
-while$ -- 49
-width$ -- 19
-write$ -- 216
-(There were 6 warnings)
+type$ -- 72
+warning$ -- 4
+while$ -- 48
+width$ -- 20
+write$ -- 226
+(There were 7 warnings)

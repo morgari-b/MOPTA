@@ -24,6 +24,24 @@ keywords = {Grid reduction, Equivalencing, Energy system analysis, Energy system
 abstract = {Energy system models play an important role in evaluating potential pathways to a low-carbon energy system. Modeling the electrical grids within an energy system model raises the computational burden significantly. This is the reason why the grid is often reduced to a lower amount of nodes. While grid reduction is common in energy system models, the partitioning of the grid is mostly done manually. A grid reduction method is proposed that takes electrical parameters of the grid as well as other parameters, such as political borders or region-specific renewable potentials, into account. The proposed reduction method uses clustering based on electrical distance to identify regions with high electrical connectivity to minimize load flow deviations after the reduction. The method is compared against another state-of-the-art partitioning-based reduction method. The comparison shows that the partitioning plays an important role on the accuracy of line power flows when reducing grids for energy system analysis. An additional investigation is carried out on the ratio of recognized overloaded lines in the reduced grids. With respect to studied parameters, the proposed reduction method prevails. The findings can thus be used to more accurately reduce and represent electrical grids in energy system models.}
 }
 
+@article{Dagdougui,
+  author = {H.Dagdougui,R.Minciardi,A.Ouammi,M.Robba,andR.Sacile},
+  journal = {IEEE Syst. J.},
+  number = {3},
+  title = {A dynamic decision model for the real-time control of hybrid renewable energy production systems},
+  volume = {4},
+  year = {2012}
+}
+
+@mastersthesis{tesi_NTC,
+  author = {Piotr Jedrzejewki},
+  school = {KTH School of Industrial Engineering and Management},
+  title = {Modelling the European cross-border electricity transmission},
+  year = {2020},
+  url = {https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf}
+}
+
+
 @article{European_H2_Market_landscape,
 title = {European Hydrogen Market Landscape - November 2023 Report},
 journal = {European Journal of Operational Research},
@@ -208,6 +226,13 @@ keywords = {Hydrogen square, Hydrogen production, Hydrogen economy, Hydrogen cle
 
 @misc{ENTSOE_PowerStats,
   title = {ENTSO-E Power Statistics and Transparency Platform},
+  year = {2024},
+  url = {https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)},
+  note = {Statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.}
+}
+
+@misc{entsoe_NTC,
+  title = {ENTSO-E Power Statistics and Transparency Platform - Cross-Border Physical Flow},
   year = {2024},
   url = {https://www.entsoe.eu/data/power-stats/},
   note = {Statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.}
