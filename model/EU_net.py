@@ -20,7 +20,7 @@ from model.scenario_generation.scenario_generation import import_generated_scena
 
 
 #%% EU
-def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
+def EU(n_scenarios = 5, init_method = 'day_aggregation' ):
     """
     Initializes a network object for the European Union.
 
@@ -73,7 +73,7 @@ def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     EU_h['MH']=500  # maximum transportation for hydrogen
 
     #costs
-    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0.001,0.001,100,10000,0.5,4]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH","cH_edge","cP_edge"])
+    costs = pd.DataFrame([["All",5000, 3000000, 10,0,0.001,0.001,100,10000,4,0.5]],columns=["node","cs", "cw","ch", "ch_t","chte","ceth","cNTC","cMH","cH_edge","cP_edge"])
     eu = Network(init_method = init_method )
     eu.n = EU
     eu.edgesP = EU_e
