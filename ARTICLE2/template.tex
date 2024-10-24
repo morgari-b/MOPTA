@@ -236,7 +236,7 @@ grestore
 \begin{abstract}
   In recent years, the integration of renewable energy sources into electrical grids has become a critical area of research due to the increasing need for sustainable and resilient energy systems. 
   To address the variability of wind and solar power output over time, electricity grids expansion plans need to account for multiple scenarios over large time horizons.
-  This significantly increases the size of the resulting Linear Problem (LP), making it computationally challenging for large scale grids. 
+  This significantly increases the size of the resulting Linear Programming (LP) problem, making it computationally challenging for large scale grids. 
   To tackle this, we propose an approach that aggregates time steps to reduce the problem size, followed by an iterative refinement of the aggregation, in order to converge to the optimal solution.
   Using the previous iteration's solution as a warm start, we introduce and compare methods to select which time intervals to refine at each iteration.
   The first method employs a validation function, which evaluates with a Rolling Horizon method the feasibility of the aggregated solutions and selects the time interval on which the validation fails. 
@@ -261,10 +261,10 @@ One of the main difficulties arising when designing an electric power system rel
  of the generation of electricity through wind and solar, since these resources are highly dependent on weather conditions. 
 To deal with this variability, a possible solution gaining a lot of traction in recent years is the introduction of an energy
  storage system relying on hydrogen, converting energy from hydrogen to electricity and vice versa in fuel cells and 
- elecrolyzers \textcolor{violet}{\cite{INTRO_blanco}, \cite{INTRO_parra}}. 
+ elecrolyzers \textcolor{green}{\cite{INTRO_blanco}, \cite{INTRO_parra}}. 
 It is of interest to evaluate the optimal solution, in terms of investment plan, to supply the grid along with industrial
  hydrogen demand in a dependable way. 
-The stochastic nature of the problem though makes it impossible to plan long-term by optimizing on forecasts, and requiring
+The stochastic nature of the problem though makes it impossible to plan long-term by optimizing on forecasts, and requires
  a statistical approach to ensure a robust model.
 
 Up to now, common approaches have adopted Stochastic Programming (SP) or Robust Optimization (RO) models, along with hybrid
@@ -276,17 +276,16 @@ In the typical setting, the problem to solve is a Capacity Expansion Problem (CE
  solar and wind farms, fuel cells, hydrolizers, grid upgrades to augment Net Transfer Capacity (NTC) and so on. 
 Nested within the CEP is an Economic Dispatch (ED) problem concerning the operational costs of said infrastructure. 
 The problem is well suited to be modelled through mixed integer linear programming (MILP), as is explained in detail in 
-\textcolor{green}{\cite{INTRO_isolated_MIP}} and ((\textcolor{Green}{other examples?}))
+\textcolor{green}{\cite{INTRO_isolated_MIP}} and \textcolor{green}{[?]}.%\textcolor{green}{\cite{Dagdougui}}. 
 
 The CEP for investment planning requires to look at long time horizons, and on the other hand intra-day variability in generation is the main complexity driver for the ED problem, so the time horizon must be modelled by a large quantity of fairly tight time steps. 
-Furthermore, Large scale grids can be modelled with various degrees of spacial aggregation, as is explored in \cite{Horsch} and \cite{BIENER2020106349}, and problem size increases more than linearly with the number of nodes.
+Furthermore, Large scale grids can be modelled with various degrees of spacial aggregation, as is explored in \textcolor{green}{\cite{Horsch}} and \textcolor{green}{\cite{BIENER2020106349}}, and problem size increases more than linearly with the number of nodes.
 Thus the temporal and spacial characteristics of the model bring the MILP size to increase rapidly. 
 This is especially demanding in the case of SP, since all the variables from the inner ED problem must be reproduced over all scenarios.
 
 To reduce these costs, one possible approach is to use a Rolling Horizon (RH). 
 The basic technique is described in \textcolor{green}{\cite{INTRO_Glomb}}, along with some results regarding quality guarantees for the optimality of the solution. 
 In \textcolor{green}{\cite{INTRO_Palma-Behnke}}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of two PV systems, a wind turbine, a diesel generator and a lead-acid battery for storage, serving an isolated area in Chile. 
-\textcolor{Green}{other examples of RH used for the ED - see Dagdougui?}. 
 A similar idea is applied in \textcolor{green}{\cite{INTRO_karlsruhe}}, 
 where integer variables representing capital investments are initially relaxed 
 and then progressively fixed in successive time steps, reducing the computational
@@ -301,33 +300,34 @@ On the other hand, the RH approach better reflects actual decision making based 
 In our work, we build a LP model of a large scale electrical grid powered by wind and solar power generation and supported
  by hydrogen storage. 
 The LP aims to solve the CEP for the design of the grid, stochastically on the scenarios for the inner ED problem. 
-We present our attempt at dealing with the great computational requirement by building a hybrid model, exploring the use of
- the RH method as a tool to guide progressively tighter relaxations of the perfect foresight model, rather than as a 
- stand-alone technique. 
-
-Further, RH is then used for the validation of the results for the CEP obtained in the perfect foresight optimization,
- to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. 
+A RH method is then proposed for the validation of the results for the CEP obtained in the perfect foresight optimization, rather than as a 
+stand-alone technique, to ensure that given a solution to the CEP, the ED problem admits feasible solutions even in a limited-foresight environment. 
 The idea is to solve the CEP as to build a grid that can be operated as a ``smart grid'', through a control system that
  optimizes on day ahead forecasts.
-{
-\color{gray}
-Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. 
-This has been previously done by \textcolor{violet}{\cite{INTRO_GaussCopula}}.
-}
 
-\color{black}
+ Further, we present our attempt at dealing with the great computational requirement by aggregating on time steps to reduce the model size. 
+ The optimization is carried out through an iterative procedure gradually refining the partition of the time horizon, and converging to the optimal solution.
+To guide the selection of these progressively tighter relaxations of the perfect foresight model, two methods are discussed and compared:
+a first one making use of the aforementioned RH validation function, and a second one devised ad hoc based on the problem structure.
+
+
+%\color{gray}
+%Finally, to generate the scenarios needed to train and test the SP model, a Gaussian Copula method was used. 
+%This has been previously done by \textcolor{violet}{\cite{INTRO_GaussCopula}}.
+
 
 This paper is organized as follows. 
+
 Section \ref{section: model} descibes the formulation of the LP problem: the first subsection details the perfect foresight model, and the second adapts the structure from the first to the RH approach. 
 
-Section \ref{section:time-resolution} deals with time aggregation. In subsection \ref{subsection: relax} it is shown that the aggregated LP is a relaxation of the disaggregated one; 
-In subsection \ref{subsection: matrix}, the structure of the constraint matrix is explored to derive conditions under which the aggregated solution is feasible for the disaggregated problem. 
-Finally, in subsection \ref{subsection: iter rho} a method is proposed to iterate through progressively finer time aggregations, in order to select the interval to disaggregate. 
-\textcolor{red}{CHECK}
+Section \ref{section:time-resolution} deals with time aggregation. In subsection \ref{subsection: relax} the LP problem associate to the variables aggregated over time is defined, and is shown to be a relaxation of the disaggregated one; 
+In subsection \ref{subsection: iter} a method is proposed to iterate through progressively finer time aggregations, in order toconverge to the optimal perfect foresight solution. The use of the RH method defined in the previous section is proposed to select the interval to disaggregate. 
+In subsection \ref{subsection: rho}, the structure of the constraint matrix is exploited to derive conditions under which the aggregated solution is feasible for the disaggregated problem, and the result is used to devise a heuristic for the disaggregation selection. 
 
-Section \ref{section: comp res} contains the computational results: some example outputs from the perfect foresight LP are explored, then the three aggregation-iteration methods are compared over time and number of iterations for convergence.
-
-\textcolor{gray}{An appendix is given detailing the scenario generation method used to generate the input scenarios for the model. }
+\textcolor{red}{
+  Section \ref{section: comp res} contains the computational results: some example outputs from the perfect foresight LP are explored, then the three aggregation-iteration methods are compared over time and number of iterations for convergence.
+}
+%\textcolor{gray}{An appendix is given detailing the scenario generation method used to generate the input scenarios for the model. }
 
 
 
@@ -357,7 +357,7 @@ Likewise, the CEP aims to solve for transmission line NTC and hydrogen pipe tran
 The basic formulation of the LP described in this subsection allows us to solve the CEP with perfect foresight. 
 
 We decided to model our problem as a LP problem instead of MILP, as would be standard in the literature. 
-This is because when modelling a large grid with high demand, optimizing on continuous variables and then rounding up to the closest integer for variables $ns$ and $nw$ notably decreases computational costs, without relevant difference in the final cost. 
+This is because when modelling a large grid with high demand, optimizing on continuous variables and then rounding up to the closest integer for variables regarding the number of PV panels and turbines notably decreases computational costs, without relevant difference in the final cost. 
 The same wouldn't be possible when optimizing over micro-grids.
 
 The model takes in input the generation and load scenarios of the given area along with various parameters indicating costs and efficiency of the current state of technology and possible upper bounds for the decision variables. 
@@ -367,7 +367,7 @@ Cost is considered to be the sum of capital costs and average operational costs 
 
 For the rest of this article, when talking about a solution to the LP problem, we refer to a realization of variables solving the CEP and ED problem jointly. 
 When mentioning a solution to the CEP problem, we refer to those components of the corresponding LP problem solution that are not time or scenario dependent. 
-When talking about a solution to the ED problem only, we refer to a realization of the time and scenario dependent variables that solve problem for a given \textit{fixed} CEP solution.
+When talking about a solution to the ED problem only, we refer to a realization of the time and scenario dependent variables that solve the problem for a given \textit{fixed} CEP solution.
 
 The optimization problem is solved using the Gurobi solver \textcolor{green}{\cite{INTRO_gurobi}}.
 
@@ -384,12 +384,12 @@ For more detailed models of the management of hydrogen see \textcolor{green}{[?]
 Important values to consider when planning the grid are the power capacity and conversion speed of fuel cells and electrolyzers: variables $mhte_n$ and $meth_n$, indexed by node $n$, indicate for each location the maximum amount of energy that can be converted at a single time step respectively from hydrogen to electricity and vice versa. 
 These values are essential to estimate in order to design a grid that can effectively accommodate peak production and supply during low production periods.
 
-\textcolor{red}{explain what NTC is? quote paper.} 
-Existing NTC is estimated through the procedure followed by \hyperlink{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf}{link} \textcolor{pink}{(page 30) - domanda nella mail}, by collecting data from \hyperlink{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)}{link}. 
+Transmission on the grid lines is considered to be bound by Net Transfer Capacity (NTC) \textcolor{green}{[?]}. 
+Existing NTC is estimated through the procedure followed by \textcolor{green}{\cite{tesi_NTC}}, by collecting data from \textcolor{green}{\cite{entsoe_NTC}}. 
 Improvements on the existing capacity for power lines or hydrogen transport infrastructure are considered through variables $addNTC_l$ and $addMH_l$.
 Indeed, upgrades to the European grid's transfer capacity are currently considered a key element for the integration of renewables \textcolor{green}{[?]}.
 
-Variables linked to the inner ED problem are indexed by scenario \(j\), time step \(t\), and either node \(n \in \cN\) or edge $l\in\cE_H$ or $l \in \cE_P$. 
+Variables linked to the inner ED problem are indexed by scenario \(j\in J\), time step \(t\in\{1...T\}\), and either node \(n \in \cN\) or edge $l\in\cE_H$ or $l \in \cE_P$. 
 For the variables pertaining to transmission on an edge, two distinct variables are considered, one for each direction. 
 This way, all variables are set to be non-negative. This will be relevant for the formulation of the time-aggregated relaxation of the LP problem.
 
@@ -637,11 +637,9 @@ Another option would be to assign a slight negative cost to $H^{test}_{t,n}$, to
 
 We observe that the overall solution to the ED problem throughout the full time horizon obtained by means of the RH method is not necessarily optimal, neither with nor without the added loss function. 
 However, some results can be obtained regarding the distance of such solution from the optimal of the ED problem. 
-Indeed:\textcolor{pink}{The first step ensures that conditions 1-4 from \textcolor{green}{[?]} are satisfied. 
-Thus we have near optimality guarantee.... to be checked again}
+Indeed, considering the result by \textcolor{green}{\cite{INTRO_Glomb}}, we know that a bound can be derived on the ratio between the perfect foresight optimum and RH solution, dependent on $mhte_n$.
 
-For a solution to the ED problem that is closer still to the perfect foresight optimal, more refined RH tecniques can be used. 
-For example, optimizing on two-day forecasts with a daily refresh rate, as done in \textcolor{green}{[?]} can improve the quality of the solution. 
+For a solution to the ED problem that is closer still to the perfect foresight optimal, more refined RH tecniques can be used, such as optimizing on two-day forecasts with a daily refresh rate.
 However, for our purposes, being able to check for feasibility with less than optimal management is sufficient.
 
 
@@ -738,9 +736,10 @@ To clarify what time aggregation implies on the model constraints, we express th
 \end{align*}
 
 Fistly, we can reformulate the model described in subsection \ref{subsection: LP} by introducing a new set of variables \(\Delta H_{j,t,n} \coloneqq H_{j,t+1,n} - H_{j,t,n}\), replacing the original variables \(H_{j,t,n}\). 
+We add variables $H_{j,0,n}$ to represent initial storage conditions.
 Constraints (\ref{constr_H}) and (\ref{constr_nh}) shall be reformulated accordingly, with the latter becoming:
 \begin{align}
-  \sum_{i=1}^{t} \Delta H_{i,j,n} \le nh_{n}, & \quad \forall\  t =1...T, \tag{\ref{constr_nh}$'$}\label{constr nh reformulated}
+  H_{j,0,n} + \sum_{i=1}^{t} \Delta H_{i,j,n} \le nh_{n}, & \quad \forall\  t =1...T, \tag{\ref{constr_nh}$'$}\label{constr nh reformulated}
 \end{align}
 
 In the problem under consideration, we have various types of constraints: Electricity Balance (\ref{constr_P}), Hydrogen Balance (\ref{constr_H}'), Hydrogen Storage (\ref{constr nh reformulated}), maximum capacity of the time dependent variables (\ref{constr_meth}),(\ref{constr_mhte}),(\ref{constr_NTC}),(\ref{constr_MH}), and bounds on the CEP variables.
@@ -843,11 +842,12 @@ By splitting the variable vector $\mathbf{x}$ into $\mathbf{x}^{CEP}$ and $\math
        \node at (\xfourr  , \ytopp - 2.6 - 10.4*\spacefour) {\tiny{$\Delta H$}};
        \draw[thick] (\xthree + 1/6, \ytopp) rectangle (\xthree + 1/2 + 1/6,\ytopp -2.6-5*\blockwidth);
 
-      \node at (\xfourr  , \ytopp - \spacefour) {$ns$};
-      \node at (\xfourr  , \ytopp - 2*\spacefour) {$nw$};
+      \node at (\xfourr  , \ytopp - \spacefour) {\small $ns$};
+      \node at (\xfourr  , \ytopp - 1.9*\spacefour) {\small $nw$};
       \node at (\xfourr  , \ytopp - 4*\spacefour) {\Large $\vdots$};
       \draw[thick] (\xthree + 1/6,\ytopp-2) -- (\xthree + 1/2+1/6,\ytopp-2);
-      \node at (\xfourr  , \ytopp - 2.27) {\normalsize $nh$};
+      \node at (\xfourr  , \ytopp - 2.15) {\scriptsize $nh$};
+      \node at (\xfourr  , \ytopp - 2.43) {\tiny -$H_{0}$};
       \draw[thick] (\xthree + 1/6,\ytopp-2.6) -- (\xthree + 1/2+1/6,\ytopp-2.6);
       \node at (\xfourr  , \ytopp - 2.6 - 3*\spacefour) {\Large $\vdots$};
       \node at (\xfourr  , \ytopp - 2.6 - 15*\spacefour) {\Large $\vdots$};
@@ -869,7 +869,7 @@ By splitting the variable vector $\mathbf{x}$ into $\mathbf{x}^{CEP}$ and $\math
   \end{tikzpicture}
   \end{equation}
 
-Variable $nh$ is represented individually and not within $\mathbf{x}^{CEP}$.
+Variable $nh$ is represented individually and not within $\mathbf{x}^{CEP}$: the handling of the storage is here represented for a single node and scenario.
 The upper rows contain the balance constraints regarding electricity and hydrogen, and bounds for the time dependent variables. 
 The bottom section of the matrix accounts for storage constraints (\ref{constr nh reformulated}): summing over $\Delta H_{j,i,n}$ returns the original variable $H_{j,i,n}$, bound by $nh_n$. 
 All other variable bounds are not represented, since they pertain to one variable at the time and don't really influence the overall reasoning.
@@ -935,15 +935,15 @@ Thus obtaining a relaxation.
 
 
 
-\subsection{Iteration on time partitions}
+\subsection{Iteration on time partitions}\label{subsection: iter}
 
 Given that any time-aggregated LP is a relaxation for the original LP, but with many fewer variables, and thus lower optimization time, we wish to utilize purposely chosen aggregations to warm start the solver iteratively, converging to the optimal solution through progressively finer aggregations.
 
 Power generation and electricity load data tend to follow very strong seasonal and daily patterns, and on a minor extent, a weekly trend.
 Generally, long term patterns are accounted for even with more loose aggregations. 
 On the other hand, a grid described by the solution to the $CEP_{P}$ for a loose partition will likely be unable to deal with daily variability. 
-Indeed, it is quite common to have days with overall greater power production that load, but with peak production at noon and most of the power load during the late evening: such a discrepancy is overlooked by the aggregated model. 
-Choosing a finer partition with well distributed medium-sized time steps \textcolor{red}{(for example weekly or daily)} would not solve this blind spot. 
+Indeed, it is quite common to have days with overall greater power production than load, but with peak production at noon and most of the power load during the late evening: such a discrepancy is overlooked by the aggregated model. 
+Choosing a finer partition with well distributed medium-sized time steps (for example weekly or daily) would not solve this blind spot. 
 For this reason, in choosing the refinement strategy for the time partitions we opted to disaggregate one single whole day per iteration into hourly time steps.
 
 The method devised is the following:
@@ -955,29 +955,29 @@ The method devised is the following:
 \item Repeat step 2 and 3 until some halting condition.
 \end{enumerate}
 
-The first implementation we test considers a random selection method, and a very arbitrary halting condition on the number of iterations. 
+The base implementation we test considers a random selection method, and a very arbitrary halting condition on the number of iterations. 
 This will be the baseline to compare the other methods we propose.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         2: VAL         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-A second implementation makes use of the RH validation function we discussed in subsection \ref{subsection: RH}. 
+The first method we propose makes use of the RH validation function we discussed in subsection \ref{subsection: RH}. 
 The RH will optimize day-by-day with hourly time steps, that is, limited foresight on the finest time resolution. 
 To choose the day to disaggregate, let the RH start on one of the training scenarios with the fixed $\mathbf{x}_{CEP}$ values given by the solution to the previous iteration. 
 If the RH iteration breaks before reaching the end of the year, choose the day it fails on as the day to disaggregate. 
-Conversely, if the RH makes it through the year, then the considered $\mathbf{x}_{CEP}$ values are part of a feasible solution for the CEP+ED problem on the whole horizon, on the finest time resolution, thus we have solved the original problem we were aiming for.
+Proceed to solve the full LP problem on the new aggregation, and start validating again with RH beginning on the day it had previously failed on. 
+If the RH makes it through the year, then the considered $\mathbf{x}_{CEP}$ values are part of a feasible solution for the LP problem on the whole horizon, on the finest time resolution, thus we have solved the original problem we were aiming for.
 
 One advantage of using the RH validation function within the iterative aggregation method is that it automatically provides an effective halting method that guarantees feasibility for the original problem.
 
-Furthermore, the final $\mathbf{x}_{CEP}$ come from the optimal solution of a relaxation. 
-This is not enough to guarantee optimality for the finer resolution CEP, since marginal costs of conversion to and back from hydrogen, and of its transportation, aren't accounted for fully. 
-However, \textcolor{pink}{distance from the actual optimal solution can be bound (estimate) by -- marginal costs in those days times the year, since they are chosen to be the worst days}.
+Note that even though the final $\mathbf{x}_{CEP}$ come from the optimal solution of a relaxation, this is not enough to guarantee optimality for the finer resolution CEP, since marginal costs of conversion to and back from hydrogen, and of its transportation, aren't accounted for fully. 
+%However, distance from the actual optimal solution can be estimated by marginal costs in those days times the year, since they are chosen to be the worst days.
 
 Unfortunately, a great disadvantage of using the RH validation within the iteration loop is that the computational costs it brings along is not insignificant, needing careful consideration on whether it is in effect preferable to directly optimizing on the full problem.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%         3: RHO         $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-\subsection{Rho  \textcolor{pink}{$\rightarrow$ make it a subsection by itself? or keep with the above?}}
+\subsection{Rho}\label{subsection: rho}  
 
-We now discuss a third and final method we propose and test for the selection of the day to disaggregate in step 2 of algorithm \ref{time-iter-alg}. 
+We now discuss a second method we propose for the selection of the day to disaggregate in step 2 of algorithm \ref{time-iter-alg}. 
 The goal is to design a heuristic to measure ``how distant the solution to the aggregated LP is from being extended to a solution that is feasible to the disaggregated LP''.
 
 Consider a time partition $P$ of the time horizon $\cT$ and let \(I \in P\) and \(t \in I\).
@@ -991,13 +991,12 @@ But we can attempt to do so under very specific assumptions. %It is the violatio
 Let $r$ be a single row in matrix $A$, associated to a constraint regarding time step $t$ within the upper part of matrix \ref{matrix}. 
 Let $R$ be the row corresponding to the respective aggregated constraint in matrix $\tilde{A}$.
 
-If \(\tilde{b}_R - \tilde{A}_R^{CEP}\cdot \tilde{\mathbf{x}}^{CEP} \neq 0\), define:
+Assume \(\tilde{b}_R - \tilde{A}_R^{CEP}\cdot \tilde{\mathbf{x}}^{CEP} \neq 0\), define:
 \[\rho_r \coloneqq \frac{b_r - A_r^{CEP} \cdot \tilde{\mathbf{x}}^{CEP}}{\tilde{b}_R - \tilde{A}_R^{CEP}\cdot \tilde{\mathbf{x}}^{CEP}}\  .\]
-If \(\tilde{b}_R - \tilde{A}_R^{CEP}\cdot \tilde{\mathbf{x}}^{CEP}  = 0\),  \textcolor{red}{then \(\rho_r\) can be chosen arbitrarily. }
 \end{definition}
 In essence, \(\rho_r\) represents, for each time step \(t \in I \in \cT\), the ratio between the net energy production at time \(t\) and the net energy production over the interval \(T\).
 
-Observe that summing $\rho_r$ over all indexes $r$ corrisponding to the same aggregated time step constraint $R$ is one, since aggregated constraints are defined through summations (\ref{sums scenarios}).
+Observe that summing $\rho_r$ over all indexes $r$ corrisponding to the same aggregated time step constraint $R$ is equal to $1$, since aggregated constraints are defined through summations (\ref{sums scenarios}).
 
 %\begin{definition}[Hypergraph of $A$]
 %Given the constraint matrix $A$ , we define its hypergraph as the graph with nodes $r\in \mathcal{R}$ corresponding to all rows, that is, to all constraints, and edges connecting any two nodes such that at least one variable $x^{ED}$ appears in both constraints. 
@@ -1009,7 +1008,7 @@ Observe that summing $\rho_r$ over all indexes $r$ corrisponding to the same agg
   \item[$\bullet$]  $\tilde{b}_R-\tilde{A}_R^{CEP}\cdot\tilde{\mathbf{x}}^{CEP}\neq0$ for all rows $R$ of $\tilde{A}$;
   \item[$\bullet$] $\rho_r$ is constant over %all connected components of the hypergraph of $A$. 
   all rows $r$ representing constraints for the same time step $t$. Denote this as $\rho_t$.
-  \item[$\bullet$] for every aggregated step $I\in P$,  $\rho_t$ keeps the same sign for all $t\in I$. 
+  \item[$\bullet$] for every aggregated step $I\in P$,  $\rho_t\ge0$ for all $t\in I$. 
   \end{itemize}
   Define $\mathbf{x}$ in the solution space of LP$_{\cT}$ by setting 
   \[ \mathbf{x}^{CEP} = \tilde{\mathbf{x}}^{CEP}\text{,\quad and\quad} x^{ED}_t = \rho_t\cdot \tilde{x}^{ED}_I \quad \forall t\in I, I\in P.\]
@@ -1031,18 +1030,18 @@ A_r \cdot \mathbf{x} &=A^{CEP}_r\cdot \mathbf{x}^{CEP} +  Q_r\cdot \mathbf{x}^{E
 For the lower part of matrix \ref{matrix}, the constraint reduces to:
 \begin{align*}
 \sum_{t\in \cT} \Delta H_{j,t,n} &= \sum_{I\in P} \left( \sum_{t\in I} \Delta H_{j,t,n} \right) = \sum_{I\in P} \left( \sum_{t\in I} \rho_t\cdot\Delta H_{j,I,n} \right) = \\
-& = \sum_{I\in P} \left( \sum_{t\in I} \rho_t \right)\cdot\Delta H_{j,I,n} =  \sum_{I\in P}\Delta H_{j,I,n} \le \ nh_n
+& = \sum_{I\in P} \left( \sum_{t\in I} \rho_t \right)\cdot\Delta H_{j,I,n} =  \sum_{I\in P}\Delta H_{j,I,n} \le \ nh_n - H_{j,0,n}
 \end{align*}
 \qed\end{proof}
 
 Thus, under these assumptions, we are able to construct a feasible solution for LP$_{\cT}$ starting from $\tilde{\mathbf{x}}$, building $\mathbf{x}$ by appropriately scaling the variables  $\tilde{\mathbf{x}}$ within each aggregated time step, by a factor $rho_t$.
 
+
 The condition on $\rho_r$ is obviously rarely satisfied, since it would require for the power generation and load time series to be perfectly aligned (or perfectly opposed) with hydrogen load series, and across all nodes in the grid.
 However, we are interested in exactly those cases where generation and load are most misalligned, with the expectation that those are the cases that cause $CEP_P$ solutions to be infeasible for LP$_{\cT}$.
-Such cases correspond to those intervals $I\in P$ where $\rho_r$ has greatest variance over the rows constraining the same time moment $t\in I$.
 
 In conclusion, within the iterative procedure for refining the solution of the aggregated problem \ref{time-iter-alg}, we can select the time interval to be refined based on the extent to which it violates the conditions of proposition \ref{prop rho}.
- Specifically, we split intervals where the net production changes sign, and those intervals \(T\) in which, for a fixed time step \(t \in T\), the ratio between the net energy production at time \(t\) and the net energy production \textcolor{red}{over the interval \(T\)} exhibits the largest variance.
+Such cases correspond to those intervals $I\in P$ where $\rho_r$ has greatest variance over the rows constraining the same time moment $t\in I$. 
 
 This same approach, generalized to a wider family of aggregations LP problems, is detailed in appendix \ref{appendix B}.
 
@@ -1073,6 +1072,11 @@ This same approach, generalized to a wider family of aggregations LP problems, i
 
 
 
+
+\section{COMPUTATIONAL RESULTS}\label{section: comp res}
+{
+\color{purple}
+
 % \subsection{SINGLE NODE NETWORK}
 % First, an electrical grid with a single node is considered (corresponding ideally to an area with uniform
 % weather conditions, highly connected at low cost). A first section will consider realistic parameter
@@ -1090,9 +1094,22 @@ This same approach, generalized to a wider family of aggregations LP problems, i
 % deal with the complexity arising from the introduction of the network structure in the model.
 
 
-\section{COMPUTATIONAL RESULTS}\label{section: comp res}
-{
-\color{purple}
+We are thus interested in evaluating whether an optimal grid as given by the solution of the CEP problem on a batch of train scenarios can (1) be operated without knowledge of the future in order to satisfy demand on the same scenarios it was trained on, and (2) generalize to new test scenarios.
+
+--- plot one node : graph from presentation ---
+
+--- plot small eu : spain H ---
+
+comment: single node tends to have just enough generation to stay net 0 with hydrogen. multiple node has lots of generation, hydrogen storage favoured less... integration within the grid is providing the necessary stability itself???
+
+cost: RH on single node is near optimal. RH on network depends on loss function: how far from optimal?
+
+Note that even though the final $\mathbf{x}_{CEP}$ come from the optimal solution of a relaxation, this is not enough to guarantee optimality for the finer resolution CEP, since marginal costs of conversion to and back from hydrogen, and of its transportation, aren't accounted for fully. 
+%However, distance from the actual optimal solution can be estimated by marginal costs in those days times the year, since they are chosen to be the worst days.
+
+Unfortunately, a great disadvantage of using the RH validation within the iteration loop is that the computational costs it brings along is not insignificant, needing careful consideration on whether it is in effect preferable to directly optimizing on the full problem.
+
+
 
 To evaluate the methodologies presented in this paper, we examine a  5-node network over a one-year span, utilizing timesteps of 1 hour across two distinct scenarios.
  In this section, we compare three approaches for iterating on the aggregated problem: (1) randomly selecting the interval for refinement, 
