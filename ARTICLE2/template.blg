@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99d (TeX Live 2024)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: template.aux
+The style file: spmpsci.bst
+Database file #1: sample.bib
+Warning--I didn't find a database entry for "deterministic"
+Warning--I didn't find a database entry for "30y_gen"
+Warning--I didn't find a database entry for "GaussCopula"
+Warning--to sort, need author or key in entsoe_NTC
+Warning--to sort, need author or key in ENTSOE_PowerStats
+Warning--empty journal in INTRO_karlsruhe
+Warning--empty journal in review_math_opt
+Warning--there's a number but no volume in European_H2_Market_landscape
+You've used 19 entries,
+            2945 wiz_defined-function locations,
+            745 strings with 10214 characters,
+and the built_in function-call counts, 8513 in all, are:
+= -- 687
+> -- 256
+< -- 2
++ -- 112
+- -- 88
+* -- 537
+:= -- 1153
+add.period$ -- 42
+call.type$ -- 19
+change.case$ -- 105
+chr.to.int$ -- 0
+cite$ -- 24
+duplicate$ -- 751
+empty$ -- 786
+format.name$ -- 98
+if$ -- 1810
+int.to.chr$ -- 0
+int.to.str$ -- 19
+missing$ -- 173
+newline$ -- 107
+num.names$ -- 34
+pop$ -- 297
+preamble$ -- 1
+purify$ -- 82
+quote$ -- 0
+skip$ -- 176
+stack$ -- 0
+substring$ -- 353
+swap$ -- 413
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 76
+warning$ -- 5
+while$ -- 48
+width$ -- 21
+write$ -- 236
+(There were 8 warnings)
