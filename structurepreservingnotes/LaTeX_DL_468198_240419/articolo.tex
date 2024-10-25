@@ -732,8 +732,6 @@ If \(\rho_r \geq 0\) and \(x \in \bR^n\) satisfies \(x_{\colP_{=1}} = \tilde{x}_
   
 
 
-A structure-preserving aggregation does not inherently guarantee feasibility for all constraints in the original problem. However, Observation \ref{ob:aggrconstr} illustrates how to partially reconstruct a solution \(x\) for a specific constraint \(r\) by appropriately scaling the aggregated variables within the support of \(A_r\). 
-
 \begin{observation}
   \label{ob:rhoconvex}
   Let \(\rowW_r \in \bR\) for all \(r \in R \in \rowP\) be the weights of the row aggregation.
@@ -749,19 +747,44 @@ A structure-preserving aggregation does not inherently guarantee feasibility for
   \] 
 \end{proof}
 
+A structure-preserving aggregation does not inherently ensure the feasibility of all constraints in the original problem. However, Observation \ref{ob:aggrconstr} demonstrates how to partially reconstruct a solution \(x\) for a specific constraint \(r\) by scaling the aggregated variables appropriately within the support of \(A_r\).
+
+The challenge in constructing a feasible solution for all constraints arises when defining \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\). In such cases, \(x\) may not be well defined if \(f^r(C) = f^{r'}(C)\) but \(\rho_r \neq \rho_{r'}\). To address this, \(x_{f^r(C)}\) is defined by selecting a subset \(\rowP' \subset \rowP\) such that \(x\) remains well defined.
+
+The constraints, for which however \(\rowP' \subset \rowP\) is picked, are feasible for \(x\) are referred to as \(\rho\)-agnosti and are defined as follows:  
 \begin{definition}
-  For a structure-preserving, row and column aggregation \((\rowP,\colP)\). A constraint \(r \in \rowP_{=1}\) is \(\rho\)-agnostic if for all \(C \in \colP_{>1}\) such that \(C \cap \supp(A_{r}) \neq \emptyset\), 
-  \[A_{r,f^{r'}(C)} = \rowW_{r'}\tilde{A}_{R^{(C)},C} \text{ for all } r' \in R^{(C)} \]
-   with \(R^{(C)} \in \rowP_{>1}\) such that \(C \in \supp(A_{R^(C)})\).
+  For a structure-preserving, row and column aggregation \((\rowP,\colP)\). A constraint \(r \in [m]\) is \(\rho\)-agnostic if for all \(\rho \in \bR^{\cup_{R \in \rowP_{>1}} R}\) such that \(\omega_R^T\rho_R = 1\) for all \(R \in \rowP_{>1}\)
+   and  \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) for all \(R \in \rowP' \subset \rowP_{>1}\), where \(\tilde{x} \in \bR^{\tilde{n}}\) is a feasible solution to the aggregated problem  and \(\rowP'\) is a subset of \(\rowP\) such that \(x\) is well defined, then \(x\) is feasible for constraint \(r\).
 \end{definition}
+
+\begin{example}
+  Consider the constraint that the initial hydrogen stored at each node must be equal to the final hydrogen stored:
+  \begin{equation}
+    \label{eq:examplehydrogen}
+    \sum_{t=1}^n \Delta H_t = 0
+  \end{equation}
+  The corresponding aggregated constraint is for a time partition \(P\) is:
+  \begin{equation}
+    \sum_{T \in P} \Delta H_T = 0
+  \end{equation}
+  For all \(\rho\) such that \(\sum_{t\in T}\rho_t = 1\) for all \(T\) in \(P\), given a feasible solution for the aggregated problem \(\tilde{\Delta H_T}\), let \(\Delta H_t \coloneqq \rho_t \tilde{\Delta H_T}\), then constraint \eqref{eq:examplehydrogen} holds: 
+  \begin{equation}
+    \sum_{t=1}^n \Delta{H_t} = \sum_{t=1}^n \rho_t \tilde{\Delta H_T} = \sum_{T \in P} \sum_{t\in T} \rho_t \tilde{\Delta H_T} = \sum_{T \in P} \tilde{ \Delta H_T} = 0
+  \end{equation}
+  Thus constraint \eqref{eq:examplehydrogen}is \(\rho\)-agnostic.
+\end{example}
+
+This is a special instance of the following general observation:
 \begin{observation}
- Let \(x\) be as in Obs \ref{ob:rhoconvex}. If \(r \in \rowP_{=1}\) is a row-agnostic constraint, then \(A_rx=b_r\).
+  For a structure-preserving, row and column aggregation \((\rowP,\colP)\). A constraint \(r \in \rowP_{=1}\) is \(\rho\)-agnostic if for all \(C \in \supp(A_{r})_{>1}\), let \(R^{(C)} \in \rowP_{>1}\) be so \(C \in \supp(\tilde{A}_{R^{(C)}})\).
+  \[A_{r,f^{r'}(C)} = \rowW_{r'}\tilde{A}_{r,C} \text{ for all } r' \in R^{(C)} \]
+   
 \end{observation}
 
 \begin{proof}
 Since \(\rowW_R^T \rho_R = 1\), we have:
   \[
-  A_rx = \sum_{C \in \colP_{=1}}A_{r,C}x_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}} A_{r,f^{r'}(C)}x_{f^{r'}(C)} = \sum_{C \in \colP_{=1}}\tilde{A}_{r,C}\tilde{x}_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}}\rowW_{r'} \rho_{r'}\tilde{x}_{R,C} = \tilde{b}_r = b_r
+  A_rx = \sum_{C \in \colP_{=1}}A_{r,C}x_{C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}} A_{r,f^{r'}(C)}x_{f^{r'}(C)} = \sum_{C \in \colP_{=1}}\tilde{A}_{C}\tilde{x}_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}}\rowW_{r'} \rho_{r'}\tilde{A}_{r,C}\tilde{x}_{C} = \tilde{b}_r = b_r
    \]
 \end{proof}
 

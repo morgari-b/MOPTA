@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  24 OCT 2024 17:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  25 OCT 2024 11:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"c:/Users/ghjub/codes/saved_opt/ARTICLE - Copy/LaTeX_DL_468198_240419/articolo.tex"
-(c:/Users/ghjub/codes/saved_opt/ARTICLE - Copy/LaTeX_DL_468198_240419/articolo.tex
+**c:/Users/ghjub/codes/MOPTA/structurepreservingnotes/LaTeX_DL_468198_240419/articolo.tex
+(c:/Users/ghjub/codes/MOPTA/structurepreservingnotes/LaTeX_DL_468198_240419/articolo.tex
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-05-27>
 
@@ -982,99 +982,104 @@ Overfull \hbox (0.70816pt too wide) in paragraph at lines 691--692
 [11]
 
 [12]
-Overfull \hbox (98.08458pt too wide) detected at line 765
-\OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] \OML/ztmcm/m/it/10 ![]^^Z[][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
+Overfull \hbox (98.57495pt too wide) detected at line 788
+\OML/ztmcm/m/it/10 A[]x \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 A[]x[] \OT1/ztmcm/m/n/10 = [] [][] + [] [] \OML/ztmcm/m/it/10 ![]^^Z[][][] \OT1/ztmcm/m/n/10 = [] = \OML/ztmcm/m/it/10 b[]
  []
 
 
-LaTeX Warning: Reference `eq:LPunaggr' on page 13 undefined on input line 774.
+LaTeX Warning: Reference `eq:LPunaggr' on page 13 undefined on input line 797.
 
 
-Overfull \hbox (56.7941pt too wide) detected at line 797
+
+[13]
+Overfull \hbox (56.7941pt too wide) detected at line 820
 [][] \OT1/ztmcm/m/n/10 = [] [][] + [] [][] = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 + [] \OML/ztmcm/m/it/10 c[]x[] \OT1/ztmcm/m/n/10 = \OML/ztmcm/m/it/10 cx
  []
 
 
 
-[13]
-Overfull \hbox (98.62402pt too wide) detected at line 822
+[14]
+Overfull \hbox (98.62402pt too wide) detected at line 845
 [][] \OT1/ztmcm/m/n/10 = [] [] = [] [] = [] []\OML/ztmcm/m/it/10 b[] \OT1/ztmcm/m/n/10 = []
  []
 
 
-
-[14]
-Underfull \hbox (badness 10000) in paragraph at lines 841--841
+Underfull \hbox (badness 10000) in paragraph at lines 864--864
 
  []
 
 
 
 [15]
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 875.
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 898.
  (c:/texlive/2024/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 875.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 898.
 
 
-LaTeX Warning: Citation `weibullwind' on page 16 undefined on input line 876.
+LaTeX Warning: Citation `weibullwind' on page 16 undefined on input line 899.
 
 
-LaTeX Warning: Citation `betaPV' on page 16 undefined on input line 877.
+LaTeX Warning: Citation `betaPV' on page 16 undefined on input line 900.
 
 
-LaTeX Warning: Citation `GaussCopula' on page 16 undefined on input line 881.
+LaTeX Warning: Citation `GaussCopula' on page 16 undefined on input line 904.
 
 
 
 [16]
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 945--948
+Underfull \hbox (badness 10000) in paragraph at lines 968--971
 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 953--955
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 957--958
-
- []
-
-
-LaTeX Warning: Reference `' on page 18 undefined on input line 970.
-
-
-LaTeX Warning: Reference `' on page 18 undefined on input line 970.
-
-
-LaTeX Warning: Reference `subsec:scenarios' on page 18 undefined on input line 970.
-
-<images/rho_vas_average2.png, id=212, 739.76375pt x 451.6875pt>
-File: images/rho_vas_average2.png Graphic file (type png)
-<use images/rho_vas_average2.png>
-Package pdftex.def Info: images/rho_vas_average2.png  used on input line 973.
-(pdftex.def)             Requested size: 371.80206pt x 227.01486pt.
-
-Overfull \hbox (269.73pt too wide) in paragraph at lines 972--974
-\OT1/ptm/m/n/10 sec-onds for the ran-dom se-lec-tion method over 10 it-er-a-tions. [] 
  []
 
 
 
 [18]
-<images/val_vs_average2.png, id=219, 832.10875pt x 451.6875pt>
+Underfull \hbox (badness 10000) in paragraph at lines 976--978
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 980--981
+
+ []
+
+
+LaTeX Warning: Reference `' on page 19 undefined on input line 993.
+
+
+LaTeX Warning: Reference `' on page 19 undefined on input line 993.
+
+
+LaTeX Warning: Reference `subsec:scenarios' on page 19 undefined on input line 993.
+
+<images/rho_vas_average2.png, id=223, 739.76375pt x 451.6875pt>
+File: images/rho_vas_average2.png Graphic file (type png)
+<use images/rho_vas_average2.png>
+Package pdftex.def Info: images/rho_vas_average2.png  used on input line 996.
+(pdftex.def)             Requested size: 371.80206pt x 227.01486pt.
+
+Overfull \hbox (269.73pt too wide) in paragraph at lines 995--997
+\OT1/ptm/m/n/10 sec-onds for the ran-dom se-lec-tion method over 10 it-er-a-tions. [] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[19]
+<images/val_vs_average2.png, id=229, 832.10875pt x 451.6875pt>
 File: images/val_vs_average2.png Graphic file (type png)
 <use images/val_vs_average2.png>
-Package pdftex.def Info: images/val_vs_average2.png  used on input line 976.
+Package pdftex.def Info: images/val_vs_average2.png  used on input line 999.
 (pdftex.def)             Requested size: 338.0pt x 183.47691pt.
 
-Overfull \hbox (222.38773pt too wide) in paragraph at lines 975--977
+Overfull \hbox (222.38773pt too wide) in paragraph at lines 998--1000
 \OT1/ptm/m/n/10 fea-si-ble, thereby be-ing op-ti-mal for the orig-i-nal prob-lem. [] 
  []
 
@@ -1083,12 +1088,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[19 <./images/rho_vas_average2.png>]
-Underfull \vbox (badness 4647) has occurred while \output is active []
-
-
-
-[20 <./images/val_vs_average2.png>]
+[20 <./images/rho_vas_average2.png> <./images/val_vs_average2.png>]
 
 [21] (./articolo.aux)
  ***********
@@ -1106,18 +1106,18 @@ Package rerunfilecheck Info: File `articolo.out' has not changed.
 (rerunfilecheck)             Checksum: C734CDBA71A8DE589B33608A7D54E917;632.
  ) 
 Here is how much of TeX's memory you used:
- 34681 strings out of 473584
- 794674 string characters out of 5732363
+ 34686 strings out of 473584
+ 794761 string characters out of 5732363
  1951908 words of memory out of 5000000
- 56870 multiletter control sequences out of 15000+600000
+ 56871 multiletter control sequences out of 15000+600000
  604882 words of font info for 138 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 103i,13n,107p,1855b,844s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 103i,13n,107p,1859b,844s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on articolo.pdf (21 pages, 254045 bytes).
+Output written on articolo.pdf (21 pages, 256789 bytes).
 PDF statistics:
- 313 PDF objects out of 1000 (max. 8388607)
- 245 compressed objects within 3 object streams
- 83 named destinations out of 1000 (max. 500000)
+ 319 PDF objects out of 1000 (max. 8388607)
+ 251 compressed objects within 3 object streams
+ 87 named destinations out of 1000 (max. 500000)
  63 words of extra memory for PDF output out of 10000 (max. 10000000)
 
