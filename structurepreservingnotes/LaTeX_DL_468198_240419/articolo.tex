@@ -590,35 +590,37 @@ For a family of sets \(F\), we denote the subsets of \(F\) with size exactly \(k
 by \(F_{=k}\) and \(F_{>k}\), respectively. 
 Specifically, \(\supp(\tilde{A}_R)_{>1} \subset \colP\) represents the set of indices corresponding to partitions 
 \(C \in \colP\) with size greater than 1, and \(\supp(A_r)_{>1}\) refers to the set of indices where 
-\(r \in R \in \colP\), with \(R\) having a size greater than 1.
+\(c \in C \in \colP\), with \(C\) having a size greater than 1.
 
 \begin{definition}
+
   \label{def:structure preserving aggregation}
   Given an LP problem \eqref{eq:LP}, we say that a weighted aggregation with respect to partitions \(\rowP, \colP\) is \emph{structure-preserving} if for each \(R \in \rowP\) and each \(r \in R\), there exists \(f^r: [\tilde{n}] \to [n]\)  such that:
   \begin{enumerate}
-    \item \( f^r|_{\supp(\tilde{A}_{R})}: \supp(\tilde{A}_{R})_{>1} \to \supp(A_{r})_{>1}\) is a bijection such that
-    \[\tilde{A}_{R,C} = A_{r,f^r(C)} \text{ for all } C \in \supp(\tilde{A}_{R,S})_{>1}\].
-    \item \(f^r|_{\colP_{=1}} = Id_{\colP_{=1}}\).
-    \item \(f^{r'}(C') = f^r(C)\) then \( C=C'\).
-    \item \(C = \{f^r(C)\}_{_{r\in R}}\) for all \(R \in \rowP_{>1}\). %\(\{f^r(C)\}_{r\in R \in \rowP_{>1}, C \in \colP_{>1}} = \cup_{C \in \colP_{>1}}C\)
+    \item \label{def:spa bijection}\( f^r|_{\supp(\tilde{A}_{R})}: \supp(\tilde{A}_{R})_{>1} \to \supp(A_{r})_{>1}\) is a bijection such that
+    \[\tilde{A}_{R,C} = A_{r,f^r(C)} \text{ for all } C \in \supp(\tilde{A}_{R})_{>1}\].
+    \item \label{def: spa injection} If \(f^{r'}(C') = f^r(C)\) then \( C=C'\).
+    \item \label{def: spa surjection} \(C = \{f^r(C)\}_{_{r\in R}}\) for all \(R \in \rowP_{>1}\) and \(C \in \colP\). %\(\{f^r(C)\}_{r\in R \in \rowP_{>1}, C \in \colP_{>1}} = \cup_{C \in \colP_{>1}}C\)
   \end{enumerate}
 \end{definition}
-
+From condition \ref{def: spa surjection} follows the following:
+\begin{observation}
+  For all \(\{c\}\in \colP_{=1}\) and constraints \(r \in R \in \rowP_{>1}\), \(f^r(\{c\})= c\).
+\end{observation}
 {
 \color{black}
 
 \begin{example}
+
   As an example, we consider the function \(f^r\) corresponding to the time step aggregation in CEP as defined in \textcolor{green}{\ref{}}. 
   Let us examine the Power Balance constraints \(r_1\) and \(r_2\) for a fixed node \(n \in \cN\) and time steps \(t_1\) and \(t_2\), 
   where \(T \coloneqq \{t_1, t_2\} \in P\) represents an interval in the time partition of the aggregated problem. 
   We note that both \(f^{r_1}\) and \(f^{r_2}\) satisfy the conditions outlined in Definition \ref{def:structure preserving aggregation}. 
   
-  Condition (1) is met as all aggregated variables, \(EtH_T\), \(HtE_T\), and \(P_{l,T}\), 
-  are mapped (through violet arrows for \(f^{r_1}\) and blue arrows for \(f^{r_2}\)) to unaggregated variables with the same coefficients. 
-  Condition (2) corresponds to the unaggregated variables, specifically \(ns\) and \(nw\), 
-  which are mapped to themselves, making it an identity function, although potentially different coefficients are allowed. 
-  Condition (4) implies that all unaggregated variables appearing in the two constraints are included in the image of either \(f^{r_1}\) or \(f^{r_2}\). 
-  Finally, Condition (3) holds trivially.
+  Condition \ref{def: spa bijection} is met as all aggregated variables, \(EtH_T\), \(HtE_T\), and \(P_{l,T}\), 
+  are mapped (through violet arrows for \(f^{r_1}\) and blue arrows for \(f^{r_2}\)) to unaggregated variables with the same coefficients.  
+  Condition \ref{def: spa surjection} implies that all variables appearing in the two constraints are included in the image of either \(f^{r_1}\) or \(f^{r_2}\). 
+  Finally, Condition \ref{def: spa injectction} holds trivially.
 \newline
 \[
 \begin{tikzpicture}
@@ -684,9 +686,12 @@ This implies that the coefficients of the aggregated variables in the aggregated
 .
 \begin{observation}
 \label{ob:aggrconstr}
-If \((\rowP, \colP)\) is a structure-preserving aggregation, let \(R \in \rowP\) and \(r \in R\). Let \(\tilde{x}\) be a solution to the aggregated problem \eqref{eq:LPaggr}. 
-If \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\), define \(\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_r
- - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}}\). If \(A_{r, \colP_{=1}} = 0\) and \(b_r = 0\) for all \(r \in R\), then \(\rho_r\) can be chosen arbitrarily. 
+If \((\rowP, \colP)\) is a structure-preserving aggregation, let \(R \in \rowP\) and \(r \in R\). Let \(\tilde{x}\) be a solution
+ to the aggregated problem \eqref{eq:LPaggr}. 
+If \(\tilde{b}_r - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}} \neq 0\), define 
+\[\rho_r \coloneqq \frac{b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}}}{\tilde{b}_r
+ - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}}.\]
+  If \(A_{r, \colP_{=1}} = 0\) and \(b_r = 0\) for all \(r \in R\), then \(\rho_r\) can be chosen arbitrarily. 
 
 If \(\rho_r \geq 0\) and \(x \in \bR^n\) satisfies \(x_{\colP_{=1}} = \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} = \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)_{>1}\), then \(x\) satisfies the constraint \(A_r x = b_r\) of the original problem.
 \end{observation}
@@ -700,7 +705,7 @@ If \(\rho_r \geq 0\) and \(x \in \bR^n\) satisfies \(x_{\colP_{=1}} = \tilde{x}_
     A_r x =  A_{r, \colP_{=1}} x_{\colP_{=1}} + \sum_{c \in \supp(A_r)_{>1}}  A_{r, c} x_{c}  .
   \end{equation}
   If \(A_{r, \colP_{=1}} = 0\) and \(b_r = 0\) then \( A_{r, \colP_{=1}} x_{\colP_{=1}} = 0\). Fix \(\rho_r \geq 0\), then
-  from the definition of structure-preserving aggregation, we know that \(f^r(\supp(\tilde{A}_R)) = \supp(A_r)\), so equation \eqref{eq:p aggr constr 1} becomes:
+  from the definition of structure-preserving aggregation, we know that \(f^r(\supp(\tilde{A}_R)_{>1}) = \supp(A_r)_{>1}\), so equation \eqref{eq:p aggr constr 1} becomes:
   \begin{equation}
     \label{eq:p aggr constr 2}
     \eqref{eq:p aggr constr 1} = \sum_{S \in \supp(\tilde{A}_R)_{>1}} A_{R, f^r(S)} x_{f^r(S)} =  \sum_{S \in \supp(\tilde{A}_R)_{>1}} \tilde{A}_{R, S} \rho_r \tilde{x}_S  = \rho_r \tilde{A}_R \tilde{x} = 0,
@@ -729,40 +734,25 @@ If \(\rho_r \geq 0\) and \(x \in \bR^n\) satisfies \(x_{\colP_{=1}} = \tilde{x}_
   \qed
   \end{proof}
 
-  
-
-
-\begin{observation}
-  \label{ob:rhoconvex}
-  Let \(\rowW_r \in \bR\) for all \(r \in R \in \rowP\) be the weights of the row aggregation.
-  Let \(\rho_r\) for \(r \in R \in \rowP_{>1}\) be defined as in \ref{ob:aggrconstr}, if \(\rowW_r \geq 0\). If \(\rho_r\) is well defined for all \(r \in R\), then we have, for all \(R \in \rowP_{>1}\):
-  \begin{equation}
-    \rowW_R^T \rho_R = 1
-  \end{equation}
-\end{observation}
-\begin{proof}
-  \[
-  \rowW_R^T \rho_R = \sum_{r \in R} \rowW_r \rho_r =  \frac{\sum_{r \in R}\rowW_r(b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}})}{\tilde{b}_r
-  - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}} = 1
-  \] 
-\end{proof}
 
 A structure-preserving aggregation does not inherently ensure the feasibility of all constraints in the original problem. However, Observation \ref{ob:aggrconstr} demonstrates how to partially reconstruct a solution \(x\) for a specific constraint \(r\) by scaling the aggregated variables appropriately within the support of \(A_r\).
 
-The challenges in constructing a feasible solution are two:
-\begin{enumerate}
-  \item If \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\). In such cases, \(x\) may not be well defined if \(f^r(C) = f^{r'}(C)\) but \(\rho_r \neq \rho_{r'}\).
-  \item If \(x\) is well defined, we have recovered a feasible solution for the constraints in \(\rowP_{>1}\) we need to ensure that \(x\) is also feasible for the remaining constraints in \(\rowP_{=1}\).
-\end{enumerate}
- 
-We call the constraints in \(\rowP \) which are feasible indipendently of how \(\rho\) is picked, \(\rho\)-agnostic and are defined as follows:
 \begin{definition}
-  For a structure-preserving, row and column aggregation \((\rowP,\colP)\). A constraint \(r \in [m]\) is \(\rho\)-agnostic if for all \(\rho \in \bR^{\cup_{R \in \rowP_{>1}} R}\) such that \(\omega_R^T\rho_R = 1\) for all \(R \in \rowP_{>1}\)
-   and  \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) for all \(R \in \rowP' \subset \rowP_{>1}\), where \(\tilde{x} \in \bR^{\tilde{n}}\) is a feasible solution to the aggregated problem  and \(\rowP'\) is a subset of \(\rowP\) such that \(x\) is well defined, then \(x\) is feasible for constraint \(r\).
+  Let \(\rho_r\) be defined as in Observation \ref{ob:aggrconstr} for all \(r \in R \in \rowP_{>1}\). Let \(x \in \bR^n\) be defined as \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \colP_{>1}\) and \(r \in R \in \rowP_{>1}\). Then \(x\) is well defined if for all \(r, r' \in R \in \rowP_{>1}\) such that \(f^r(C) = f^{r'}(C)\), we have \(\rho_r = \rho_{r'}\). In such case we refer to \(x\) as a \(rho\)-solution. 
 \end{definition}
 
+If \(x\) is a \(\rho\)-solution.  \(x\) is a feasible solution for the constraints in \(\rowP_{>1}\), we also need to ensure that \(x\) is also feasible for the remaining constraints in \(\rowP_{=1}\).
+
+ 
+
+% \begin{definition}
+%   For a structure-preserving, row and column aggregation \((\rowP,\colP)\).
+%   A constraint \(r \in \colP_{=1}\) is \(\rho\)-agnostic if for all the feasible solution \(\tilde{x}\) of the aggregated problem all \(\rho \in \bR^{\cup_{R \in \rowP_{>1}} R}\) such that 
+%   \(\omega_R^T\rho_R = 1\) for all \(R \in \rowP_{>1}\) then \(x\) defined as in Observation \ref{ob:aggrconstr} is well defined.
+% \end{definition}
+
 \begin{example}
-  Consider the constraint that the initial hydrogen stored at each node must be equal to the final hydrogen stored:
+  Consider the constraint that the initial hydrogen stored must be equal to the final hydrogen stor for a one node network:
   \begin{equation}
     \label{eq:examplehydrogen}
     \sum_{t=1}^n \Delta H_t = 0
@@ -775,14 +765,30 @@ We call the constraints in \(\rowP \) which are feasible indipendently of how \(
   \begin{equation}
     \sum_{t=1}^n \Delta{H_t} = \sum_{t=1}^n \rho_t \tilde{\Delta H_T} = \sum_{T \in P} \sum_{t\in T} \rho_t \tilde{\Delta H_T} = \sum_{T \in P} \tilde{ \Delta H_T} = 0
   \end{equation}
-  Thus constraint \eqref{eq:examplehydrogen}is \(\rho\)-agnostic.
+  Thus constraint \eqref{eq:examplehydrogen}is holds for \(\rho\)-solutions
 \end{example}
 
-This is a special instance of the following general observation, note that if \(x\) is well defined, then for all \(C \in \supp(A_{r})_{>1}\), we can pick \(R^{(C)} \in \rowP_{>1}\) so that \(C \in \supp(\tilde{A}_{R^{(C)}})\) and \(x_{f^r(C)} = \rho_r \tilde{x}_C\) for all \(r \in R^{(C)}\) and the definition of \(x\) does not depend on the choice of \(R^{(C)}\).
+This is a special instance of a general class of constraints that always hold for \(\rho\)-solutions, this follows from the following propriety of \(\rho\)-solutions:
+
 \begin{observation}
-  Le \((\rowP,\colP)\) be a structure-preserving, row and column aggregation. For all \(C \in \supp(A_{r})_{>1}\), let \(R^{(C)} \in \rowP_{>1}\) so that \(x_{f^{r'}(C)} \coloneqq \rho_{r'} \tilde{x}_C\) for all \(r' \in R^{(C)}\). A constraint \(r \in \rowP_{=1}\) is \(\rho\)-agnostic if
-  \[A_{r,f^{r'}(C)} = \rowW_{r'}\tilde{A}_{r,C} \text{ for all } r' \in R^{(C)},\; C \in \colP_{>1} \]
-   
+  \label{ob:rhoconvex}
+  Let \(\rowW_r \in \bR\) for all \(r \in R \in \rowP\) be the weights of the row aggregation.
+  If \(x\) is a \(\rho\)-solution, then we have, for all \(R \in \rowP_{>1}\):
+  \begin{equation}
+    \rowW_R^T \rho_R = 1
+  \end{equation}
+\end{observation}
+\begin{proof}
+  \[
+  \rowW_R^T \rho_R = \sum_{r \in R} \rowW_r \rho_r =  \frac{\sum_{r \in R}\rowW_r(b_r - A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}})}{\tilde{b}_r
+  - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}} = 1
+  \] 
+\end{proof}
+Note that if \(x\) is a \(\rho\)-solution, then for all \(C \in \supp(A_{r})_{>1}\), we can pick \(R^{(C)} \in \rowP_{>1}\) so that \(C \in \supp(\tilde{A}_{R^{(C)}})\) and \(x_{f^r(C)} = \rho_r \tilde{x}_C\) for all \(r \in R^{(C)}\) and the definition of \(x\) does not depend on the choice of \(R^{(C)}\).
+\begin{observation}
+  Le \((\rowP,\colP)\) be a structure-preserving, row and column aggregation. If \(x\) is a \(\rho\)-solution and \(r\) is a constraint in \(\rowP_{=1}\), such that 
+  \[A_{r,f^{r'}(C)} = \rowW_{r'}\tilde{A}_{r,C} \text{ for all } r' \in R^{(C)},\; C \in \colP_{>1}, \]
+  then \(x\) is a fesible solution for constraint \(r\).
 \end{observation}
 
 \begin{proof}
@@ -792,9 +798,9 @@ Since \(\rowW_R^T \rho_R = 1\), we have:
    \]
 \end{proof}
 
-We can now define the hypergraph associated to the aggregation \((\rowP, \colP)\).
+We now define the hypergraph associated to the aggregation \((\rowP, \colP)\).
 \begin{definition}
-  The \emph{hypergraph associated to the aggregation \((\rowP, \colP)\)} is the hypergraph \(\cN, \cE\) having as nodes the aggregated variables \(\cN \coloneqq \colP_{>1}\) and as edges the subsest of \(\cN\) that appear together in not row-agnostic aggregated constraints.
+  The \emph{hypergraph associated to the aggregation \((\rowP, \colP)\)} is the hypergraph \(\cN, \cE\) having as nodes the aggregated variables \(\cN \coloneqq \colP_{>1}\) and as edges the subsest of \(\cN\) that appear together in aggregated constraints.
 \end{definition}
 
 When two edges (constraints) in the hypergraph, \(r\) and \(r'\), share aggregated variables, 
@@ -802,14 +808,17 @@ the scaling factors \(\rho_r\) and \(\rho_{r'}\) must be equal for Observation \
 From this follows the following:
 \begin{proposition}
 \label{prop:xaggfeasible}
-If \((\rowP, \colP)\) is a structure-preserving aggregation and the constraints in \(\rowP_{=1}\) are \(\rho\)-agnostic. Let \(\tilde{x}\) be a solution 
+If \((\rowP, \colP)\) is a structure-preserving aggregation and the constraints in \(\rowP_{=1}\) hold for \(rho\)-solutions. Let \(\tilde{x}\) be a solution 
 to the aggregated problem \eqref{eq:LPaggr}. For all \(r \in R \in \rowP_{>1}\) define \(\rho_r\) as in Observation \ref{ob:aggrconstr}. If \(\rho_r \geq 0\) and is constant over the connected components of the hypergraph associated to \((\rowP, \colP)\). 
-Then \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\) is well defined and \(x\) is a feasible solution to the unaggregated problem \eqref{eq:LP}.
+Then \(x_{\colP_{=1}} \coloneqq \tilde{x}_{\colP_{=1}}\) and \(x_{f^r(C)} \coloneqq \rho_r \tilde{x}_C\) for all \(C \in \supp(\tilde{A}_R)\) and \(C \in \colP_{>1}\) is well defined and thus \(x\) is a \(\rho\)-solution.
+Further more if \(x\) is feasible for all constraints in \(\colP_{=1}\), then \(x\) is feasible solution to the unaggregated problem \eqref{eq:LP}.
 \end{proposition}
 
+Until now we have only considered feasibility, ignoring the relationship between the cost of \(\tilde{x}\) and the cost of \(x\). The following observation gives a condition for the cost of \(\tilde{x}\) to be equal to the cost of \(x\).
+For all \(C \in \colP_{>1}\) let  \(R^{(C)} \in \rowP_{>1}\) be so that \(C \in \supp(\tilde{A}_{R^{(C)}})\) and \(x_{f^r(C)} = \rho_r \tilde{x}_C\) for all \(r \in R^{(C)}\).
 \begin{observation}
   \label{ob:costpreserving}
-  Let \(x\), \(\tilde{x}\) be as defined as in proposition \ref{prop:xaggfeasible}. If \(\rowW_r\tilde{c}_C = c_{f(r,C)}\) for some \(r \in R \in \rowP_{>1}\). Then the cost of \(\tilde{x}\) for the aggregated problem 
+  Let \(x\) be a \(\rho\)-solution. If  \(\rowW_r\tilde{c}_C = c_{f(r,C)}\) for all \(r \in R^{(C)} \in \rowP_{>1}\), then the cost of \(\tilde{x}\) for the aggregated problem 
   is equal to the cost of \(x\) in the unaggregated problem. 
 \end{observation}
 \begin{proof}
