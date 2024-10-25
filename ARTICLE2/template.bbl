@@ -1,107 +1,67 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{19}
+\providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{{#1}}
 \providecommand{\urlprefix}{URL }
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
   \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup \urlstyle{rm}\Url}\fi
+\providecommand{\eprint}[2][]{\url{#2}}
 
-\bibitem{entsoe_NTC}
-Entso-e power statistics and transparency platform (2024).
-\newblock \urlprefix\url{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)}.
-\newblock Statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
+\bibitem[{Biener and {Garcia Rosas}(2020)}]{BIENER2020106349}
+Biener W, {Garcia Rosas} KR (2020) Grid reduction for energy system analysis. Electric Power Systems Research 185:106349, \doi{https://doi.org/10.1016/j.epsr.2020.106349}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0378779620301553}
 
-\bibitem{ENTSOE_PowerStats}
-Entso-e power statistics and transparency platform - cross-border physical flow (2024).
-\newblock \urlprefix\url{https://www.entsoe.eu/data/power-stats/}.
-\newblock Statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
+\bibitem[{Blanco and Faaij(2018)}]{INTRO_blanco}
+Blanco H, Faaij A (2018) A review at the role of storage in energy systems with a focus on power to gas and long-term storage. Renewable and Sustainable Energy Reviews 81:1049--1086, \doi{https://doi.org/10.1016/j.rser.2017.07.062}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1364032117311310}
 
-\bibitem{BIENER2020106349}
-Biener, W., {Garcia Rosas}, K.R.: Grid reduction for energy system analysis.
-\newblock Electric Power Systems Research \textbf{185}, 106349 (2020).
-\newblock \doi{https://doi.org/10.1016/j.epsr.2020.106349}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0378779620301553}
+\bibitem[{C2024-5041(2024)}]{EU_context}
+C2024-5041 (2024) Communication from the commission: Guidance on article 20a on sector integration of renewable electricity of directive (eu) 2018/2001 on the promotion of energy from renewable sources, as amended by directive (eu) 2023/2413. \urlprefix\url{https://energy.ec.europa.eu/document/download/efcd200c-b9ae-4a9c-98ab-73b2fd281fcc_en?filename=C_2024_5041_1_EN_ACT_part1_v10.pdf}
 
-\bibitem{INTRO_blanco}
-Blanco, H., Faaij, A.: A review at the role of storage in energy systems with a focus on power to gas and long-term storage.
-\newblock Renewable and Sustainable Energy Reviews \textbf{81}, 1049--1086 (2018).
-\newblock \doi{https://doi.org/10.1016/j.rser.2017.07.062}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1364032117311310}
+\bibitem[{Dawood et~al.(2020)Dawood, Anda, and Shafiullah}]{DAWOOD}
+Dawood F, Anda M, Shafiullah G (2020) Hydrogen production for energy: An overview. International Journal of Hydrogen Energy 45(7):3847--3869, \doi{https://doi.org/10.1016/j.ijhydene.2019.12.059}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360319919345926}
 
-\bibitem{EU_context}
-Commission, E.: Communication from the commission: Guidance on article 20a on sector integration of renewable electricity of directive (eu) 2018/2001 on the promotion of energy from renewable sources, as amended by directive (eu) 2023/2413 (2024).
-\newblock \urlprefix\url{https://energy.ec.europa.eu/document/download/efcd200c-b9ae-4a9c-98ab-73b2fd281fcc_en?filename=C_2024_5041_1_EN_ACT_part1_v10.pdf}
+\bibitem[{ENTSO-E(2024{\natexlab{a}})}]{entsoe_NTC}
+ENTSO-E (2024{\natexlab{a}}) Entso-e power statistics and transparency platform. \urlprefix\url{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)}, statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
 
-\bibitem{DAWOOD}
-Dawood, F., Anda, M., Shafiullah, G.: Hydrogen production for energy: An overview.
-\newblock International Journal of Hydrogen Energy \textbf{45}(7), 3847--3869 (2020).
-\newblock \doi{https://doi.org/10.1016/j.ijhydene.2019.12.059}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360319919345926}
+\bibitem[{ENTSO-E(2024{\natexlab{b}})}]{ENTSOE_PowerStats}
+ENTSO-E (2024{\natexlab{b}}) Entso-e power statistics and transparency platform - cross-border physical flow. \urlprefix\url{https://www.entsoe.eu/data/power-stats/}, statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
 
-\bibitem{INTRO_Glomb}
-Glomb, L., Liers, F., Rösel, F.: A rolling-horizon approach for multi-period optimization.
-\newblock European Journal of Operational Research \textbf{300}(1), 189--206 (2022).
-\newblock \doi{https://doi.org/10.1016/j.ejor.2021.07.043}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0377221721006536}
+\bibitem[{Glomb et~al.(2022)Glomb, Liers, and Rösel}]{INTRO_Glomb}
+Glomb L, Liers F, Rösel F (2022) A rolling-horizon approach for multi-period optimization. European Journal of Operational Research 300(1):189--206, \doi{https://doi.org/10.1016/j.ejor.2021.07.043}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0377221721006536}
 
-\bibitem{INTRO_gurobi}
-{Gurobi Optimization, LLC}: {Gurobi Optimizer Reference Manual} (2024).
-\newblock \urlprefix\url{https://www.gurobi.com}
+\bibitem[{{Gurobi Optimization, LLC}(2024)}]{INTRO_gurobi}
+{Gurobi Optimization, LLC} (2024) {Gurobi Optimizer Reference Manual}. \urlprefix\url{https://www.gurobi.com}
 
-\bibitem{INTRO_karlsruhe}
-Hasan U.~Yilmaz Kai~Mainzer, D.K.: Improving the performance of solving large scale mixed-integer energy system models by applying the fix-and-relax method pp. 1--5 (2020).
-\newblock \doi{10.1109/EEM49802.2020.9221934}
+\bibitem[{Hasan U.~Yilmaz(2020)}]{INTRO_karlsruhe}
+Hasan U~Yilmaz DK Kai~Mainzer (2020) Improving the performance of solving large scale mixed-integer energy system models by applying the fix-and-relax method. \textcolor{red}{some journal} pp 1--5, \doi{10.1109/EEM49802.2020.9221934}
 
-\bibitem{Horsch}
-Hörsch, J., Brown, T.: The role of spatial scale in joint optimisations of generation and transmission for european highly renewable scenarios.
-\newblock In: 2017 14th International Conference on the European Energy Market (EEM), pp. 1--7 (2017).
-\newblock \doi{10.1109/EEM.2017.7982024}
+\bibitem[{Hörsch and Brown(2017)}]{Horsch}
+Hörsch J, Brown T (2017) The role of spatial scale in joint optimisations of generation and transmission for european highly renewable scenarios. In: 2017 14th International Conference on the European Energy Market (EEM), pp 1--7, \doi{10.1109/EEM.2017.7982024}
 
-\bibitem{INTRO_short-term}
-Ilkka~Keppo, M.S.: Short term decisions for long term problems – the effect of foresight on model based energy systems analysis.
-\newblock Energy \textbf{35}(5), 2033--2042 (2010).
-\newblock \doi{https://doi.org/10.1016/j.energy.2010.01.019}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360544210000216}
+\bibitem[{Ilkka~Keppo(2010)}]{INTRO_short-term}
+Ilkka~Keppo MS (2010) Short term decisions for long term problems – the effect of foresight on model based energy systems analysis. Energy 35(5):2033--2042, \doi{https://doi.org/10.1016/j.energy.2010.01.019}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360544210000216}
 
-\bibitem{tesi_NTC}
-Jedrzejewki, P.: Modelling the european cross-border electricity transmission.
-\newblock Master's thesis, KTH School of Industrial Engineering and Management (2020).
-\newblock \urlprefix\url{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf}
+\bibitem[{Jasinski et~al.(2022)Jasinski, Najafi, and et~al}]{review_math_opt}
+Jasinski M, Najafi A, et~al (2022) Operation and planning of energy hubs under uncertainty - a review of mathematical optimization approaches. \textcolor{red}{some journal}
 
-\bibitem{weibullwind}
-Khahro, S.F., Tabbassum, K., Soomro, A.M., Dong, L., Liao, X.: Evaluation of wind power production prospective and weibull parameter estimation methods for babaurband, sindh pakistan.
-\newblock Energy Conversion and Management \textbf{78}, 956--967 (2014).
-\newblock \doi{https://doi.org/10.1016/j.enconman.2013.06.062}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S019689041300589X}
+\bibitem[{Jedrzejewki(2020)}]{tesi_NTC}
+Jedrzejewki P (2020) Modelling the european cross-border electricity transmission. Master's thesis, KTH School of Industrial Engineering and Management, \urlprefix\url{https://www.diva-portal.org/smash/get/diva2:1476768/FULLTEXT01.pdf}
 
-\bibitem{review_math_opt}
-Michal~Jasinski Arsalan~Najafi, e.a.: Operation and planning of energy hubs under uncertainty - a review of mathematical optimization approaches  (2022)
+\bibitem[{Khahro et~al.(2014)Khahro, Tabbassum, Soomro, Dong, and Liao}]{weibullwind}
+Khahro SF, Tabbassum K, Soomro AM, Dong L, Liao X (2014) Evaluation of wind power production prospective and weibull parameter estimation methods for babaurband, sindh pakistan. Energy Conversion and Management 78:956--967, \doi{https://doi.org/10.1016/j.enconman.2013.06.062}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S019689041300589X}
 
-\bibitem{INTRO_isolated_MIP}
-Morais, H., Kádár, P., Faria, P., Vale, Z.A., Khodr, H.: Optimal scheduling of a renewable micro-grid in an isolated load area using mixed-integer linear programming.
-\newblock Renewable Energy \textbf{35}(1), 151--156 (2010).
-\newblock \doi{https://doi.org/10.1016/j.renene.2009.02.031}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0960148109001001}
+\bibitem[{Morais et~al.(2010)Morais, Kádár, Faria, Vale, and Khodr}]{INTRO_isolated_MIP}
+Morais H, Kádár P, Faria P, Vale ZA, Khodr H (2010) Optimal scheduling of a renewable micro-grid in an isolated load area using mixed-integer linear programming. Renewable Energy 35(1):151--156, \doi{https://doi.org/10.1016/j.renene.2009.02.031}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0960148109001001}
 
-\bibitem{European_H2_Market_landscape}
-Observatory, E.H.: European hydrogen market landscape - november 2023 report.
-\newblock European Journal of Operational Research (1) (2023).
-\newblock \urlprefix\url{https://observatory.clean-hydrogen.europa.eu/sites/default/files/2023-11/Report%2001%20-%20November%202023%20-%20The%20European%20hydrogen%20market%20landscape.pdf}
+\bibitem[{Observatory(2023)}]{European_H2_Market_landscape}
+Observatory EH (2023) European hydrogen market landscape - november 2023 report. European Journal of Operational Research \urlprefix\url{https://observatory.clean-hydrogen.europa.eu/sites/default/files/2023-11/Report%2001%20-%20November%202023%20-%20The%20European%20hydrogen%20market%20landscape.pdf}
 
-\bibitem{INTRO_Palma-Behnke}
-Palma-Behnke, R., Benavides, C., Lanas, F., Severino, B., Reyes, L., Llanos, J., Sáez, D.: A microgrid energy management system based on the rolling horizon strategy.
-\newblock IEEE Transactions on Smart Grid \textbf{4}(2), 996--1006 (2013).
-\newblock \doi{10.1109/TSG.2012.2231440}
+\bibitem[{Palma-Behnke et~al.(2013)Palma-Behnke, Benavides, Lanas, Severino, Reyes, Llanos, and Sáez}]{INTRO_Palma-Behnke}
+Palma-Behnke R, Benavides C, Lanas F, Severino B, Reyes L, Llanos J, Sáez D (2013) A microgrid energy management system based on the rolling horizon strategy. IEEE Transactions on Smart Grid 4(2):996--1006, \doi{10.1109/TSG.2012.2231440}
 
-\bibitem{INTRO_parra}
-Parra, D., Valverde, L., Pino, F.J., Patel, M.K.: A review on the role, cost and value of hydrogen energy systems for deep decarbonisation.
-\newblock Renewable and Sustainable Energy Reviews \textbf{101}, 279--294 (2019).
-\newblock \doi{https://doi.org/10.1016/j.rser.2018.11.010}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1364032118307421}
+\bibitem[{Parra et~al.(2019)Parra, Valverde, Pino, and Patel}]{INTRO_parra}
+Parra D, Valverde L, Pino FJ, Patel MK (2019) A review on the role, cost and value of hydrogen energy systems for deep decarbonisation. Renewable and Sustainable Energy Reviews 101:279--294, \doi{https://doi.org/10.1016/j.rser.2018.11.010}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1364032118307421}
 
-\bibitem{betaPV}
-Yuan, X., Chen, C., Jiang, M., Yuan, Y.: Prediction interval of wind power using parameter optimized beta distribution based lstm model.
-\newblock Applied Soft Computing \textbf{82}, 105550 (2019).
-\newblock \doi{https://doi.org/10.1016/j.asoc.2019.105550}.
-\newblock \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1568494619303308}
+\bibitem[{Yuan et~al.(2019)Yuan, Chen, Jiang, and Yuan}]{betaPV}
+Yuan X, Chen C, Jiang M, Yuan Y (2019) Prediction interval of wind power using parameter optimized beta distribution based lstm model. Applied Soft Computing 82:105550, \doi{https://doi.org/10.1016/j.asoc.2019.105550}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1568494619303308}
 
 \end{thebibliography}
