@@ -1,18 +1,17 @@
 # Fdb version 4
-["bibtex template"] 1729879513.07144 "template.aux" "template.bbl" "template" 1729879514.60023 0
-  "./sample.bib" 1729879512.7838 44071 cb42eac87dbc0500456e2b097564acb8 ""
+["bibtex template"] 1729895651.29625 "template.aux" "template.bbl" "template" 1729895651.41188 0
+  "./sample.bib" 1729895651.12325 46823 e661f1f9c028695be5a04b5fc8923824 ""
   "./spbasic.bst" 1729686135.02616 33238 8c0372ffb65c1dd8cfd2d4211623c2f0 ""
-  "template.aux" 1729879514.25378 10007 e088f278a363cdd77879f4e2a0787b70 "pdflatex"
+  "template.aux" 1729895648.1543 10720 6e2223d2a0386ed6ce4bd3a55c061208 "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1729879513.19163 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1729879514.6004 0
+["pdflatex"] 1729895647.1516 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1729895651.41193 0
   "/etc/texmf/web2c/texmf.cnf" 1727021346.58952 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" 1729879512.7848 113047 355b9e788b3587f3d27c4f7c83bb1d19 ""
+  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" 1729895578.28446 113753 b6e2cad777ff1394c6d1ddccde71fbfc ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm" 1136768653 1536 06717a2b50de47d4087ac0e6cd759455 ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -48,6 +47,7 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1136768653 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti7.tfm" 1136768653 1492 86331993fe614793f5e7e755835c31c5 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti8.tfm" 1136768653 1504 1747189e0441d1c18f3ea56fafc1c480 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm" 1136768653 768 1321e9409b4137d6fb428ac9dc956269 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmtt8.tfm" 1136768653 768 d7b9a2629a0c353102ad947dc9221d49 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/eurosym/feymr10.tfm" 1136768653 564 4473b3a7796d55e24866e7d8c333bf96 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb" 1248133631 34793 87a84b12f86dfd35a1cf1bb142b75602 ""
@@ -74,6 +74,7 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb" 1248133631 35660 fb24af7afbadb71801619f1415838111 ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1248133631 31099 c85edf1dd5b9e826d67c9c7293b6786c ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb" 1248133631 24287 6b803fa9eb1ddff9112e00519b09dd9e ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb" 1248133631 30273 87a352d78b6810ae5cfdc68d2fb827b2 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb" 1248133631 33366 60462f3d16c3d0f024f1f856e64b09cd ""
@@ -280,9 +281,6 @@
   "/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty" 1700082560 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty" 1655411236 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
-  "/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1636152094 2900 1537cc8184ad1792082cd229ecc269f4 ""
-  "/usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb" 1636152094 138258 6525c253f16cededa14c7fd0da7f67b2 ""
-  "/usr/share/texmf/fonts/type1/public/lm/lmss17.pfb" 1255129361 97155 77b0a2ea02ee9c950117adae5f41f9c9 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1727021369.8525 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1727021390 8213608 7518f4bf06237f22cded744c906015fd ""
@@ -290,13 +288,11 @@
   "images/val_vs_average2.png" 1729686135.02516 28380 af8f8d6c4b6e6f04025fb87ffe0ee4cb ""
   "svglov3.clo" 1729686135.02616 3696 b98636486931abc143bcf14934850e7b ""
   "svjour3.cls" 1729686135.02716 47679 580d73513215963b6ad3ff0c4282b766 ""
-  "template.aux" 1729879514.25378 10007 e088f278a363cdd77879f4e2a0787b70 "pdflatex"
-  "template.bbl" 1729879513.17579 7315 a22b9a507c14e11cbd5f5acd9d73f5cf "bibtex template"
-  "template.out" 1729879514.25478 1075 2dcaae233c4543a68d0eb4ee52456616 "pdflatex"
-  "template.tex" 1729879512.7848 113047 355b9e788b3587f3d27c4f7c83bb1d19 ""
+  "template.aux" 1729895648.1543 10720 6e2223d2a0386ed6ce4bd3a55c061208 "pdflatex"
+  "template.bbl" 1729895651.39725 9341 27880a01b6a696b33d39fc1f5c421193 "bibtex template"
+  "template.tex" 1729895578.28446 113753 b6e2cad777ff1394c6d1ddccde71fbfc ""
   (generated)
   "template.aux"
   "template.log"
-  "template.out"
   "template.pdf"
   (rewritten before read)
