@@ -970,7 +970,7 @@ If the RH makes it through the year, then the considered $\mathbf{x}_{CEP}$ valu
 
 One advantage of using the RH validation function within the iterative aggregation method is that it automatically provides an effective halting method that guarantees feasibility for the original problem.
 
-Note that even though the final $\mathbf{x}_{CEP}$ come from the optimal solution of a relaxation, this is not enough to guarantee optimality for the finer resolution CEP, since marginal costs of conversion to and back from hydrogen, and of its transportation, aren't accounted for fully. 
+Note that even though the final $\mathbf{x}_{CEP}$ comes from the optimal solution of a relaxation, this is not enough to guarantee optimality for the finer resolution CEP, since marginal costs of conversion to and back from hydrogen, and of its transportation, aren't accounted for fully. 
 %However, distance from the actual optimal solution can be estimated by marginal costs in those days times the year, since they are chosen to be the worst days.
 
 Unfortunately, a great disadvantage of using the RH validation within the iteration loop is that the computational costs it brings along is not insignificant, needing careful consideration on whether it is in effect preferable to directly optimizing on the full problem.
@@ -1075,8 +1075,8 @@ This same approach, generalized to a wider family of aggregations LP problems, i
 
 
 \section{COMPUTATIONAL RESULTS}\label{section: comp res}
-{
-\color{purple}
+
+
 
 % \subsection{SINGLE NODE NETWORK}
 % First, an electrical grid with a single node is considered (corresponding ideally to an area with uniform
@@ -1095,40 +1095,58 @@ This same approach, generalized to a wider family of aggregations LP problems, i
 % deal with the complexity arising from the introduction of the network structure in the model.
 
 
-We are thus interested in evaluating whether an optimal grid as given by the solution of the CEP problem on a batch of train scenarios can (1) be operated without knowledge of the future in order to satisfy demand on the same scenarios it was trained on, and (2) generalize to new test scenarios.
-
---- plot one node : graph from presentation ---
-
---- plot small eu : spain H ---
-
-comment: single node tends to have just enough generation to stay net 0 with hydrogen. multiple node has lots of generation, hydrogen storage favoured less... integration within the grid is providing the necessary stability itself???
-
-cost: RH on single node is near optimal. RH on network depends on loss function: how far from optimal?
-
-Note that even though the final $\mathbf{x}_{CEP}$ come from the optimal solution of a relaxation, this is not enough to guarantee optimality for the finer resolution CEP, since marginal costs of conversion to and back from hydrogen, and of its transportation, aren't accounted for fully. 
-%However, distance from the actual optimal solution can be estimated by marginal costs in those days times the year, since they are chosen to be the worst days.
-
-Unfortunately, a great disadvantage of using the RH validation within the iteration loop is that the computational costs it brings along is not insignificant, needing careful consideration on whether it is in effect preferable to directly optimizing on the full problem.
-
-
-
 To evaluate the methodologies presented in this paper, we examine a  5-node network over a one-year span, utilizing timesteps of 1 hour across two distinct scenarios.
- In this section, we compare three approaches for iterating on the aggregated problem: (1) randomly selecting the interval for refinement, 
- (2) selecting the interval with the highest \(\rho\)-variance as defined in Section \ref{}, and (3) selecting the interval where the validation function \ref{} fails. 
- The scenarios are generated as outlined in Section \ref{subsec:scenarios} in the Appendix. 
- The computational tests were conducted on an Intel(R) Core(TM) i7-13700H CPU @ 2.40GHz with 16 GB of RAM using Gurobi.
+The scenarios are generated as outlined in Appendix  \ref{generation}. 
+The computational tests were conducted on an Intel(R) Core(TM) i7-13700H CPU @ 2.40GHz with 16 GB of RAM using Gurobi.
+
+
+
+%Firstly, we are interested in evaluating whether an optimal grid as given by the solution of the CEP problem on a batch of train scenarios $J_{train}$ can 
+%(1) be operated without knowledge of the future in order to satisfy demand on the same scenarios it was trained on, and 
+%(2) generalize to new test scenarios.
+
+%Figure \ref{LP vs CEP+RH} shows, for a selected node and scenario, the level of hydrogen present in storage at each time step according to the LP optimal solution, 
+%and compares it to the ED solution obtained through the RH method on the same scenario by fixing the CEP variables to the ones from the LP.
+
+%\begin{figure}[htbp]
+
+%  --- plot small eu : spain H ---
+%  \label{LP vs CEP+RH}
+  
+%\end{figure}
+
+% %On a single node network, comment: single node tends to have just enough generation to stay net 0 with hydrogen. 
+% % multiple node has lots of generation, hydrogen storage favoured less... integration within the grid is providing the necessary stability itself???
+% %cost: RH on single node is near optimal. RH on network depends on loss function: how far from optimal?
+
+%We see that the RH management of hydrogen storage gets to the end of the year with similar values of hydrogen in storage as the LP solution (which is by definition the same as the starting level). 
+%That is, the LP optimal is also RH-feasible. 
+%This is indeed the case for \textcolor{red}{most\%} of the scenarios tested.
+%Furthermore, the cost difference is negligible: on average, the RH solution to the ED showed a \textcolor{red}{small\% }increase in operational costs (excluding the initial investment) compared to the ED optimum.
+
+%On the other hand, when evaluating whether a CEP solution remains RH-feasible on new scenarios not used in the optimization, we find that \textcolor{red}{what}. 
+%By choosing a stronger loss function that favours filling up the storage to maximum capacity, we can check that this is not for lack of net power production, but because of the loss function aiming for \textcolor{red}{???}
+
+
+We compare the three approaches for iterating on the aggregated problem: 
+(1) randomly selecting the interval for refinement, 
+ (2) selecting the interval with the highest \(\rho\)-variance as defined in subsection \ref{subsection: rho}, and 
+ (3) selecting the interval where the RH validation function discussed in \ref{subsection: RH} fails. 
 
 Plot \ref{fig:rho_vs_average} illustrates the cost variation at each iteration using the \(\rho\) selection method compared to random interval selection.
  The \(\rho\) selection method demonstrates a faster increase in cost than the random selection method, with comparable optimization times: 174 seconds for the \(\rho\) selection method 
  and 155 seconds for the random selection method over 10 iterations.
-\begin{figure}[htbp]
+
+ \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.8\textwidth]{images/rho_vas_average2.png}
   \caption{Cost variation at each iteration using the \(\rho\) selection method compared to random interval selection.}
   \label{fig:rho_vs_average}
 \end{figure}
+
 In plot \ref{fig:val_vs_average}, we compare the cost variation at each iteration using the validation function for interval refinement against the random interval selection method. 
-The results indicate that the former method yields a significantly faster increase, implying quicker convergence to the optimal solution. However, this approach incurs greater computational time: \textcolor{red}{many seconds s}. It is worth noting that while both the \(\rho\) and random iteration methods continue even upon encountering a feasible solution for the original problem, the validation function iteration may halt before reaching the maximum iteration limit if the current solution is feasible, thereby being optimal for the original problem.
+The results indicate that the former method yields a significantly faster increase, implying quicker convergence to the optimal solution. 
+However, this approach incurs greater computational time: \textcolor{red}{many seconds s}. 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/val_vs_average2.png}
@@ -1136,6 +1154,9 @@ The results indicate that the former method yields a significantly faster increa
   \label{fig:val_vs_average}
 \end{figure}
 
+It is worth noting that while both the \(\rho\) and random iteration methods continue up until reaching the maximum iteration limit, the validation function iteration may halt before that, if the current solution is RH-feasible on the full disaggregated horizon.
+The solution found is not necessarily optimal, and other heuristics would then be needed to improve it by readjusting the operational costs of hydrogen conversion and transportation. 
+However such adjustments can be made without further increasing the number of disaggregated days, keeping the problem size limited.
 
 Figure \ref{fig:opt_time_over_iter} shows the optimization time across iterations.
  We observe a generally constant, yet slightly decreasing trend in optimization time, indicating that the model is effectively utilizing the warm start. Furthermore, the reduction in optimization time suggests that the number of pivots needed to recover the optimal solution decreases as the optimization progresses, bringing the solution closer to optimality with each iteration.
@@ -1176,13 +1197,20 @@ Figure \ref{fig:opt_time_over_iter} shows the optimization time across iteration
 
 
 
-
 \section{Conclusion and Future Directions}
 
-The examples above demonstrate that aggregating time steps, combined with iterative refinement, can effectively solve the Capacity Expansion Problem (CEP). We explored two different approaches for selecting time intervals to refine at each iteration. The first approach employed a validation function based on the Rolling Horizon method, which offers the advantage of providing a feasibility certificate if it halts before reaching the maximum number of iterations and reflects a realistic setting where reliable forecasts for power production are available over a short time span.
+The examples above demonstrate that aggregating time steps, combined with iterative refinement, can effectively solve the Capacity Expansion Problem (CEP). 
 
-The second approach utilized \(\rho\), as defined in \ref{def rho}, representing the fraction of net power production in each time step relative to the total net power production within the corresponding interval. The variance of \(\rho\) across each node in the network served as a quality index for each time interval, guiding the disaggregation process by targeting intervals with the worst \(\rho\) values. We also provided a theoretical justification for using \(\rho\), explaining that time intervals with greater oscillations in net power production require a finer time partition to be accurately considered, and establishing sufficient conditions under which the aggregated solution remains feasible for the original problem.
+We explored two different approaches for selecting time intervals to refine at each iteration. The first approach employed a validation function based on the Rolling Horizon method, which offers the advantage of providing a feasibility certificate if it halts before reaching the maximum number of iterations and reflects a realistic setting where reliable forecasts for power production are available over a short time span.
 
+The second approach utilized \(\rho\), as defined in \ref{def rho}, representing the fraction of net power production in each time step relative to the total net power production within the corresponding interval. 
+The variance of \(\rho\) across each node in the network served as a quality index for each time interval, guiding the disaggregation process by targeting intervals with the worst \(\rho\) values. 
+We also provided a theoretical justification for using \(\rho\), explaining that time intervals with greater oscillations in net power production require a finer time partition to be accurately considered, and establishing sufficient conditions under which the aggregated solution can be extended to a feasible solution for the original problem.
+
+The iteration method with RH validation proved to be very effective at selecting relevant intervals to disaggregate. Starting with a day-night aggregation consisting of 730 intervals throughout the year, the method halted on average after \textcolor{red}{XXX} iterations with an RH-feasible solution whose cost diverged only minimally from the optimum.
+However, the use of RH within the iteration loop has a non negligible computational cost, granting it does not increase with the number of scenarios. Still, there is a lot of wriggle space in the implementation of this method, which can help further reduce the computational load.
+
+The iteration method with $\rho$ proved more effective than chance at selecting relevant intervals to disaggregate, while maintaining similar computational times.
 In future work, we plan to relax the conditions in Proposition \ref{prop rho} for the feasibility of the aggregated solution for the original problem. Furthermore, the interval selection method can be refined by considering other indices based on \(\rho\), such as the frequency of sign changes over time within a time interval, or by using other measures instead of the variance across the nodes of the network.
 
 
@@ -1193,7 +1221,7 @@ In future work, we plan to relax the conditions in Proposition \ref{prop rho} fo
 
 
 
-
+\color{black}
 
 
 %\begin{acknowledgements}
@@ -1260,8 +1288,6 @@ In future work, we plan to relax the conditions in Proposition \ref{prop rho} fo
 
 
 \newpage
-\color{black}
-
 \appendix
 
 \section{SCENARIO GENERATION}\label{generation}
@@ -1274,7 +1300,7 @@ In our project, we used an hourly time step ($T=8760$) and fit the wind and sola
 To model the marginal probability distributions corresponding to the power output of wind turbines for each hour of the year, a Weibull distribution was used, justified by its proven effectiveness in capturing the variability and skewness of wind power distributions \textcolor{green}{\cite{weibullwind}}. 
 For solar power, Beta distributions were employed, as in \textcolor{green}{\cite{betaPV}}.
 To fit our model, we used a dataset containing 30 years of data for various European countries, which was collected by \textcolor{green}{\cite{30y_gen}}. 
-On the other hand, electricity load is taken from the \textcolor{green}{\href{https://www.entsoe.eu/data/power-stats/}{ENTSO-E Statistical Reports}}. \textcolor{red}{explain how is HL obtained}
+On the other hand, electricity load is taken from the ENTSO-E Statistical Reports \textcolor{green}{\cite{ENTSOE_PowerStats}}.
 In this simple model, while fitting on historical data we did not account for possible changes in future climate, since the focus lies mostly in the computational aspect.
 
 To account for interdependence between temporally near time steps, we coupled these distributions using a Gaussian Copula approach, which captures the dependencies between hourly power outputs effectively. 
