@@ -53,7 +53,7 @@ Keppo I, Strubegger M (2010) Short term decisions for long term problems - the e
 Khahro SF, Tabbassum K, Soomro AM, Dong L, Liao X (2014) Evaluation of wind power production prospective and weibull parameter estimation methods for babaurband, sindh pakistan. Energy Conversion and Management 78:956--967, \doi{https://doi.org/10.1016/j.enconman.2013.06.062}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S019689041300589X}
 
 \bibitem[{Kirschbaum et~al.(2023)Kirschbaum, Powilleit, Schotte, and Özbeg}]{papero_bin}
-Kirschbaum S, Powilleit M, Schotte M, Özbeg F (2023) Efficient solving of time-coupled energy system milp models using a problem specific lp relaxation. pp 2774--2785, \doi{10.52202/069564-0249}
+Kirschbaum S, Powilleit M, Schotte M, Özbeg F (2023) Efficient solving of time-coupled energy system milp models using a problem specific lp relaxation. In: \textcolor{red}{to insert}, pp 2774--2785, \doi{10.52202/069564-0249}
 
 \bibitem[{Marquant et~al.(2017)Marquant, Mavromatidis, Evins, and Carmeliet}]{RH_vs_TD}
 Marquant JF, Mavromatidis G, Evins R, Carmeliet J (2017) Comparing different temporal dimension representations in distributed energy system design models. Energy Procedia 122:907--912, \doi{https://doi.org/10.1016/j.egypro.2017.07.403}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1876610217330102}
