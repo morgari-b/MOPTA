@@ -158,7 +158,6 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
     print("total time: {}s.".format(np.round(time.time()-start_time,3)))
     #%  return VARS
     for iter in range(N_iter):
-        print("iteration {}".format(iter+1))
         iter_start_time = time.time()
 
         VARS = iter_sol[-1]
@@ -204,7 +203,6 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
             if optimal:
                 print("optimal solution for unaggregated problem found")
                 return iter_sol
-
         elif iter_method == "validation4":
             print("validation4 iteration")
             optimal, _, scenario_initial= network.validationHfix_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
@@ -212,17 +210,6 @@ def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
             if optimal:
                 print("optimal solution for unaggregated problem found")
                 return iter_sol
-
-        elif iter_method == "validation5":
-            print("validation5 iteration")
-            end, day_initial, scenario_initial= network.validationHfix_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
-            logging.info(f"new time parition: {network.time_partition.agg}")
-            if day_initial > 5: #we start a bit before just in case.
-                day_initial = day_initial - 5
-            if end:
-                day_initial = 0
-                scenario_initial = 0
-                print("reached end of validation, starting over (i hope this doesn't give problems i didnt have time to test this)")
         else:
             raise ValueError("Invalid iteration method.")
 
@@ -614,8 +601,8 @@ def OPT3(network):
         node_coords = [ range(d), range(inst),  network.n.index.to_list()]
         edge_dims = ["scenario","time","edge"]
         edge_coords = [ range(d),  range(inst), range(NEedges)]
-        H_sol = solution_to_xarray(H, node_dims, node_coords)
-        H_dates = network.add_date_to_agg_array(H_sol)
+    
+
         VARS={
             "ns":np.ceil([ns[k].X for k in range(Nnodes)]),
             "nw":np.ceil([nw[k].X for k in range(Nnodes)]),
@@ -624,8 +611,7 @@ def OPT3(network):
             "meth":np.array([meth[k].X for k in range(Nnodes)]),
             "addNTC":np.array([addNTC[l].X for l in range(NEedges)]),
             "addMH":np.array([addMH[l].X for l in range(NHedges)]),
-            "H": H_sol,
-            "H_dates": H_dates,
+            "H":solution_to_xarray(H, node_dims, node_coords),
             "EtH":solution_to_xarray(EtH, node_dims, node_coords),
             "P_edge":solution_to_xarray(P_edge, edge_dims, edge_coords), 
             "H_edge":solution_to_xarray(H_edge, edge_dims, edge_coords),
@@ -639,6 +625,8 @@ def OPT3(network):
 
 
 # %% OPT_agg
+
+
 def OPT_agg(network):
     """
 	Performs optimization on a given network.
@@ -1729,7 +1717,276 @@ def OPT_time_partition_old(network, N_iter = 5, N_refining = 1):
             outputs = [VARS]
 
     return outputs
+#%% OPT_agg2
 
+def OPT_agg2(network, N_iter, iter_method = "random", k = 1):
+    """
+    This function solves the optimization problem using the Gurobi solver. It takes as input a network object and the number of iterations for the optimization. It returns a list of dictionaries, where each dictionary contains the solution of the optimization problem at each iteration.
+
+    The function first sets up the optimization problem by defining the variables, constraints and objective function. Then it iteratively solves the optimization problem for each iteration of the time partition. It adds constraints to the model at each iteration by using the addConstrs method of the Gurobi model class. The function also #prints the total optimization time and the time for each iteration.
+
+    The function is useful for solving the optimization problem for a given network for different time partitions. The output of the function can be used to analyze the results of the optimization problem for different time partitions.
+
+    The function returns a list of dictionaries, where each dictionary contains the solution of the optimization problem at each iteration. The dictionary contains the following keys: 'ns', 'nw', 'nh', 'mhte', 'meth', 'addNTC', 'addMH', 'H', 'EtH', 'P_edge', 'H_edge', 'HtE', 'obj', 'interval_to_var' and 'var_to_interval'. The values of the keys are the solution of the optimization problem at each iteration.
+    The function #prints the total optimization time and the time for each iteration. The function also #prints the status of the optimization problem at each iteration.
+
+    """
+    if network.costs.shape[0] == 1: #if the costs are the same:
+         cs, cw, ch, ch_t, chte, ceth, cNTC, cMH, cH_edge, cP_edge = network.costs['cs'][0], network.costs['cw'][0], network.costs['ch'][0], network.costs['ch_t'][0], network.costs['chte'][0], network.costs['ceth'][0], network.costs['cNTC'][0], network.costs['cMH'][0], network.costs['cH_edge'][0], network.costs['cP_edge'][0]
+    else:
+        print("add else") #actually we can define the costs appropriately using the network class directly
+
+
+    start_time=time.time()
+    Nnodes = network.n.shape[0]
+    NEedges = network.edgesP.shape[0]
+    NHedges = network.edgesH.shape[0]
+    d = network.n_scenarios 
+    T = network.T 
+    tp_obj = network.time_partition
+    tp = []
+    day_initial, scenario_initial = 0, 0
+    for t in tp_obj.agg:
+        if type(t) is int:
+            tp += [[t]]
+        elif len(t) > 0:
+            tp += [t]
+    #time partition
+    Ntp = len(tp)
+
+    env = Env(params={'OutputFlag': 0})
+    model = Model(env=env)
+    model.setParam('LPWarmStart',1)
+    #model.setParam('Method',1)
+    #time and scenario indipendent variables
+    ns = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=cs,ub=network.n['Mns'])
+    nw = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=cw,ub=network.n['Mnw'])
+    nh = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=ch,ub=network.n['Mnh'])
+    mhte = model.addVars(Nnodes,vtype=GRB.CONTINUOUS,obj=0.01, ub=network.n['Mhte'])
+    meth = model.addVars(Nnodes,vtype=GRB.CONTINUOUS,obj=0.01,ub=network.n['Meth'])
+    addNTC = model.addVars(NEedges,vtype=GRB.CONTINUOUS,obj=cNTC)
+    addMH = model.addVars(NHedges,vtype=GRB.CONTINUOUS,obj=cMH)
+
+    HtE = model.addVars(product(range(d),range(T),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=chte/d,lb=0) # expressed in kg
+    EtH = model.addVars(product(range(d),range(T),range(Nnodes)),vtype=GRB.CONTINUOUS, obj=ceth/d, lb=0) # expressed in MWh
+    H = model.addVars(product(range(d),range(T),range(Nnodes)),vtype=GRB.CONTINUOUS,lb=0)
+    P_edge = model.addVars(product(range(d),range(T),range(NEedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY) #could make sense to sosbstitute Nodes with network.nodes and so on Nedges with n.edgesP['start_node'],n.edgesP['end_node'] or similar
+    #TODO: fai due grafi diversi
+    H_edge = model.addVars(product(range(d),range(T),range(NHedges)),vtype=GRB.CONTINUOUS,lb=-GRB.INFINITY)
+    P_edge_pos = model.addVars(product(range(d),range(T),range(NEedges)),vtype=GRB.CONTINUOUS,lb=0, obj = cP_edge/d)
+    H_edge_pos = model.addVars(product(range(d),range(T),range(NHedges)),vtype=GRB.CONTINUOUS,lb=0, obj = cH_edge/d)
+    #todo: add starting capacity for generators (the same as for liners)
+    model.addConstrs( P_edge_pos[j,i,k] >= P_edge[j,i,k] for i in range(T) for j in range(d) for k in range(NEedges))
+    model.addConstrs( H_edge_pos[j,i,k] >= H_edge[j,i,k] for i in range(T) for j in range(d) for k in range(NHedges))
+    model.addConstrs( P_edge_pos[j,i,k] >= -P_edge[j,i,k] for i in range(T) for j in range(d) for k in range(NEedges))
+    model.addConstrs( H_edge_pos[j,i,k] >= -H_edge[j,i,k] for i in range(T) for j in range(d) for k in range(NHedges))
+    model.addConstrs( H[j,i,k] <= nh[k] for i in range(T) for j in range(d) for k in range(Nnodes))
+    model.addConstrs( EtH[j,i,k] <= meth[k] for i in range(T) for j in range(d) for k in range(Nnodes))
+    model.addConstrs( HtE[j,i,k] <= mhte[k] for i in range(T) for j in range(d) for k in range(Nnodes))
+    model.addConstrs( P_edge[j,i,k] <= (network.edgesP['NTC'].iloc[k] + addNTC[k]) for i in range(T) for j in range(d) for k in range(NEedges))
+    model.addConstrs( H_edge[j,i,k] <= (network.edgesH['MH'].iloc[k] + addMH[k]) for i in range(T) for j in range(d) for k in range(NHedges))
+    model.addConstrs( P_edge[j,i,k] >= -(network.edgesP['NTC'].iloc[k] + addNTC[k]) for i in range(T) for j in range(d) for k in range(NEedges))
+    model.addConstrs( H_edge[j,i,k] >= -(network.edgesH['MH'].iloc[k] + addMH[k]) for i in range(T) for j in range(d) for k in range(NHedges))
+
+    outputs=[]
+    VARS=[]
+
+
+    ES = network.genS_t_agg
+    EW = network.genW_t_agg
+    EL = network.loadP_t_agg
+    HL = network.loadH_t_agg
+
+
+    if len(network.loadP_t_agg.scenario) > 1:
+        cons2=model.addConstrs((- H[j,tp[(i+1)%Ntp][0],k] + H[j,tp[i][0],k] + 30*network.n['feth'].iloc[k]*quicksum(EtH[j,t,k] for t in tp[i]) - quicksum(HtE[j,t,k] for t in tp[i]) -
+                        quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                        quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
+                        == HL.isel(scenario=j, time=i, node=k) for j in range(d) for i in range(Ntp) for k in range(Nnodes)))
+        
+        cons1=model.addConstrs((ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j] + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
+                            quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                            quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
+                            >=  EL.isel(scenario=j, time=i, node=k) for k in range(Nnodes) for j in range(d) for i in range(Ntp)))
+
+    else:
+        cons2=model.addConstrs((- H[j,tp[(i+1)%Ntp][0],k] + H[j,tp[i][0],k] + 30*network.n['feth'].iloc[k]*quicksum(EtH[j,t,k] for t in tp[i]) - quicksum(HtE[j,t,k] for t in tp[i]) -
+                        quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                        quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
+                        == HL.isel(scenario=0, time=i, node=k) for j in range(d) for i in range(Ntp) for k in range(Nnodes)))
+
+        cons1=model.addConstrs((ns[k]*ES[i,k,j] + nw[k]*EW[i,k,j]  + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
+                            quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                            quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
+                            >=  EL.isel(scenario=0, time=i, node=k)for k in range(Nnodes) for j in range(d) for i in range(Ntp)))
+    print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
+    opt_start_time = time.time()
+    model.optimize()
+    iter_sol = []
+    if model.Status!=2:
+        print("Status = {}".format(model.Status))
+    else:
+        node_dims = ["scenario","time","node"]
+        if 'node' in network.n.columns:
+            network.n.set_index('node',inplace=True)
+        node_coords = [ range(d), range(T),  network.n.index.to_list()]
+        edge_dims = ["scenario","time","edge"]
+        edge_coords = [ range(d),  range(T), range(NEedges)]
+        VARS={
+            "ns":np.ceil([ns[k].X for k in range(Nnodes)]),
+            "nw":np.ceil([nw[k].X for k in range(Nnodes)]),
+            "nh":np.array([nh[k].X for k in range(Nnodes)]),
+            "mhte":np.array([mhte[k].X for k in range(Nnodes)]),
+            "meth":np.array([meth[k].X for k in range(Nnodes)]),
+            "addNTC":np.array([addNTC[l].X for l in range(NEedges)]),
+            "addMH":np.array([addMH[l].X for l in range(NHedges)]),
+            "H":solution_to_xarray(H, node_dims, node_coords),
+            "EtH":solution_to_xarray(EtH, node_dims, node_coords),
+            "P_edge":solution_to_xarray(P_edge, edge_dims, edge_coords),
+            "H_edge":solution_to_xarray(H_edge, edge_dims, edge_coords),
+            "HtE":solution_to_xarray(HtE, node_dims, node_coords),
+            "obj":model.ObjVal,
+            "interval_to_var":dict(zip(time_partition.tuplize(tp),range(T))),
+            "var_to_interval":dict(zip(range(T),time_partition.tuplize(tp)))  
+        }
+        iter_sol.append(VARS)
+        print(f"opt time {np.round(time.time()-opt_start_time,3)}s.")
+                                                
+
+    print("total time: {}s.".format(np.round(time.time()-start_time,3)))
+    #%  return VARS
+    for iter in range(N_iter):
+        iter_start_time = time.time()
+
+        VARS = iter_sol[-1]
+        if iter_method == "random":
+            print("random iteration")
+            network.iter_partition(k=k)
+
+        elif iter_method == "rho":
+            print("rho iteration")
+            network.rho_iter_partition(VARS, k=k)
+
+        elif iter_method == "validation":
+            "Uses Validate function to find interval on which to iterate"
+            print("validation iteration")
+            optimal = network.validationfun_iter_partition(VARS, k=k)
+            if optimal:
+                print("optimal solution for unaggregated problem found")
+                return iter_sol
+
+        elif iter_method == "validationold":
+            print("validation iteration old")
+            optimal = network.validationfun_iter_partition_old(VARS, k=k)
+
+            if optimal:
+                print("optimal solution for unaggregated problem found")
+                return iter_sol
+
+        elif iter_method == "validation2":
+            print("validation2 iteration")
+            end, day_initial, scenario_initial= network.validation2fun_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
+            if day_initial > 5: #we start a bit before just in case.
+                day_initial = day_initial - 5
+            if end:
+                day_initial = 0
+                scenario_initial = 0
+                print("reached end of validation, starting over (i hope this doesn't give problems i didnt have time to test this)")
+                
+        elif iter_method == "validation3":
+            #each time starts at the beginning
+            print("validation3 iteration")
+            optimal, _, scenario_initial= network.validation2fun_iter_partition(VARS, k=k, day_initial=day_initial, scenario_initial=scenario_initial)
+
+            if optimal:
+                print("optimal solution for unaggregated problem found")
+                return iter_sol
+        else:
+            raise ValueError("Invalid iteration method.")
+
+        family_tree = network.time_partition.family_tree
+        splitted_intervals = time_partition.order_intervals(family_tree[-1])
+        ##print(splitted_intervals)
+        tp_obj = network.time_partition #new time partition object
+        tp = tp_obj.agg.copy()
+        tp = [t if type(t) is list else [t] for t in tp]
+        Ntp = len(tp)
+        ES = network.genS_t_agg
+        EW = network.genW_t_agg
+        EL = network.loadP_t_agg
+        HL = network.loadH_t_agg
+
+
+        for father_interval in splitted_intervals:
+            #print(f"father interval: {father_interval} \n len tp:{len(tp)} \n shape HL: {HL.shape}")
+            
+            split_indeces = time_partition.interval_subsets(father_interval,tp)[1:] #indexes of tp that are subsets of the father_interval, except the first one sine it's implied by linear dependence of the corresponding contraints.
+            #print("split indeces: {}".format(split_indeces))
+            NI = len(split_indeces)
+            #print
+            if network.loadP_t_agg.shape[2] > 1:
+                #TODO: sarebbe bello calcolare la domanda sull0intervallo direttamente qui e non usare i dataframe aggregati (per essere ricuri di non fare casino)
+                cons2=model.addConstrs((- H[j,tp[(i+1)%Ntp][0],k] + H[j,tp[i][0],k] + 30*network.n['feth'].iloc[k]*quicksum(EtH[j,t,k] for t in tp[i]) - quicksum(HtE[j,t,k] for t in tp[i]) -
+                                quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                                quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
+                                == HL.isel(scenario=j, time=i, node=k) for j in range(d) for i in split_indeces for k in range(Nnodes)))
+                
+                cons1=model.addConstrs((ns[k]*ES.isel(scenario=j, time=i, node=k) + nw[k]*EW.isel(scenario=j, time=i, node=k) + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
+                                    quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                                    quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
+                                    >= EL.isel(scenario=j, time=i, node=k) for k in range(Nnodes) for j in range(d) for i in split_indeces))
+
+            else:
+                cons2=model.addConstrs((- H[j,tp[(i+1)%Ntp][0],k] + H[j,tp[i][0],k] + 30*network.n['feth'].iloc[k]*quicksum(EtH[j,t,k] for t in tp[i]) - quicksum(HtE[j,t,k] for t in tp[i]) -
+                                quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                                quicksum(H_edge[j,t,l] for t in tp[i] for l in network.edgesH.loc[network.edgesH['end_node']==network.n.index.to_list()[k]].index.to_list())
+                                == HL.isel(scenario=0, time=i, node=k) for j in range(d) for i in split_indeces for k in range(Nnodes)))
+
+                cons1=model.addConstrs((ns[k]*ES.isel(scenario=j, time=i, node=k) + nw[k]*EW.isel(scenario=j, time=i, node=k)  + 0.033*network.n['fhte'].iloc[k]*quicksum(HtE[j,t,k] for t in tp[i]) - quicksum(EtH[j,t,k] for t in tp[i]) -
+                                    quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['start_node']==network.n.index.to_list()[k]].index.to_list()) +
+                                    quicksum(P_edge[j,t,l] for t in tp[i] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
+                                    >= EL.isel(scenario=0, time=i, node=k) for j in range(d) for i in split_indeces for k in range(Nnodes)))
+        print(f"Iter model time: {np.round(time.time()-iter_start_time,3)}s.")
+        opt_start_time = time.time()
+        model.optimize()
+        iter_opt_time = time.time()-opt_start_time
+        print(f"Iter opt time: {np.round(iter_opt_time,3)}s, total time: {np.round(time.time()-start_time,3)}s.")
+        if model.Status!=2:
+            print("Status = {}".format(model.Status))
+        else:
+            node_dims = ["scenario","time","node"]
+            if 'node' in network.n.columns:
+                network.n.set_index('node',inplace=True)
+            node_coords = [ range(d), range(T),  network.n.index.to_list()]
+            edge_dims = ["scenario","time","edge"]
+            edge_coords = [ range(d),  range(T), range(NEedges)]
+            VARS={
+                "ns":np.ceil([ns[k].X for k in range(Nnodes)]),
+                "nw":np.ceil([nw[k].X for k in range(Nnodes)]),
+                "nh":np.array([nh[k].X for k in range(Nnodes)]),
+                "mhte":np.array([mhte[k].X for k in range(Nnodes)]),
+                "meth":np.array([meth[k].X for k in range(Nnodes)]),
+                "addNTC":np.array([addNTC[l].X for l in range(NEedges)]),
+                "addMH":np.array([addMH[l].X for l in range(NHedges)]),
+                "H":solution_to_xarray(H, node_dims, node_coords),
+                "EtH":solution_to_xarray(EtH, node_dims, node_coords),
+                "P_edge":solution_to_xarray(P_edge, edge_dims, edge_coords),
+                "H_edge":solution_to_xarray(H_edge, edge_dims, edge_coords),
+                "HtE":solution_to_xarray(HtE, node_dims, node_coords),
+                "obj":model.ObjVal,
+                "interval_to_var":dict(zip(time_partition.tuplize(tp),range(T))),
+                "var_to_interval":dict(zip(range(T),time_partition.tuplize(tp))),
+                "opt_time":np.round(time.time()-start_time,3),
+                "iter_opt_time":np.round(iter_opt_time,3),
+            }
+            iter_sol.append(VARS)
+        
+
+    print(f"Total opt time: {np.round(time.time()-start_time,3)}s.")
+   
+    return iter_sol
+        
+#%%
 #nnode_to_node = dict(zip(range(Nnodes),network.n['node'].to_list()))
 # if __name__ == "__main__":
 #     time_coords = list(var_to_interval.keys())

@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex template"] 1730060084.53699 "template.aux" "template.bbl" "template" 1730060085.99658 0
+["bibtex template"] 1730060165.99712 "template.aux" "template.bbl" "template" 1730060167.51255 0
   "./sample.bib" 1730059788.23216 46865 f6d44d03fa0cb2cee28d8e052c0b7e3c ""
   "./spbasic.bst" 1729686135.02616 33238 8c0372ffb65c1dd8cfd2d4211623c2f0 ""
-  "template.aux" 1730060085.71088 10720 a7db53e7fcb5cb43997fe501e964091a "pdflatex"
+  "template.aux" 1730060167.24639 10720 a7db53e7fcb5cb43997fe501e964091a "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1730060084.63542 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730060085.99671 0
+["pdflatex"] 1730060166.13049 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730060167.51267 0
   "/etc/texmf/web2c/texmf.cnf" 1727021346.58952 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" 1730060081.81895 116434 c5408efff180daf06718fff58a02b50c ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -286,9 +286,9 @@
   "images/val_vs_average.png" 1730043978.79042 29120 f2afbe7b28b12958852456529955a5f3 ""
   "svglov3.clo" 1729686135.02616 3696 b98636486931abc143bcf14934850e7b ""
   "svjour3.cls" 1729686135.02716 47679 580d73513215963b6ad3ff0c4282b766 ""
-  "template.aux" 1730060085.71088 10720 a7db53e7fcb5cb43997fe501e964091a "pdflatex"
-  "template.bbl" 1730060084.6299 9373 be068e9f878e82f9a368504c748c79b8 "bibtex template"
-  "template.out" 1730060085.71188 1075 9563c5ddefca5e8313fe326f11173e10 "pdflatex"
+  "template.aux" 1730060167.24639 10720 a7db53e7fcb5cb43997fe501e964091a "pdflatex"
+  "template.bbl" 1730060166.11641 9373 be068e9f878e82f9a368504c748c79b8 "bibtex template"
+  "template.out" 1730060167.24739 1075 9563c5ddefca5e8313fe326f11173e10 "pdflatex"
   "template.tex" 1730060081.81895 116434 c5408efff180daf06718fff58a02b50c ""
   (generated)
   "template.aux"
