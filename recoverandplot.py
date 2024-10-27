@@ -80,11 +80,11 @@ times_val_diff = [times_val[i]-times_val[i-1] for i in range(1,len(times_val))]
 times_random_diff = [[times_random[i][j]-times_random[i][j-1] for j in range(1,len(costs_random[0]))] for i in range(N_random)]
 times_rho_diff = [times_rho[i]-times_rho[i-1] for i in range(1,len(times_rho))]
 # %%
-fig = go.Figure(data=[go.Scatter(x = np.arange(1,len(times_val)), y = times_val_diff, name = 'validation2'),
-                     go.Scatter(x = np.arange(len(times_random[0])), y = [np.mean([times_random_diff[i][j] for i in range(N_random)]) for j in range(len(costs_random[0])-1)], name = 'average_random'),
+fig = go.Figure(data=[go.Scatter(x = np.arange(1,len(times_val)), y = times_val_diff, name = 'validation'),
+                     go.Scatter(x = np.arange(len(times_random[0])), y = [np.mean([times_random_diff[i][j] for i in range(N_random)]) for j in range(len(costs_random[0])-1)], name = 'random'),
                      go.Scatter(x = np.arange(1,len(times_rho)), y = times_rho_diff, name = 'rho')
                      ])
-fig.update_layout(title=' iteration time over iteration', xaxis_title='iteration', yaxis_title='time')
+fig.update_layout(title=' Iteration time over iteration', xaxis_title='iteration number', yaxis_title='time (s)')
 fig.show()
 
 # %%

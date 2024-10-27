@@ -426,11 +426,11 @@ INPUT c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.pdf
 INPUT c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.pdf
 INPUT c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.pdf
 INPUT c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.pdf
-INPUT ./images/opt_time_rho_vs_val.png
-INPUT ./images/opt_time_rho_vs_val.png
-INPUT ./images/opt_time_rho_vs_val.png
-INPUT ./images/opt_time_rho_vs_val.png
-INPUT ./images/opt_time_rho_vs_val.png
+INPUT ./images/iter_time_over_iter.png
+INPUT ./images/iter_time_over_iter.png
+INPUT ./images/iter_time_over_iter.png
+INPUT ./images/iter_time_over_iter.png
+INPUT ./images/iter_time_over_iter.png
 INPUT ./template.bbl
 INPUT ./template.bbl
 INPUT template.bbl
