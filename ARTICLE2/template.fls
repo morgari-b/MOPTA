@@ -417,11 +417,11 @@ INPUT ./images/rho_vas_average2.png
 INPUT ./images/rho_vas_average2.png
 INPUT ./images/rho_vas_average2.png
 INPUT ./images/rho_vas_average2.png
-INPUT ./images/val_vs_average2.png
-INPUT ./images/val_vs_average2.png
-INPUT ./images/val_vs_average2.png
-INPUT ./images/val_vs_average2.png
-INPUT ./images/val_vs_average2.png
+INPUT ./images/val_vs_average.png
+INPUT ./images/val_vs_average.png
+INPUT ./images/val_vs_average.png
+INPUT ./images/val_vs_average.png
+INPUT ./images/val_vs_average.png
 INPUT c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.tex
 INPUT c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.tex
 INPUT c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.pdf

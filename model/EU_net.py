@@ -20,7 +20,7 @@ from model.scenario_generation.scenario_generation import import_generated_scena
 
 
 #%% EU
-def EU(n_scenarios = 5, init_method = 'day_aggregation' ):
+def EU(n_scenarios = 5, init_method = 'day_night_aggregation' ):
     """
     Initializes a network object for the European Union.
 

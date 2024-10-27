@@ -68,12 +68,12 @@ res_random, costs_random, times_random = load_results(file_path, 'vars_random', 
 N_random = len(costs_random)
 fig = go.Figure(data=[go.Scatter(x = np.arange(len(costs_rho)), y = times_rho, name = 'rho'),
                      #go.Scatter(x = np.arange(len(costs_val)), y = costs_val, name = 'validation'),
-                     go.Scatter(x = np.arange(len(costs_val)), y = times_val, name = 'validation2'),
+                     go.Scatter(x = np.arange(len(costs_val)), y = times_val, name = 'validation'),
                      #go.Scatter(x = np.arange(len(costs_val3)), y = costs_val3, name = 'validation3'),
                      #go.Scatter(x = np.arange(len(costs_val_old)), y = costs_val_old, name = 'validation old'),
-                     go.Scatter(x = np.arange(len(times_random[0])), y = [np.mean([times_random[i][j] for i in range(N_random)]) for j in range(len(costs_random[0]))], name = 'average_random')
+                     go.Scatter(x = np.arange(len(times_random[0])), y = [np.mean([times_random[i][j] for i in range(N_random)]) for j in range(len(costs_random[0]))], name = 'random')
                      ])
-fig.update_layout(title='total iteration time over iteration', xaxis_title='iteration', yaxis_title='time (s) ')
+fig.update_layout(title='Total iteration time over iteration', xaxis_title='iteration', yaxis_title='time (s) ')
 fig.show()
 # %%
 times_val_diff = [times_val[i]-times_val[i-1] for i in range(1,len(times_val))]
@@ -90,14 +90,14 @@ fig.show()
 # %%
 #plots
 print("comment out lines that are not needed")
-fig = go.Figure(data=[go.Scatter(x = np.arange(len(costs_rho)), y = costs_rho, name = 'rho'),
+fig = go.Figure(data=[go.Scatter(x = np.arange(len(costs_val)), y = costs_val, name = 'validation'),
+                     #go.Scatter(x = np.arange(len(costs_rho)), y = costs_rho, name = 'rho'),
                      #go.Scatter(x = np.arange(len(costs_val)), y = costs_val, name = 'validation'),
-                     go.Scatter(x = np.arange(len(costs_val)), y = costs_val, name = 'validation2'),
                      #go.Scatter(x = np.arange(len(costs_val3)), y = costs_val3, name = 'validation3'),
                      #go.Scatter(x = np.arange(len(costs_val_old)), y = costs_val_old, name = 'validation old'),
-                     go.Scatter(x = np.arange(len(costs_random[0])), y = [np.mean([costs_random[i][j] for i in range(N_random)]) for j in range(len(costs_random[0]))], name = 'average_random')
+                     go.Scatter(x = np.arange(len(costs_random[0])), y = [np.mean([costs_random[i][j] for i in range(N_random)]) for j in range(len(costs_random[0]))], name = 'random')
                      ])
-fig.update_layout(title='objective value over iterations', xaxis_title='iteration', yaxis_title='cost (€) ')
+fig.update_layout(title='Objective value over iterations', xaxis_title='iteration number', yaxis_title='cost (€) ')
 fig.show()
 # %%
 nh_val =  np.stack(recover_attributes(res_val,'nh', is_list_of_lists = False))

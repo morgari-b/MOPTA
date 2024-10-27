@@ -34,14 +34,14 @@ import plotly.graph_objects as go
 from model.OPT_methods import OPT_agg_correct, OPT3, OPT_agg2
 import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
+logging.disable(logging.INFO)
 # %%stest
 np.random.seed(42)
 N_scenarios = 2
-eu=EU(N_scenarios)
+eu=EU(N_scenarios, init_method = 'day_night_aggregation')
 #%%
-N_iter = 200 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
-N_random = 10 #numeri di ottimizzazione da effettuare utilizando metodo random di selezione di intervallo da disgregare
+N_iter = 100 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
+N_random = 1 #numeri di ottimizzazione da effettuare utilizando metodo random di selezione di intervallo da disgregare
 
 #%% rerun random iterations
 vars_random_list = []
@@ -61,7 +61,7 @@ for i in range(N_random):
 #%%
 print("Può esser comodo salvare i test per non rerunnare tutto ogni volta, crea una cartella saved_opt fuori da MOPTA (perchè altrimenti poi git fa casino con dimensioni file)")
 file_path = "../saved_opt/"
-name = "200itermammamia"
+name = "provaH100"
 ext = '.npy'
 # %%
 np.save(file_path+'vars_random'+name+ext, vars_random_list)
@@ -77,10 +77,10 @@ np.save(file_path+'costs_random'+name+ext, costs_random_list)
 
 #%% val2
 n = copy.deepcopy(eu)
-vars_val2 = OPT_agg2(n, N_iter =  N_iter, iter_method = 'validation2')
+vars_val2 = OPT_agg2(n, N_iter =  5, iter_method = 'validation4')
 costs_val2 = [vars_val2[i]['obj'] for i in range(len(vars_val2))]
 times_val2 = [vars_val2[i]['opt_time'] for i in range(1,len(vars_val2))]
-
+#%%
 np.save(file_path+'costs_val2'+name+ext, costs_val2)
 np.save(file_path+'vars_val2'+name+ext, vars_val2)
 np.save(file_path+'times_val2'+name+ext, times_val2)
@@ -92,11 +92,11 @@ np.save(file_path+'times_val2'+name+ext, times_val2)
 
 
 #%% rho
-n = copy.deepcopy(eu)
-vars_rho=OPT_agg2(n, N_iter = N_iter, iter_method = 'rho')
+#n = copy.deepcopy(eu)
+vars_rho=OPT_agg2(eu, N_iter = 2, iter_method = 'rho')
 costs_rho = [vars_rho[i]['obj'] for i in range(len(vars_rho))]
 times_rho = [vars_rho[i]['opt_time'] for i in range(1,len(vars_rho))]
-
+#%%
 np.save(file_path+'vars_rho'+name+ext, vars_rho)
 np.save(file_path+'costs_rho'+name+ext, costs_rho)
 np.save(file_path+'times_rho'+name+ext, times_rho)
@@ -106,6 +106,11 @@ np.save(file_path+'times_rho'+name+ext, times_rho)
 # vars_val_old = OPT_agg2(n, N_iter =  15, iter_method = 'validationold')
 # costs_val_old = [vars_val_old[i]['obj'] for i in range(len(vars_val_old))]
 # times_val_old = [vars_val_old[i]['opt_time'] for i in range(1,len(vars_val_old ))]
+#%%
+
+vars_H=OPT_agg2(eu, N_iter = 2, iter_method = 'validation_fixed_H')
+costs_H = [vars_rho[i]['obj'] for i in range(len(vars_rho))]
+times_H = [vars_rho[i]['opt_time'] for i in range(1,len(vars_rho))]
 
 
 #%% plots:
@@ -176,3 +181,56 @@ for i in range(len(vars_random_list)):
 h_val = recover_attributes(vars_val, 'nh')
 
 # %%
+val = vars_rho[-1]
+H = val['H']
+network = eu
+# %%
+
+
+
+# %%
+# Extract data for scenario 0
+scenario_data = goalH
+
+# Create a plotly figure
+fig = go.Figure()
+
+# Iterate over each node in the xarray and add a line to the plot
+for node in scenario_data.node:
+    fig.add_trace(go.Scatter(
+        x=scenario_data.date,
+        y=scenario_data.sel(node=node),
+        mode='lines',
+        name=f'Node {node.item()}'
+    ))
+
+# Update layout
+fig.update_layout(
+    title='Scenario 0: Line Plot for Each Node',
+    xaxis_title='Time',
+    yaxis_title='Values'
+)
+
+# Show the plot
+fig.show()
+
+# %%
+# add the date coordinate
+
+# %%ù
+init_date = pd.Timestamp(2023, 1, 1)
+T = eu.T
+H1 = H0.copy()
+goalH=H1.mean('scenario')
+# Create a new DataArray with the same values as goalH at time=0, but with the new time coordinate T
+new_data = goalH.sel(time=0).assign_coords(time=T)
+# Concatenate the new data along the time dimension with the original goalH
+goalH = xr.concat([goalH, new_data], dim="time")
+new_time = np.arange(0,T)
+goalH = goalH.interp(time=new_time)
+dates = [init_date + pd.Timedelta(hours=int(t)) for t in goalH.time.values]
+goalH.coords['date'] = ('time', dates)
+
+
+# %%
+goalH.where(goalH.date.isin(pd.date_range(init_date,freq='h',periods=24)),drop=True).isel(node=n,scenario=i)

@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex template"] 1729879176.70669 "template.aux" "template.bbl" "template" 1729879181.88082 0
+["bibtex template"] 1729879176.70669 "template.aux" "template.bbl" "template" 1730032640.32673 0
   "./sample.bib" 1729842866 44450 7f2aa409b5fa5821582a589379ff47f1 ""
   "./spmpsci.bst" 1729675108 30130 0182c69465c28ddbb1f8698b9c5c1559 ""
-  "template.aux" 1729879180 9151 ba4365927a18e365071b728594be0f04 "pdflatex"
+  "template.aux" 1730032638 9151 ba4365927a18e365071b728594be0f04 "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1729879177.46161 "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1729879181.88131 0
-  "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" 1729879175 115247 fb9e9c342a98f81fa8ff1fba22539904 ""
+["pdflatex"] 1730032636.36598 "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730032640.32729 0
+  "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" 1730032635 115285 630226d5cca3cfcad87351406ad5f96a ""
   "c:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1722435943 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "c:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1722436724 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm" 1722436388 1536 06717a2b50de47d4087ac0e6cd759455 ""
@@ -281,13 +281,13 @@
   "c:/texlive/2024/texmf.cnf" 1722439652 713 e69b156964470283e0530f5060668171 ""
   "example.eps" 1729675108 304 240e01e547b56ebd62e19ba1e85adf80 ""
   "images/rho_vas_average2.png" 1729514381 25589 c4bb28dd8c723bf32dfc15148bb26d63 ""
-  "images/val_vs_average2.png" 1729514406 28380 af8f8d6c4b6e6f04025fb87ffe0ee4cb ""
+  "images/val_vs_average.png" 1730025595 29120 f37709701d22f02782afcd1a851729da ""
   "svglov3.clo" 1729675108 3809 b98636486931abc143bcf14934850e7b ""
   "svjour3.cls" 1729675108 47679 580d73513215963b6ad3ff0c4282b766 ""
-  "template.aux" 1729879180 9151 ba4365927a18e365071b728594be0f04 "pdflatex"
+  "template.aux" 1730032638 9151 ba4365927a18e365071b728594be0f04 "pdflatex"
   "template.bbl" 1729879177 7019 161686164a27c1e28bc19c62493ed5d1 "bibtex template"
-  "template.out" 1729879180 1075 2dcaae233c4543a68d0eb4ee52456616 "pdflatex"
-  "template.tex" 1729879175 115247 fb9e9c342a98f81fa8ff1fba22539904 ""
+  "template.out" 1730032638 1075 2dcaae233c4543a68d0eb4ee52456616 "pdflatex"
+  "template.tex" 1730032635 115285 630226d5cca3cfcad87351406ad5f96a ""
   (generated)
   "template.aux"
   "template.log"

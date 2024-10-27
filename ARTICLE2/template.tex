@@ -1148,7 +1148,7 @@ The results indicate that the former method yields a significantly faster increa
 However, this approach incurs greater computational time: \textcolor{red}{many seconds s}. 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\textwidth]{images/val_vs_average2.png}
+  \includegraphics[width=\textwidth]{images/val_vs_average.png}
   \caption{Cost variation at each iteration using the validation function for interval refinement against the random interval selection method.}
   \label{fig:val_vs_average}
 \end{figure}
@@ -1598,7 +1598,7 @@ If \(\rho_r \geq 0\) and \(x \in \bR^n\) satisfies \(x_{\colP_{=1}} = \tilde{x}_
   &=  A_{r, \colP_{=1}} \tilde{x}_{\colP_{=1}} + \rho_r \sum_{S \in \supp(\tilde{A}_R)_{>1}} \tilde{A}_{R, S}  \tilde{x}_S.
   \end{align}
   
-  By the definition of \(\rho_r\) the first sum in the last line of equation \eqref{eq:p aggr constr 3} is equal to:
+  By the definition of \(\rho_r\) the second sum in the last line of equation \eqref{eq:p aggr constr 3} is equal to:
   \begin{align*}
   \rho_r \sum_{S \in \supp(\tilde{A}_R)_{>1}} \tilde{A}_{R, S} \tilde{x}_S 
   &= \rho_r (\tilde{A}_R \tilde{x} - \tilde{A}_{R, \colP_{=1}} \tilde{x}_{\colP_{=1}}) \\
@@ -1681,7 +1681,7 @@ From the hypothesis and the definition of \(\rho\)-solution, we have:
   \label{eq:rho agn eq2}
     \eqref{eq:rho agn eq1} =  \sum_{C \in \colP_{=1}}\tilde{A}_{r,C}\tilde{x}_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}} \sum_{r' \in R^{(C)}}\rowW_{r'} \tilde{A}_{r,C}\rho_{r'}\tilde{x}_{C} 
 \end{equation}
-Since \(\rowW_R \rho_R = 1\), we have
+Since \(\rowW_{R^{(C)}} \rho_{R^{(C)}} = 1\), we have
 \begin{equation}
   \label{eq:rho agn eq3}
     \eqref{eq:rho agn eq2} =   \sum_{C \in \colP_{=1}}\tilde{A}_{r,C}\tilde{x}_{r,C} +  \sum_{C \in \supp(A_{r})_{>1}}\tilde{A}_{r,C}\tilde{x}_{C} = \tilde{A}_r\tilde{x}_r = \tilde{b}_r = b_r
@@ -1734,7 +1734,7 @@ While row aggregation of a linear problem is a relaxation of the original proble
 
 \begin{proposition}
 If \((\rowP,\colP)\) is a structure-preserving, constant-coefficients column aggregation,
-if the hypothesis of proposition \ref{prop:xaggfeasible} and observation \ref{ob:costpreserving} are true, then the aggregated problem \eqref{eq:LPaggr} is exact and \(x\) is an optimal solution.
+if the hypothesis of proposition \ref{prop:xaggfeasible} and observation \ref{ob:costpreserving} are true, then the aggregated problem \eqref{eq:LPaggr} is exact and the \(\rho\)-solution \(x\) is an optimal solution.
 \end{proposition}
 
 % \begin{proof}
