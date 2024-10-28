@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  28 OCT 2024 15:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  28 OCT 2024 18:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -896,11 +896,11 @@ Underfull \vbox (badness 6792) has occurred while \output is active []
 [16]
 
 [17]
-<images/rho_vas_average2.png, id=280, 568.1225pt x 451.6875pt>
-File: images/rho_vas_average2.png Graphic file (type png)
-<use images/rho_vas_average2.png>
-Package pdftex.def Info: images/rho_vas_average2.png  used on input line 1227.
-(pdftex.def)             Requested size: 270.40103pt x 214.98799pt.
+<images/rho_vas_average.png, id=280, 618.31pt x 451.6875pt>
+File: images/rho_vas_average.png Graphic file (type png)
+<use images/rho_vas_average.png>
+Package pdftex.def Info: images/rho_vas_average.png  used on input line 1227.
+(pdftex.def)             Requested size: 270.40103pt x 197.53697pt.
 <images/val_vs_average.png, id=283, 618.31pt x 451.6875pt>
 File: images/val_vs_average.png Graphic file (type png)
 <use images/val_vs_average.png>
@@ -915,13 +915,16 @@ File: images/opt_time_over_iter.png Graphic file (type png)
 Package pdftex.def Info: images/opt_time_over_iter.png  used on input line 1254.
 (pdftex.def)             Requested size: 287.30206pt x 149.98088pt.
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [19
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.1258 
-        <./images/rho_vas_average2.png>]
+        <./images/rho_vas_average.png>]
 <images/iter_time_over_iter.png, id=302, 865.2325pt x 451.6875pt>
 File: images/iter_time_over_iter.png Graphic file (type png)
 <use images/iter_time_over_iter.png>
@@ -1057,14 +1060,14 @@ Package rerunfilecheck Info: File `template.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  35087 strings out of 473584
- 796027 string characters out of 5732363
+ 796020 string characters out of 5732363
  1958908 words of memory out of 5000000
  57232 multiletter control sequences out of 15000+600000
  572902 words of font info for 91 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,18n,107p,756b,795s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on template.pdf (31 pages, 600205 bytes).
+Output written on template.pdf (31 pages, 600980 bytes).
 PDF statistics:
  672 PDF objects out of 1000 (max. 8388607)
  546 compressed objects within 6 object streams

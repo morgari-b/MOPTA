@@ -410,11 +410,11 @@ INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmti7.tfm
 INPUT c:/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmti7.tfm
-INPUT ./images/rho_vas_average2.png
-INPUT ./images/rho_vas_average2.png
-INPUT ./images/rho_vas_average2.png
-INPUT ./images/rho_vas_average2.png
-INPUT ./images/rho_vas_average2.png
+INPUT ./images/rho_vas_average.png
+INPUT ./images/rho_vas_average.png
+INPUT ./images/rho_vas_average.png
+INPUT ./images/rho_vas_average.png
+INPUT ./images/rho_vas_average.png
 INPUT ./images/val_vs_average.png
 INPUT ./images/val_vs_average.png
 INPUT ./images/val_vs_average.png

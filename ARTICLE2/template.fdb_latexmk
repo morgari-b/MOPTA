@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex template"] 1730120963.36268 "template.aux" "template.bbl" "template" 1730124075.37882 0
+["bibtex template"] 1730120963.36268 "template.aux" "template.bbl" "template" 1730135281.31039 0
   "./sample.bib" 1730120946 47206 56cab2d8821529a119410ff4f42c5b17 ""
   "./spbasic.bst" 1729675108 33238 8c0372ffb65c1dd8cfd2d4211623c2f0 ""
-  "template.aux" 1730124072 11175 e88ab6b1b4bbf2361c4f32e0a280c3ff "pdflatex"
+  "template.aux" 1730135279 11175 e88ab6b1b4bbf2361c4f32e0a280c3ff "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1730124065.81278 "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730124075.38045 0
-  "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" 1730120946 119519 52e1a532c8f472538fb8caac912a7aec ""
+["pdflatex"] 1730135276.30992 "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730135281.31097 0
+  "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" 1730135274 119518 06819a088e0275f228602fb514cdf440 ""
   "c:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1722436724 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm" 1722436388 1536 06717a2b50de47d4087ac0e6cd759455 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1722435346 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -275,14 +275,14 @@
   "images/iter_time_over_iter.png" 1730120675 74226 55a773de8b5adf89a73388a46df03ab8 ""
   "images/mhte.png" 1730113701 35948 d90637e1e8bd0c1b81e30e340c431cc0 ""
   "images/opt_time_over_iter.png" 1730120251 59694 121e0ddc0f874e62733621a879dfee29 ""
-  "images/rho_vas_average2.png" 1730123841 27985 d51ad8369f091085253de36b96f542ca ""
+  "images/rho_vas_average.png" 1730025440 29629 77fd8a444bc5b9f1ed6c248dedbeceeb ""
   "images/val_vs_average.png" 1730025595 29120 f37709701d22f02782afcd1a851729da ""
   "svglov3.clo" 1729675108 3809 b98636486931abc143bcf14934850e7b ""
   "svjour3.cls" 1729675108 47679 580d73513215963b6ad3ff0c4282b766 ""
-  "template.aux" 1730124072 11175 e88ab6b1b4bbf2361c4f32e0a280c3ff "pdflatex"
+  "template.aux" 1730135279 11175 e88ab6b1b4bbf2361c4f32e0a280c3ff "pdflatex"
   "template.bbl" 1730120964 8959 1da217a5b7317d647443372cf027c00e "bibtex template"
-  "template.out" 1730124072 1085 e7b33f9e0d9455fcd4d6821a52b1dccf "pdflatex"
-  "template.tex" 1730120946 119519 52e1a532c8f472538fb8caac912a7aec ""
+  "template.out" 1730135279 1085 e7b33f9e0d9455fcd4d6821a52b1dccf "pdflatex"
+  "template.tex" 1730135274 119518 06819a088e0275f228602fb514cdf440 ""
   (generated)
   "template.aux"
   "template.log"
