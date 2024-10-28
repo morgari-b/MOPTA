@@ -34,11 +34,11 @@ import plotly.graph_objects as go
 from model.OPT_methods import OPT_agg_correct, OPT3, OPT_agg2
 import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-logging.disable(logging.INFO)
+
 # %%stest
 np.random.seed(42)
 N_scenarios = 2
-eu=EU(N_scenarios, init_method = 'day_night_aggregation')
+eu=EU(N_scenarios)
 #%%
 N_iter = 40 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
 N_random = 10 #numeri di ottimizzazione da effettuare utilizando metodo random di selezione di intervallo da disgregare
@@ -76,14 +76,17 @@ np.save(file_path+'costs_random'+name+ext, costs_random_list)
 # times_val = [vars_val[i]['opt_time'] for i in range(1,len(vars_val))]
 
 #%% val2
+N_iter = 50
 n = copy.deepcopy(eu)
-vars_val2 = OPT_agg2(n, N_iter =  N_iter, iter_method = 'validation5')
+
+vars_val2 = OPT_agg2(n, N_iter =  N_iter, iter_method = "validation5")
 costs_val2 = [vars_val2[i]['obj'] for i in range(len(vars_val2))]
 times_val2 = [vars_val2[i]['opt_time'] for i in range(1,len(vars_val2))]
 #%%
 np.save(file_path+'costs_val2'+name+ext, costs_val2)
 np.save(file_path+'vars_val2'+name+ext, vars_val2)
 np.save(file_path+'times_val2'+name+ext, times_val2)
+
 #%% val3
 # n = copy.deepcopy(eu)
 # vars_val3 = OPT_agg2(n, N_iter =  N_iter, iter_method = 'validation3')
@@ -92,11 +95,11 @@ np.save(file_path+'times_val2'+name+ext, times_val2)
 
 
 #%% rho
-#n = copy.deepcopy(eu)
-vars_rho=OPT_agg2(eu, N_iter = N_iter, iter_method = 'rho')
+n = copy.deepcopy(eu)
+vars_rho=OPT_agg2(n, N_iter = N_iter, iter_method = 'rho')
 costs_rho = [vars_rho[i]['obj'] for i in range(len(vars_rho))]
 times_rho = [vars_rho[i]['opt_time'] for i in range(1,len(vars_rho))]
-#%%
+
 np.save(file_path+'vars_rho'+name+ext, vars_rho)
 np.save(file_path+'costs_rho'+name+ext, costs_rho)
 np.save(file_path+'times_rho'+name+ext, times_rho)
@@ -113,7 +116,6 @@ print("bia qui plotta optime :)")
 optime_rho = [vars_rho[i]['iter_opt_time'] for i in range(1,len(vars_rho))]
 optime_val2 = [vars_val2[i]['iter_opt_time'] for i in range(1,len(vars_val2))]
 optime_random = [np.mean([times_random_list[i][j] for i in range(N_random)]) for j in range(len(times_random_list[0]))]
-
 
 fig = go.Figure(data=[go.Scatter(x = np.arange(len(optime_rho)), y = optime_rho, name = 'rho'),
                      go.Scatter(x = np.arange(len(optime_val2)), y = optime_val2, name = 'validation'),
@@ -314,56 +316,3 @@ for i in range(len(vars_random_list)):
 h_val = recover_attributes(vars_val, 'nh')
 
 # %%
-val = vars_rho[-1]
-H = val['H']
-network = eu
-# %%
-
-
-
-# %%
-# Extract data for scenario 0
-scenario_data = goalH
-
-# Create a plotly figure
-fig = go.Figure()
-
-# Iterate over each node in the xarray and add a line to the plot
-for node in scenario_data.node:
-    fig.add_trace(go.Scatter(
-        x=scenario_data.date,
-        y=scenario_data.sel(node=node),
-        mode='lines',
-        name=f'Node {node.item()}'
-    ))
-
-# Update layout
-fig.update_layout(
-    title='Scenario 0: Line Plot for Each Node',
-    xaxis_title='Time',
-    yaxis_title='Values'
-)
-
-# Show the plot
-fig.show()
-
-# %%
-# add the date coordinate
-
-# %%ù
-init_date = pd.Timestamp(2023, 1, 1)
-T = eu.T
-H1 = H0.copy()
-goalH=H1.mean('scenario')
-# Create a new DataArray with the same values as goalH at time=0, but with the new time coordinate T
-new_data = goalH.sel(time=0).assign_coords(time=T)
-# Concatenate the new data along the time dimension with the original goalH
-goalH = xr.concat([goalH, new_data], dim="time")
-new_time = np.arange(0,T)
-goalH = goalH.interp(time=new_time)
-dates = [init_date + pd.Timedelta(hours=int(t)) for t in goalH.time.values]
-goalH.coords['date'] = ('time', dates)
-
-
-# %%
-goalH.where(goalH.date.isin(pd.date_range(init_date,freq='h',periods=24)),drop=True).isel(node=n,scenario=i)

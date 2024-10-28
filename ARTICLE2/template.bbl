@@ -20,10 +20,10 @@ Dawood F, Anda M, Shafiullah G (2020) Hydrogen production for energy: An overvie
 Domínguez-Muñoz F, Cejudo-López JM, Carrillo-Andrés A, Gallardo-Salazar M (2011) Selection of typical demand days for chp optimization. Energy and Buildings 43(11):3036--3043, \doi{https://doi.org/10.1016/j.enbuild.2011.07.024}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S037877881100329X}
 
 \bibitem[{Entso-e Power Statistics and Transparency Platform(2024)}]{entsoe_NTC}
-Entso-e Power Statistics and Transparency Platform (2024) Entso-e power statistics and transparency platform - cross-border physical flow. \urlprefix\url{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)}, statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
+Entso-e Power Statistics and Transparency Platform (2024) Entso-e power statistics and transparency platform - cross-border physical flow. \urlprefix\url{https://transparency.entsoe.eu/transmission-domain/physicalFlow/show?name=&defaultValue=false&viewType=TABLE&areaType=BORDER_CTY&atch=false&dateTime.dateTime=22.07.2024+00:00|CET|DAY&border.values=CTY|10YGR-HTSO-----Y!CTY_CTY|10YGR-HTSO-----Y_CTY_CTY|10YIT-GRTN-----B&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)}
 
 \bibitem[{ENTSO-E Statistical Reports(2024)}]{ENTSOE_PowerStats}
-ENTSO-E Statistical Reports (2024) Entso-e power statistics and transparency platform. \urlprefix\url{https://www.entsoe.eu/data/power-stats/}, statistical Reports. Data is published based on aggregations of Transparency Platform data, complying with the Transparency regulation as described in the Detailed Data Description document.
+ENTSO-E Statistical Reports (2024) Entso-e power statistics and transparency platform. \urlprefix\url{https://www.entsoe.eu/data/power-stats/}
 
 \bibitem[{European~Commission(2024)}]{EU_context}
 European~Commission B (2024) Guidance on article 20a on sector integration of renewable electricity of directive (eu) 2018/2001 on the promotion of energy from renewable sources, as amended by directive (eu) 2023/2413 [c(2024) 5041 final]. \urlprefix\url{https://energy.ec.europa.eu/document/download/efcd200c-b9ae-4a9c-98ab-73b2fd281fcc_en?filename=C_2024_5041_1_EN_ACT_part1_v10.pdf}
@@ -50,7 +50,7 @@ Jedrzejewki P (2020) Modelling the european cross-border electricity transmissio
 Keppo I, Strubegger M (2010) Short term decisions for long term problems - the effect of foresight on model based energy systems analysis. Energy 35(5):2033--2042, \doi{https://doi.org/10.1016/j.energy.2010.01.019}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0360544210000216}
 
 \bibitem[{Khahro et~al.(2014)Khahro, Tabbassum, Soomro, Dong, and Liao}]{weibullwind}
-Khahro SF, Tabbassum K, Soomro AM, Dong L, Liao X (2014) Evaluation of wind power production prospective and weibull parameter estimation methods for babaurband, sindh pakistan. Energy Conversion and Management 78:956--967, \doi{https://doi.org/10.1016/j.enconman.2013.06.062}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S019689041300589X}
+Khahro SF, Tabbassum K, Soomro AM, Dong L, Liao X (2014) Evaluation of wind power production prospective and weibull parameter estimation methods for {Babaurband, Sindh Pakistan}. Energy Conversion and Management 78:956--967, \doi{https://doi.org/10.1016/j.enconman.2013.06.062}, \urlprefix\url{https://www.sciencedirect.com/science/article/pii/S019689041300589X}
 
 \bibitem[{Kirschbaum et~al.(2023)Kirschbaum, Powilleit, Schotte, and Özbeg}]{papero_bin}
 Kirschbaum S, Powilleit M, Schotte M, Özbeg F (2023) Efficient solving of time-coupled energy system milp models using a problem specific lp relaxation. pp 2774--2785, \doi{10.52202/069564-0249}
