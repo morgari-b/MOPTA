@@ -40,11 +40,7 @@ np.random.seed(42)
 N_scenarios = 2
 eu=EU(N_scenarios)
 #%%
-<<<<<<< HEAD
 N_iter = 40 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
-=======
-N_iter = 200 #numeri di iterazioni per ogni ottimizzazione (1 iterazione = 1 intervallo disaggregato)
->>>>>>> 90e7d72 (aggiustatine con ChatGPT)
 N_random = 10 #numeri di ottimizzazione da effettuare utilizando metodo random di selezione di intervallo da disgregare
 
 #%% rerun random iterations
@@ -65,11 +61,7 @@ for i in range(N_random):
 #%%
 print("Può esser comodo salvare i test per non rerunnare tutto ogni volta, crea una cartella saved_opt fuori da MOPTA (perchè altrimenti poi git fa casino con dimensioni file)")
 file_path = "../saved_opt/"
-<<<<<<< HEAD
 name = "40Hfinal"
-=======
-name = "200itermammamia"
->>>>>>> 90e7d72 (aggiustatine con ChatGPT)
 ext = '.npy'
 # %%
 np.save(file_path+'vars_random'+name+ext, vars_random_list)
@@ -84,26 +76,17 @@ np.save(file_path+'costs_random'+name+ext, costs_random_list)
 # times_val = [vars_val[i]['opt_time'] for i in range(1,len(vars_val))]
 
 #%% val2
-
 N_iter = 50
 n = copy.deepcopy(eu)
-<<<<<<< HEAD
-vars_val2 = OPT_agg2(n, N_iter =  N_iter, iter_method = 'validation5')
+
+vars_val2 = OPT_agg2(n, N_iter =  N_iter, iter_method = "validation5")
 costs_val2 = [vars_val2[i]['obj'] for i in range(len(vars_val2))]
 times_val2 = [vars_val2[i]['opt_time'] for i in range(1,len(vars_val2))]
 #%%
 np.save(file_path+'costs_val2'+name+ext, costs_val2)
 np.save(file_path+'vars_val2'+name+ext, vars_val2)
 np.save(file_path+'times_val2'+name+ext, times_val2)
-=======
-vars_val22 = OPT_agg2(n, N_iter =  N_iter, iter_method = 'validation3')
-costs_val22 = [vars_val22[i]['obj'] for i in range(len(vars_val22))]
-times_val22 = [vars_val22[i]['opt_time'] for i in range(1,len(vars_val22))]
 
-np.save(file_path+'costs_val22'+name+ext, costs_val22)
-np.save(file_path+'vars_val22'+name+ext, vars_val22)
-np.save(file_path+'times_val22'+name+ext, times_val22)
->>>>>>> 90e7d72 (aggiustatine con ChatGPT)
 #%% val3
 # n = copy.deepcopy(eu)
 # vars_val3 = OPT_agg2(n, N_iter =  N_iter, iter_method = 'validation3')
@@ -126,16 +109,12 @@ np.save(file_path+'times_rho'+name+ext, times_rho)
 # vars_val_old = OPT_agg2(n, N_iter =  15, iter_method = 'validationold')
 # costs_val_old = [vars_val_old[i]['obj'] for i in range(len(vars_val_old))]
 # times_val_old = [vars_val_old[i]['opt_time'] for i in range(1,len(vars_val_old ))]
-<<<<<<< HEAD
 
 #%%
 print("bia qui plotta optime :)")
 optime_rho = [vars_rho[i]['opt_time'] for i in range(1,len(vars_rho))]
 optime_val2 = [vars_val2[i]['opt_time'] for i in range(1,len(vars_val2))]
 optime_random = [np.mean([times_random_list[i][j] for i in range(N_random)]) for j in range(len(times_random_list[0]))]
-
-=======
->>>>>>> 90e7d72 (aggiustatine con ChatGPT)
 
 fig = go.Figure(data=[go.Scatter(x = np.arange(len(optime_rho)), y = optime_rho, name = 'rho'),
                      go.Scatter(x = np.arange(len(optime_val2)), y = optime_val2, name = 'validation'),

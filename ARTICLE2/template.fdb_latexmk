@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex template"] 1730077830.18681 "template.aux" "template.bbl" "template" 1730078047.1404 0
+["bibtex template"] 1730116247.65464 "template.aux" "template.bbl" "template" 1730116249.08814 0
   "./sample.bib" 1730077829.99592 46565 56cab2d8821529a119410ff4f42c5b17 ""
   "./spbasic.bst" 1729686135.02616 33238 8c0372ffb65c1dd8cfd2d4211623c2f0 ""
-  "template.aux" 1730078046.87936 10884 1e9af8725cf60a2ee0a926092ce48c65 "pdflatex"
+  "template.aux" 1730116248.81938 10940 4daf99fd5a94a46d58337e8c8006818b "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1730078045.78095 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730078047.14053 0
+["pdflatex"] 1730116247.75073 "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730116249.08827 0
   "/etc/texmf/web2c/texmf.cnf" 1727021346.58952 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" 1730078045.59338 117083 28b7aca292380b0358ceb2bf8b81a3a2 ""
+  "/home/morgari/Documents/Tesi IUSS/MOPTA/MOPTA/ARTICLE2/template.tex" 1730116246.12242 117422 e6877f187658621d96252d4fb01d2de2 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm" 1136768653 1536 06717a2b50de47d4087ac0e6cd759455 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -286,10 +286,10 @@
   "images/val_vs_average.png" 1730043978.79042 29120 f2afbe7b28b12958852456529955a5f3 ""
   "svglov3.clo" 1729686135.02616 3696 b98636486931abc143bcf14934850e7b ""
   "svjour3.cls" 1729686135.02716 47679 580d73513215963b6ad3ff0c4282b766 ""
-  "template.aux" 1730078046.87936 10884 1e9af8725cf60a2ee0a926092ce48c65 "pdflatex"
-  "template.bbl" 1730077830.29292 8959 1da217a5b7317d647443372cf027c00e "bibtex template"
-  "template.out" 1730078046.88036 1085 e7b33f9e0d9455fcd4d6821a52b1dccf "pdflatex"
-  "template.tex" 1730078045.59338 117083 28b7aca292380b0358ceb2bf8b81a3a2 ""
+  "template.aux" 1730116248.81938 10940 4daf99fd5a94a46d58337e8c8006818b "pdflatex"
+  "template.bbl" 1730116247.74639 8959 1da217a5b7317d647443372cf027c00e "bibtex template"
+  "template.out" 1730116248.82038 1085 e7b33f9e0d9455fcd4d6821a52b1dccf "pdflatex"
+  "template.tex" 1730116246.12242 117422 e6877f187658621d96252d4fb01d2de2 ""
   (generated)
   "template.aux"
   "template.log"
