@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex template"] 1730049321.84071 "template.aux" "template.bbl" "template" 1730049326.45305 0
+["bibtex template"] 1730120897.55168 "template.aux" "template.bbl" "template" 1730120902.9656 0
   "./sample.bib" 1730037172 47465 e661f1f9c028695be5a04b5fc8923824 ""
   "./spbasic.bst" 1729675108 33238 8c0372ffb65c1dd8cfd2d4211623c2f0 ""
-  "template.aux" 1730049324 10720 7ff602c9b726658d756cd789a59c6c9b "pdflatex"
+  "template.aux" 1730120901 10955 371b0626103b267945321ce90b156c7e "pdflatex"
   (generated)
   "template.bbl"
   "template.blg"
   (rewritten before read)
-["pdflatex"] 1730049322.56115 "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730049326.45362 0
-  "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" 1730049317 115550 de7a112172f238f8997b9a3d52c285c3 ""
+["pdflatex"] 1730120898.29665 "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" "template.pdf" "template" 1730120902.96628 0
+  "c:/Users/ghjub/codes/MOPTA/ARTICLE2/template.tex" 1730120880 115797 26c9385fc18de07343e0629043df7e7a ""
   "c:/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1722436724 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm" 1722436388 1536 06717a2b50de47d4087ac0e6cd759455 ""
   "c:/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1722435346 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -78,7 +78,6 @@
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1722435346 34694 870c211f62cb72718a00e353f14f254d ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb" 1722435346 35309 940e81a5b9e04201a07e8b33a3ae6e64 ""
   "c:/texlive/2024/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb" 1722436546 20847 cc0ded7ca5f7a3cdcc6ec70b56da93d5 ""
-  "c:/texlive/2024/texmf-dist/fonts/type1/public/lm/lmss17.pfb" 1722437498 97155 ffb6880a68751002f414154d64548ca3 ""
   "c:/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1722437865 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "c:/texlive/2024/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1722435440 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "c:/texlive/2024/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty" 1722435680 40635 c40361e206be584d448876bba8a64a3b ""
@@ -244,8 +243,6 @@
   "c:/texlive/2024/texmf-dist/tex/latex/mathtools/mathtools.sty" 1722437701 62672 9ff036bc89365461cc2bd482cc1e4879 ""
   "c:/texlive/2024/texmf-dist/tex/latex/mathtools/mhsetup.sty" 1722437701 5582 a43dedf8e5ec418356f1e9dfe5d29fc3 ""
   "c:/texlive/2024/texmf-dist/tex/latex/multirow/multirow.sty" 1722437888 6149 2398eec4faa1ee24ff761581e580ecf1 ""
-  "c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.pdf" 1722437902 12160 f5a33a472bc2acb8800c3e00764d8ad1 ""
-  "c:/texlive/2024/texmf-dist/tex/latex/mwe/example-image-a.tex" 1722437902 466 d1a94627f2e1cbf8876e228d48d436ec ""
   "c:/texlive/2024/texmf-dist/tex/latex/natbib/natbib.sty" 1722437921 45456 1c8843383c0bd05870c45fa0ebea6cc2 ""
   "c:/texlive/2024/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty" 1722438193 1090 bae35ef70b3168089ef166db3e66f5b2 ""
   "c:/texlive/2024/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty" 1722438193 373 00b204b1d7d095b892ad31a7494b0373 ""
@@ -275,15 +272,17 @@
   "c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1722439676 5529061 543042243f35af3474d78b11ac263772 ""
   "c:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1722439942 8239251 9ae4e46ab8a1a51bff5f199d1290e3bb ""
   "c:/texlive/2024/texmf.cnf" 1722439652 713 e69b156964470283e0530f5060668171 ""
-  "images/iter_time_over_iter.png" 1729773485 73102 099b26ad3f7891334e4228dc97dba117 ""
+  "images/iter_time_over_iter.png" 1730120675 74226 55a773de8b5adf89a73388a46df03ab8 ""
+  "images/mhte.png" 1730113701 35948 d90637e1e8bd0c1b81e30e340c431cc0 ""
+  "images/opt_time_over_iter.png" 1730120251 59694 121e0ddc0f874e62733621a879dfee29 ""
   "images/rho_vas_average2.png" 1729514381 25589 c4bb28dd8c723bf32dfc15148bb26d63 ""
   "images/val_vs_average.png" 1730025595 29120 f37709701d22f02782afcd1a851729da ""
   "svglov3.clo" 1729675108 3809 b98636486931abc143bcf14934850e7b ""
   "svjour3.cls" 1729675108 47679 580d73513215963b6ad3ff0c4282b766 ""
-  "template.aux" 1730049324 10720 7ff602c9b726658d756cd789a59c6c9b "pdflatex"
-  "template.bbl" 1730049322 9341 27880a01b6a696b33d39fc1f5c421193 "bibtex template"
-  "template.out" 1730049324 1075 9563c5ddefca5e8313fe326f11173e10 "pdflatex"
-  "template.tex" 1730049317 115550 de7a112172f238f8997b9a3d52c285c3 ""
+  "template.aux" 1730120901 10955 371b0626103b267945321ce90b156c7e "pdflatex"
+  "template.bbl" 1730120898 9341 27880a01b6a696b33d39fc1f5c421193 "bibtex template"
+  "template.out" 1730120901 1075 9563c5ddefca5e8313fe326f11173e10 "pdflatex"
+  "template.tex" 1730120880 115797 26c9385fc18de07343e0629043df7e7a ""
   (generated)
   "template.aux"
   "template.log"

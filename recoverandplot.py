@@ -53,7 +53,17 @@ def recover_attributes(res,attr, is_list_of_lists = False):
         L = [res[i][attr] for i in range(len(res))]
     return L
 
-    
+def plot_solver_attrs(vars_rho,vars_val,vars_random,attr,title,xtitle,ytitle, it_start = 0):
+    attr_rho = [vars_rho[i][attr] for i in range(it_start,len(vars_rho))]
+    attr_val = [vars_val[i][attr] for i in range(it_start,len(vars_val2))]
+    attr_random_list = [[vars_random[i][j][attr] for j in range(it_start,len(vars_random[0]))] for i in range(len(vars_random))]
+    attr_random = [np.mean([times_random_list[i][j] for i in range(N_random)]) for j in range(len(times_random_list[0]))]
+    fig = go.Figure(data=[go.Scatter(x = np.arange(len(attr_rho)), y = attr_rho, name = 'rho'),
+                        go.Scatter(x = np.arange(len(attr_val)), y = attr_val, name = 'validation'),
+                        go.Scatter(x = np.arange(len(attr_random)), y = attr_random, name = 'random')
+                        ])
+    fig.update_layout(title=title, xaxis_title=xtitle, yaxis_title=ytitle)
+    fig.show()
 #%%
 file_path = "../saved_opt/"
 name = "40iter3"
@@ -76,9 +86,9 @@ fig = go.Figure(data=[go.Scatter(x = np.arange(len(costs_rho)), y = times_rho, n
 fig.update_layout(title='Total iteration time over iteration', xaxis_title='iteration', yaxis_title='time (s) ')
 fig.show()
 # %%
-times_val_diff = [times_val[i]-times_val[i-1] for i in range(1,len(times_val))]
-times_random_diff = [[times_random[i][j]-times_random[i][j-1] for j in range(1,len(costs_random[0]))] for i in range(N_random)]
-times_rho_diff = [times_rho[i]-times_rho[i-1] for i in range(1,len(times_rho))]
+times_val_diff = [time_val[0]]+[times_val[i]-times_val[i-1] for i in range(1,len(times_val))]
+times_random_diff = [[times_random[i][0]]+[times_random[i][j]-times_random[i][j-1] for j in range(1,len(costs_random[0]))] for i in range(N_random)]
+times_rho_diff = [time_rho[0]]+[times_rho[i]-times_rho[i-1] for i in range(1,len(times_rho))]
 # %%
 fig = go.Figure(data=[go.Scatter(x = np.arange(1,len(times_val)), y = times_val_diff, name = 'validation'),
                      go.Scatter(x = np.arange(len(times_random[0])), y = [np.mean([times_random_diff[i][j] for i in range(N_random)]) for j in range(len(costs_random[0])-1)], name = 'random'),
