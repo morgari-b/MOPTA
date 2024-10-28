@@ -1287,20 +1287,22 @@ Figure \ref{fig:opt_time_over_iter} shows the optimization time across iteration
 
 
 
-\section{conclusion and Future Directions}
+\section{Conclusion and Future Directions}
 
 The examples above demonstrate that aggregating time steps, combined with iterative refinement, can effectively solve the Capacity Expansion Problem (CEP). 
 
-We explored two different approaches for selecting time intervals to refine at each iteration. The first approach employed a validation method based on the Rolling Horizon approach, which offers the advantage of providing a feasibility certificate if it halts before reaching the maximum number of iterations and reflects a realistic setting where reliable forecasts for power production are available over a short time span.
+We explored two different approaches for selecting time intervals to refine at each iteration. 
+The first approach employed a validation method based on the Rolling Horizon approach, which offers the advantage of providing a feasibility certificate if it halts before reaching the maximum number of iterations and reflects a realistic setting where reliable forecasts for power production are available over a short time span.
 
-The second approach utilized \(\rho\), as defined in Definition \ref{def rho}, representing the fraction of net power production in each time step relative to the total net power production within the corresponding interval. 
+The second approach utilized the parameter \(\rho\), as defined in Definition \ref{def rho}, representing the fraction of net power production in each time step relative to the total net power production within the corresponding interval. 
 The variance of \(\rho\) across each node in the network served as a quality index for each time interval, guiding the disaggregation process by targeting intervals with the worst \(\rho\) values. 
 We also provided a theoretical justification for using \(\rho\), explaining that time intervals with greater oscillations in net power production require a finer time partition to be accurately considered, and establishing sufficient conditions under which the aggregated solution can be extended to a feasible solution for the original problem.
 
-The iteration method with RH validation proved to be very effective at selecting relevant intervals to disaggregate. Starting with a day-night aggregation consisting of 730 intervals throughout the year, the method halted on average after \textcolor{red}{XXX} iterations with an RH-feasible solution whose cost diverged only minimally from the optimum.
+The iteration method with RH validation proved to be very effective at selecting relevant intervals to disaggregate. %Starting with a day-night aggregation consisting of 730 intervals throughout the year, the method halted on average after \textcolor{red}{XXX} iterations with an RH-feasible solution whose cost diverged only minimally from the optimum.
 However, the use of RH within the iteration loop has a non negligible computational cost, granting it does not increase with the number of scenarios. Still, there is a lot of wriggle space in the implementation of this method, which can help further reduce the computational load.
 
-The iteration method with $\rho$ proved more effective than chance at selecting relevant intervals to disaggregate, while maintaining similar computational times.
+The iteration method with $\rho$ proved more effective than chance at selecting relevant intervals to disaggregate, while maintaining similar computational times. 
+In particular, the index was able to efficiently identify time steps whose disaggregation brought to an accurate estimation of the needed hydrogen to electricity conversion capacity in fuel cells.
 In future work, we plan to relax the conditions in Proposition \ref{prop rho} for the feasibility of the aggregated solution for the original problem. Furthermore, the interval selection method can be refined by considering other indices based on \(\rho\), such as the frequency of sign changes over time within a time interval, or by using other measures instead of the variance across the nodes of the network.
 
 
