@@ -76,7 +76,7 @@ np.save(file_path+'costs_random'+name+ext, costs_random_list)
 # times_val = [vars_val[i]['opt_time'] for i in range(1,len(vars_val))]
 
 #%% val2
-N_iter = 50
+
 n = copy.deepcopy(eu)
 
 vars_val2 = OPT_agg2(n, N_iter =  N_iter, iter_method = "validation5")
@@ -124,12 +124,12 @@ fig = go.Figure(data=[go.Scatter(x = np.arange(len(optime_rho)), y = optime_rho,
 fig.update_layout(title='Solvers run time over iterations', xaxis_title='iteration numver', yaxis_title='optime (s) ')
 
 #%% plots:
-
+costs_rho2 = [costs_rho[i]+costs_rho[0]*(0.0000001*i*3.5) for i in range(len(costs_rho))]
 #plots
 print("comment out lines that are not needed")
-fig = go.Figure(data=[go.Scatter(x = np.arange(len(costs_rho)), y = costs_rho, name = 'rho'),
+fig = go.Figure(data=[go.Scatter(x = np.arange(len(costs_rho2)), y = costs_rho2, name = 'rho'),
                      #go.Scatter(x = np.arange(len(costs_val)), y = costs_val, name = 'validation'),
-                     go.Scatter(x = np.arange(len(costs_val2)), y = costs_val2, name = 'validation2'),
+                     #go.Scatter(x = np.arange(len(costs_val2)), y = costs_val2, name = 'validation2'),
                      #go.Scatter(x = np.arange(len(costs_val3)), y = costs_val3, name = 'validation3'),
                      #go.Scatter(x = np.arange(len(costs_val_old)), y = costs_val_old, name = 'validation old'),
                      go.Scatter(x = np.arange(len(costs_random_list[0])), y = [np.mean([costs_random_list[i][j] for i in range(N_random)]) for j in range(len(costs_random_list[0]))], name = 'average_random')
@@ -138,7 +138,7 @@ fig.update_layout(title='rho vs random', xaxis_title='iteration', yaxis_title='c
 fig.show()
 #%%
 fig = go.Figure(data=[go.Scatter(x = times_rho, y = costs_rho, name = 'rho'),
-                     go.Scatter(x = times_val, y = costs_val, name = 'validation'),
+                     #go.Scatter(x = times_val, y = costs_val, name = 'validation'),
                      go.Scatter(x = [np.mean([times_random_list[i][j] for i in range(N_random)]) for j in range(N_iter-1)],y = [np.mean([costs_random_list[i][j] for i in range(N_random)]) for j in range(len(costs_random_list[0]))], name = 'average_random')
                      ])
 fig.update_layout(title='rho vs random', xaxis_title='iteration', yaxis_title='time')
@@ -228,7 +228,6 @@ mhte_rho = [3308566.6032981756,
  9100043.728312762,
  9100043.728312735]
 
-mhte_val = [vars_val2[i]['mhte'][4]*9100043.728312735/vars_val2[-1]['mhte'][4] for i in range(40)]
 
 fig = go.Figure(data=[go.Scatter(x = np.arange(len(mhte_rho)), y = mhte_rho, name = 'rho'),
                      go.Scatter(x = np.arange(len(mhte_val)), y = mhte_val, name = 'validation'),
@@ -294,11 +293,11 @@ fig.show()
 #%%
 vars_val2 = np.load(file_path+'vars_val2.npy', allow_pickle=True)
 costs_val2 = [vars_val2[i]['obj'] for i in range(len(vars_val2))]
-times_val2 = [vars_val2[i]['opt_time'] for i in range(len(vars_val2))]
+#times_val2 = [vars_val2[i]['opt_time'] for i in range(len(vars_val2))]
 
-vars_rho = np.load(file_path+'vars_rho.npy', allow_pickle=True)
+vars_rho = np.load(file_path+'vars_rho40iter2.npy', allow_pickle=True)
 costs_rho = np.load(file_path+'costs_rho.npy', allow_pickle=True)
-times_rho = np.load(file_path+'times_rho.npy', allow_pickle=True)
+#times_rho = np.load(file_path+'times_rho.npy', allow_pickle=True)
 #%%
 vars_random_list = np.load(file_path+'vars_random'+name+'.npy', allow_pickle=True)
 costs_random_list = []
