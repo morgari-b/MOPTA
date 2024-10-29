@@ -306,7 +306,7 @@
   This significantly increases the size of the resulting Linear Programming (LP) problem, making it computationally challenging for large scale grids. 
   To tackle this, we propose an approach that aggregates time steps to reduce the problem size, followed by an iterative refinement of the aggregation, in order to converge to the optimal solution.
   Using the previous iteration's solution as a warm start, we introduce and compare methods to select which time intervals to refine at each iteration.
-  The first method employs a RH validation method, which evaluates with a Rolling Horizon method the feasibility of the aggregated solutions and selects the time interval on which the validation fails. 
+  The first method employs a Rolling Horizon (RH) method to evaluate the feasibility of the aggregated solutions, and selects the time interval on which the validation fails. 
   The second method uses the proportion of net power production in each time step relative to the aggregated time interval. 
   These selection methods are then compared against a random interval selection approach. 
 
@@ -352,7 +352,7 @@ This is especially demanding in the case of SP, since all the variables from the
 
 To reduce these costs, one possible approach is to use a Rolling Horizon (RH). 
 The basic technique is described in the work of \citet{INTRO_Glomb}, along with some results regarding quality guarantees for the optimality of the solution. 
-In \citet{INTRO_Palma-Behnke}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of two PV systems, a wind turbine, a diesel generator and a lead-acid battery for storage, serving an isolated area in Chile. 
+In \citet{INTRO_Palma-Behnke}, a rolling horizon approach is used within a RO model to optimize the operation of a micro-grid composed of two photovoltaic (PV) systems, a wind turbine, a diesel generator and a lead-acid battery for storage, serving an isolated area in Chile. 
 A similar idea, denoted as ``fix-and-relax method'', is applied in the work of \citet{INTRO_karlsruhe}, 
 where integer variables representing capital investments are initially relaxed 
 and then progressively fixed in successive time steps, reducing the computational
@@ -1219,7 +1219,7 @@ We compare the three approaches for iterating on the aggregated problem:
  (3) selecting the interval where the RH validation method discussed in Subsection \ref{subsection: RH} fails. 
 
 Plot \ref{fig:rho_vs_average} illustrates the cost variation at each iteration using the \(\rho\) selection method compared to random interval selection.
- The \(\rho\) selection method demonstrates a faster increase in cost than the random selection method, with comparable optimization times: 174 seconds for the \(\rho\) selection method 
+ The \(\rho\) selection method demonstrates a slightly faster increase in cost than the random selection method, with comparable optimization times: 174 seconds for the \(\rho\) selection method 
  and 155 seconds for the random selection method over 10 iterations.
 
  \begin{figure}[htbp]
@@ -1230,8 +1230,9 @@ Plot \ref{fig:rho_vs_average} illustrates the cost variation at each iteration u
 \end{figure}
 
 In plot \ref{fig:val_vs_average}, we compare the cost variation at each iteration using the RH validation method for interval refinement against the random interval selection method. 
-The results indicate that the former method yields a significantly faster increase, implying quicker convergence to the optimal solution. 
-However, this approach incurs greater computational time: \textcolor{red}{many seconds s}. 
+The results indicate that the former method yields a significantly faster increase, especially in the first 20 iterations, implying quicker convergence to the optimal solution. 
+However, this approach incurs greater computational time: the RH method on one full year for the tested scenarios takes on average 137s, and iterations can take more than a minute each.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/val_vs_average.png}
@@ -1241,12 +1242,16 @@ However, this approach incurs greater computational time: \textcolor{red}{many s
 
 It is worth noting that while both the \(\rho\) and random iteration methods continue up until reaching the maximum iteration limit, the RH validation method iteration may halt before that, if the current solution is RH-feasible on the full disaggregated horizon.
 The solution found is not necessarily optimal, and other heuristics would then be needed to improve it by readjusting the operational costs of hydrogen conversion and transportation. 
-However such adjustments can be made without further increasing the number of disaggregated days, keeping the problem size limited.
+Such adjustments can be made without further increasing the number of disaggregated days, keeping the problem size limited.
+
+However, this advantage does not consistently hold in practice. In many cases, disaggregating the interval on which the RH validation failed did not guarantee that the next iteration would succeed on that interval. 
+In such cases, a random disaggregation would occur for the next iteration.
+As a result, after the first few efficient iterations, the method often performed similarly to a (very costly) random selection process without reliably improving feasibility. 
 
 Figure \ref{fig:opt_time_over_iter} shows the optimization time across iterations.
  We observe a generally constant, yet slightly decreasing trend in optimization time, indicating that the model is effectively utilizing the warm start. Furthermore, the reduction in optimization time suggests that the number of pivots needed to recover the optimal solution decreases as the optimization progresses, bringing the solution closer to optimality with each iteration.
  While the optimization time remains similar across the different iteration methods, in Figure \ref{fig:iter_time_over_iter} we observe significant variation in the total iteration time. This includes the time spent selecting the time interval to disaggregate, adding additional constraints, and reoptimizing. 
- The validation method performs poorly in this regard due to the time consumed by the RH. However, it is important to note that since the RH method selects intervals one scenario at a time, the iteration time does not depend on the number of scenarios, suggesting that this method could perform well in cases with a large number of scenarios.
+ The validation method performs poorly in this regard due to the time consumed by the RH. %However, it is important to note that since the RH method selects intervals one scenario at a time, the iteration time does not depend on the number of scenarios, suggesting that this method could perform well in cases with a large number of scenarios.
  
 
 \begin{figure}[H]
@@ -1264,13 +1269,22 @@ Figure \ref{fig:opt_time_over_iter} shows the optimization time across iteration
 \end{figure}
 
 
+Most Capacity Expansion solutions increase only marginally throughout the iterations, for all methods considered. 
+Variables $ns_n$, $nw_n$, and $nh_n$ tend to be solved successfully by the initial optimization, without need for any disaggregation. 
+This result is consistent with expectations, since the aggregated problem adequately represents overall generation need and seasonal trends which dictate the maximum storage needed.
+On the other hand, variables $mhte_n$, $meth_n$ and $addNTC_l$ see the greatest increase throughout iterations. 
+In particular, Figure \ref{fig:mhte_over_iter} shows the total required hydrogen-to-electricity conversion capacity needed over all nodes, according to the solutions obtained with the three methods.
+We observe that the $\rho$ index is very efficient at determining a sample day whose disaggregation results in a great improvement in the estimate of the $mhte_n$ variable. 
+This is to be expected, since we specifically devised the index as to target high intra-day variability.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.85\textwidth]{images/mhte.png}%{images/iter_time_over_iter.png}
-  \caption{Iteration time over iterations.}
-  \label{fig:iter_time_over_iter}
+  \caption{Total $mhte$ over iterations.}
+  \label{fig:mhte_over_iter}
 \end{figure}
+
+
 
 
 %=================================================================================================================================================================================================================================================================================================================
@@ -1295,14 +1309,15 @@ We explored two different approaches for selecting time intervals to refine at e
 The first approach employed a validation method based on the Rolling Horizon approach, which offers the advantage of providing a feasibility certificate if it halts before reaching the maximum number of iterations and reflects a realistic setting where reliable forecasts for power production are available over a short time span.
 
 The second approach utilized the parameter \(\rho\), as defined in Definition \ref{def rho}, representing the fraction of net power production in each time step relative to the total net power production within the corresponding interval. 
-The variance of \(\rho\) across each node in the network served as a quality index for each time interval, guiding the disaggregation process by targeting intervals with the worst \(\rho\) values. 
+The variance of \(\rho\) across each node in the network served as a quality index for each time interval, guiding the disaggregation process.
 We also provided a theoretical justification for using \(\rho\), explaining that time intervals with greater oscillations in net power production require a finer time partition to be accurately considered, and establishing sufficient conditions under which the aggregated solution can be extended to a feasible solution for the original problem.
 
-The iteration method with RH validation proved to be very effective at selecting relevant intervals to disaggregate. %Starting with a day-night aggregation consisting of 730 intervals throughout the year, the method halted on average after \textcolor{red}{XXX} iterations with an RH-feasible solution whose cost diverged only minimally from the optimum.
-However, the use of RH within the iteration loop has a non negligible computational cost, granting it does not increase with the number of scenarios. Still, there is a lot of wriggle space in the implementation of this method, which can help further reduce the computational load.
+The iteration method with RH validation proved to be initially very effective at selecting relevant intervals to disaggregate, but the quality of the selection diminished quickly with iterations. %Starting with a day-night aggregation consisting of 730 intervals throughout the year, the method halted on average after \textcolor{red}{XXX} iterations with an RH-feasible solution whose cost diverged only minimally from the optimum.
+Furthermore, the use of RH within the iteration loop has a non negligible computational cost, comparable to the cost of solving the full disaggregated LP directly. 
+Yet there is room for major improvement within the implementation, especially if considered coupled with other methods that would allow it to overcome those intervals on which it fails repeatedly. 
 
 The iteration method with $\rho$ proved more effective than chance at selecting relevant intervals to disaggregate, while maintaining similar computational times. 
-In particular, the index was able to efficiently identify time steps whose disaggregation brought to an accurate estimation of the needed hydrogen to electricity conversion capacity in fuel cells.
+In particular, the index was able to efficiently identify time steps whose disaggregation brought to an accurate estimation of the needed hydrogen-to-electricity conversion capacity in fuel cells.
 In future work, we plan to relax the conditions in Proposition \ref{prop rho} for the feasibility of the aggregated solution for the original problem. Furthermore, the interval selection method can be refined by considering other indices based on \(\rho\), such as the frequency of sign changes over time within a time interval, or by using other measures instead of the variance across the nodes of the network.
 
 

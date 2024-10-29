@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.31)  28 OCT 2024 18:07
 =======
 This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  28 OCT 2024 14:11
 >>>>>>> cebebb3 (smt)
+=======
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.22)  28 OCT 2024 18:58
+>>>>>>> d52a1a0 (ultima versione)
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -764,11 +768,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@assumption=\count362
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... none found.
- (./template.aux
-
-LaTeX Warning: Label `fig:iter_time_over_iter' multiply defined.
-
-)
+ (./template.aux)
 \openout1 = `template.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 268.
@@ -828,10 +828,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 301.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Underfull \vbox (badness 1264) has occurred while \output is active []
-
- [3] [4]
+) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4]
 Overfull \hbox (6.71289pt too wide) in alignment at lines 493--493
 [][][] 
  []
@@ -890,67 +887,75 @@ Package pdftex.def Info: images/rho_vas_average.png  used on input line 1227.
 <images/val_vs_average.png, id=283, 618.31pt x 451.6875pt>
 =======
  [13] [14] [15] [16] [17]
-<images/rho_vas_average2.png, id=280, 739.76375pt x 451.6875pt>
+<images/rho_vas_average2.png, id=279, 568.1225pt x 451.6875pt>
 File: images/rho_vas_average2.png Graphic file (type png)
 <use images/rho_vas_average2.png>
 Package pdftex.def Info: images/rho_vas_average2.png  used on input line 1227.
+<<<<<<< HEAD
 (pdftex.def)             Requested size: 270.40103pt x 165.10234pt.
 <images/val_vs_average.png, id=282, 618.31pt x 451.6875pt>
 >>>>>>> cebebb3 (smt)
+=======
+(pdftex.def)             Requested size: 270.40103pt x 214.98799pt.
+ [18]
+<images/val_vs_average.png, id=289, 618.31pt x 451.6875pt>
+>>>>>>> d52a1a0 (ultima versione)
 File: images/val_vs_average.png Graphic file (type png)
 <use images/val_vs_average.png>
-Package pdftex.def Info: images/val_vs_average.png  used on input line 1237.
+Package pdftex.def Info: images/val_vs_average.png  used on input line 1238.
 (pdftex.def)             Requested size: 338.0pt x 246.92639pt.
- [18]
-<images/opt_time_over_iter.png, id=293, 865.2325pt x 451.6875pt>
-File: images/opt_time_over_iter.png Graphic file (type png)
-<use images/opt_time_over_iter.png>
-Package pdftex.def Info: images/opt_time_over_iter.png  used on input line 1254.
-(pdftex.def)             Requested size: 287.30206pt x 149.98088pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
  [19
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
+<<<<<<< HEAD
 l.1258 
         <./images/rho_vas_average.png>]
 <images/iter_time_over_iter.png, id=302, 865.2325pt x 451.6875pt>
+=======
+l.1255 
+        <./images/rho_vas_average2.png>]
+<images/opt_time_over_iter.png, id=299, 865.2325pt x 451.6875pt>
+File: images/opt_time_over_iter.png Graphic file (type png)
+<use images/opt_time_over_iter.png>
+Package pdftex.def Info: images/opt_time_over_iter.png  used on input line 1259.
+(pdftex.def)             Requested size: 287.30206pt x 149.98088pt.
+<images/iter_time_over_iter.png, id=300, 865.2325pt x 451.6875pt>
+>>>>>>> d52a1a0 (ultima versione)
 File: images/iter_time_over_iter.png Graphic file (type png)
 <use images/iter_time_over_iter.png>
-Package pdftex.def Info: images/iter_time_over_iter.png  used on input line 1261.
+Package pdftex.def Info: images/iter_time_over_iter.png  used on input line 1266.
 (pdftex.def)             Requested size: 287.30206pt x 149.98088pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
  [20
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1265 
+l.1270 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1265 
+l.1270 
         <./images/val_vs_average.png> <./images/opt_time_over_iter.png>]
 <images/mhte.png, id=309, 835.12pt x 451.6875pt>
 File: images/mhte.png Graphic file (type png)
 <use images/mhte.png>
-Package pdftex.def Info: images/mhte.png  used on input line 1270.
+Package pdftex.def Info: images/mhte.png  used on input line 1282.
 (pdftex.def)             Requested size: 287.30206pt x 155.39125pt.
+
+Underfull \vbox (badness 3623) has occurred while \output is active []
+
  [21
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1300 
-       
+l.1308 W
+        e explored two different approaches for selecting time intervals to ...
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1300 
-        <./images/iter_time_over_iter.png> <./images/mhte.png>] (./template.bbl
+l.1308 W
+        e explored two different approaches for selecting time intervals to ... <./images/iter_time_over_iter.png> <./images/mhte.png>] (./template.bbl [22]
 Underfull \hbox (badness 1742) in paragraph at lines 20--21
 \OT1/cmr/m/n/8 Se-lec-tion of typ-i-cal de-mand days for chp op-ti-miza-tion. En-ergy and Build-ings
  []
@@ -985,7 +990,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--24
 \OT1/cmtt/m/n/8 CTY | 10YGR-[]HTSO-[]-[]-[]-[]-[]Y _ CTY _ CTY | 10YIT-[]GRTN-[]-[]-[]-[]-[]B & dateTime . timezone = CET _ CEST &
  []
 
-[22]
+
 Underfull \hbox (badness 10000) in paragraph at lines 29--30
 \OT1/cmtt/m/n/8 energy . ec . europa . eu / document / download / efcd200c-[]b9ae-[]4a9c-[]98ab-[]73b2fd281fcc _
  []
@@ -1000,13 +1005,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [23]) [24] [25] [26]
 
-LaTeX Warning: Reference `def: spa bijection' on page 27 undefined on input line 1593.
+LaTeX Warning: Reference `def: spa bijection' on page 27 undefined on input line 1608.
 
 
-LaTeX Warning: Reference `def: spa injectction' on page 27 undefined on input line 1596.
+LaTeX Warning: Reference `def: spa injectction' on page 27 undefined on input line 1611.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1593--1598
+Underfull \hbox (badness 10000) in paragraph at lines 1608--1613
 
  []
 
@@ -1019,13 +1024,11 @@ L3 programming layer <2024-01-22>
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: 7C73C7A02CF2B66C13FD759ABE617BDB;1085.
  ) 
 Here is how much of TeX's memory you used:
+<<<<<<< HEAD
 <<<<<<< HEAD
  35087 strings out of 473584
  796020 string characters out of 5732363
@@ -1039,17 +1042,28 @@ Output written on template.pdf (31 pages, 600980 bytes).
 =======
  35379 strings out of 474222
  807897 string characters out of 5748733
+=======
+ 35380 strings out of 474222
+ 807917 string characters out of 5748733
+>>>>>>> d52a1a0 (ultima versione)
  1955975 words of memory out of 5000000
- 56868 multiletter control sequences out of 15000+600000
+ 56869 multiletter control sequences out of 15000+600000
  572902 words of font info for 91 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,18n,107p,777b,795s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+<<<<<<< HEAD
 Output written on template.pdf (31 pages, 610932 bytes).
 >>>>>>> cebebb3 (smt)
 PDF statistics:
  672 PDF objects out of 1000 (max. 8388607)
  546 compressed objects within 6 object streams
+=======
+Output written on template.pdf (31 pages, 601298 bytes).
+PDF statistics:
+ 674 PDF objects out of 1000 (max. 8388607)
+ 548 compressed objects within 6 object streams
+>>>>>>> d52a1a0 (ultima versione)
  153 named destinations out of 1000 (max. 500000)
  94 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -76,12 +76,16 @@ np.save(file_path+'costs_random'+name+ext, costs_random_list)
 # times_val = [vars_val[i]['opt_time'] for i in range(1,len(vars_val))]
 
 #%% val2
+<<<<<<< HEAD
 
+=======
+N_iter = 5
+>>>>>>> d52a1a0 (ultima versione)
 n = copy.deepcopy(eu)
 
-vars_val2 = OPT_agg2(n, N_iter =  N_iter, iter_method = "validation5")
-costs_val2 = [vars_val2[i]['obj'] for i in range(len(vars_val2))]
-times_val2 = [vars_val2[i]['opt_time'] for i in range(1,len(vars_val2))]
+vars_val3 = OPT_agg2(n, N_iter =  N_iter, iter_method = "validation4")
+#costs_val2 = [vars_val2[i]['obj'] for i in range(len(vars_val2))]
+#times_val2 = [vars_val2[i]['opt_time'] for i in range(1,len(vars_val2))]
 #%%
 np.save(file_path+'costs_val2'+name+ext, costs_val2)
 np.save(file_path+'vars_val2'+name+ext, vars_val2)

@@ -25,7 +25,7 @@ from plotly.subplots import make_subplots
 import plotly.express as px
 from model.OPT_methods import OPT_agg_correct, OPT3
 
-
+#%%
 # trials
 
 eu=EU(2)
