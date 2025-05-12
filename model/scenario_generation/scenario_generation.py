@@ -114,7 +114,7 @@ def import_scenarios(name):
     scenarios = {}
     scenarios["PV"]=pd.read_csv(path + f'{name}-PV-scenarios.csv',index_col=0)
     scenarios["PV"].iloc[:, :-2].columns = pd.to_datetime(scenarios["PV"].columns[:-2])
-    scenarios["wind"]=pd.read_csv(path + f'{name}-wind-scenarios.csv',index_col=0)
+    scenarios["wind"]=pd.read_csv(path + f'{name}-wind-scenarios3.csv',index_col=0)
     scenarios["wind"].iloc[:, :-2].columns = pd.to_datetime(scenarios["PV"].columns[:-2])
 
     return scenarios
