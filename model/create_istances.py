@@ -17,6 +17,10 @@ import os
 from model.network import  Network # import_generated_scenario
 from model.scenario_generation.scenario_generation import import_generated_scenario, import_scenario
 from model.OPT_methods import OPT_agg, OPT_agg2, OPT_time_partition, OPT3
+import dask.array as da
+
+
+
 #os.chdir("C:/Users/ghjub/codes/MOPTA/model")
 
 def convert_pandapower_to_yuppy(N, HequalP = True, standard_buses = True):
@@ -213,6 +217,11 @@ def assign_random_scenarios_to_nodes(network, n_scenarios = 2):
         loadH_t.append(hydrogen_demand_scenario.sel(node=country))
 
     # Combine the scenarios into a single DataArray for the network
+    # chunk_scheme = {"time": 365, "scenario": 1}   # tweak to taste
+    # genW_t = [g.chunk(chunk_scheme) for g in genW_t]     # *lazy* chunks
+    # genS_t = [g.chunk(chunk_scheme) for g in genS_t]     # *lazy* chunks
+    # loadP_t = [g.chunk(chunk_scheme) for g in loadP_t]     # *lazy* chunks
+    # loadH_t = [g.chunk(chunk_scheme) for g in loadH_t]     # *lazy* chunks
     genW_t = xr.concat(genW_t, dim='node').assign_coords(node=network.n.index).transpose('time','node','scenario')
     genS_t = xr.concat(genS_t, dim='node').assign_coords(node=network.n.index).transpose('time','node','scenario')
     loadP_t = xr.concat(loadP_t, dim='node').assign_coords(node=network.n.index).transpose('time','node','scenario')

@@ -137,7 +137,13 @@ def OPT_agg2(network_input, N_iter, iter_method = "random", k = 1, stop_conditio
 
     env = Env(params={'OutputFlag': 0})
     model = Model(env=env)
-    model.setParam('LPWarmStart',1)
+    model.setParam("Method", 1) 
+    #model.setParam('LPWarmStart',1)
+    # model.setParam("SoftMemLimit", 12)     # or less if laptop
+    #model.setParam("NodefileStart", 1.0)      # write B&B tree after 1 GB
+    # model.setParam("Threads", 4)
+    # model.setParam("PreSparsify", 1)
+    # model.setParam("Presolve", 2)
     model.Params.TimeLimit = max_time
     #model.setParam('Method',1)
     #time and scenario indipendent variables
@@ -976,7 +982,7 @@ def OPT3(network_input):
 
 #%% OPT_agg
 
-def OPT_agg(network):
+def OPT_agg(network, max_time = 3600):
     """
 	Performs optimization on a given network.
     The network has an initialized time partition to aggregate the data and variables approriately.
@@ -1007,9 +1013,17 @@ def OPT_agg(network):
 
     env = Env(params={'OutputFlag': 1})
     model = Model(env=env)
-    model.setParam('LPWarmStart',1)
+    #model.setParam('LPWarmStart',1)
+    #model.setParam("Method", 1) 
+    #model.setParam("SoftMemLimit", 12)     # or less if laptop
+    #model.setParam("NodefileStart", 1.0)      # write B&B tree after 1 GB
+    # model.setParam("Threads", 4)
+    # model.setParam("PreSparsify", 1)
+    # model.setParam("Presolve", 2)
+    model.Params.TimeLimit = max_time
     #model.setParam('Method',1)
     #time and scenario indipendent variables
+    logging.info("Creating variables...")
     ns = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=cs,ub=network.n['Mns'])
     nw = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=cw,ub=network.n['Mnw'])
     nh = model.addVars(Nnodes,vtype=GRB.CONTINUOUS, obj=ch,ub=network.n['Mnh'])
@@ -1025,7 +1039,8 @@ def OPT_agg(network):
     P_edge_neg = model.addVars(product(range(d),range(inst),range(NEedges)),vtype=GRB.CONTINUOUS, obj=cP_edge/d, lb=0)
     H_edge_pos = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS, obj=cH_edge/d, lb=0)
     H_edge_neg = model.addVars(product(range(d),range(inst),range(NHedges)),vtype=GRB.CONTINUOUS, obj=cH_edge/d, lb=0)
-
+    logging.info("Variables created.")
+    logging.info("Creating constraints...")
     #todo: add starting capacity for generators (the same as for liners)
     model.addConstrs( H[j,i,k] <= nh[k] for i in range(inst) for j in range(d) for k in range(Nnodes))
     model.addConstrs( EtH[j,i,k] <= meth[k]*tp_obj.len(i) for i in range(inst) for j in range(d) for k in range(Nnodes))
@@ -1070,7 +1085,7 @@ def OPT_agg(network):
                             quicksum(P_edge_pos[j,i,l] - P_edge_neg[j,i,l] for l in network.edgesP.loc[network.edgesP['end_node']==network.n.index.to_list()[k]].index.to_list())
                             >= EL[i,k,0] for k in range(Nnodes) for j in range(d) for i in range(inst)))
         
-    #print('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
+    logging.info('OPT Model has been set up, this took ',np.round(time.time()-start_time,4),'s.')
     model.optimize()
     if model.Status!=2:
         print("Status = {}".format(model.Status))

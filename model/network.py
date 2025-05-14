@@ -178,7 +178,33 @@ class Network:
         dates =[init_date + pd.Timedelta(hours=int(t)) for t in H0.time.values]
         H0.coords['date'] = ('time', dates)
         return H0 
+    def n_nodes(self):
+        """
+        Returns the number of nodes in the network.
+        """
+        return len(self.n.node)
+    def n_elec_edges(self):
+        """
+        Returns the number of electric edges in the network.
+        """
+        return len(self.edgesP)
+    def n_h2_edges(self):
+        """
+        Returns the number of hydrogen edges in the network.
+        """
+        return len(self.edgesH)
 
+    def n_time(self):
+        """
+        Returns the number of time steps in the network.
+        """
+        return self.T
+    def n_scen(self):
+        """
+        Returns the number of scenarios in the network.
+        """
+        return self.d
+    
     def init_time_partition(self):
         """
         Initializes the time partition for the Network.
